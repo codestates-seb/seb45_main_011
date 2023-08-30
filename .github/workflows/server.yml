@@ -34,23 +34,17 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
         working-directory: ${{ env.working-directory }}
-        
-        
-        
-        
-        
-      # cicd error test
-        
+
       - name: Docker build
         run: |
           docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
           docker build \
-#          --build-arg G_CLIENT_ID="${{env.G_CLIENT_ID}}" \
-#          --build-arg G_CLIENT_SECRET="${{env.G_CLIENT_SECRET}}" \
-#          --build-arg JWT_SECRET_KEY="${{env.JWT_SECRET_KEY}}" \
+#          --build-arg G_CLIENT_ID="${{env.G_CLIENT_ID}}"
+#          --build-arg G_CLIENT_SECRET="${{env.G_CLIENT_SECRET}}"
+#          --build-arg JWT_SECRET_KEY="${{env.JWT_SECRET_KEY}}"
           --build-arg MYSQL_ID="${{env.MYSQL_ID}}" \
           --build-arg MYSQL_PASSWORD="${{env.MYSQL_PASSWORD}}" \
-#          --build-arg ADMIN_EMAIL="${{env.ADMIN_EMAIL}}" \
+#          --build-arg ADMIN_EMAIL="${{env.ADMIN_EMAIL}}"
           --build-arg RDS_ENDPOINT="{{env.RDS_ENDPOINT}}" \
           -t growstory-cicd . 
           docker tag growstory-cicd dokyung94/growstory-cicd:${GITHUB_SHA::7}
