@@ -174,3 +174,7 @@ HELP.md
 
 # .idea
 ../.idea
+
+# application-local.yml
+src/main/resources/application-local.yml
+
