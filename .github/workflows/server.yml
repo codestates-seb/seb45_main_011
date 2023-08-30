@@ -7,8 +7,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # github에서 가상머신이 돌아가는데, 깃허브에도 우분투 최신 버전으로 실행하겠다는 의미
-    # 작업이 실행될 환경
 
     env:
 #      G_CLIENT_ID: ${{secrets.G_CLIENT_ID}}
@@ -29,7 +27,6 @@ jobs:
           java-version: '11'
           distribution: 'zulu'
 
-      # gradle 권한 부여
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
         working-directory: ${{ env.working-directory }}
@@ -37,7 +34,13 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
         working-directory: ${{ env.working-directory }}
-
+        
+        
+        
+        
+        
+      # cicd error test
+        
       - name: Docker build
         run: |
           docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
