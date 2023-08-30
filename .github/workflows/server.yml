@@ -48,7 +48,7 @@ jobs:
           --build-arg MYSQL_ID="${{env.MYSQL_ID}}" \
           --build-arg MYSQL_PASSWORD="${{env.MYSQL_PASSWORD}}" \
 #          --build-arg ADMIN_EMAIL="${{env.ADMIN_EMAIL}}" \
-          --build-arg RDS_ENDPOINT="{{env.RDS_ENDPOINT}}"
+          --build-arg RDS_ENDPOINT="{{env.RDS_ENDPOINT}}" \
           -t growstory-cicd . 
           docker tag growstory-cicd dokyung94/growstory-cicd:${GITHUB_SHA::7}
           docker push dokyung94/growstory-cicd:${GITHUB_SHA::7}
