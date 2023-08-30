@@ -170,7 +170,6 @@ $RECYCLE.BIN/
 # Unversioned Files
 .gradle
 build
-gradle
 HELP.md
 
 # .idea
