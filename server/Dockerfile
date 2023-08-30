@@ -2,23 +2,13 @@
 FROM openjdk:11
 
 # ⭐ 'ARG' 예약어를 통해 인자로 전달 받아야 한다.
-ARG
-#    G_CLIENT_ID \
-#    G_CLIENT_SECRET \
-#    JWT_SECRET_KEY \
-    MYSQL_ID \
+ARG MYSQL_ID \
     MYSQL_PASSWORD \
-#    ADMIN_EMAIL \
     RDS_ENDPOINT
 
 # ⭐ 'ENV' 예약어를 통해 전달받은 값을 실제 값과 매칭시켜야 한다.
-ENV
-#    G_CLIENT_ID=${G_CLIENT_ID} \
-#    G_CLIENT_SECRET=${G_CLIENT_SECRET} \
-#    JWT_SECRET_KEY=${JWT_SECRET_KEY} \
-    MYSQL_ID=${MYSQL_ID} \
+ENV MYSQL_ID=${MYSQL_ID} \
     MYSQL_PASSWORD=${MYSQL_PASSWORD} \
-#    ADMIN_EMAIL=${ADMIN_EMAIL} \
     RDS_ENDPOINT=${RDS_ENDPOINT}
 
 # (2) COPY에서 사용될 경로 변수
