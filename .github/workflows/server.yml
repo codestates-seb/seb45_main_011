@@ -1,0 +1,76 @@
+name: Server CI/CD
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # github에서 가상머신이 돌아가는데, 깃허브에도 우분투 최신 버전으로 실행하겠다는 의미
+    # 작업이 실행될 환경
+
+    env:
+#      G_CLIENT_ID: ${{secrets.G_CLIENT_ID}}
+#      G_CLIENT_SECRET: ${{secrets.G_CLIENT_SECRET}}
+#      JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
+      MYSQL_ID: ${{secrets.MYSQL_ID}}
+      MYSQL_PASSWORD: ${{secrets.MYSQL_PASSWORD}}
+#      ADMIN_EMAIL: ${{secrets.ADMIN_EMAIL}}
+      RDS_ENDPOINT: ${{secrets.RDS_ENDPOINT}}
+      working-directory: ./server
+
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'zulu'
+
+      # gradle 권한 부여
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+        working-directory: ${{ env.working-directory }}
+
+      - name: Build with Gradle
+        run: ./gradlew build
+        working-directory: ${{ env.working-directory }}
+
+      - name: Docker build
+        run: |
+          docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
+          docker build
+#          --build-arg G_CLIENT_ID="${{env.G_CLIENT_ID}}" \
+#          --build-arg G_CLIENT_SECRET="${{env.G_CLIENT_SECRET}}" \
+#          --build-arg JWT_SECRET_KEY="${{env.JWT_SECRET_KEY}}" \
+          --build-arg MYSQL_ID="${{env.MYSQL_ID}}" \
+          --build-arg MYSQL_PASSWORD="${{env.MYSQL_PASSWORD}}" \
+#          --build-arg ADMIN_EMAIL="${{env.ADMIN_EMAIL}}" \
+          --build-arg RDS_ENDPOINT="{{env.RDS_ENDPOINT}}"
+          -t growstory-cicd . 
+          docker tag growstory-cicd dokyung94/growstory-cicd:${GITHUB_SHA::7}
+          docker push dokyung94/growstory-cicd:${GITHUB_SHA::7}
+        working-directory: ${{ env.working-directory }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: SSH Connection and Deploy to Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AWS_SSH_HOST }}  # ipv4
+          username: ${{ secrets.AWS_SSH_USERNAME }} # ubuntu
+          key: ${{ secrets.AWS_SSH_KEY }} #
+          #          port: ${{ secrets.AWS_SSH_PORT }} #
+          envs: GITHUB_SHA
+          script: |
+            sudo docker rm -f server
+            sudo docker pull dokyung94/growstory-cicd:${GITHUB_SHA::7}
+            sudo docker tag dokyung94/growstory-cicd:${GITHUB_SHA::7} growstory-cicd
+            sudo docker run -d --name server -e TZ=Asia/Seoul -p 8080:8080 growstory-cicd
