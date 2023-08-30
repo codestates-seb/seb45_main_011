@@ -9,12 +9,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-#      G_CLIENT_ID: ${{secrets.G_CLIENT_ID}}
-#      G_CLIENT_SECRET: ${{secrets.G_CLIENT_SECRET}}
-#      JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
       MYSQL_ID: ${{secrets.MYSQL_ID}}
       MYSQL_PASSWORD: ${{secrets.MYSQL_PASSWORD}}
-#      ADMIN_EMAIL: ${{secrets.ADMIN_EMAIL}}
       RDS_ENDPOINT: ${{secrets.RDS_ENDPOINT}}
       working-directory: ./server
 
@@ -39,12 +35,8 @@ jobs:
         run: |
           docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
           docker build \
-#          --build-arg G_CLIENT_ID="${{env.G_CLIENT_ID}}"
-#          --build-arg G_CLIENT_SECRET="${{env.G_CLIENT_SECRET}}"
-#          --build-arg JWT_SECRET_KEY="${{env.JWT_SECRET_KEY}}"
           --build-arg MYSQL_ID="${{env.MYSQL_ID}}" \
           --build-arg MYSQL_PASSWORD="${{env.MYSQL_PASSWORD}}" \
-#          --build-arg ADMIN_EMAIL="${{env.ADMIN_EMAIL}}"
           --build-arg RDS_ENDPOINT="{{env.RDS_ENDPOINT}}" \
           -t growstory-cicd . 
           docker tag growstory-cicd dokyung94/growstory-cicd:${GITHUB_SHA::7}
@@ -61,10 +53,9 @@ jobs:
       - name: SSH Connection and Deploy to Server
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.AWS_SSH_HOST }}  # ipv4
-          username: ${{ secrets.AWS_SSH_USERNAME }} # ubuntu
-          key: ${{ secrets.AWS_SSH_KEY }} #
-          #          port: ${{ secrets.AWS_SSH_PORT }} #
+          host: ${{ secrets.AWS_SSH_HOST }}
+          username: ${{ secrets.AWS_SSH_USERNAME }}
+          key: ${{ secrets.AWS_SSH_KEY }}
           envs: GITHUB_SHA
           script: |
             sudo docker rm -f server
