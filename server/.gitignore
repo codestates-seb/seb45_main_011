@@ -167,13 +167,10 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# .yml
-*.yml
-
 # Unversioned Files
 .gradle
 build
-gradle
 HELP.md
 
-
+# .idea
+../.idea
