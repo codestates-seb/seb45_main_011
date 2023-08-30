@@ -173,4 +173,5 @@ build
 gradle
 HELP.md
 
-
+# .idea
+../.idea
