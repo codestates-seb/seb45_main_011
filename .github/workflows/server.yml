@@ -11,7 +11,6 @@ jobs:
     env:
       MYSQL_ID: ${{secrets.MYSQL_ID}}
       MYSQL_PASSWORD: ${{secrets.MYSQL_PASSWORD}}
-      RDS_ENDPOINT: ${{secrets.RDS_ENDPOINT}}
       working-directory: ./server
 
     steps:
@@ -36,7 +35,6 @@ jobs:
           docker build \
           --build-arg MYSQL_ID="${{env.MYSQL_ID}}" \
           --build-arg MYSQL_PASSWORD="${{env.MYSQL_PASSWORD}}" \
-          --build-arg RDS_ENDPOINT="{{env.RDS_ENDPOINT}}" \
           -t growstory-cicd . 
           docker tag growstory-cicd dokyung94/growstory-cicd:${GITHUB_SHA::7}
           docker push dokyung94/growstory-cicd:${GITHUB_SHA::7}
