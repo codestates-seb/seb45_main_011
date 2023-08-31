@@ -32,4 +32,3 @@ jobs:
           aws s3 cp --recursive \
           --region ap-northeast-2 \
           ./client/out s3://growstory
-  
