@@ -1,0 +1,35 @@
+package com.growstory.global.exception;
+
+import lombok.Getter;
+
+@Getter
+public enum ExceptionCode {
+    ACCOUNT_NOT_FOUND(404, "Account not found"),
+    ACCOUNT_NOT_ALLOW(405, "That Account doesn't have authority"),
+    ACCOUNT_ALREADY_EXISTS(409, "Account already exists"),
+
+    BOARD_NOT_FOUND(404, "Board not found"),
+    BOARD_NOT_ALLOW(405, "That Board doesn't have authority"),
+    BOARD_ALREADY_EXISTS(409, "Board already exists"),
+
+    PLANT_OBJECT_NOT_FOUND(404, "Plant Object not found"),
+    PLANT_OBJECT_NOT_ALLOW(405, "That Plant Object doesn't have authority"),
+    PLANT_OBJECT_ALREADY_EXISTS(409, "Plant Object already exists"),
+
+    LEAF_NOT_FOUND(404, "Leaf not found"),
+    LEAF_NOT_ALLOW(405, "That Leaf doesn't have authority"),
+    LEAF_ALREADY_EXISTS(409, "Leaf already exists"),
+
+    JOURNAL_NOT_FOUND(404, "Journal not found"),
+    JOURNAL_NOT_ALLOW(405, "Journal doesn't match the author."),
+    JOURNAL_EXISTS(409, "Journal already Exists");
+
+
+    private final int status;
+    private final String message;
+
+    ExceptionCode(int status, String message) {
+        this.status = status;
+        this.message = message;
+    }
+}
