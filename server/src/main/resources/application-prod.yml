@@ -1,6 +1,6 @@
 spring:
     datasource:
-      url: ${RDS_ENDPOINT}
+      url: jdbc:mysql://db-1.cngp4r7bckso.ap-northeast-2.rds.amazonaws.com:3306/growstory?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
       username: ${MYSQL_ID}
       password: ${MYSQL_PASSWORD}
       driver-class-name: com.mysql.cj.jdbc.Driver
