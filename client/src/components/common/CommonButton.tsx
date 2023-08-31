@@ -4,6 +4,7 @@ interface CommonButtonProps extends DefaultProps {
   usage: 'button' | 'submit';
   size: 'sm' | 'md' | 'lg' | 'fix';
   children: string;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export default function CommonButton({
