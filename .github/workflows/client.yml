@@ -31,4 +31,4 @@ jobs:
         run: |
           aws s3 cp --recursive \
           --region ap-northeast-2 \
-          ./client/build s3://growstory
+          ./client/.next s3://growstory
