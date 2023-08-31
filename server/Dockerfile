@@ -3,11 +3,13 @@ FROM openjdk:11
 
 # ⭐ 'ARG' 예약어를 통해 인자로 전달 받아야 한다.
 ARG MYSQL_ID \
-    MYSQL_PASSWORD
+    MYSQL_PASSWORD \
+    RDS_ENDPOINT
 
 # ⭐ 'ENV' 예약어를 통해 전달받은 값을 실제 값과 매칭시켜야 한다.
 ENV MYSQL_ID=${MYSQL_ID} \
-    MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    MYSQL_PASSWORD=${MYSQL_PASSWORD} \
+    RDS_ENDPOINT=${RDS_ENDPOINT}
 
 # (2) COPY에서 사용될 경로 변수
 ARG JAR_FILE=build/libs/*-SNAPSHOT.jar
