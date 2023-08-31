@@ -1,7 +1,6 @@
 package com.growstory.global.auth.config;
 
 import com.growstory.domain.account.repository.AccountRepository;
-import com.growstory.domain.account.service.AccountService;
 import com.growstory.global.auth.filter.JwtAuthenticationFilter;
 import com.growstory.global.auth.filter.JwtVerificationFilter;
 import com.growstory.global.auth.handler.*;
@@ -26,7 +25,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
-    private final AccountService accountService;
     private final AccountRepository accountRepository;
     private final CustomAuthorityUtils authorityUtils;
     private final SecurityCorsConfig corsConfig;
@@ -54,7 +52,7 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.DELETE, "/v1/accounts/**").hasAnyRole("ADMIN", "USER")
                         .anyRequest().permitAll())
                 .oauth2Login(oauth2 ->
-                        oauth2.successHandler(new OAuth2AccountSuccessHandler(jwtTokenizer, authorityUtils, accountService)))
+                        oauth2.successHandler(new OAuth2AccountSuccessHandler(jwtTokenizer, authorityUtils, accountRepository)))
                 .build();
     }
 
@@ -72,7 +70,7 @@ public class SecurityConfiguration {
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer); // JwtAuthenticationFilter 객체 생성하며 DI하기
             // AbstractAuthenticationProcessingFilter에서 상속받은 filterProcessurl을 설정 (설정하지 않으면 default 값인 /Login)
             jwtAuthenticationFilter.setFilterProcessesUrl("/v1/accounts/login");
-            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new AccountAuthenticationSuccessHandler(accountRepository));
+            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new AccountAuthenticationSuccessHandler());
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new AccountAuthenticationFailureHandler());
 
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
