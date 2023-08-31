@@ -177,7 +177,6 @@ HELP.md
 
 # application-local.yml
 server/src/main/resources/application-local.yml
-server/gradle
 server/src/main/resources/application.yml
 # ——————————————————————————————————————————————————————————
 ../.idea
