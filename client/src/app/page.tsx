@@ -1,3 +1,10 @@
+import Header from "@/components/common/Header/Header";
+
 export default function Home() {
-  return <main>Grow Stroy</main>;
+  return (
+    <>
+      <Header />
+      <main>Grow Stroy</main>
+    </>
+    );
 }

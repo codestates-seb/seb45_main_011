@@ -1,3 +1,5 @@
+import Header from "@/components/common/Header/Header";
+
 export default function BoardLayout({
   children,
 }: {
@@ -5,7 +7,7 @@ export default function BoardLayout({
 }) {
   return (
     <>
-      <div>헤더입니다!</div>
+      <Header />
       <main>{children}</main>
     </>
   );
