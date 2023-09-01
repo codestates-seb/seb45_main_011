@@ -168,7 +168,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # Unversioned Files
-.gradle
+*.gradle
 build
 HELP.md
 
@@ -176,10 +176,11 @@ HELP.md
 .idea
 
 # application-local.yml
+server/src/main/resources/application.yml
 server/src/main/resources/application-local.yml
-
 # .iml
 server/src/*/*.iml
 
 
 # ========================================= Front ====================================================
+

@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum ExceptionCode {
+    ACCOUNT_UNAUTHORIZED(401, "Account unauthorized"),
     ACCOUNT_NOT_FOUND(404, "Account not found"),
     ACCOUNT_NOT_ALLOW(405, "That Account doesn't have authority"),
     ACCOUNT_ALREADY_EXISTS(409, "Account already exists"),
@@ -22,7 +23,9 @@ public enum ExceptionCode {
 
     JOURNAL_NOT_FOUND(404, "Journal not found"),
     JOURNAL_NOT_ALLOW(405, "Journal doesn't match the author."),
-    JOURNAL_EXISTS(409, "Journal already Exists");
+    JOURNAL_EXISTS(409, "Journal already Exists"),
+
+    POINT_TYPE_NOT_FOUND(404, "Earn point type not found.");
 
 
     private final int status;

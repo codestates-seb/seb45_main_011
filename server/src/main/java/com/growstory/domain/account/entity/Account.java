@@ -30,7 +30,7 @@ public class Account extends BaseTimeEntity {
     @Column(name = "DISPLAY_NAME", nullable = false, length = 50)
     private String displayName;
 
-    @Column(name = "PASSWORD", nullable = false)
+    @Column(name = "PASSWORD", length = 100, nullable = false)
     private String password;
 
     @Column(name = "PROFILE_IMAGE_URL")
@@ -51,4 +51,12 @@ public class Account extends BaseTimeEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
+    public Account(Long accountId, String email, String displayName, String password, String profileImageUrl, List<String> roles) {
+        this.accountId = accountId;
+        this.email = email;
+        this.displayName = displayName;
+        this.password = password;
+        this.profileImageUrl = profileImageUrl;
+        this.roles = roles;
+    }
 }
