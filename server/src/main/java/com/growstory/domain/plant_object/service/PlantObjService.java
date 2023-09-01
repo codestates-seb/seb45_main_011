@@ -2,7 +2,6 @@ package com.growstory.domain.plant_object.service;
 
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.account.service.AccountService;
-import com.growstory.domain.leaf.mapper.LeafMapper;
 import com.growstory.domain.plant_object.dto.PlantObjDto;
 import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.plant_object.mapper.PlantObjMapper;
@@ -72,7 +71,7 @@ public class PlantObjService {
     // PATCH : 오브젝트와 식물 카드 연결 / 해제 / 교체
 
     // PATCH : 오브젝트 되팔기
-    public void resellPlantObj(Long accountId, Long plantObjId) {
+    public void refundPlantObj(Long accountId, Long plantObjId) {
         accountService.isAccountIdMatching(accountId);
 
         Account findAccount = accountService.findVerifiedAccount();

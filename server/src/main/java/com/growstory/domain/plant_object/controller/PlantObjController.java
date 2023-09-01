@@ -30,8 +30,17 @@ public class PlantObjController {
     // POST : 유저 포인트로 오브젝트 구입
     @PostMapping("/{account-id}")
     public ResponseEntity<HttpStatus> postPurchaseObj(@Positive @PathVariable("account-id") Long accountId,
-                                                      @RequestParam("productId") Long productId) {
+                                                      @RequestParam("product-id") Long productId) {
         plantObjService.buyProduct(accountId, productId);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    // DELETE : 오브젝트 되팔이
+    @DeleteMapping("/{account-id}")
+    public ResponseEntity<HttpStatus> deleteRefundObj(@Positive @PathVariable("account-id") Long accountId,
+                                                      @RequestParam("product-id") Long productId) {
+        plantObjService.refundPlantObj(accountId, productId);
 
         return ResponseEntity.noContent().build();
     }
