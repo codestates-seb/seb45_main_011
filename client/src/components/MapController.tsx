@@ -12,19 +12,27 @@ interface MapControllerProps extends DefaultProps {
 
 export default function MapController({ handleClick }: MapControllerProps) {
   return (
-    <section>
+    <section className="relative w-[76px] h-[76px]">
       {CONTROLLER_DIRECTIONS.map((value) => {
         const controllerBg = `bg-[url('/assets/img/button_controller_${value}.png')]`;
 
         return (
           <button
+            key={value}
             onClick={() => handleClick && handleClick(value)}
             type="button"
             title={`${CONTROLLER_TITLES[value]}으로 이동`}
-            className={`w-6 h-6 ${controllerBg} shadow-controller`}
+            className={`absolute ${CONTROLLER_POSITION[value]} w-6 h-6 bg-contain bg-center ${controllerBg} shadow-controller`}
           />
         );
       })}
     </section>
   );
 }
+
+const CONTROLLER_POSITION = {
+  up: `top-0 left-[26px]`,
+  right: `top-[26px] right-0`,
+  down: `bottom-0 left-[26px]`,
+  left: `top-[26px] left-0`,
+} as const;
