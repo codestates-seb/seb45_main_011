@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .border-gradient {
+    border: 8px solid var(--border-gradient, #ec9355);
+  }
+}
+
 html {
   line-height: 1;
 }
