@@ -1,4 +1,5 @@
 import { DefaultProps } from '@/types/common';
+import Link from 'next/link';
 import Image from 'next/image';
 
 interface LogoProps extends DefaultProps {
@@ -18,16 +19,18 @@ interface Logo {
 
 export default function Logo({ size }: LogoProps) {
   return (
-    <div>
-      <Image
-        src="assets/img/logo.svg"
-        alt="로고"
-        className={LOGO_STYLE[size]}
-        width={LOGO_SIZE[size].width}
-        height={LOGO_SIZE[size].height}
-        priority
-      />
-    </div>
+    <>
+      <Link href="/" className="block">
+        <Image
+          src="/assets/img/logo.svg"
+          alt="로고"
+          className={LOGO_STYLE[size]}
+          width={LOGO_SIZE[size].width}
+          height={LOGO_SIZE[size].height}
+          priority
+        />
+      </Link>
+    </>
   );
 }
 
