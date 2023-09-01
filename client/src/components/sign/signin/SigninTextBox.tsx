@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { SIGNIN_REQUIRE, SIGNIN_VAILDATION } from '@/constants/contents';
+import CommonButton from '@/components/common/CommonButton';
 
 // 로그인에 들어갈 데이터 타입 정의
 interface FormValue {
@@ -93,7 +94,7 @@ export default function SigninTextBox() {
         />
         {emailError(errors)}
       </div>
-      <div>
+      <div className="mb-[20px]">
         <input
           className={`min-w-[300px] pl-9 py-[10px] font-normal text-[12px] border-2 border-brown-70 rounded-lg bg-[center_left_12px] bg-no-repeat ${SIGN_INPUT_BG.pw} leading-[12px] outline-none shadow-outer/down`}
           placeholder={SIGNIN_REQUIRE.pw}
@@ -102,9 +103,20 @@ export default function SigninTextBox() {
         />
         {passwordError(errors)}
       </div>
-      <button type="submit" className="mt-[44px]">
-        로그인
-      </button>
+      <div className="flex gap-2 justify-center ">
+        <CommonButton
+          usage="submit"
+          size="sm"
+          children="로그인"
+          className="w-[92px] h-[44px]"
+        />
+        <CommonButton
+          usage="submit"
+          size="sm"
+          children="비밀번호 찾기"
+          className="w-[161px] h-[44px]"
+        />
+      </div>
     </form>
   );
 }

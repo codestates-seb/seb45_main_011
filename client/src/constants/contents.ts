@@ -22,6 +22,20 @@ export const CONTROLLER_TITLES = {
   right: '오른쪽',
   down: '아래쪽',
   left: '왼쪽',
+};
+
+export const SIGNIN_REQUIRE = {
+  email: '이메일을 입력해주세요.',
+  nickname: '닉네임을 입력해주세요.',
+  pw: '비밀번호를 입력해주세요.',
+  pwCheck: '동일한 비밀번호를 다시 입력해주세요.',
+} as const;
+
+export const SIGNIN_VAILDATION = {
+  email: '올바른 이메일 형식이 아닙니다.',
+  nickname: '2글자 이상의 영문 또는 한글을 사용해야 합니다.',
+  pw: '6~12글자의 영문과 숫자를 함께 사용해야 합니다.',
+  pwCheck: '비밀번호가 일치하지 않습니다.',
 } as const;
 
 export const PLANT_CARD_CONTENTS = {
