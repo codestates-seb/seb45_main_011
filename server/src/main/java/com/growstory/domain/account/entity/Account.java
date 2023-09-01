@@ -3,6 +3,7 @@ package com.growstory.domain.account.entity;
 import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.leaf.entity.Leaf;
 import com.growstory.domain.likes.entity.AccountLike;
+import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.point.entity.Point;
 import com.growstory.global.audit.BaseTimeEntity;
 import lombok.AllArgsConstructor;
@@ -47,6 +48,11 @@ public class Account extends BaseTimeEntity {
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private Point point;
+
+    // 단방향관계, 1:N 디폴트 - 지연 로딩,
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "PLANT_OBJ_ID")
+    private List<PlantObj> plantObj;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
