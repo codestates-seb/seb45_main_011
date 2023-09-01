@@ -1,3 +1,4 @@
+import { twMerge } from 'tailwind-merge';
 import { DefaultProps } from '@/types/common';
 
 interface CommonButtonProps extends DefaultProps {
@@ -10,12 +11,16 @@ interface CommonButtonProps extends DefaultProps {
 export default function CommonButton({
   usage,
   size,
+  className,
   children,
 }: CommonButtonProps) {
   return (
     <button
       type={usage}
-      className={`font-bold border-brown-70 rounded-lg text-brown-10 bg-contain bg-center bg-repeat bg-[url('/assets/img/bg_wood_dark.png')] shadow-outer/down ${BUTTON_STYLE[size]}`}>
+      className={twMerge(
+        `font-bold border-brown-70 rounded-lg text-brown-10 bg-contain bg-center bg-repeat bg-[url('/assets/img/bg_wood_dark.png')] shadow-outer/down ${BUTTON_STYLE[size]}`,
+        className,
+      )}>
       {children}
     </button>
   );

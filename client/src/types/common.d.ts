@@ -1,6 +1,7 @@
 export interface DefaultProps {
   className?: string;
 }
+
 export type LeafType = {
   id: number;
   name: string;
@@ -8,8 +9,15 @@ export type LeafType = {
   imgUrl: string;
   journal?: JournalType[] | null;
 };
+
 export type JournalType = {
   date: string;
   imgUrl?: string;
   content: string;
+};
+
+export type PlantInfo = {
+  name: string;
+  imageUrl: string;
+  price: number;
 };

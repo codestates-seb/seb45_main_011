@@ -2,11 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --border-gradient:                  
-;
-}
-
 @layer utilities {
   .border-gradient {
     border: 8px solid transparent;
@@ -15,8 +10,18 @@
     background-origin: border-box;
     background-clip: content-box, border-box;
   }
+
+  .shadow-controller {
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
+  }
 }
 
 html {
   line-height: 1;
+}
+
+ul,
+ol,
+li {
+  list-style: none;
 }
