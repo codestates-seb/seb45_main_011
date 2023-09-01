@@ -21,3 +21,11 @@ export type PlantInfo = {
   imageUrl: string;
   price: number;
 };
+
+export interface DiaryInfo {
+  id: number;
+  date: string;
+  imgUrl: string;
+  title: string;
+  content: string;
+}
