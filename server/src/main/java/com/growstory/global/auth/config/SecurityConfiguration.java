@@ -1,6 +1,7 @@
 package com.growstory.global.auth.config;
 
 import com.growstory.domain.account.repository.AccountRepository;
+import com.growstory.domain.point.service.PointService;
 import com.growstory.global.auth.filter.JwtAuthenticationFilter;
 import com.growstory.global.auth.filter.JwtVerificationFilter;
 import com.growstory.global.auth.handler.*;
@@ -28,17 +29,18 @@ public class SecurityConfiguration {
     private final AccountRepository accountRepository;
     private final CustomAuthorityUtils authorityUtils;
     private final SecurityCorsConfig corsConfig;
+    private final PointService pointService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .headers().frameOptions().sameOrigin() // 동일 도메인에서는 iframe(현재 페이지에 다른 페이지를 포함시키는 역할) 접근이 가능하도록
                 .and()
-                .formLogin().disable() // formLogin 사용 X
-                .httpBasic().disable() // httpBasic(request header에 id와 password를 직접 날리는 방식) 사용 X
                 .csrf().disable() // Rest API는 stateless하기 때문에 인증정보를 세션에 보관하지 않아 csrf에 대해 안전
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 사용 X
                 .and()
+                .formLogin().disable() // formLogin 사용 X
+                .httpBasic().disable() // httpBasic(request header에 id와 password를 직접 날리는 방식) 사용 X
                 .exceptionHandling()
                 .authenticationEntryPoint(new AccountAuthticationEntryPoint())
                 .accessDeniedHandler(new AccountAccessDeniedHandler())
@@ -47,12 +49,12 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests(authrize -> authrize
                         .antMatchers(HttpMethod.POST, "/v1/accounts/**").permitAll()
-                        .antMatchers(HttpMethod.PATCH, "/v1/accounts/**").hasAnyRole("ADMIN", "USER")
-                        .antMatchers(HttpMethod.GET, "/v1/accounts/**").hasAnyRole("ADMIN", "USER")
-                        .antMatchers(HttpMethod.DELETE, "/v1/accounts/**").hasAnyRole("ADMIN", "USER")
+                        .antMatchers(HttpMethod.PATCH, "/v1/**").hasAnyRole("ADMIN", "USER")
+                        .antMatchers(HttpMethod.GET, "/v1/**").hasAnyRole("ADMIN", "USER")
+                        .antMatchers(HttpMethod.DELETE, "/v1/**").hasAnyRole("ADMIN", "USER")
                         .anyRequest().permitAll())
                 .oauth2Login(oauth2 ->
-                        oauth2.successHandler(new OAuth2AccountSuccessHandler(jwtTokenizer, authorityUtils, accountRepository)))
+                        oauth2.successHandler(new OAuth2AccountSuccessHandler(jwtTokenizer, authorityUtils, accountRepository, pointService)))
                 .build();
     }
 
@@ -69,7 +71,7 @@ public class SecurityConfiguration {
 
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer); // JwtAuthenticationFilter 객체 생성하며 DI하기
             // AbstractAuthenticationProcessingFilter에서 상속받은 filterProcessurl을 설정 (설정하지 않으면 default 값인 /Login)
-            jwtAuthenticationFilter.setFilterProcessesUrl("/v1/accounts/login");
+            jwtAuthenticationFilter.setFilterProcessesUrl("/v1/accounts/authentication");
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new AccountAuthenticationSuccessHandler());
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new AccountAuthenticationFailureHandler());
 
