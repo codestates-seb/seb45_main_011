@@ -59,6 +59,3 @@ export default function Leaf({ location, data }: LeafProps) {
     </div>
   );
 }
-
-const CLICKED_STYLE =
-  'border-4 border-dashed border-brown-70 rounded-lg shadow-outer/down bg-brown-20 bg-opacity-[76%]';
