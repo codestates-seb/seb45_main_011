@@ -47,7 +47,7 @@ public class PlantObjController {
 
     // POST : 오브젝트 배치 (편집 완료)
 
+
     // PATCH : 오브젝트와 식물 카드 연결 / 해제 / 교체
 
-    // PATCH : 오브젝트 되팔기
 }

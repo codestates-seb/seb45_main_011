@@ -130,7 +130,7 @@ public class AccountService {
         Point accountPoint = account.getPoint();
         int userPointScore = account.getPoint().getScore();
         if(price > userPointScore) {
-            return;
+            throw new BusinessLogicException(ExceptionCode.NOT_ENOUGH_POINTS);
         } else { // price <= this.point.getScore()
             int updatedScore = accountPoint.getScore()-price;
 //            point.toBuilder().score(updatedScore).build(); //🔥 [refact] 더티체킹 여부 체크

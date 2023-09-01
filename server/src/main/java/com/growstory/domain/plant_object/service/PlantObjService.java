@@ -89,7 +89,7 @@ public class PlantObjService {
 
     private PlantObj findVerifiedPlantObj (long plantObjId) {
         return plantObjRepository.findById(plantObjId).orElseThrow(() ->
-                new BusinessLogicException(ExceptionCode.PLANTOBJ_NOT_FOUND));
+                new BusinessLogicException(ExceptionCode.PLANT_OBJ_NOT_FOUND));
 
     }
 

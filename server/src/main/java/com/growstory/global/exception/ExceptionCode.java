@@ -28,7 +28,9 @@ public enum ExceptionCode {
     POINT_TYPE_NOT_FOUND(404, "Earn point type not found."),
 
     PRODUCT_NOT_FOUND(404, "Product not found"),
-    PLANTOBJ_NOT_FOUND(404, "PlantObj not found");
+    PLANT_OBJ_NOT_FOUND(404, "PlantObj not found"),
+
+    NOT_ENOUGH_POINTS(403, "Not Enough Points");
 
 
     private final int status;
