@@ -4,7 +4,9 @@ import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AuthUserUtils {
     /**
      * 로그인한 사용자의 인증 객체 가져오는 메서드

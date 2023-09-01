@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div style="font-family: 'Apple SD Gothic Neo', 'sans-serif' !important; width: 540px; height: 600px; border-top: 4px solid #02b875; margin: 100px auto; padding: 30px 0; box-sizing: border-box;">
+	<h1 style="margin: 0; padding: 0 5px; font-size: 28px; font-weight: 700;">
+		<span style="font-size: 25px; margin: 0 0 15px 3px;">GrowStory</span><br />
+		<span style="color: #02b875;">메일 인증</span> 안내입니다.
+	</h1>
+	<p style="font-size: 16px; line-height: 26px; margin-top: 50px; padding: 0 5px;">
+		안녕하세요.<br /><br />
+		자신이 키우는 식물에 대해 얘기해보고 가상의 정원을 가꿔보는 플랫폼<br /> <b style="color: #02b875;">GrowStory</b> 입니다.<br /><br />
+
+		요청하신 인증 번호가 발급되었습니다.<br /><br />
+		아래 인증 번호를 입력하여 회원가입을 완료해 주세요.<br />
+	</p>
+
+	<div style="text-align: center">
+		<span th:style="${'font-size:130%; text-align:center; font-weight: 700'}"  th:text="${authCode}"> </span><br />
+<!--		<p style="display: inline-block; width: 210px; height: 45px; margin: 30px 5px 40px; background: #02b875; line-height: 45px; vertical-align: middle; font-size: 16px;"></p>-->
+	</div>
+
+	<div style="border-top: 3px solid #DDD; padding: 5px;"></div>
+</div>
