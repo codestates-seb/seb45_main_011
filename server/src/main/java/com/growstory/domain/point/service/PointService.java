@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class PointService {
-    private static final int REGISTER_POINT = 1000; // 회원가입시 지급 포인트
-    private static final int POSTING_POINT = 100; // 게시글 등록시 지급 포인트
+    private static final int REGISTER_POINT = 500; // 회원가입시 지급 포인트
+    private static final int POSTING_POINT = 30; // 게시글 등록시 지급 포인트
 
     private final PointRepository pointRepository;
 
