@@ -1,7 +1,7 @@
 spring:
   config:
     activate:
-      on-profile: local
+      on-profile: dev
 
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/growstory?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
