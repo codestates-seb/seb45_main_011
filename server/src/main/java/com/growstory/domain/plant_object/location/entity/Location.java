@@ -19,7 +19,7 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long locationId;
 
-    private short xAxis;
+    private short x;
 
-    private short yAxis;
+    private short y;
 }

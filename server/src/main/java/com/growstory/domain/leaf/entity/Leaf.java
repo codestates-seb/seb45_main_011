@@ -3,14 +3,17 @@ package com.growstory.domain.leaf.entity;
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.journal.entity.Journal;
+import com.growstory.domain.leaf.dto.LeafDto;
 import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.global.audit.BaseTimeEntity;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
+@Getter
 public class Leaf extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,4 +50,6 @@ public class Leaf extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "leaf")
     private List<Journal> journals;
+
+
 }

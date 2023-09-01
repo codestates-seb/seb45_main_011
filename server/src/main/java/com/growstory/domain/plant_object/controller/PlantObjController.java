@@ -1,8 +1,15 @@
 package com.growstory.domain.plant_object.controller;
 
+import com.growstory.domain.plant_object.dto.PlantObjDto;
 import com.growstory.domain.plant_object.service.PlantObjService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.constraints.Positive;
 
 @RestController
 @RequestMapping("/v1/garden")
@@ -15,6 +22,13 @@ public class PlantObjController {
     }
 
     // GET : 정원 페이지의 모든 관련 정보 조회
+    @GetMapping("/{account-id}")
+    public ResponseEntity<HttpStatus> getGardenInfo(@Positive @PathVariable("account-id")Long accountId) {
+
+        PlantObjDto.GardenInfoResponse gardenInfo = plantObjService.finAllGardenInfo(accountId);
+
+        return ResponseEntity.ok().build();
+    }
 
     // POST : 유저 포인트로 오브젝트 구입
 

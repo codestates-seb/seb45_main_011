@@ -118,4 +118,10 @@ public class AccountService {
         if(findAccount.isPresent())
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_ALREADY_EXISTS);
     }
+
+    public void isAccountIdMatching(Long accountId) {
+        Map<String, Object> claims = (Map<String, Object>) authUserUtils.getAuthUser();
+        if ((Long) claims.get("accountId") != accountId)
+            throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
+    }
 }
