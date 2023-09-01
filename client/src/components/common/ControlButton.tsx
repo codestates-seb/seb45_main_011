@@ -1,5 +1,5 @@
 import { DefaultProps } from '@/types/common';
-import { CONTROL_BUTTON_TITLE } from '@/constants/contents';
+import { CONTROL_BUTTON_TITLES } from '@/constants/contents';
 
 interface ControlButtonProps extends DefaultProps {
   usage: 'edit' | 'delete';
@@ -10,7 +10,7 @@ export default function ControlButton({ usage }: ControlButtonProps) {
   return (
     <button
       type="button"
-      title={CONTROL_BUTTON_TITLE[usage]}
+      title={CONTROL_BUTTON_TITLES[usage]}
       className={`w-6 h-6 border-2 border-brown-70 rounded-full bg-no-repeat bg-center shadow-inner/top ${BUTTON_STYLE[usage]}`}
     />
   );
