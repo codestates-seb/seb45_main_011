@@ -65,4 +65,8 @@ public class Account extends BaseTimeEntity {
         this.profileImageUrl = profileImageUrl;
         this.roles = roles;
     }
+
+    public void updatePoint(Point point) {
+        this.point = point;
+    }
 }

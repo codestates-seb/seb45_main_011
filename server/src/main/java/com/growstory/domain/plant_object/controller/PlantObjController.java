@@ -4,10 +4,7 @@ import com.growstory.domain.plant_object.dto.PlantObjDto;
 import com.growstory.domain.plant_object.service.PlantObjService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
 
@@ -31,6 +28,13 @@ public class PlantObjController {
     }
 
     // POST : 유저 포인트로 오브젝트 구입
+    @PostMapping("/{account-id}")
+    public ResponseEntity<HttpStatus> postPurchaseObj(@Positive @PathVariable("account-id") Long accountId,
+                                                      @RequestParam("productId") Long productId) {
+        plantObjService.buyProduct(accountId, productId);
+
+        return ResponseEntity.noContent().build();
+    }
 
     // POST : 오브젝트 배치 (편집 완료)
 

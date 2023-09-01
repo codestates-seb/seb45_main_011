@@ -6,10 +6,12 @@ import com.growstory.domain.leaf.mapper.LeafMapper;
 import com.growstory.domain.plant_object.dto.PlantObjDto;
 import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.plant_object.location.entity.Location;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class PlantObjMapper {
 
     private final LeafMapper leafMapper;

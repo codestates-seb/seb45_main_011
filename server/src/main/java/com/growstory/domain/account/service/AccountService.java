@@ -3,6 +3,7 @@ package com.growstory.domain.account.service;
 import com.growstory.domain.account.dto.AccountDto;
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.account.repository.AccountRepository;
+import com.growstory.domain.point.entity.Point;
 import com.growstory.domain.point.service.PointService;
 import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.auth.utils.CustomAuthorityUtils;
@@ -123,5 +124,19 @@ public class AccountService {
         Map<String, Object> claims = (Map<String, Object>) authUserUtils.getAuthUser();
         if ((Long) claims.get("accountId") != accountId)
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
+    }
+
+    public void buy(Account account, int price) {
+        Point accountPoint = account.getPoint();
+        int userPointScore = account.getPoint().getScore();
+        if(price > userPointScore) {
+            return;
+        } else { // price <= this.point.getScore()
+            int updatedScore = accountPoint.getScore()-price;
+//            point.toBuilder().score(updatedScore).build(); //🔥 [refact] 더티체킹 여부 체크
+//            account.toBuilder().point(point); //🔥 [refact] 필요?
+            accountPoint.updateScore(updatedScore);
+            account.updatePoint(accountPoint);
+        }
     }
 }
