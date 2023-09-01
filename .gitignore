@@ -168,7 +168,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # Unversioned Files
-*.gradle
 build
 HELP.md
 
