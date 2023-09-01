@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --border-gradient:                  
+;
+}
+
 @layer utilities {
   .border-gradient {
     border: 8px solid transparent;
