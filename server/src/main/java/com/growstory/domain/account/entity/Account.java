@@ -69,4 +69,8 @@ public class Account extends BaseTimeEntity {
     public void updatePoint(Point point) {
         this.point = point;
     }
+
+    public void removePlantObj(PlantObj plantObj) {
+        this.plantObjs.remove(plantObj);
+    }
 }

@@ -139,4 +139,13 @@ public class AccountService {
             account.updatePoint(accountPoint);
         }
     }
+
+    public void resell(Account account, int price) {
+        Point accountPoint = account.getPoint();
+        int userPointScore = account.getPoint().getScore();
+
+        int updatedScore = userPointScore + price;
+        accountPoint.updateScore(updatedScore);
+        account.updatePoint(accountPoint);
+    }
 }

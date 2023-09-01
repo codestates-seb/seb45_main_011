@@ -10,6 +10,8 @@ import com.growstory.domain.plant_object.repository.PlantObjRepository;
 import com.growstory.domain.point.entity.Point;
 import com.growstory.domain.product.entity.Product;
 import com.growstory.domain.product.service.ProductService;
+import com.growstory.global.exception.BusinessLogicException;
+import com.growstory.global.exception.ExceptionCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,7 +64,7 @@ public class PlantObjService {
         Product findProduct = productService.findVerifiedProduct(productId);
 
         // 조회한 계정, 포인트, 상품정보를 바탕으로 구입 메서드 실행
-        accountService.buy(findAccount,findProduct.getPrice() );
+        accountService.buy(findAccount,findProduct.getPrice());
     }
 
     // POST : 오브젝트 배치 (편집 완료)
@@ -70,5 +72,26 @@ public class PlantObjService {
     // PATCH : 오브젝트와 식물 카드 연결 / 해제 / 교체
 
     // PATCH : 오브젝트 되팔기
+    public void resellPlantObj(Long accountId, Long plantObjId) {
+        accountService.isAccountIdMatching(accountId);
+
+        Account findAccount = accountService.findVerifiedAccount();
+        Point findAccountPoint = findAccount.getPoint();
+
+        // 부모 객체에서 해당 PlantObj를 제거하여 고아 객체 -> 해당 인스턴스 삭제
+        PlantObj plantObj = findVerifiedPlantObj(plantObjId);
+        findAccount.removePlantObj(plantObj);
+
+        Product product = plantObj.getProduct();
+
+        accountService.resell(findAccount,product.getPrice());
+
+    }
+
+    private PlantObj findVerifiedPlantObj (long plantObjId) {
+        return plantObjRepository.findById(plantObjId).orElseThrow(() ->
+                new BusinessLogicException(ExceptionCode.PLANTOBJ_NOT_FOUND));
+
+    }
 
 }
