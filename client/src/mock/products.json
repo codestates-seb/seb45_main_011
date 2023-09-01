@@ -1,0 +1,84 @@
+{
+  "products": [
+    {
+      "name": "building_brown_lg",
+      "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/products/building_brown_lg.svg",
+      "price": 500
+    },
+    {
+      "name": "building_brown_sm",
+      "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/products/building_brown_sm.svg",
+      "price": 500
+    },
+    {
+      "name": "building_yellow_lg",
+      "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/products/building_yellow_lg.svg",
+      "price": 500
+    },
+    {
+      "name": "building_yellow_sm",
+      "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/products/building_yellow_sm.svg",
+      "price": 500
+    },
+    {
+      "name": "tree_cherry_lg",
+      "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/products/tree_cherry_lg.svg",
+      "price": 300
+    },
+    {
+      "name": "tree_cherry_sm",
+      "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/products/tree_cherry_sm.svg",
+      "price": 300
+    },
+    {
+      "name": "tree_maple_lg",
+      "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/products/tree_maple_lg.svg",
+      "price": 300
+    },
+    {
+      "name": "tree_maple_sm",
+      "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/products/tree_maple_sm.svg",
+      "price": 300
+    },
+    {
+      "name": "stone_yellow_lg",
+      "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/products/stone_yellow_lg.svg",
+      "price": 200
+    },
+    {
+      "name": "stone_yellow_sm",
+      "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/products/stone_yellow_sm.svg",
+      "price": 200
+    },
+    {
+      "name": "stone_purple_lg",
+      "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/products/stone_purple_lg.svg",
+      "price": 200
+    },
+    {
+      "name": "stone_purple_sm",
+      "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/products/stone_purple_sm.svg",
+      "price": 200
+    },
+    {
+      "name": "bush_blue_lg",
+      "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/products/bush_blue_lg.svg",
+      "price": 200
+    },
+    {
+      "name": "bush_blue_sm",
+      "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/products/bush_blue_sm.svg",
+      "price": 200
+    },
+    {
+      "name": "bush_snow_lg",
+      "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/products/bush_snow_lg.svg",
+      "price": 200
+    },
+    {
+      "name": "bush_snow_sm",
+      "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/products/bush_snow_sm.svg",
+      "price": 200
+    }
+  ]
+}
