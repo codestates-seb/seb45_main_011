@@ -1,24 +1,25 @@
 import Image from 'next/image';
-import { DefaultProps } from '@/types/common';
+import { DefaultProps, PlantInfo } from '@/types/common';
 import { getPlantSize } from '@/utils/getPlantSize';
-
-type PlantInfo = {
-  name: string;
-  imageUrl: string;
-  price: number;
-};
 
 interface PlantProps extends DefaultProps {
   plantInfo: PlantInfo;
 }
 
-export default function Plant({ plantInfo }: PlantProps) {
+export default function Plant({ plantInfo, className }: PlantProps) {
   const { name, imageUrl } = plantInfo;
 
   const [width, height] = PLANT_IMG_SIZE[getPlantSize(name)];
 
   return (
-    <Image src={imageUrl} alt={name} width={width} height={height} priority />
+    <Image
+      src={imageUrl}
+      alt={name}
+      width={width}
+      height={height}
+      priority
+      className={className}
+    />
   );
 }
 
