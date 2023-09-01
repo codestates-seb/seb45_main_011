@@ -3,22 +3,20 @@ package com.growstory.domain.plant_object.entity;
 
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.leaf.entity.Leaf;
-import com.growstory.domain.location.entity.Location;
+import com.growstory.domain.plant_object.location.entity.Location;
 import com.growstory.domain.product.entity.Product;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class PlantObject {
+public class PlantObj {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,9 +41,7 @@ public class PlantObject {
     @JoinColumn(name = "LEAF_ID")
     private Leaf leaf;
 
-    @ManyToOne
-    @JoinColumn(name = "ACCOUNT_ID")
-    private Account account;
+
 
 
 }

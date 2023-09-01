@@ -1,4 +1,4 @@
-package com.growstory.domain.location.entity;
+package com.growstory.domain.plant_object.location.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

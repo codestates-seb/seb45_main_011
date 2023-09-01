@@ -3,7 +3,7 @@ package com.growstory.domain.leaf.entity;
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.journal.entity.Journal;
-import com.growstory.domain.plant_object.entity.PlantObject;
+import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.global.audit.BaseTimeEntity;
 
 import javax.persistence.*;
@@ -43,7 +43,7 @@ public class Leaf extends BaseTimeEntity {
     private Board board;
 
     @OneToOne(mappedBy = "leaf")
-    private PlantObject plantObject;
+    private PlantObj plantObj;
 
     @OneToMany(mappedBy = "leaf")
     private List<Journal> journals;
