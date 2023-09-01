@@ -36,7 +36,7 @@ public class PlantObjController {
         return ResponseEntity.noContent().build();
     }
 
-    // DELETE : 오브젝트 되팔이
+    // DELETE : 오브젝트 되팔기
     @DeleteMapping("/{account-id}")
     public ResponseEntity<HttpStatus> deleteRefundObj(@Positive @PathVariable("account-id") Long accountId,
                                                       @RequestParam("product-id") Long productId) {
