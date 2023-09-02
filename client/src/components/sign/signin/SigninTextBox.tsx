@@ -10,7 +10,6 @@ import {
 import { SIGNIN_REQUIRE, SIGNIN_VAILDATION } from '@/constants/contents';
 import CommonButton from '@/components/common/CommonButton';
 
-// 로그인에 들어갈 데이터 타입 정의
 interface FormValue {
   email: string;
   password: string;
@@ -18,16 +17,15 @@ interface FormValue {
 
 export default function SigninTextBox() {
   const {
-    register, // Input에 특정 항목을 입력받을 것이라는 것을 등록해주는 역할
-    handleSubmit, // 각 항목이 입력되었을 때(= 유효성을 통과했을 때) submit 이벤트를 처리하는 역할
-    watch, // register 한 항목의 변경사항을 추적하는 역할
-    formState: { errors }, // 유효성이 통과되지 않으면 에러 상태를 내보내주는 역할
-  } = useForm<FormValue>(); //! <FormValue>를 넣어서 입력받을 데이터의 타입들을 react-hook-form에 전달한다
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<FormValue>();
 
   // Submit Button
   const handleOnSubmit: SubmitHandler<FormValue> = (data) => {
     // 모든 항목이 정상적으로 입력되었을 때 처리할 로직으로 변경 예정
-    // data는 key:value의 객체 형태로 들어온다
     console.log(data);
   };
 
@@ -56,13 +54,9 @@ export default function SigninTextBox() {
     }
   };
 
-  // console.log(errors);
-
   // Input Register
   const emailRegister = {
     ...register('email', {
-      // register 옆에 항목을 문자열로 넣어주면 해당 데이터만 받는 input이 된다
-      // required: true,
       pattern: {
         value: /\S+@\S+\.\S+/,
         message: SIGNIN_VAILDATION.email,
