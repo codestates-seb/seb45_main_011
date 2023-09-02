@@ -8,7 +8,10 @@ interface HeaderLinkProps {
   content: 'activity' | 'auth';
   title: 'garden' | 'community' | 'leafCard' | 'signin' | 'logout';
 }
-
+// 재사용의 의미가 있는가?
+// navigation으로 나눠서 의미를 더 잘 보여줄 수 있게 구현
+//! header의 navigation
+// 처음엔 유연하게 사용(ex) title: string) 정신소모...흑흑...
 export default function HeaderLink({
   location,
   content,
