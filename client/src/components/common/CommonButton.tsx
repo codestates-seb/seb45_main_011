@@ -1,13 +1,8 @@
 'use client';
 
 import { twMerge } from 'tailwind-merge';
-import { DefaultProps } from '@/types/common';
 
-type addPrefixToHandler<T, P extends string> = {
-  [K in keyof T as K extends string
-    ? `${P}${K}`
-    : never]: React.MouseEventHandler<HTMLButtonElement>;
-};
+import { DefaultProps, addPrefixToHandler } from '@/types/common';
 
 interface CommonButtonProps
   extends addPrefixToHandler<any, 'handle'>,
