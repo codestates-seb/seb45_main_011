@@ -10,8 +10,6 @@ import {
 
 import { SIGNIN_REQUIRE, SIGNIN_VAILDATION } from '@/constants/contents';
 import CommonButton from '@/components/common/CommonButton';
-
-// 로그인에 들어갈 데이터 타입 정의
 interface FormValue {
   email: string;
   nickname: string;
@@ -22,7 +20,7 @@ interface FormValue {
 export default function SignupTextBox() {
   const {
     register,
-    handleSubmit, // 각 항목이 입력되었을 때(= 유효성을 통과했을 때) submit 이벤트를 처리하는 역할
+    handleSubmit,
     watch,
     formState: { errors },
   } = useForm<FormValue>();
@@ -33,7 +31,6 @@ export default function SignupTextBox() {
     console.log(data);
   };
 
-  // 비밀번호와 비밀번호 확인이 일치하는지 검증하기 위해 watch(password)가 password의 input의 value를 추적한다
   const passwordRef = useRef<string | null>(null);
   passwordRef.current = watch('password');
 
@@ -85,8 +82,6 @@ export default function SignupTextBox() {
       );
     }
   };
-
-  console.log(errors.nickname);
 
   // Input Register
   const emailRegister = {
