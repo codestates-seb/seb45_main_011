@@ -1,15 +1,16 @@
 import Image from 'next/image';
-import { DefaultProps, PlantInfo } from '@/types/common';
-import { getPlantSize } from '@/utils/getPlantSize';
+
+import { DefaultProps } from '@/types/common';
 
 interface PlantProps extends DefaultProps {
-  plantInfo: PlantInfo;
+  name: string;
+  imageUrl: string;
 }
 
-export default function Plant({ plantInfo, className }: PlantProps) {
-  const { name, imageUrl } = plantInfo;
+export default function Plant({ name, imageUrl, className }: PlantProps) {
+  const size = name.startsWith('building') ? 'lg' : 'sm';
 
-  const [width, height] = PLANT_IMG_SIZE[getPlantSize(name)];
+  const [width, height] = PLANT_IMG_SIZE[size];
 
   return (
     <Image
