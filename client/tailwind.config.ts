@@ -11,7 +11,7 @@ const config: Config = {
   ],
   theme: {
     colors,
-    extend: { boxShadow },
+    extend: { boxShadow }
   },
   plugins: [],
 };

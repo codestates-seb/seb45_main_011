@@ -1,6 +1,9 @@
+import { DefaultProps } from '@/types/common';
 import Image from 'next/image';
 
-type SizeType = 'small' | 'medium' | 'large';
+interface LogoProps extends DefaultProps {
+  size: 'small' | 'medium' | 'large';
+}
 
 type Size = {
   readonly width: number;
@@ -13,15 +16,16 @@ interface Logo {
   large: Size;
 }
 
-export default function Logo({ size }: { size: SizeType }) {
+export default function Logo({ size }: LogoProps) {
   return (
     <div>
       <Image
         src="assets/img/logo.svg"
         alt="로고"
-        className={containerClass[size]}
+        className={LOGO_STYLE[size]}
         width={LOGO_SIZE[size].width}
         height={LOGO_SIZE[size].height}
+        priority
       />
     </div>
   );
@@ -42,8 +46,8 @@ const LOGO_SIZE: Logo = {
   },
 };
 
-const containerClass = {
-  small: 'w-full max-w-[74px]',
-  medium: 'w-full max-w-[138px]',
-  large: 'w-full max-w-[297px]',
+const LOGO_STYLE = {
+  small: 'w-full max-w-[75px]',
+  medium: 'w-full max-w-[137px]',
+  large: 'w-full max-w-[296px]',
 };
