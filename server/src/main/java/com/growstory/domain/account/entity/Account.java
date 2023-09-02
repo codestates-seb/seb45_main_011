@@ -5,15 +5,13 @@ import com.growstory.domain.leaf.entity.Leaf;
 import com.growstory.domain.likes.entity.AccountLike;
 import com.growstory.domain.point.entity.Point;
 import com.growstory.global.audit.BaseTimeEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Setter
 @Entity
 @Getter
 @AllArgsConstructor
@@ -51,11 +49,14 @@ public class Account extends BaseTimeEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
-    public void updatePoint(Point point) {
+    public void addLeaf(Leaf leaf) {
+        leaves.add(leaf);
+    }
+
+    public void setPoint(Point point) {
         this.point = point;
-        if (point.getAccount() != this) {
-            point.updateAccount(this);
-        }
+        if (point.getAccount() != this)
+            point.setAccount(this);
     }
 
     public Account(Long accountId, String email, String displayName, String password, String profileImageUrl, List<String> roles) {

@@ -49,7 +49,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
                                 .displayName(name)
                                 .password("")
                                 .profileImageUrl(profileImageUrl)
-                                .point(pointService.createPoint("register"))
+                                .point(pointService.createPoint())
                                 .roles(authorities)
                                 .build()
                 ));
