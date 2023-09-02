@@ -66,7 +66,8 @@ public class AccountController {
         return ResponseEntity.ok(SingleResponseDto.builder()
                 .status(HttpStatusCode.OK.getStatusCode())
                 .message(HttpStatusCode.OK.getMessage())
-                .data(responseDto).build()
+                .data(responseDto)
+                .build()
         );
     }
 

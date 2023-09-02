@@ -18,13 +18,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Transactional
 @Service
 @RequiredArgsConstructor
 public class AccountService {
+    private static final String ACCOUNT_IMAGE_PROCESS_TYPE = "profiles";
+
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
@@ -32,46 +33,42 @@ public class AccountService {
     private final S3Uploader s3Uploader;
     private final AuthUserUtils authUserUtils;
 
-    public AccountDto.Response createAccount(AccountDto.Post requestDto, MultipartFile profileImage) {
-        verifyExistsEmail(requestDto.getEmail());
+    public AccountDto.Response createAccount(AccountDto.Post accountPostDto, MultipartFile profileImage) {
+        verifyExistsEmail(accountPostDto.getEmail());
 
-        String encryptedPassword = passwordEncoder.encode(requestDto.getPassword());
-        String profileImageUrl = s3Uploader.uploadImageToS3(profileImage, "profile");
-        List<String> roles = authorityUtils.createRoles(requestDto.getEmail());
-        Point point = pointService.createPoint("register");
+        String encryptedPassword = passwordEncoder.encode(accountPostDto.getPassword());
+        String profileImageUrl = s3Uploader.uploadImageToS3(profileImage, ACCOUNT_IMAGE_PROCESS_TYPE);
+        List<String> roles = authorityUtils.createRoles(accountPostDto.getEmail());
+        Point point = pointService.createPoint();
 
         Account savedAccount = accountRepository.save(Account.builder()
-                .displayName(requestDto.getDisplayName())
-                .email(requestDto.getEmail())
+                .displayName(accountPostDto.getDisplayName())
+                .email(accountPostDto.getEmail())
                 .password(encryptedPassword)
+                .point(point)
                 .profileImageUrl(profileImageUrl)
                 .roles(roles)
-                .build()
-        );
-        point.updateAccount(savedAccount);
+                .build());
+
+        point.setAccount(savedAccount);
 
         return AccountDto.Response.builder()
                 .accountId(savedAccount.getAccountId())
-                .displayName(savedAccount.getDisplayName())
-                .profileImageUrl(savedAccount.getProfileImageUrl())
-                .point(savedAccount.getPoint())
                 .build();
     }
 
     public void updateProfileImage(MultipartFile profileImage) {
-        Account findAccount = findVerifiedAccount();
-        String presentProfileImageUrl = findAccount.getProfileImageUrl();
+        Account findAccount = authUserUtils.getAuthUser();
 
-        s3Uploader.deleteImageFromS3(presentProfileImageUrl, "profile");
-        String profileImageUrl = s3Uploader.uploadImageToS3(profileImage, "profile");
+        s3Uploader.deleteImageFromS3(findAccount.getProfileImageUrl(), ACCOUNT_IMAGE_PROCESS_TYPE);
 
         accountRepository.save(findAccount.toBuilder()
-                .profileImageUrl(profileImageUrl)
+                .profileImageUrl(s3Uploader.uploadImageToS3(profileImage, ACCOUNT_IMAGE_PROCESS_TYPE))
                 .build());
     }
 
     public void updateDisplayName(AccountDto.DisplayNamePatch displayNamePatchDto) {
-        Account findAccount = findVerifiedAccount();
+        Account findAccount = authUserUtils.getAuthUser();
 
         accountRepository.save(findAccount.toBuilder()
                 .displayName(displayNamePatchDto.getDisplayName())
@@ -79,7 +76,7 @@ public class AccountService {
     }
 
     public void updatePassword(AccountDto.PasswordPatch passwordPatchDto) {
-        Account findAccount = findVerifiedAccount();
+        Account findAccount = authUserUtils.getAuthUser();
 
         String encryptedChangedPassword = passwordEncoder.encode(passwordPatchDto.getChangedPassword());
 
@@ -93,31 +90,27 @@ public class AccountService {
 
     @Transactional(readOnly = true)
     public AccountDto.Response getAccount() {
-        Account findAccount = findVerifiedAccount();
+        Account findAccount = authUserUtils.getAuthUser();
 
         return AccountDto.Response.builder()
                 .accountId(findAccount.getAccountId())
-                .displayName(findVerifiedAccount().getDisplayName())
+                .displayName(authUserUtils.getAuthUser().getDisplayName())
                 .profileImageUrl(findAccount.getProfileImageUrl())
                 .point(findAccount.getPoint())
                 .build();
     }
 
     public void deleteAccount() {
-        Account findAccount = findVerifiedAccount();
+        Account findAccount = authUserUtils.getAuthUser();
+
+        s3Uploader.deleteImageFromS3(findAccount.getProfileImageUrl(), ACCOUNT_IMAGE_PROCESS_TYPE);
+
         accountRepository.delete(findAccount);
-    }
-
-    @Transactional(readOnly = true)
-    public Account findVerifiedAccount() {
-        Map<String, Object> principal = (Map<String, Object>) authUserUtils.getAuthUser();
-
-        return accountRepository.findById(Long.valueOf((Integer) principal.get("accountId"))).orElseThrow(() ->
-                new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_FOUND));
     }
 
     private void verifyExistsEmail(String email) {
         Optional<Account> findAccount = accountRepository.findByEmail(email);
+
         if(findAccount.isPresent())
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_ALREADY_EXISTS);
     }

@@ -47,7 +47,6 @@ public class S3Uploader {
     }
 
     public void deleteImageFromS3(String imageUrl, String type) {
-        String[] a = imageUrl.split("/");
         if (imageUrl.contains("https://s3.ap-northeast-2.amazonaws.com/"+ bucket))
             amazonS3.deleteObject(bucket + "/" + type, imageUrl.split("/")[6]);
     }
