@@ -1,21 +1,34 @@
+'use client';
+
 import { twMerge } from 'tailwind-merge';
 import { DefaultProps } from '@/types/common';
 
-interface CommonButtonProps extends DefaultProps {
+type addPrefixToHandler<T, P extends string> = {
+  [K in keyof T as K extends string
+    ? `${P}${K}`
+    : never]: React.MouseEventHandler<HTMLButtonElement>;
+};
+
+interface CommonButtonProps
+  extends addPrefixToHandler<any, 'handle'>,
+    DefaultProps {
   usage: 'button' | 'submit';
   size: 'sm' | 'md' | 'lg' | 'fix';
   children: string;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export default function CommonButton({
   usage,
   size,
-  className,
   children,
+  className,
+  ...props
 }: CommonButtonProps) {
+  const handleClick = Object.values(props)[0];
+
   return (
     <button
+      onClick={handleClick}
       type={usage}
       className={twMerge(
         `font-bold border-brown-70 rounded-lg text-brown-10 bg-contain bg-center bg-repeat bg-[url('/assets/img/bg_wood_dark.png')] shadow-outer/down ${BUTTON_STYLE[size]}`,
