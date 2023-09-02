@@ -33,7 +33,6 @@ export default function SignInput({
   pwRef.current = watch('pw');
 
   // 컴포넌트는 단순하게 적기
-
   const getPatternByType = (type: string) => {
     if (type === 'email') {
       return {
