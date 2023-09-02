@@ -1,7 +1,7 @@
 package com.growstory.domain.plant_object.dto;
 
 import com.growstory.domain.leaf.dto.LeafDto;
-import com.growstory.domain.leaf.entity.Leaf;
+import com.growstory.domain.plant_object.location.dto.LocationDto;
 import com.growstory.domain.plant_object.location.entity.Location;
 import com.growstory.domain.point.entity.Point;
 import lombok.AllArgsConstructor;
@@ -16,22 +16,23 @@ public class PlantObjDto {
 
 
 
-    // 오브젝트 위치 변경 시 입력 Dto
+    @Getter
+    @Builder
+    // 오브젝트 구입 시 입력 Dto
     public static class Post {
-        private long id;
-        private String name;
-        private Location location;
-        private boolean isInstalled;
-        private Leaf leaf;
-
+        private String nickName;
+        private LocationDto.Post locationDto;
+        private Long leafId;
     }
 
     //오브젝트 위치 변경 Dto
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class PostPosition {
-       private List<PlantObjDto> plantObjDtos;
+    @Builder
+    public static class PatchLocation {
+       private Long plantObjId;
+       private LocationDto.Patch locationDto;
     }
 
 
@@ -42,9 +43,8 @@ public class PlantObjDto {
     public static class Response {
         private long plantObjId;
         private String nickName;
-        private Location location;
+        private LocationDto.Response locationResponse;
         private LeafDto.LeafResponseForGardenInfo leafResponse;
-        private boolean isInstalled;
     }
 
     @Getter

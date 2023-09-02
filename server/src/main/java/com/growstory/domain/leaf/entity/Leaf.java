@@ -6,7 +6,7 @@ import com.growstory.domain.journal.entity.Journal;
 import com.growstory.domain.leaf.dto.LeafDto;
 import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.global.audit.BaseTimeEntity;
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,6 +14,9 @@ import java.util.List;
 
 @Entity
 @Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Leaf extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

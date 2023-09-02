@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/garden")
@@ -30,7 +31,8 @@ public class PlantObjController {
     // POST : 유저 포인트로 오브젝트 구입
     @PostMapping("/{account-id}")
     public ResponseEntity<HttpStatus> postPurchaseObj(@Positive @PathVariable("account-id") Long accountId,
-                                                      @RequestParam("product-id") Long productId) {
+                                                      @RequestParam("product-id") Long productId,
+                                                      @RequestBody PlantObjDto.Post boughtObj) {
         plantObjService.buyProduct(accountId, productId);
 
         return ResponseEntity.noContent().build();
@@ -46,7 +48,13 @@ public class PlantObjController {
     }
 
     // POST : 오브젝트 배치 (편집 완료)
+    @PostMapping("/{account-id}/location")
+    public ResponseEntity<HttpStatus> postLocation(@Positive @PathVariable("account-id") Long accountId,
+                                                   @RequestBody List<PlantObjDto.PatchLocation> patchObjLocations) {
+        plantObjService.saveLocation(accountId, patchObjLocations);
 
+        return ResponseEntity.noContent().build();
+    }
 
     // PATCH : 오브젝트와 식물 카드 연결 / 해제 / 교체
 
