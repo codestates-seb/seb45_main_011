@@ -24,7 +24,7 @@ public class S3Uploader {
     private String bucket;
 
     // MultipartFile을 전달받아 File로 전환한 후 S3에 업로드
-    public String uploadImageToS3(MultipartFile image) {
+    public String uploadImageToS3(MultipartFile image, String type) {
         String originName = image.getOriginalFilename(); //원본 파일 이름
         String ext = originName.substring(originName.lastIndexOf(".")); // 확장자
         String changedName = changedImageName(originName); // 변경된 이름
@@ -34,16 +34,22 @@ public class S3Uploader {
 
         try {
             PutObjectResult putObjectRequest = amazonS3.putObject(new PutObjectRequest(
-                    bucket, changedName, image.getInputStream(), metadata)
+                    bucket + "/" + type, changedName, image.getInputStream(), metadata)
                     .withCannedAcl(CannedAccessControlList.PublicRead)
             );
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        String imageUrl = amazonS3.getUrl(bucket, changedName).toString();
+        String imageUrl = amazonS3.getUrl(bucket + "/" + type, changedName).toString();
 
         return imageUrl;
+    }
+
+    public void deleteImageFromS3(String imageUrl, String type) {
+        String[] a = imageUrl.split("/");
+        if (imageUrl.contains("https://s3.ap-northeast-2.amazonaws.com/"+ bucket))
+            amazonS3.deleteObject(bucket + "/" + type, imageUrl.split("/")[6]);
     }
 
     // 이미지 이름 변경

@@ -36,7 +36,7 @@ public class AccountService {
         verifyExistsEmail(requestDto.getEmail());
 
         String encryptedPassword = passwordEncoder.encode(requestDto.getPassword());
-        String profileImageUrl = s3Uploader.uploadImageToS3(profileImage);
+        String profileImageUrl = s3Uploader.uploadImageToS3(profileImage, "profile");
         List<String> roles = authorityUtils.createRoles(requestDto.getEmail());
         Point point = pointService.createPoint("register");
 
@@ -60,8 +60,10 @@ public class AccountService {
 
     public void updateProfileImage(MultipartFile profileImage) {
         Account findAccount = findVerifiedAccount();
+        String presentProfileImageUrl = findAccount.getProfileImageUrl();
 
-        String profileImageUrl = s3Uploader.uploadImageToS3(profileImage);
+        s3Uploader.deleteImageFromS3(presentProfileImageUrl, "profile");
+        String profileImageUrl = s3Uploader.uploadImageToS3(profileImage, "profile");
 
         accountRepository.save(findAccount.toBuilder()
                 .profileImageUrl(profileImageUrl)
