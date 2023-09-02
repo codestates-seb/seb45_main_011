@@ -1,7 +1,11 @@
 'use cilent';
 
-import { useRef } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import {
+  FieldErrors,
+  FieldValues,
+  SubmitHandler,
+  useForm,
+} from 'react-hook-form';
 
 import { SIGNIN_REQUIRE, SIGNIN_VAILDATION } from '@/constants/contents';
 import CommonButton from '@/components/common/CommonButton';
@@ -20,27 +24,25 @@ export default function SigninTextBox() {
     formState: { errors }, // 유효성이 통과되지 않으면 에러 상태를 내보내주는 역할
   } = useForm<FormValue>(); //! <FormValue>를 넣어서 입력받을 데이터의 타입들을 react-hook-form에 전달한다
 
+  // Submit Button
   const handleOnSubmit: SubmitHandler<FormValue> = (data) => {
     // 모든 항목이 정상적으로 입력되었을 때 처리할 로직으로 변경 예정
     // data는 key:value의 객체 형태로 들어온다
     console.log(data);
   };
 
-  // 비밀번호와 비밀번호 확인이 일치하는지 검증하기 위해 watch(password)가 password의 input의 value를 추적한다
-  const passwordRef = useRef<string | null>(null);
-  passwordRef.current = watch('password');
-
-  const emailError = (errors: any) => {
+  // Error Message
+  const emailError = (errors: FieldErrors<FieldValues>) => {
     if (errors.email && errors.email.type === 'pattern') {
       return (
         <div className="text-[10px] text-red-50 leading-3 ml-10 my-2">
-          {errors.email.message}
+          {errors.email.message?.toString()}
         </div>
       );
     }
   };
 
-  const passwordError = (errors: any) => {
+  const passwordError = (errors: FieldErrors<FieldValues>) => {
     if (
       errors.password &&
       (errors.password.type === 'pattern' ||
@@ -48,7 +50,7 @@ export default function SigninTextBox() {
     ) {
       return (
         <div className="text-[10px] text-red-50 leading-3 ml-10 my-2">
-          {errors.password.message}
+          {errors.password.message?.toString()}
         </div>
       );
     }
@@ -56,6 +58,7 @@ export default function SigninTextBox() {
 
   // console.log(errors);
 
+  // Input Register
   const emailRegister = {
     ...register('email', {
       // register 옆에 항목을 문자열로 넣어주면 해당 데이터만 받는 input이 된다
@@ -108,13 +111,13 @@ export default function SigninTextBox() {
           usage="submit"
           size="sm"
           children="로그인"
-          className="w-[92px] h-[44px]"
+          className="w-[92px] h-[44px] text-[20px]"
         />
         <CommonButton
           usage="submit"
           size="sm"
           children="비밀번호 찾기"
-          className="w-[161px] h-[44px]"
+          className="w-[161px] h-[44px] text-[20px]"
         />
       </div>
     </form>
@@ -123,7 +126,5 @@ export default function SigninTextBox() {
 
 const SIGN_INPUT_BG = {
   email: `bg-[url('/assets/icon/email.svg')]`,
-  nickname: `bg-[url('/assets/icon/nickname.svg')]`,
   pw: `bg-[url('/assets/icon/pw.svg')]`,
-  pwCheck: `bg-[url('/assets/icon/pw_check.svg')]`,
 };
