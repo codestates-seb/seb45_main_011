@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class Point extends BaseTimeEntity {
 
     @Id
@@ -25,4 +25,8 @@ public class Point extends BaseTimeEntity {
     @OneToOne
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
+
+    public void updateScore(int newScore) {
+        this.score = newScore;
+    }
 }

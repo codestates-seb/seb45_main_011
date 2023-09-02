@@ -52,7 +52,7 @@ public class Account extends BaseTimeEntity {
     // 단방향관계, 1:N 디폴트 - 지연 로딩,
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "PLANT_OBJ_ID")
-    private List<PlantObj> plantObj;
+    private List<PlantObj> plantObjs;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
@@ -64,5 +64,13 @@ public class Account extends BaseTimeEntity {
         this.password = password;
         this.profileImageUrl = profileImageUrl;
         this.roles = roles;
+    }
+
+    public void updatePoint(Point point) {
+        this.point = point;
+    }
+
+    public void removePlantObj(PlantObj plantObj) {
+        this.plantObjs.remove(plantObj);
     }
 }
