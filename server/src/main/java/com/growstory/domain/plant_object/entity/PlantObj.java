@@ -43,4 +43,7 @@ public class PlantObj {
     private Leaf leaf;
 
 
+    public void update(Leaf leaf) {
+        this.leaf = leaf;
+    }
 }

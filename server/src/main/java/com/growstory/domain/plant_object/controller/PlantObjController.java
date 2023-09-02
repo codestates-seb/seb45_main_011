@@ -57,5 +57,12 @@ public class PlantObjController {
     }
 
     // PATCH : 오브젝트와 식물 카드 연결 / 해제 / 교체
+    @PatchMapping("/{account-id}")
+    public ResponseEntity<HttpStatus> patchObjConnectionToLeaf(@Positive @PathVariable("account-id")Long accountId,
+                                                               @RequestParam("plantobj-id") Long plantObjId,
+                                                               @RequestParam("leaf-id") Long leafId) {
+        plantObjService.updateLeafConnection(accountId, plantObjId, leafId);
 
+        return ResponseEntity.noContent().build();
+    }
 }

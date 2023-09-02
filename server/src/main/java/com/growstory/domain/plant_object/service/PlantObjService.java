@@ -2,11 +2,11 @@ package com.growstory.domain.plant_object.service;
 
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.account.service.AccountService;
+import com.growstory.domain.leaf.entity.Leaf;
+import com.growstory.domain.leaf.service.LeafService;
 import com.growstory.domain.plant_object.dto.PlantObjDto;
 import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.plant_object.location.dto.LocationDto;
-import com.growstory.domain.plant_object.location.entity.Location;
-import com.growstory.domain.plant_object.location.mapper.LocationMapper;
 import com.growstory.domain.plant_object.location.service.LocationService;
 import com.growstory.domain.plant_object.mapper.PlantObjMapper;
 import com.growstory.domain.plant_object.repository.PlantObjRepository;
@@ -27,14 +27,16 @@ public class PlantObjService {
     private final ProductService productService;
     private final AccountService accountService;
     private final LocationService locationService;
+    private final LeafService leafService;
     private final PlantObjMapper plantObjMapper;
 
     public PlantObjService(PlantObjRepository plantObjRepository, ProductService productService, AccountService accountService,
-                           LocationService locationService, PlantObjMapper plantObjMapper) {
+                           LocationService locationService, LeafService leafService, PlantObjMapper plantObjMapper) {
         this.plantObjRepository = plantObjRepository;
         this.productService = productService;
         this.accountService = accountService;
         this.locationService = locationService;
+        this.leafService = leafService;
         this.plantObjMapper = plantObjMapper;
     }
 
@@ -105,9 +107,24 @@ public class PlantObjService {
 
     // PATCH : 오브젝트와 식물 카드 연결 / 해제 / 교체
 
+    public void updateLeafConnection(Long accountId, Long plantObjId, Long leafId) {
+        accountService.isAuthIdMatching(accountId);
+        boolean isLeafNull = leafId == null;
+        PlantObj findPlantObj = findVerifiedPlantObj(plantObjId);
+
+        if(!isLeafNull) { // leafId가 null이 아닌경우 NPE에 대한 우려 없이 DB에서 조회
+            Leaf findLeaf = leafService.findVerifiedLeaf(leafId);
+            findPlantObj.update(findLeaf);
+        } else { // 전달된 leaf가 null인 경우
+            Leaf nullLeaf = null;
+            findPlantObj.update(nullLeaf);
+        }
+    }
+
     private PlantObj findVerifiedPlantObj (long plantObjId) {
         return plantObjRepository.findById(plantObjId).orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.PLANT_OBJ_NOT_FOUND));
 
     }
+
 }

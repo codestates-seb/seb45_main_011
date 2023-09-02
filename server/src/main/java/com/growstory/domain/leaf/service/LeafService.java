@@ -23,7 +23,7 @@ public class LeafService {
         return findLeaf;
     }
 
-    private Leaf findVerifiedLeaf(Long leafId) {
+    public Leaf findVerifiedLeaf(Long leafId) {
         return leafRepository.findById(leafId).orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.LEAF_NOT_FOUND));
     }
