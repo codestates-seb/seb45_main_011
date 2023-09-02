@@ -10,7 +10,7 @@ export default function LeafDiary({ diary }: LeafDiaryProps) {
   return (
     <>
       {diary.length ? (
-        <ul className="flex flex-col items-center gap-4">
+        <ul className="w-full flex flex-col items-center gap-4">
           {diary.map((item) => (
             <Diary key={item.id} item={item} />
           ))}

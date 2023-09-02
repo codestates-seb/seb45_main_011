@@ -1,6 +1,7 @@
 import Image from 'next/image';
 
 import { DiaryInfo } from '@/types/common';
+
 import ControlButton from './common/ControlButton';
 
 interface FormatContentProps {
@@ -20,11 +21,15 @@ export default function Diary({ item }: { item: DiaryInfo }) {
   // 서버로부터 받은 줄바꿈(\n)을 <br/> 태그로 변환
   const replaceContent = item?.content.replace(/\n/g, '<br/>');
 
+  const startDay = new Date(item.date);
+
+  const [month, day] = [startDay.getMonth() + 1, startDay.getDate()];
+
   return (
     <li className="w-full max-w-[414px]">
       <div className="flex justify-between">
         <span className="pt-2 font-bold text-[1.5rem] text-brown-80">
-          {item.date}
+          {month + '/' + day}
         </span>
         <div className="relative grid grid-cols-1 gap-3 w-full max-w-[331px] max-h-[137px] p-4 pb-[0.9rem] bg-brown-10 border-2 border-brown-50 rounded-lg">
           <div className="absolute right-[10px] top-[10px] flex gap-2">
