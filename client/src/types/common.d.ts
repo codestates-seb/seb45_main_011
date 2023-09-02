@@ -2,6 +2,12 @@ export interface DefaultProps {
   className?: string;
 }
 
+export type addPrefixToHandler<T, P extends string> = {
+  [K in keyof T as K extends string
+    ? `${P}${K}`
+    : never]: React.MouseEventHandler<HTMLButtonElement>;
+};
+
 export type LeafType = {
   id: number;
   name: string;
