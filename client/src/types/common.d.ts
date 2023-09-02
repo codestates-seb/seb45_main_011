@@ -12,6 +12,7 @@ export type LeafType = {
 
 export type PlantInfo = {
   name: string;
+  korName: string;
   imageUrl: string;
   price: number;
 };
