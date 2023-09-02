@@ -1,6 +1,5 @@
 'use client';
 
-// 네이밍 : Input 외에 있을 수 없다 input -> textbox(권장)
 import {
   UseFormRegister,
   FieldValues,
@@ -27,12 +26,9 @@ export default function SignInput({
 }: SignInputProps) {
   const errorMsg = errors[type]?.message as string;
 
-  // console.log(type, errors, errors[type]);
-
   const pwRef = useRef<string | null>(null);
   pwRef.current = watch('pw');
 
-  // 컴포넌트는 단순하게 적기
   const getPatternByType = (type: string) => {
     if (type === 'email') {
       return {
@@ -84,7 +80,6 @@ export default function SignInput({
     return null;
   };
 
-  // 방어적 프로그래밍..
   const getValidateByType = (type: string, value: string) => {
     if (type === 'pwCheck') {
       return {
@@ -96,7 +91,6 @@ export default function SignInput({
     return null;
   };
 
-  // 타입단언.. as
   const pattern = getPatternByType(type) as any;
   const minLength = getMinLengthByType(type) as any;
   const validate = getValidateByType(type, 'test1234') as any;

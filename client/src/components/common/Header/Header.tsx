@@ -4,8 +4,6 @@ import HeaderLink from './HeaderLink';
 export default function Header() {
   const userState = 'login';
 
-  // 마음속 깊이...새겨두겠습니다!
-  //
   return (
     <header
       className="
