@@ -4,7 +4,7 @@ import com.growstory.domain.board.entity.Board;
 
 import javax.persistence.*;
 
-@Entity(name = "BOARD_IMAGE")
+@Entity
 public class BoardImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
