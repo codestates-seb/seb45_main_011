@@ -14,6 +14,19 @@
   .shadow-controller {
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
   }
+
+  .scrollbar::-webkit-scrollbar {
+    width: 8px;
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: #a2573b;
+    /* box-shadow 적용 시 잔상이 생기는 이슈가 있어서 일단 제외 */
+    /* box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25); */
+  }
+    
   .leaf-tag {
     border: rgba(103, 46, 24, 1) solid 2px;
     border-radius: 8px;
@@ -24,6 +37,7 @@
     position: relative;
     box-shadow: 0px 0px 16px 6px rgba(255, 242, 211, 1);
   }
+  
   .leaf-tag:after {
     content: '';
     position: absolute;
@@ -38,6 +52,7 @@
     margin-bottom: -11px;
     z-index: 2;
   }
+  
   .leaf-tag:before {
     content: '';
     position: absolute;

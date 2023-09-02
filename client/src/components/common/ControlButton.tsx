@@ -1,17 +1,30 @@
-import { DefaultProps } from '@/types/common';
+import { twMerge } from 'tailwind-merge';
+
+import { DefaultProps, addPrefixToHandler } from '@/types/common';
 import { CONTROL_BUTTON_TITLES } from '@/constants/contents';
 
-interface ControlButtonProps extends DefaultProps {
+interface ControlButtonProps
+  extends addPrefixToHandler<any, 'handle'>,
+    DefaultProps {
   usage: 'edit' | 'delete';
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-export default function ControlButton({ usage }: ControlButtonProps) {
+export default function ControlButton({
+  usage,
+  className,
+  ...props
+}: ControlButtonProps) {
+  const handleClick = Object.values(props)[0];
+
   return (
     <button
+      onClick={handleClick}
       type="button"
       title={CONTROL_BUTTON_TITLES[usage]}
-      className={`w-6 h-6 border-2 border-brown-70 rounded-full bg-no-repeat bg-center shadow-inner/top ${BUTTON_STYLE[usage]}`}
+      className={twMerge(
+        `w-6 h-6 border-2 border-brown-70 rounded-full bg-no-repeat bg-center shadow-inner/top ${BUTTON_STYLE[usage]}`,
+        className,
+      )}
     />
   );
 }
