@@ -7,13 +7,7 @@ export type LeafType = {
   name: string;
   date: string;
   imgUrl: string;
-  journal?: JournalType[] | null;
-};
-
-export type JournalType = {
-  date: string;
-  imgUrl?: string;
-  content: string;
+  diary: DiaryInfo[] | null;
 };
 
 export type PlantInfo = {
