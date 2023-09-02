@@ -21,7 +21,7 @@ export default function Diary({ item }: { item: DiaryInfo }) {
   const replaceContent = item?.content.replace(/\n/g, '<br/>');
 
   return (
-    <li className="max-w-[414px]">
+    <li className="w-full max-w-[414px]">
       <div className="flex justify-between">
         <span className="pt-2 font-bold text-[1.5rem] text-brown-80">
           {item.date}
