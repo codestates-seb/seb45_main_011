@@ -42,6 +42,9 @@ const tokens = {
     white: { 10: '#fefefe', 30: '#f9fafb', 50: '#f8f9fa' },
     gray: { 10: '#c6c7c8', 30: '#959596', 50: '#7a7c7f', 70: '#4d5154' },
     black: { 10: '#212529', 30: '#1a1e21', 50: '#141619' },
+    border: {
+      10: '#ec9254',
+    },
     transparent: 'rgba(0, 0, 0, 0)',
   },
   boxShadow: {

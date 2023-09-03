@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --border-gradient:                  
+;
+}
+
+@layer utilities {
+  .border-gradient {
+    border: 8px solid transparent;
+    background-image: url('/assets/img/bg_wood_yellow.png'),
+      linear-gradient(#ec9355, #dc7737);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+  }
+}
+
 html {
   line-height: 1;
 }
