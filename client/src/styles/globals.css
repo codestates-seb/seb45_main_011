@@ -11,8 +11,23 @@
     background-clip: content-box, border-box;
   }
 
+  .border-garden {
+    border: 8px solid transparent;
+    background-size: cover;
+    background-image: linear-gradient(#a0b35a, #a0b35a),
+      linear-gradient(#ec9355, #dc7737);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+  }
+
   .shadow-controller {
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
+  }
+
+  .shadow-container {
+    box-shadow:
+      0px 0px 8px 2px rgba(128, 59, 34, 0.45) inset,
+      0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   }
 
   .scrollbar::-webkit-scrollbar {
@@ -26,7 +41,13 @@
     /* box-shadow 적용 시 잔상이 생기는 이슈가 있어서 일단 제외 */
     /* box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25); */
   }
-    
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background-color: rgba(0, 0, 0, 0);
+  }
+
   .leaf-tag {
     border: rgba(103, 46, 24, 1) solid 2px;
     border-radius: 8px;
@@ -37,7 +58,7 @@
     position: relative;
     box-shadow: 0px 0px 16px 6px rgba(255, 242, 211, 1);
   }
-  
+
   .leaf-tag:after {
     content: '';
     position: absolute;
@@ -52,7 +73,7 @@
     margin-bottom: -11px;
     z-index: 2;
   }
-  
+
   .leaf-tag:before {
     content: '';
     position: absolute;
@@ -66,6 +87,12 @@
     margin-left: -9px;
     margin-bottom: -9px;
     z-index: 3;
+  }
+
+  .grid-garden {
+    display: grid;
+    grid-template-columns: repeat(12, 60px);
+    grid-template-rows: repeat(8, 60px);
   }
 }
 
