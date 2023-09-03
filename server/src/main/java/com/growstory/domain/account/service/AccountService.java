@@ -94,7 +94,7 @@ public class AccountService {
 
         return AccountDto.Response.builder()
                 .accountId(findAccount.getAccountId())
-                .displayName(authUserUtils.getAuthUser().getDisplayName())
+                .displayName(findAccount.getDisplayName())
                 .profileImageUrl(findAccount.getProfileImageUrl())
                 .point(findAccount.getPoint())
                 .build();

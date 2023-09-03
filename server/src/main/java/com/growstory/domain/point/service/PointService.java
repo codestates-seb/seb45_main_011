@@ -23,7 +23,7 @@ public class PointService {
         return Point.builder()
                 .score(REGISTER_POINT)
                 .build();
-}
+    }
 
     public Point updatePoint(Point presentPoint, String type) {
         int score = 0;

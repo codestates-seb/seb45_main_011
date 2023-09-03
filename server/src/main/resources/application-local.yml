@@ -38,8 +38,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587 # SMTP에서 보안성을 추가한 SMTPS의 서버 포트 = 587
-    username: dndbskfkek@gmail.com
-    password: ixeh cmvj ojlk sojn
+    username: growStory11@gmail.com #${GROWSTORY_EMAIL_USERNAME}
+    password: yquresmtxwfvvhls  #${GROWSTORY_EMAIL_PASSWORD}
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
@@ -82,10 +82,10 @@ mail:
 cloud:
   aws:
     credentials:
-      accessKey: ${AWS_ACCESS_KEY_ID}
-      secretKey: ${AWS_SECRET_ACCESS_KEY}
+      accessKey: ${AWS_ACCESS_KEY}
+      secretKey: ${AWS_SECRET_KEY}
     s3:
-      bucket: growstory/image
+      bucket: growstory/image #${AWS_BUCKET_NAME}
     region:
       static: ap-northeast-2
     stack:

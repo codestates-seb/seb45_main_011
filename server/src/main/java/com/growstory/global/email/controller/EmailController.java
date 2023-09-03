@@ -22,22 +22,25 @@ public class EmailController {
 
     // 회원가입 시 메일 인증
     @PostMapping("/signup")
-    public ResponseEntity<SingleResponseDto<Object>> postAuthCodeMail(@Valid @RequestBody EmailDto.Post emailPostDto) {
-        EmailDto.Response responseDto = emailService.sendAuthCodeMail(emailPostDto);
+    public ResponseEntity<SingleResponseDto<EmailDto.SignUpResponse>> postAuthCodeMail(@Valid @RequestBody EmailDto.Post emailPostDto) {
+        EmailDto.SignUpResponse responseDto = emailService.sendAuthCodeMail(emailPostDto);
 
-        return ResponseEntity.ok(SingleResponseDto.builder()
+        return ResponseEntity.ok(SingleResponseDto.<EmailDto.SignUpResponse>builder()
                 .status(HttpStatusCode.OK.getStatusCode())
                 .message(HttpStatusCode.OK.getMessage())
                 .data(responseDto)
-                .build()
-        );
+                .build());
     }
 
     // 비밀번호 찾기 시 임시 비밀번호 전송
     @PostMapping("/password")
-    public ResponseEntity<HttpStatus> postPasswordMail(@Valid @RequestBody EmailDto.Post emailPostDto) {
-        emailService.sendPasswordMail(emailPostDto);
+    public ResponseEntity<SingleResponseDto<EmailDto.PasswordResponse>> postPasswordMail(@Valid @RequestBody EmailDto.Post emailPostDto) {
+        EmailDto.PasswordResponse responseDto = emailService.sendPasswordMail(emailPostDto);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(SingleResponseDto.<EmailDto.PasswordResponse>builder()
+                .status(HttpStatusCode.OK.getStatusCode())
+                .message(HttpStatusCode.OK.getMessage())
+                .data(responseDto)
+                .build());
     }
 }
