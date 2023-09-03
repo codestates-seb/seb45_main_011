@@ -6,6 +6,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
+
     default ProductDto.Response toResponseFrom(Product product) {
         return ProductDto.Response.builder()
                 .name(product.getName())
