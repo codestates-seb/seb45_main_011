@@ -31,4 +31,7 @@ public class Point extends BaseTimeEntity {
         if (account.getPoint() != this)
             account.setPoint(this);
     }
+    public void updateScore(int newScore) {
+        this.score = newScore;
+    }
 }

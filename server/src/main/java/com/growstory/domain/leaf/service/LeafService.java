@@ -76,6 +76,12 @@ public class LeafService {
         return getLeafResponseDto(findVerifiedLeaf(findAccount.getAccountId(), leafId));
     }
 
+    public Leaf findLeafEntityBy(Long leafId) {
+        Account findAccount = authUserUtils.getAuthUser();
+        Leaf findLeaf = findVerifiedLeaf(findAccount.getAccountId(), leafId);
+        return findLeaf;
+    }
+
     public void deleteLeaf(Long leafId) {
         Account findAccount = authUserUtils.getAuthUser();
         Leaf findLeaf = findVerifiedLeaf(findAccount.getAccountId(), leafId);

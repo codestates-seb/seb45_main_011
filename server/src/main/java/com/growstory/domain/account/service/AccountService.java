@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Transactional
@@ -115,11 +116,40 @@ public class AccountService {
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_ALREADY_EXISTS);
     }
 
-    public Account findByEmail(String email) {
-        Account savedAccount = accountRepository
-                .findByEmail(email)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_FOUND));
+    @Transactional(readOnly = true)
+    public Account findVerifiedAccount() {
+        Map<String, Object> principal = (Map<String, Object>) authUserUtils.getAuthUser();
 
-        return savedAccount;
+        return accountRepository.findById((Long) principal.get("accountId")).orElseThrow(() ->
+                new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_FOUND));
+    }
+
+    public void isAuthIdMatching(Long accountId) {
+        Map<String, Object> claims = (Map<String, Object>) authUserUtils.getAuthUser();
+        if ((Long) claims.get("accountId") != accountId)
+            throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
+    }
+
+    public void buy(Account account, int price) {
+        Point accountPoint = account.getPoint();
+        int userPointScore = account.getPoint().getScore();
+        if(price > userPointScore) {
+            throw new BusinessLogicException(ExceptionCode.NOT_ENOUGH_POINTS);
+        } else { // price <= this.point.getScore()
+            int updatedScore = accountPoint.getScore()-price;
+//            point.toBuilder().score(updatedScore).build(); //🔥 [refact] 더티체킹 여부 체크
+//            account.toBuilder().point(point); //🔥 [refact] 필요?
+            accountPoint.updateScore(updatedScore);
+            account.updatePoint(accountPoint);
+        }
+    }
+
+    public void resell(Account account, int price) {
+        Point accountPoint = account.getPoint();
+        int userPointScore = account.getPoint().getScore();
+
+        int updatedScore = userPointScore + price;
+        accountPoint.updateScore(updatedScore);
+        account.updatePoint(accountPoint);
     }
 }

@@ -22,22 +22,25 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @Service
 public class BoardService {
+
+    private static final String BOARD_IMAGE_PROCESS_TYPE = "boards";
+
     private final BoardRepository boardRepository;
     private final LeafRepository leafRepository;
     private final AccountService accountService;
-    private final BoardImageService boardImageService;
     private final HashTagService hashTagService;
+    private final BoardImageService boardImageService;
 
-    public ResponseBoardDto createBoard(Long leafId, RequestBoardDto.Post requestBoardDto, Object principal, MultipartFile image) {
-        Account findAccount = accountService.findByEmail((String) principal);
+    public ResponseBoardDto createBoard(Long leafId, RequestBoardDto.Post requestBoardDto, MultipartFile image) {
+        Account findAccount = accountService.findVerifiedAccount();
+
+        boardImageService.saveBoardImage(image);
 
         Leaf findLeaf = leafRepository.findById(leafId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.LEAF_NOT_FOUND));
 
 
         // S3 Upload && save image in Board_Image
-        boardImageService.uploadImageToS3(image);
-
         hashTagService.createHashTag(requestBoardDto.getHashTag());
 
         Board board = Board.builder()
@@ -72,8 +75,8 @@ public class BoardService {
         return pageBoards;
     }
 
-    public void modifyBoard(Long boardId, RequestBoardDto.Patch requestBoardDto, Object principal, MultipartFile image) {
-        Account findBoard = accountService.findByEmail((String) principal);
+    public void modifyBoard(Long boardId, RequestBoardDto.Patch requestBoardDto, MultipartFile image) {
+        Account findBoard = accountService.findVerifiedAccount();
 
 //        Leaf findLeaf = leafRepository.findById(leafId)
 //                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.LEAF_NOT_FOUND));

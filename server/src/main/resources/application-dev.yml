@@ -1,10 +1,10 @@
 cloud:
   aws:
     credentials:
-      access-key: ${AWS_ACCESS_KEY}
-      secret-key: ${AWS_SECRET_ACCESS_KEY}
+      accessKey: ${AWS_ACCESS_KEY}
+      secretKey: ${AWS_SECRET_KEY}
     s3:
-      bucketName: ${AWS_BUCKET_NAME}
+      bucket: ${BUCKET_NAME}
     region:
       static: ap-northeast-2
     stack:
@@ -15,21 +15,15 @@ spring:
     activate:
       on-profile: dev
 
-  h2:
-    console:
-      enabled: true
-      path: /h2
   datasource:
-    url: jdbc:h2:mem:test
-#  datasource:
-#    url: jdbc:mysql://127.0.0.1:3306/growstory?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
-#    username: smiledk
-#    password: 1112
-#    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/growstory?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+    username: smiledk
+    password: 1112
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
-#    database-platform: org.hibernate.dialect.MySQL8Dialect
-    database: h2
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database: mysql
     show-sql: true
     hibernate:
       ddl-auto: create
@@ -50,8 +44,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587 # SMTP에서 보안성을 추가한 SMTPS의 서버 포트 = 587
-    username: dndbskfkek@gmail.com
-    password: ixeh cmvj ojlk sojn
+    username: ${GROWSTORY_EMAIL_USERNAME}
+    password: ${GROWSTORY_EMAIL_PASSWORD}
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
@@ -91,17 +85,7 @@ mail:
   admin:
     address: ${ADMIN_EMAIL}
 
-cloud:
-  aws:
-    credentials:
-      accessKey: ${AWS_ACCESS_KEY_ID}
-      secretKey: ${AWS_SECRET_ACCESS_KEY}
-    s3:
-      bucket: growstory/image
-    region:
-      static: ap-northeast-2
-    stack:
-      auto: false
+
 
 server:
   port: 8888

@@ -1,11 +1,15 @@
 package com.growstory.domain.images.entity;
 
 import com.growstory.domain.board.entity.Board;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Entity(name = "BOARD_IMAGE")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Entity
 public class BoardImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

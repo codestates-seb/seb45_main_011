@@ -27,7 +27,7 @@ public class BoardController {
 
     private final BoardService boardService;
     private final static String BOARD_DEFAULT_URL = "/v1/boards";
-    private final static String ANOTHERRESOURCENAME = "/leaf";
+    private final static String ANOTHER_RESOURCE_NAME = "/leaf";
 
 
     @Operation(summary = "Create Board API", description = "게시판 추가 기능")
@@ -35,11 +35,9 @@ public class BoardController {
     public ResponseEntity<HttpStatus> postBoard(@Positive @PathVariable("leafId") Long leafId,
                                                 @Valid @RequestBody RequestBoardDto.Post requestBoardDto,
                                                 @RequestPart(value = "image", required = false) MultipartFile image) {
-        Object principal = null;
+        ResponseBoardDto responseBoardDto = boardService.createBoard(leafId, requestBoardDto, image);
 
-        ResponseBoardDto responseBoardDto = boardService.createBoard(leafId, requestBoardDto, principal, image);
-
-        URI location = UriCreator.createUri(BOARD_DEFAULT_URL, responseBoardDto.getBoardId(), ANOTHERRESOURCENAME, leafId);
+        URI location = UriCreator.createUri(BOARD_DEFAULT_URL, responseBoardDto.getBoardId(), ANOTHER_RESOURCE_NAME, leafId);
 
         return ResponseEntity.created(location).build();
     }
@@ -64,9 +62,8 @@ public class BoardController {
     public ResponseEntity<HttpStatus> patchBoard(@Positive @PathVariable("boardId") Long boardId,
                                                  @Valid @RequestBody RequestBoardDto.Patch requestBoardDto,
                                                  @RequestPart(value = "image", required = false) MultipartFile image) {
-        Object principal = null;
 
-        boardService.modifyBoard(boardId, requestBoardDto, principal,image);
+        boardService.modifyBoard(boardId, requestBoardDto, image);
 
         return ResponseEntity.noContent().build();
     }
