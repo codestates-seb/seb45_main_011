@@ -23,7 +23,6 @@ const getTypeFormat = (name: string) => {
   if (name === 'plantName') {
     return {
       validationSchema: {
-        required: '이 필드는 필수 입력 사항입니다. 반드시 값을 입력해주세요.',
         minLength: {
           value: 2,
           message: '2글자 이상의 영문 또는 한글을 입력해야 합니다.',
@@ -35,7 +34,6 @@ const getTypeFormat = (name: string) => {
   if (name === 'title') {
     return {
       validationSchema: {
-        required: '이 필드는 필수 입력 사항입니다. 반드시 값을 입력해주세요.',
         minLength: {
           value: 2,
           message: '2글자 이상의 영문 또는 한글을 입력해야 합니다.',
@@ -47,7 +45,6 @@ const getTypeFormat = (name: string) => {
   if (name === 'nickname') {
     return {
       validationSchema: {
-        required: '이 필드는 필수 입력 사항입니다. 반드시 값을 입력해주세요.',
         minLength: {
           value: 2,
           message: '2글자 이상의 영문 또는 한글을 입력해야 합니다.',
@@ -69,23 +66,27 @@ export default function TextInput({
 
   if (TypeFormat === null) return null;
   return (
-    <div>
+    <div className={`w-full flex flex-col ', ${INPUT_SIZE[name]}`}>
       <input
         required={required}
-        className="mb-[8px] w-full bg-white-10 border-2 border-brown-70 p-3 rounded-lg shadow-outer/down text-xs leading-3 placeholder:text-gray-50 focus:outline-0"
+        className="w-full h-[36px] bg-white-10 border-2 border-brown-70 p-[10px] rounded-lg shadow-outer/down text-xs leading-3 placeholder:text-gray-50 focus:outline-0"
         type="text"
         placeholder={TypeFormat?.placeholder}
         {...register(name, TypeFormat?.validationSchema)}
       />
-      <ErrorMessage
-        errors={errors}
-        name={name}
-        render={({ message }) => (
-          <p className="pl-3 w-full text-[0.6rem] leading-3 text-red-50">
-            {message}
-          </p>
-        )}
-      />
+      <div className="h-[12px] mt-[8px] pl-3 w-full text-[0.6rem] leading-3 text-red-50">
+        <ErrorMessage
+          errors={errors}
+          name={name}
+          render={({ message }) => <p>{message}</p>}
+        />
+      </div>
     </div>
   );
 }
+
+const INPUT_SIZE = {
+  plantName: 'max-w-[248px] ',
+  title: 'max-w-[369px ]',
+  nickname: 'max-w-[248px]',
+};
