@@ -6,9 +6,11 @@ import AddLeafButton from '@/components/AddLeafButton';
 import Leaf from '@/components/common/Leaf';
 import PageTitle from '@/components/common/PageTitle';
 import Screws from '@/components/common/Screws';
+import Link from 'next/link';
 
-export default function Leafs() {
+export default function Leafs({ params }: { params: { id: string } }) {
   // URL path ID
+  const userId = params.id;
   const { leafs } = LeafStore();
   return (
     <div className="flex justify-center items-center">
@@ -19,7 +21,9 @@ export default function Leafs() {
           <div className="pr-3 w-full h-[404px] flex flex-wrap justify-center gap-4 overflow-y-scroll scrollbar">
             <AddLeafButton />
             {leafs.map((leaf) => (
-              <Leaf key={leaf.leafId} location="leaf" data={leaf} />
+              <Link key={leaf.leafId} href={`/leaf/${userId}/${leaf.leafId}`}>
+                <Leaf location="leaf" data={leaf} />
+              </Link>
             ))}
           </div>
         </div>

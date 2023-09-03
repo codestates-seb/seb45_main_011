@@ -7,11 +7,11 @@ import { LeafDataInfo } from '@/types/common';
 import LeafInfo from '@/components/LeafInfo';
 import data from '@/mock/leaf.json';
 
-export default function Leaf() {
+export default function Leaf({ params }: { params: { leafId: string } }) {
   const [leaf, setLeaf] = useState<LeafDataInfo | null>(null);
+  const leafId = params.leafId;
   useEffect(() => {
-    console.log(data[0]);
-    setLeaf(data[0]);
+    setLeaf(data[parseInt(leafId)]);
   });
   if (!leaf) return <p>전달된 leaf 데이터가 없습니다.</p>;
   return <LeafInfo leaf={leaf} />;

@@ -38,7 +38,6 @@ export default function TagInput({ name }: TextAreaProps) {
   const { register, handleSubmit, reset } = useForm<InputValues>();
 
   const handleDeleteClick = (index: number) => {
-    console.log('click!');
     setTags((tags) => tags.filter((_, i) => i !== index));
   };
 

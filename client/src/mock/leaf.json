@@ -1,6 +1,6 @@
 [
   {
-    "leafId": 1,
+    "leafId": 0,
     "leafNickname": "솜솜이",
     "start": "2023-08-29 18:00:00.123",
     "imageUrl": "https://steptohealth.co.kr/wp-content/uploads/2018/08/The-Incredible-Medicinal-Properties-of-Basil.jpg?auto=webp&quality=60&width=1920&crop=16:9,smart,safe",
@@ -37,7 +37,7 @@
     ]
   },
   {
-    "leafId": 2,
+    "leafId": 1,
     "leafNickname": "니드몬",
     "start": "2023-08-30 18:00:00.123",
     "content": "나만의 작고 귀여운 니드몬",
