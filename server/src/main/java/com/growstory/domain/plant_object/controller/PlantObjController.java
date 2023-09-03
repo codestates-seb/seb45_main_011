@@ -31,7 +31,7 @@ public class PlantObjController {
     }
 
     // POST : 유저 포인트로 오브젝트 구입
-    @PostMapping("/{account-id}")
+    @PostMapping("/{account-id}/purchase")
     public ResponseEntity<HttpStatus> postPurchaseObj(@Positive @PathVariable("account-id") Long accountId,
                                                       @RequestParam("product-id") Long productId,
                                                       @RequestBody PlantObjDto.Post boughtObj) {
@@ -41,7 +41,7 @@ public class PlantObjController {
     }
 
     // DELETE : 오브젝트 되팔기
-    @DeleteMapping("/{account-id}")
+    @DeleteMapping("/{account-id}/refund")
     public ResponseEntity<HttpStatus> deleteRefundObj(@Positive @PathVariable("account-id") Long accountId,
                                                       @RequestParam("product-id") Long productId) {
         plantObjService.refundPlantObj(accountId, productId);
@@ -59,7 +59,7 @@ public class PlantObjController {
     }
 
     // PATCH : 오브젝트와 식물 카드 연결 / 해제 / 교체
-    @PatchMapping("/{account-id}")
+    @PatchMapping("/{account-id}/connection")
     public ResponseEntity<HttpStatus> patchObjConnectionToLeaf(@Positive @PathVariable("account-id")Long accountId,
                                                                @RequestParam("plantobj-id") Long plantObjId,
                                                                @RequestParam(name = "leaf-id", required = false) Long leafId) {
