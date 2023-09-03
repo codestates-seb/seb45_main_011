@@ -37,7 +37,7 @@ const getTypeFormat = (
         validate: (value: string) =>
           value === password || '비밀번호가 일치하지 않습니다.',
       },
-      placeholder: '기존 비밀먼호를 입력해주세요.',
+      placeholder: '기존 비밀번호를 입력해주세요.',
     };
   }
   if (name === 'newPassword') {
@@ -49,7 +49,7 @@ const getTypeFormat = (
           message: '6-12글자의 영문과 숫자를 함께 사용해야 합니다.',
         },
       },
-      placeholder: '변경할 비밀먼호를 입력해주세요.',
+      placeholder: '변경할 비밀번호를 입력해주세요.',
     };
   }
   if (name === 'newPasswordCheck' && watch) {
@@ -59,7 +59,7 @@ const getTypeFormat = (
         validate: (value: string) =>
           value === watch('newPassword') || '비밀번호가 일치하지 않습니다.',
       },
-      placeholder: '동일한 비밀먼호를 다시 입력해주세요.',
+      placeholder: '동일한 비밀번호를 다시 입력해주세요.',
     };
   }
   return null;

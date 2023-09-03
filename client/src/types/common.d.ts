@@ -8,12 +8,11 @@ export type addPrefixToHandler<T, P extends string> = {
     : never]: React.MouseEventHandler<HTMLButtonElement>;
 };
 
-export type LeafType = {
-  id: number;
-  name: string;
-  date: string;
-  imgUrl: string;
-  diary: DiaryInfo[] | null;
+export type LeafInfo = {
+  leafId: number;
+  leafNickname: string;
+  start: string;
+  imageUrl: string;
 };
 
 export type PlantInfo = {
@@ -30,7 +29,8 @@ export interface DiaryInfo {
   title: string;
   content: string;
 }
-type InputValues = {
+
+export type InputValues = {
   plantName: string;
   title: string;
   nickname: string;
