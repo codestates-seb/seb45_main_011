@@ -29,9 +29,6 @@ public class Leaf extends BaseTimeEntity {
     @Column(nullable = false)
     private String leafName;
 
-    @Column(nullable = false)
-    private String leafNickName;
-
     @Lob
     @Column(nullable = false)
     private String content;
