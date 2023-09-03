@@ -5,11 +5,13 @@ import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.journal.entity.Journal;
 import com.growstory.domain.plant_object.entity.PlantObject;
 import com.growstory.global.audit.BaseTimeEntity;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
+@Getter
 @Entity
 public class Leaf extends BaseTimeEntity {
     @Id
