@@ -1,5 +1,6 @@
 package com.growstory.domain.images.service;
 
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -24,7 +25,7 @@ import java.util.UUID;
 @Service
 public class BoardImageService {
     @Value("${cloud.aws.s3.bucketName}")
-    private String bucketName; //버킷 이름
+    private String bucketName;
 
     private final AmazonS3 amazonS3;
     private final BoardImageRepository boardImageRepository;
@@ -36,17 +37,6 @@ public class BoardImageService {
         this.boardImageRepository = boardImageRepository;
     }
 
-    // 이미지 이름 변경
-    // 이미지 이름이 겹칠 경우 충돌이 발생하기 때문에 고유 난수를 uuid로 생성하여 originName과 합해준다.
-    private static String changedImageName(String originName) {
-        String random = UUID.randomUUID().toString();
-        return random + originName;
-    }
-
-    // 저장될 이미지 경로 (로컬이라면)
-//    private static String createDirPath(String changedName) {
-//        return "c:\\images\\"+changedName;
-//    }
 
     public String uploadImageToS3(MultipartFile image) {
         String originName = image.getOriginalFilename(); //원본 파일 이름
@@ -73,8 +63,27 @@ public class BoardImageService {
         boardImage.setStoredImagePath(string);
         boardImage.setOriginName(originName);
 
-
         boardImageRepository.save(boardImage);
         return string;
+    }
+
+    public void deleteImage(String fileName) throws IOException {
+        boolean isObjectExist = amazonS3.doesObjectExist(bucketName, fileName);
+
+
+        try {
+            if (isObjectExist) {
+                amazonS3.deleteObject(bucketName, fileName);
+            }
+        } catch (SdkClientException e) {
+            throw new IOException("Image delete failed", e);
+        }
+    }
+
+    // 이미지 이름 변경
+    // 이미지 이름이 겹칠 경우 충돌이 발생하기 때문에 고유 난수를 uuid로 생성하여 originName과 합해준다.
+    private static String changedImageName(String originName) {
+        String random = UUID.randomUUID().toString();
+        return random + originName;
     }
 }
