@@ -75,8 +75,8 @@ public class BoardService {
     public void modifyBoard(Long boardId, RequestBoardDto.Patch requestBoardDto, Object principal, MultipartFile image) {
         Account findBoard = accountService.findByEmail((String) principal);
 
-        Leaf findLeaf = leafRepository.findById(leafId)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.LEAF_NOT_FOUND));
+//        Leaf findLeaf = leafRepository.findById(leafId)
+//                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.LEAF_NOT_FOUND));
 
         // image가 null일 경우 S3에 저장된 image Object 삭제 + Board_Image(DB) 삭제
 

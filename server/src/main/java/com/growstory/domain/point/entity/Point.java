@@ -7,19 +7,17 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class Point extends BaseTimeEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pointId;
 
     private int score;
@@ -27,4 +25,10 @@ public class Point extends BaseTimeEntity {
     @OneToOne
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
+
+    public void setAccount(Account account) {
+        this.account = account;
+        if (account.getPoint() != this)
+            account.setPoint(this);
+    }
 }
