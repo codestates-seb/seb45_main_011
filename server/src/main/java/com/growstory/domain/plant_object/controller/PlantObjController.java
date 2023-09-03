@@ -10,8 +10,10 @@ import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/garden")
+@RequestMapping("/v1/gardens")
 public class PlantObjController {
+
+
     private final PlantObjService plantObjService;
 
 
@@ -60,7 +62,7 @@ public class PlantObjController {
     @PatchMapping("/{account-id}")
     public ResponseEntity<HttpStatus> patchObjConnectionToLeaf(@Positive @PathVariable("account-id")Long accountId,
                                                                @RequestParam("plantobj-id") Long plantObjId,
-                                                               @RequestParam("leaf-id") Long leafId) {
+                                                               @RequestParam(name = "leaf-id", required = false) Long leafId) {
         plantObjService.updateLeafConnection(accountId, plantObjId, leafId);
 
         return ResponseEntity.noContent().build();
