@@ -24,10 +24,6 @@ public class PlantObj {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long plantObjectId;
 
-    private String nickName;
-
-    private String imageUrl;
-
 
     @OneToOne
     @JoinColumn(name = "PRODUCT_ID")

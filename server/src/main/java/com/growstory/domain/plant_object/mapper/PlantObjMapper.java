@@ -30,15 +30,15 @@ public class PlantObjMapper {
         }
 
         long plantObjId = plantObj.getPlantObjectId();
-        String nickName = plantObj.getNickName();
+        String productName = plantObj.getProduct().getName();
         LocationDto.Response locationResponse = locationMapper.toLocationResponseDtoFrom(plantObj.getLocation());
         LeafDto.ResponseForGardenInfo leafResponse = leafMapper.toLeafResponseForGarden(plantObj.getLeaf());
 
         return PlantObjDto.Response.builder()
                 .plantObjId(plantObjId)
-                .nickName(nickName)
-                .locationResponse(locationResponse)
-                .leafResponse(leafResponse)
+                .productName(productName)
+                .location(locationResponse)
+                .leafDto(leafResponse)
                 .build();
     }
 

@@ -7,8 +7,10 @@ import com.growstory.global.exception.ExceptionCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+import java.util.List;
+
 @Transactional
+@Service
 public class ProductService {
     private final ProductRepository productRepository;
 
@@ -20,5 +22,10 @@ public class ProductService {
     public Product findVerifiedProduct(Long productId) {
         return productRepository.findById(productId).orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.PRODUCT_NOT_FOUND));
+    }
+
+    @Transactional(readOnly = true)
+    public List<Product> findAllProducts() {
+        return productRepository.findAll();
     }
 }
