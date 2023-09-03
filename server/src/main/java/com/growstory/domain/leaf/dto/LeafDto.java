@@ -53,8 +53,9 @@ public class LeafDto {
     @Getter
     @Builder
     public static class ResponseForGardenInfo {
-        private long id;
+        private Long id;
         private String name;
         private String imageUrl;
+        private int journalCount;
     }
 }
