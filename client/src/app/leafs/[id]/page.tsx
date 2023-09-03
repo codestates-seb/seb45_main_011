@@ -20,15 +20,6 @@ export default function Leafs() {
             <AddLeafButton />
             {leafs.map((leaf) => (
               <Leaf key={leaf.leafId} location="leaf" data={leaf} />
-            ))}{' '}
-            {leafs.map((leaf) => (
-              <Leaf key={leaf.leafId} location="leaf" data={leaf} />
-            ))}{' '}
-            {leafs.map((leaf) => (
-              <Leaf key={leaf.leafId} location="leaf" data={leaf} />
-            ))}{' '}
-            {leafs.map((leaf) => (
-              <Leaf key={leaf.leafId} location="leaf" data={leaf} />
             ))}
           </div>
         </div>
