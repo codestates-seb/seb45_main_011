@@ -16,6 +16,7 @@ public class PointService {
     private static final int POSTING_POINT = 30; // 게시글 등록시 지급 포인트
     private static final int DAILY_LOGIN_POINT = 10; // 일일 로그인시 지급 포인트 (출석 체크 창이나 버튼이 필요, 로그인을 지속하며 날짜가 갱신되었을 때 판별이 어려워보임)
 
+
     private final PointRepository pointRepository;
 
     public Point createPoint() {

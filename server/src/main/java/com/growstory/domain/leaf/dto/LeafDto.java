@@ -2,9 +2,9 @@ package com.growstory.domain.leaf.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
+
 
 public class LeafDto {
     @Getter
@@ -48,5 +48,13 @@ public class LeafDto {
         private String leafImageUrl;
         private String place;
         private String content;
+    }
+
+    @Getter
+    @Builder
+    public static class ResponseForGardenInfo {
+        private long id;
+        private String name;
+        private String imageUrl;
     }
 }
