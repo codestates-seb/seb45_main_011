@@ -49,7 +49,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
                                 .displayName(name)
                                 .password("")
                                 .profileImageUrl(profileImageUrl)
-                                .point(pointService.createPoint("register"))
+                                .point(pointService.createPoint())
                                 .roles(authorities)
                                 .build()
                 ));
@@ -118,6 +118,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
 //                .path("/login")
 //                .host("se-sof.s3-website.ap-northeast-2.amazonaws.com") //"http://seveneleven-stackoverflow-s3.s3-website.ap-northeast-2.amazonaws.com"
 //                .port(requestPort) //S3는 80포트
+                .queryParam("accountId", account.getAccountId())
                 .queryParams(queryParams)
                 .encode()
                 .build()

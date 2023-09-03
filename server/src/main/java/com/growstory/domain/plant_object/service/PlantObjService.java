@@ -113,7 +113,7 @@ public class PlantObjService {
         PlantObj findPlantObj = findVerifiedPlantObj(plantObjId);
 
         if(!isLeafNull) { // leafId가 null이 아닌경우 NPE에 대한 우려 없이 DB에서 조회
-            Leaf findLeaf = leafService.findVerifiedLeaf(leafId);
+            Leaf findLeaf = leafService.findLeafEntityBy(leafId);
             findPlantObj.update(findLeaf);
         } else { // 전달된 leaf가 null인 경우
             Leaf nullLeaf = null;

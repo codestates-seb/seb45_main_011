@@ -2,7 +2,6 @@ package com.growstory.domain.plant_object.dto;
 
 import com.growstory.domain.leaf.dto.LeafDto;
 import com.growstory.domain.plant_object.location.dto.LocationDto;
-import com.growstory.domain.plant_object.location.entity.Location;
 import com.growstory.domain.point.entity.Point;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,7 +43,7 @@ public class PlantObjDto {
         private long plantObjId;
         private String nickName;
         private LocationDto.Response locationResponse;
-        private LeafDto.LeafResponseForGardenInfo leafResponse;
+        private LeafDto.ResponseForGardenInfo leafResponse;
     }
 
     @Getter

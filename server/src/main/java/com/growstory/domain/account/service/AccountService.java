@@ -25,6 +25,8 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class AccountService {
+    private static final String ACCOUNT_IMAGE_PROCESS_TYPE = "profiles";
+
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
@@ -32,43 +34,42 @@ public class AccountService {
     private final S3Uploader s3Uploader;
     private final AuthUserUtils authUserUtils;
 
-    public AccountDto.Response createAccount(AccountDto.Post requestDto, MultipartFile profileImage) {
-        verifyExistsEmail(requestDto.getEmail());
+    public AccountDto.Response createAccount(AccountDto.Post accountPostDto, MultipartFile profileImage) {
+        verifyExistsEmail(accountPostDto.getEmail());
 
-        String encryptedPassword = passwordEncoder.encode(requestDto.getPassword());
-        String profileImageUrl = s3Uploader.uploadImageToS3(profileImage);
-        List<String> roles = authorityUtils.createRoles(requestDto.getEmail());
+        String encryptedPassword = passwordEncoder.encode(accountPostDto.getPassword());
+        String profileImageUrl = s3Uploader.uploadImageToS3(profileImage, ACCOUNT_IMAGE_PROCESS_TYPE);
+        List<String> roles = authorityUtils.createRoles(accountPostDto.getEmail());
+        Point point = pointService.createPoint();
 
         Account savedAccount = accountRepository.save(Account.builder()
-                .displayName(requestDto.getDisplayName())
-                .email(requestDto.getEmail())
+                .displayName(accountPostDto.getDisplayName())
+                .email(accountPostDto.getEmail())
                 .password(encryptedPassword)
+                .point(point)
                 .profileImageUrl(profileImageUrl)
-                .point(pointService.createPoint("register"))
                 .roles(roles)
-                .build()
-        );
+                .build());
+
+        point.setAccount(savedAccount);
 
         return AccountDto.Response.builder()
                 .accountId(savedAccount.getAccountId())
-                .displayName(savedAccount.getDisplayName())
-                .profileImageUrl(savedAccount.getProfileImageUrl())
-                .point(savedAccount.getPoint())
                 .build();
     }
 
     public void updateProfileImage(MultipartFile profileImage) {
-        Account findAccount = findVerifiedAccount();
+        Account findAccount = authUserUtils.getAuthUser();
 
-        String profileImageUrl = s3Uploader.uploadImageToS3(profileImage);
+        s3Uploader.deleteImageFromS3(findAccount.getProfileImageUrl(), ACCOUNT_IMAGE_PROCESS_TYPE);
 
         accountRepository.save(findAccount.toBuilder()
-                .profileImageUrl(profileImageUrl)
+                .profileImageUrl(s3Uploader.uploadImageToS3(profileImage, ACCOUNT_IMAGE_PROCESS_TYPE))
                 .build());
     }
 
     public void updateDisplayName(AccountDto.DisplayNamePatch displayNamePatchDto) {
-        Account findAccount = findVerifiedAccount();
+        Account findAccount = authUserUtils.getAuthUser();
 
         accountRepository.save(findAccount.toBuilder()
                 .displayName(displayNamePatchDto.getDisplayName())
@@ -76,13 +77,12 @@ public class AccountService {
     }
 
     public void updatePassword(AccountDto.PasswordPatch passwordPatchDto) {
-        Account findAccount = findVerifiedAccount();
+        Account findAccount = authUserUtils.getAuthUser();
 
-        String encryptedPresentPassword = passwordEncoder.encode(passwordPatchDto.getPresentPassword());
         String encryptedChangedPassword = passwordEncoder.encode(passwordPatchDto.getChangedPassword());
 
-        if (!findAccount.getPassword().equals(encryptedPresentPassword)) throw new BadCredentialsException("현재 비밀번호가 일치하지 않습니다.");
-        if (!findAccount.getPassword().equals(encryptedChangedPassword)) throw new BadCredentialsException("새로운 비밀번호와 현재 비밀번호가 일치합니다.");
+        if (!passwordEncoder.matches(passwordPatchDto.getPresentPassword(), findAccount.getPassword())) throw new BadCredentialsException("현재 비밀번호가 일치하지 않습니다.");
+        if (findAccount.getPassword().equals(encryptedChangedPassword)) throw new BadCredentialsException("새로운 비밀번호와 현재 비밀번호가 일치합니다.");
 
         accountRepository.save(findAccount.toBuilder()
                 .password(encryptedChangedPassword)
@@ -91,19 +91,29 @@ public class AccountService {
 
     @Transactional(readOnly = true)
     public AccountDto.Response getAccount() {
-        Account findAccount = findVerifiedAccount();
+        Account findAccount = authUserUtils.getAuthUser();
 
         return AccountDto.Response.builder()
                 .accountId(findAccount.getAccountId())
-                .displayName(findVerifiedAccount().getDisplayName())
+                .displayName(authUserUtils.getAuthUser().getDisplayName())
                 .profileImageUrl(findAccount.getProfileImageUrl())
                 .point(findAccount.getPoint())
                 .build();
     }
 
     public void deleteAccount() {
-        Account findAccount = findVerifiedAccount();
+        Account findAccount = authUserUtils.getAuthUser();
+
+        s3Uploader.deleteImageFromS3(findAccount.getProfileImageUrl(), ACCOUNT_IMAGE_PROCESS_TYPE);
+
         accountRepository.delete(findAccount);
+    }
+
+    private void verifyExistsEmail(String email) {
+        Optional<Account> findAccount = accountRepository.findByEmail(email);
+
+        if(findAccount.isPresent())
+            throw new BusinessLogicException(ExceptionCode.ACCOUNT_ALREADY_EXISTS);
     }
 
     @Transactional(readOnly = true)
@@ -112,12 +122,6 @@ public class AccountService {
 
         return accountRepository.findById((Long) principal.get("accountId")).orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_FOUND));
-    }
-
-    private void verifyExistsEmail(String email) {
-        Optional<Account> findAccount = accountRepository.findByEmail(email);
-        if(findAccount.isPresent())
-            throw new BusinessLogicException(ExceptionCode.ACCOUNT_ALREADY_EXISTS);
     }
 
     public void isAuthIdMatching(Long accountId) {

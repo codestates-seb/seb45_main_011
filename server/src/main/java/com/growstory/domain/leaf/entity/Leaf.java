@@ -7,6 +7,10 @@ import com.growstory.domain.leaf.dto.LeafDto;
 import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.global.audit.BaseTimeEntity;
 import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,7 +18,7 @@ import java.util.List;
 
 @Entity
 @Getter
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Leaf extends BaseTimeEntity {
@@ -54,5 +58,7 @@ public class Leaf extends BaseTimeEntity {
     @OneToMany(mappedBy = "leaf")
     private List<Journal> journals;
 
-
+    public void updateAccount(Account account) {
+        this.account = account;
+    }
 }
