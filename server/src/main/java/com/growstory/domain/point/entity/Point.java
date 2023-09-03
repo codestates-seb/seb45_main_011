@@ -1,5 +1,6 @@
 package com.growstory.domain.point.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.growstory.domain.account.entity.Account;
 import com.growstory.global.audit.BaseTimeEntity;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ public class Point extends BaseTimeEntity {
 
     private int score;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;

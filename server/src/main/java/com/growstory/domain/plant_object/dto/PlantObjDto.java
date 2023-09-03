@@ -2,7 +2,7 @@ package com.growstory.domain.plant_object.dto;
 
 import com.growstory.domain.leaf.dto.LeafDto;
 import com.growstory.domain.plant_object.location.dto.LocationDto;
-import com.growstory.domain.point.entity.Point;
+import com.growstory.domain.point.dto.PointDto;
 import com.growstory.domain.product.dto.ProductDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -51,8 +51,8 @@ public class PlantObjDto {
     @Builder
     public static class GardenInfoResponse {
         private List<ProductDto.Response> products;
-        private Point point;
-        private List<PlantObjDto.Response> objResponseList;
+        private PointDto.Response point;
+        private List<PlantObjDto.Response> plantObjs;
 
     }
 }

@@ -1,5 +1,6 @@
 package com.growstory.domain.account.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.leaf.entity.Leaf;
 import com.growstory.domain.likes.entity.AccountLike;
@@ -44,12 +45,12 @@ public class Account extends BaseTimeEntity {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AccountLike> accountLikes;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private Point point;
 
     // 단방향관계, 1:N 디폴트 - 지연 로딩,
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "PLANT_OBJ_ID")
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlantObj> plantObjs;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -78,6 +79,12 @@ public class Account extends BaseTimeEntity {
         this.point = point;
     }
 
+    public void addPlantObj(PlantObj plantObj) {
+        this.plantObjs.add(plantObj);
+        if(plantObj.getAccount()!= this) {
+            plantObj.updateAccount(this);
+        }
+    }
     public void removePlantObj(PlantObj plantObj) {
         this.plantObjs.remove(plantObj);
     }

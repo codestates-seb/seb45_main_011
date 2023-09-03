@@ -7,6 +7,7 @@ import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.point.entity.Point;
 import com.growstory.domain.point.service.PointService;
 import com.growstory.domain.product.entity.Product;
+import com.growstory.global.auth.config.SecurityConfiguration;
 import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.auth.utils.CustomAuthorityUtils;
 import com.growstory.global.aws.service.S3Uploader;
@@ -14,6 +15,8 @@ import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -118,13 +121,16 @@ public class AccountService {
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_ALREADY_EXISTS);
     }
 
-    @Transactional(readOnly = true)
-    public Account findVerifiedAccount() {
-        Map<String, Object> principal = (Map<String, Object>) authUserUtils.getAuthUser();
-
-        return accountRepository.findById((Long) principal.get("accountId")).orElseThrow(() ->
-                new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_FOUND));
-    }
+//    @Transactional(readOnly = true)
+//    public Account findVerifiedAccount() {
+////        Map<String, Object> principal = (Map<String, Object>) authUserUtils.getAuthUser();
+//
+//        Account principal = authUserUtils.getAuthUser();
+//        return accountRepository.findById(principal.getAccountId()).orElseThrow(() ->
+//                new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_FOUND));
+////        return accountRepository.findById((Long) principal.get("accountId")).orElseThrow(() ->
+////                new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_FOUND));
+//    }
 
     @Transactional(readOnly = true)
     public Account findVerifiedAccount(Long accountId) {
@@ -133,8 +139,16 @@ public class AccountService {
     }
 
     public void isAuthIdMatching(Long accountId) {
-        Map<String, Object> claims = (Map<String, Object>) authUserUtils.getAuthUser();
-        if ((Long) claims.get("accountId") != accountId)
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Map<String, Object> claims = (Map<String, Object>) authentication.getPrincipal();
+
+        // 사용자가 인증되지 않거나 익명인지 확인하고 그렇다면 401 예외 던지기
+        if (authentication.getName() == null || authentication.getName().equals("anonymousUser")) {
+            throw new BusinessLogicException(ExceptionCode.ACCOUNT_UNAUTHORIZED);   // 🚨 예외처리
+        }
+
+        // 사용자가 일치하지 않으면 405 예외 던지기
+        if (Long.valueOf((Integer) claims.get("accountId")) != accountId)
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
     }
 

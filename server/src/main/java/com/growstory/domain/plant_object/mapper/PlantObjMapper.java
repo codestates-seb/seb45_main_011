@@ -29,7 +29,7 @@ public class PlantObjMapper {
             return null;
         }
 
-        long plantObjId = plantObj.getPlantObjectId();
+        long plantObjId = plantObj.getPlantObjId();
         String productName = plantObj.getProduct().getName();
         LocationDto.Response locationResponse = locationMapper.toLocationResponseDtoFrom(plantObj.getLocation());
         LeafDto.ResponseForGardenInfo leafResponse = leafMapper.toLeafResponseForGarden(plantObj.getLeaf());

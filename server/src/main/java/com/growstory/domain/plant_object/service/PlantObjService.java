@@ -7,14 +7,17 @@ import com.growstory.domain.leaf.service.LeafService;
 import com.growstory.domain.plant_object.dto.PlantObjDto;
 import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.plant_object.location.dto.LocationDto;
+import com.growstory.domain.plant_object.location.entity.Location;
 import com.growstory.domain.plant_object.location.service.LocationService;
 import com.growstory.domain.plant_object.mapper.PlantObjMapper;
 import com.growstory.domain.plant_object.repository.PlantObjRepository;
+import com.growstory.domain.point.dto.PointDto;
 import com.growstory.domain.point.entity.Point;
 import com.growstory.domain.product.dto.ProductDto;
 import com.growstory.domain.product.entity.Product;
 import com.growstory.domain.product.mapper.ProductMapper;
 import com.growstory.domain.product.service.ProductService;
+import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
 import org.springframework.stereotype.Service;
@@ -33,9 +36,10 @@ public class PlantObjService {
     private final LeafService leafService;
     private final PlantObjMapper plantObjMapper;
     private final ProductMapper productMapper;
+    private final AuthUserUtils authUserUtils;
 
     public PlantObjService(PlantObjRepository plantObjRepository, ProductService productService, AccountService accountService,
-                           LocationService locationService, LeafService leafService, PlantObjMapper plantObjMapper, ProductMapper productMapper) {
+                           LocationService locationService, LeafService leafService, PlantObjMapper plantObjMapper, ProductMapper productMapper, AuthUserUtils authUserUtils) {
         this.plantObjRepository = plantObjRepository;
         this.productService = productService;
         this.accountService = accountService;
@@ -43,6 +47,7 @@ public class PlantObjService {
         this.leafService = leafService;
         this.plantObjMapper = plantObjMapper;
         this.productMapper = productMapper;
+        this.authUserUtils = authUserUtils;
     }
 
     // GET : 정원 페이지의 모든 관련 정보 조회
@@ -52,17 +57,18 @@ public class PlantObjService {
         Account findAccount = accountService.findVerifiedAccount(accountId);
         //point (Response)
         Point userPoint = findAccount.getPoint();
+        PointDto.Response point = PointDto.Response.builder().score(userPoint.getScore()).build();
         //plantObjs (Response)
         List<PlantObj> plantObjList = findAccount.getPlantObjs();
-        List<PlantObjDto.Response> responseObjDtoList = plantObjMapper.toPlantObjResponseList(plantObjList);
+        List<PlantObjDto.Response> plantObjects = plantObjMapper.toPlantObjResponseList(plantObjList);
         //products (Response)
         List<Product> productList = productService.findAllProducts();
         List< ProductDto.Response> products
                 = productList.stream().map(productMapper::toResponseFrom).collect(Collectors.toList());
 
         return PlantObjDto.GardenInfoResponse.builder()
-                .objResponseList(responseObjDtoList)
-                .point(userPoint)
+                .plantObjs(plantObjects)
+                .point(point)
                 .products(products)
                 .build();
     }
@@ -73,7 +79,7 @@ public class PlantObjService {
         accountService.isAuthIdMatching(accountId);
 
         // 인증 정보를 바탕으로 Account 엔티티 조회
-        Account findAccount = accountService.findVerifiedAccount();
+        Account findAccount = authUserUtils.getAuthUser();
 
         // 클라이언트에서 전송된 productId 기반으로 product 정보 조회
         Product findProduct = productService.findVerifiedProduct(productId);
@@ -81,23 +87,32 @@ public class PlantObjService {
         // 조회한 계정, 포인트, 상품정보를 바탕으로 구입 메서드 실행
         accountService.buy(findAccount,findProduct);
 
-        //구입한 오브젝트를 DB에 저장
-        plantObjRepository.save(
+        //구입한 오브젝트를 DB에 저장 및 findAccount에 추가
+        findAccount.addPlantObj(
+                plantObjRepository.save(
                 PlantObj.builder()
                         .product(findProduct)
                         .leaf(null)
-                        .location(null)
-                        .build());
+                        .location(new Location())
+                        .account(findAccount)
+                        .build()
+                )
+        );
     }
 
     // PATCH : 오브젝트 되팔기
     public void refundPlantObj(Long accountId, Long plantObjId) {
         accountService.isAuthIdMatching(accountId);
 
-        Account findAccount = accountService.findVerifiedAccount();
+        Account findAccount = authUserUtils.getAuthUser();
         PlantObj plantObj = findVerifiedPlantObj(plantObjId);
 
-        accountService.resell(findAccount,plantObj);
+        if(findAccount.getPlantObjs().stream()
+                .anyMatch(objid -> objid == plantObj)) {
+             accountService.resell(findAccount,plantObj);
+        } else { // 사용자가 보유하고 있는 plantObj 중 해당 품목이 없다면 예외 던지기
+            throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
+        }
 
     }
 
@@ -123,10 +138,10 @@ public class PlantObjService {
 
         if(!isLeafNull) { // leafId가 null이 아닌경우 NPE에 대한 우려 없이 DB에서 조회
             Leaf findLeaf = leafService.findLeafEntityBy(leafId);
-            findPlantObj.update(findLeaf);
+            findPlantObj.updateLeaf(findLeaf);
         } else { // 전달된 leaf가 null인 경우
             Leaf nullLeaf = null;
-            findPlantObj.update(nullLeaf);
+            findPlantObj.updateLeaf(nullLeaf);
         }
     }
 
