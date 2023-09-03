@@ -49,4 +49,12 @@ public class LeafDto {
         private String place;
         private String content;
     }
+
+    @Getter
+    @Builder
+    public static class ResponseForGardenInfo {
+        private long id;
+        private String name;
+        private String imageUrl;
+    }
 }

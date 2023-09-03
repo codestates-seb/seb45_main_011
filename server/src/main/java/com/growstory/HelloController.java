@@ -18,7 +18,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class HelloController {
     private final Map<Long, Map<String, Object>> samples = new HashMap<>();
-
+    // 초기 데이터
     @PostConstruct
     public void init() {
         Map<String, Object> sample1 = new HashMap<>();

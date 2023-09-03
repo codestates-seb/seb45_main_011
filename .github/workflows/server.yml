@@ -9,7 +9,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      MYSQL_ID: ${{secrets.MYSQL_ID}}
+      RDS_ENDPOINT: ${{secrets.RDS_ENDPOINT}}
+      MYSQL_ID: ${{secrets.MYSQL_USERNAME}}
       MYSQL_PASSWORD: ${{secrets.MYSQL_PASSWORD}}
       working-directory: ./server
 
@@ -33,8 +34,9 @@ jobs:
         run: |
           docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
           docker build \
-          --build-arg MYSQL_ID="${{env.MYSQL_ID}}" \
+          --build-arg MYSQL_ID="${{env.MYSQL_USERNAME}}" \
           --build-arg MYSQL_PASSWORD="${{env.MYSQL_PASSWORD}}" \
+          --build-arg RDS_ENDPOINT="${{env.RDS_ENDPOINT}}" \
           -t growstory-cicd . 
           docker tag growstory-cicd dokyung94/growstory-cicd:${GITHUB_SHA::7}
           docker push dokyung94/growstory-cicd:${GITHUB_SHA::7}
@@ -44,7 +46,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
           aws-region: ap-northeast-2
 
       - name: SSH Connection and Deploy to Server

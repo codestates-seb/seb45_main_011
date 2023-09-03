@@ -102,6 +102,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
     private Object createURI(String accessToken, String refreshToken, Account account) {
         // HTTP 요청의 쿼리 파라미터나 헤더를 구성하기 위한 Map
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+        queryParams.add("accountId", account.getAccountId().toString());
         queryParams.add("displayName", account.getDisplayName());
         queryParams.add("profileImageUrl", account.getProfileImageUrl());
         queryParams.add("access_token", accessToken);

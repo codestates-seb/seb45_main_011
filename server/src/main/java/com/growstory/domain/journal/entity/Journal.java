@@ -22,6 +22,9 @@ public class Journal extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long journalId;
 
+    private String title;
+
+    @Lob
     private String content;
 
     private String imageUrl;

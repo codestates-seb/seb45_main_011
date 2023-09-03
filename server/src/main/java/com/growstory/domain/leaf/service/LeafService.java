@@ -33,7 +33,6 @@ public class LeafService {
 
         Leaf savedLeaf = leafRepository.save(Leaf.builder()
                 .leafName(leafPostDto.getLeafName())
-                .leafNickName(leafPostDto.getLeafNickName())
                 .leafImageUrl(leafImageUrl)
                 .place(leafPostDto.getPlace())
                 .content(leafPostDto.getContent())
@@ -55,7 +54,6 @@ public class LeafService {
 
         leafRepository.save(findLeaf.toBuilder()
                 .leafName(leafPatchDto.getLeafName())
-                .leafNickName(leafPatchDto.getLeafNickName())
                 .leafImageUrl(s3Uploader.uploadImageToS3(leafImage, LEAF_IMAGE_PROCESS_TYPE))
                 .place(leafPatchDto.getPlace())
                 .content(leafPatchDto.getContent())
@@ -74,6 +72,12 @@ public class LeafService {
         Account findAccount = authUserUtils.getAuthUser();
 
         return getLeafResponseDto(findVerifiedLeaf(findAccount.getAccountId(), leafId));
+    }
+
+    public Leaf findLeafEntityBy(Long leafId) {
+        Account findAccount = authUserUtils.getAuthUser();
+        Leaf findLeaf = findVerifiedLeaf(findAccount.getAccountId(), leafId);
+        return findLeaf;
     }
 
     public void deleteLeaf(Long leafId) {
@@ -97,7 +101,6 @@ public class LeafService {
     private LeafDto.Response getLeafResponseDto(Leaf findLeaf) {
         return LeafDto.Response.builder()
                 .leafId(findLeaf.getLeafId())
-                .leafNickName(findLeaf.getLeafNickName())
                 .leafImageUrl(findLeaf.getLeafImageUrl())
                 .place(findLeaf.getPlace())
                 .content(findLeaf.getContent())
