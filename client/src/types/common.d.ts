@@ -23,3 +23,14 @@ export interface DiaryInfo {
   title: string;
   content: string;
 }
+type InputValues = {
+  plantName: string;
+  title: string;
+  nickname: string;
+  password: string;
+  newPassword: string;
+  newPasswordCheck: string;
+  leafContent: string;
+  diaryContent: string;
+  hashTag: string;
+};
