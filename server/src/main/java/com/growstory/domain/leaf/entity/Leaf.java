@@ -3,14 +3,9 @@ package com.growstory.domain.leaf.entity;
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.journal.entity.Journal;
-import com.growstory.domain.leaf.dto.LeafDto;
 import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.global.audit.BaseTimeEntity;
 import lombok.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -54,8 +49,4 @@ public class Leaf extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "leaf")
     private List<Journal> journals;
-
-    public void updateAccount(Account account) {
-        this.account = account;
-    }
 }
