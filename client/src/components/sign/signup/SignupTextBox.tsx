@@ -10,23 +10,18 @@ import {
 
 import { SIGNIN_REQUIRE, SIGNIN_VAILDATION } from '@/constants/contents';
 import CommonButton from '@/components/common/CommonButton';
-interface FormValue {
-  email: string;
-  nickname: string;
-  password: string;
-  password_check: string;
-}
+import { SignupFormValue } from '@/types/common';
 
 export default function SignupTextBox() {
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
-  } = useForm<FormValue>();
+    formState: { errors, isSubmitting },
+  } = useForm<SignupFormValue>();
 
   // Submit Button
-  const handleOnSubmit: SubmitHandler<FormValue> = (data) => {
+  const handleOnSubmit: SubmitHandler<SignupFormValue> = (data) => {
     // 모든 항목이 정상적으로 입력되었을 때 처리할 로직으로 변경 예정
     console.log(data);
   };
@@ -86,6 +81,7 @@ export default function SignupTextBox() {
   // Input Register
   const emailRegister = {
     ...register('email', {
+      required: true,
       pattern: {
         value: /\S+@\S+\.\S+/,
         message: SIGNIN_VAILDATION.email,
@@ -95,6 +91,7 @@ export default function SignupTextBox() {
 
   const nicknameRsegister = {
     ...register('nickname', {
+      required: true,
       pattern: {
         value: /^[가-힣a-zA-Z]+$/,
         message: SIGNIN_VAILDATION.nickname,
@@ -108,6 +105,7 @@ export default function SignupTextBox() {
 
   const passwordRegister = {
     ...register('password', {
+      required: true,
       pattern: {
         value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,15}$/,
         message: SIGNIN_VAILDATION.pw,
@@ -169,6 +167,7 @@ export default function SignupTextBox() {
           size="sm"
           children="회원 가입"
           className="w-[121px] h-[44px] text-[20px]"
+          //  disabled={isSubmitting}
         />
       </div>
     </form>
