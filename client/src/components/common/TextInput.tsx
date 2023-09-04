@@ -1,7 +1,8 @@
 'use client';
 
 import { ErrorMessage } from '@hookform/error-message';
-import { FieldErrors, UseFormRegister, UseFormWatch } from 'react-hook-form';
+import { FieldErrors, UseFormRegister } from 'react-hook-form';
+
 import { DefaultProps, InputValues } from '@/types/common';
 
 type InputName = 'plantName' | 'title' | 'nickname';

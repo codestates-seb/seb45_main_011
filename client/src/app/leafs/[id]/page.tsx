@@ -1,12 +1,13 @@
 'use client';
 
+import Link from 'next/link';
+
 import LeafStore from '@/stores/leafStore';
 
 import AddLeafButton from '@/components/AddLeafButton';
 import Leaf from '@/components/common/Leaf';
 import PageTitle from '@/components/common/PageTitle';
 import Screws from '@/components/common/Screws';
-import Link from 'next/link';
 
 export default function Leafs({ params }: { params: { id: string } }) {
   // URL path ID

@@ -42,4 +42,6 @@ export type InputValues = {
   leafContent: string;
   diaryContent: string;
   hashTag: string;
+  image: FileList;
+  fieldState: string;
 };
