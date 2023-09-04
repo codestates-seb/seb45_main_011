@@ -1,18 +1,20 @@
 'use client';
-import { DefaultProps, LeafType } from '@/types/common';
+
 import Image from 'next/image';
-import LeafName from './LeafName';
 import { useState } from 'react';
+
+import { DefaultProps, LeafInfo } from '@/types/common';
+
 import ControlButton from './ControlButton';
+import LeafName from './LeafName';
 
 interface LeafProps extends DefaultProps {
   location: 'garden' | 'leaf';
-  data: LeafType;
+  data: LeafInfo;
 }
 
 export default function Leaf({ location, data }: LeafProps) {
   const [isClicked, setIsClicked] = useState(false);
-
   const handleLeafClick = () => {
     if (location === 'leaf') {
       console.log('식물 카드 목록에서 클릭된 Leaf');
@@ -55,7 +57,7 @@ export default function Leaf({ location, data }: LeafProps) {
         className="object-cover w-[200px] h-[160px] rounded-xl border-2 border-brown-50 shadow-outer/down"
       />
 
-      <LeafName name={'바질'} />
+      <LeafName name={data.leafNickname} />
     </div>
   );
 }
