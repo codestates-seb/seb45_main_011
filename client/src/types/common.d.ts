@@ -20,7 +20,10 @@ export type PlantInfo = {
   id: number;
   name: string;
   korName: string;
-  imageUrl: string;
+  imageUrlTable: {
+    sm: string;
+    lg: string;
+  };
   price: number;
 };
 

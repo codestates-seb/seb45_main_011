@@ -1,6 +1,12 @@
 export type PlantObj = {
   plantObjId: number;
   productName: string;
+  korName: string;
+  imageUrlTable: {
+    sm: string;
+    lg: string;
+  };
+  price: number;
   location: {
     locationId: number;
     isInstalled: boolean;
@@ -21,7 +27,10 @@ export interface RawGardenInfo {
   products: {
     name: string;
     korName: string;
-    imageUrl: string;
+    imageUrlTable: {
+      sm: string;
+      lg: string;
+    };
     price: number;
   }[];
 }
