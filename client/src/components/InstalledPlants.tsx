@@ -1,6 +1,7 @@
 'use client';
 
 import Plant from './Plant';
+import LeafTag from './LeafTag';
 
 import useGardenStore from '@/stores/gardenStore';
 import { PlantObj } from '@/types/data';
@@ -59,28 +60,38 @@ export default function InstalledPlants({
         const { plantObjId, productName, imageUrlTable, location, leafDto } =
           plant;
 
+        const imageSize = productName.startsWith('building') ? 'lg' : 'sm';
         const plantSize = leafDto && leafDto.journalCount >= 10 ? 'lg' : 'sm';
-        const plantOpacity = isEditMode ? 'opacity-60' : 'opacity-100';
+
+        const plantStyle = isEditMode ? 'opacity-60' : 'opacity-100';
+        const divStyle = imageSize === 'lg' ? 'w-[120px]' : 'w-[60px]';
+        const tagStyle = isEditMode ? 'hidden' : 'block';
         const buttonStyle = isEditMode ? 'block' : 'hidden';
 
         return (
           <div
             key={plantObjId}
             data-plant-id={plantObjId}
-            className={`absolute flex flex-col items-center cursor-pointer`}
+            className={`absolute flex flex-col items-center cursor-pointer ${divStyle}`}
             style={{
               top: `${location.y * 60}px`,
               left: `${location.x * 60}px`,
             }}>
+            {leafDto && (
+              <LeafTag
+                name={leafDto.leafName}
+                className={`-mt-12 mb-4 ${tagStyle}`}
+              />
+            )}
             <Plant
               name={productName}
               imageUrl={imageUrlTable[plantSize]}
               data-plant-id={plantObjId}
-              className={`${plantOpacity}`}
+              className={`${plantStyle}`}
             />
             <button
               onClick={handleRestore}
-              className={`px-2 py-[6px] border-2 border-brown-40 rounded-2xl bg-[url('/assets/img/bg_wood_light.png')] text-brown-40 font-bold text-xs leading-3 shadow-outer/down ${buttonStyle}`}>
+              className={`px-2 py-[6px] border-2 border-brown-40 rounded-2xl bg-contain bg-repeat bg-[url('/assets/img/bg_wood_light.png')] text-brown-40 font-bold text-xs leading-3 shadow-outer/down ${buttonStyle}`}>
               보관
             </button>
           </div>

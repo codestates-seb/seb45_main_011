@@ -1,9 +1,11 @@
 'use client';
 
+import useGardenStore from '@/stores/gardenStore';
+import useModalStore from '@/stores/modalStore';
+
 import Plant from './Plant';
 import CommonButton from './common/CommonButton';
 
-import useGardenStore from '@/stores/gardenStore';
 import { PlantInfo } from '@/types/common';
 import { PLANT_SIZES, PLANT_CARD_BUTTON_CONTENTS } from '@/constants/contents';
 
@@ -15,14 +17,26 @@ interface PlantCardProps {
 export default function PlantCard({ usage, plantInfo }: PlantCardProps) {
   const {
     sidebarState,
+    shop,
     inventory,
     plants,
     setIsEditMode,
     setInventory,
     setPlants,
+    setPurchaseTarget,
   } = useGardenStore();
+  const { setIsPurchaseInfoModalOpen } = useModalStore();
 
-  const handlePurchase = () => {};
+  const handlePurchase = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (e.target instanceof HTMLElement) {
+      const targetId = e.target.closest('li')?.dataset.shopId;
+      const item = shop.find(({ id }) => id === Number(targetId)) || null;
+
+      setPurchaseTarget(item);
+    }
+
+    setIsPurchaseInfoModalOpen(true);
+  };
 
   const handleInstall = (e: React.MouseEvent<HTMLButtonElement>) => {
     setIsEditMode(true);
@@ -50,12 +64,16 @@ export default function PlantCard({ usage, plantInfo }: PlantCardProps) {
     }
   };
 
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) =>
+    sidebarState === 'shop' ? handlePurchase(e) : handleInstall(e);
+
   const { id, name, korName, imageUrlTable, price } = plantInfo;
 
   const plantSize = name.startsWith('building') ? 'lg' : 'sm';
 
   return (
     <li
+      data-shop-id={sidebarState === 'shop' && id}
       data-plant-id={sidebarState === 'inventory' && id}
       className={`flex flex-col gap-1 items-center w-[126px] border-2 border-brown-50 rounded-lg bg-repeat bg-[url('/assets/img/bg_paper.png')] font-bold shadow-outer/down ${PLANT_CARD_SIZE[usage]}`}>
       <Plant
@@ -74,7 +92,7 @@ export default function PlantCard({ usage, plantInfo }: PlantCardProps) {
         </p>
       )}
       <CommonButton
-        handleClick={handleInstall}
+        handleClick={handleClick}
         usage="button"
         size="sm"
         className="my-[10px]">

@@ -30,8 +30,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko">
-      <body className={`relative ${galmuri.className}`}>
+    <html lang="ko" className={`h-full ${galmuri.className}`}>
+      <body className="h-full relative bg-[#63A44A]">
         {children}
         <ul className="flex flex-col gap-5 p-5 mt-9 border-4 border-gray-30">
           <li>
