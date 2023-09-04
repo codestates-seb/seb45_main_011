@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class JournalImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long journalImage;
+    private Long journalImageId;
 
     @Column(name = "ORIGIN_NAME", nullable = false)
     private String originName;
@@ -24,8 +24,14 @@ public class JournalImage {
     @Column(name = "IMAGE_URL", nullable = false)
     private String imageUrl;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "JOURNAL_ID", nullable = false)
     private Journal journal;
 
+    public void updateJournal(Journal journal) {
+        this.journal = journal;
+        if(journal.getJournalImage()!=this) {
+            journal.updateImg(this);
+        }
+    }
 }

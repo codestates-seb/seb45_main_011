@@ -72,6 +72,11 @@ public class LeafService {
         return getLeafResponseDto(findVerifiedLeaf(findAccount.getAccountId(), leafId));
     }
 
+    public Leaf findLeafEntityWithNoAuth(Long leafId) {
+        return leafRepository.findById(leafId).orElseThrow(() ->
+                    new BusinessLogicException(ExceptionCode.LEAF_NOT_FOUND));
+    }
+
     public Leaf findLeafEntityBy(Long leafId) {
         Account findAccount = authUserUtils.getAuthUser();
         Leaf findLeaf = findVerifiedLeaf(findAccount.getAccountId(), leafId);
