@@ -36,12 +36,17 @@ public class Account extends BaseTimeEntity {
     @Column(name = "PROFILE_IMAGE_URL")
     private String profileImageUrl;
 
+    // 자신이 좋아요 받은 횟수
+    @Column
+    private int likeNum = 0;
+
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Board> boards = new ArrayList<>();
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Leaf> leaves = new ArrayList<>();
 
+    // 자신이 좋아요 누른 계정 리스트
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AccountLike> accountLikes;
 
@@ -60,6 +65,10 @@ public class Account extends BaseTimeEntity {
         leaves.add(leaf);
     }
 
+    public void addAccountLike(AccountLike accountLike) {
+        accountLikes.add(accountLike);
+    }
+
     public Account(Long accountId, String email, String displayName, String password, String profileImageUrl, List<String> roles) {
         this.accountId = accountId;
         this.email = email;
@@ -69,6 +78,9 @@ public class Account extends BaseTimeEntity {
         this.roles = roles;
     }
 
+    public void updateLikeNum(int num) {
+        this.likeNum += num;
+    }
 
     public void updatePoint(Point point) {
         this.point = point;
