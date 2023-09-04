@@ -28,12 +28,6 @@ public class Leaf extends BaseTimeEntity {
     @Column(nullable = false)
     private String content;
 
-    private LocalDate startDate;
-
-    private LocalDate waterDate;
-
-    private String place;
-
     @Column(nullable = false)
     private String leafImageUrl;
 
