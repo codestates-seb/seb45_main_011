@@ -5,16 +5,12 @@ import { PlantInfo } from '@/types/common';
 
 type SidebarState = 'shop' | 'inventory';
 
-export interface ProcessedPlant extends PlantObj {
-  isClicked: boolean;
-}
-
-interface TargetPlant extends ProcessedPlant {
-  imageUrl: string;
+export interface TargetPlant extends PlantObj {
+  plantSize: 'sm' | 'lg';
   imageSize: 'sm' | 'lg';
 }
 
-export type Cache = { inventory: PlantInfo[]; plants: ProcessedPlant[] };
+export type Cache = { inventory: PlantInfo[]; plants: PlantObj[] };
 
 interface GardenState {
   isEditMode: boolean;
@@ -22,7 +18,7 @@ interface GardenState {
   point: number;
   shop: [] | PlantInfo[];
   inventory: [] | PlantInfo[];
-  plants: [] | ProcessedPlant[];
+  plants: [] | PlantObj[];
   targetPlant: TargetPlant | null;
   cache: Cache | null;
   setIsEditMode: (isEditMode: boolean) => void;
@@ -31,7 +27,7 @@ interface GardenState {
   setShop: (shop: PlantInfo[]) => void;
   setInventory: (inventory: PlantInfo[]) => void;
   putInInventory: (plant: PlantInfo) => void;
-  setPlants: (plants: ProcessedPlant[]) => void;
+  setPlants: (plants: PlantObj[]) => void;
   setTargetPlant: (targetPlant: TargetPlant | null) => void;
   setCache: (cache: Cache) => void;
 }

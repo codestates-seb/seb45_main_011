@@ -2,8 +2,8 @@
 
 import Image from 'next/image';
 import { useEffect } from 'react';
-import useGardenStore from '@/stores/gardenStore';
 
+import useGardenStore from '@/stores/gardenStore';
 import EditModeButton from '@/components/EditModeButton';
 import GardenMap from '@/components/GardenMap';
 import GardenSidebar from '@/components/GardenSidebar';
@@ -39,12 +39,10 @@ export default function Garden() {
         [] as PlantInfo[] | [],
       );
 
-    const plants = plantObjs.map((plant) => ({ ...plant, isClicked: false }));
-
     setPoint(point);
     setShop(processedProducts);
     setInventory(inventory);
-    setPlants(plants);
+    setPlants(plantObjs);
   }, []);
 
   return (
