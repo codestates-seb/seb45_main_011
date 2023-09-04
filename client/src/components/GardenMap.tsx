@@ -1,16 +1,16 @@
 'use client';
 
 import CommonButton from './common/CommonButton';
+import EditModeInfo from './EditModeInfo';
+import MapController from './MapController';
 import GardenSquares from './GardenSquares';
+import InstalledPlants from './InstalledPlants';
+import TrackedPlant from './TrackedPlant';
 
 import useGardenStore, { Cache } from '@/stores/gardenStore';
 import useMouseTrack from '@/hooks/useMouseTrack';
 import { getInstallable } from '@/utils/getInstallable';
 import { getInitialMapInfo } from '@/utils/getInitialMapInfo';
-import InstalledPlants from './InstalledPlants';
-import EditModeInfo from './EditModeInfo';
-import TrackedPlant from './TrackedPlant';
-import MapController from './MapController';
 
 export default function GardenMap() {
   const {
@@ -61,19 +61,17 @@ export default function GardenMap() {
     if (e.target instanceof HTMLImageElement) {
       if (targetPlant || !isEditMode) return;
 
-      const targetId = e.target.dataset && (e.target.dataset.plantId as string);
+      const targetId = e.target.dataset.plantId;
       const newPlants = plants.map((plant) => {
-        if (+targetId !== plant.plantObjId)
-          return { ...plant, isClicked: false };
+        if (Number(targetId) !== plant.plantObjId) return plant;
 
         const plantSize =
           plant.leafDto && plant.leafDto.journalCount >= 10 ? 'lg' : 'sm';
-        const imageUrl = `${process.env.NEXT_PUBLIC_PRODUCTS_IMAGE_URL}${plant.productName}_${plantSize}.svg`;
         const imageSize = plant.productName.startsWith('building')
           ? 'lg'
           : 'sm';
 
-        setTargetPlant({ ...plant, imageUrl, imageSize });
+        setTargetPlant({ ...plant, plantSize, imageSize });
 
         return {
           ...plant,
@@ -92,27 +90,30 @@ export default function GardenMap() {
 
       const x = Number(e.target.dataset.positionX);
       const y = Number(e.target.dataset.positionY);
-      const isLargeSize = targetPlant?.productName.startsWith('building');
 
       if (
-        isLargeSize &&
+        targetPlant.plantSize === 'lg' &&
         !uninstallableLocations.every((position) =>
           getInstallable(x, y, position, 'lg'),
         )
       )
         return;
 
-      const newPlant = {
-        ...targetPlant,
-        location: {
-          ...targetPlant.location,
-          x,
-          y,
-        },
-        isInstalled: true,
-      };
+      const newPlants = plants.map((plant) => {
+        if (targetPlant.plantObjId !== plant.plantObjId) return plant;
 
-      setPlants([...plants, newPlant]);
+        return {
+          ...plant,
+          location: {
+            ...plant.location,
+            isInstalled: true,
+            x,
+            y,
+          },
+        };
+      });
+
+      setPlants(newPlants);
       setTargetPlant(null);
     }
   };
