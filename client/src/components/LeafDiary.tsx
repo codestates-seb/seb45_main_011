@@ -4,9 +4,10 @@ import EmptyDiary from './EmptyDiary';
 import Diary from './Diary';
 
 interface LeafDiaryProps {
+  leafId: string;
   diary: DiaryInfo[];
 }
-export default function LeafDiary({ diary }: LeafDiaryProps) {
+export default function LeafDiary({ leafId, diary }: LeafDiaryProps) {
   return (
     <>
       {diary.length ? (
@@ -16,7 +17,7 @@ export default function LeafDiary({ diary }: LeafDiaryProps) {
           ))}
         </ul>
       ) : (
-        <EmptyDiary />
+        <EmptyDiary leafId={leafId} />
       )}
     </>
   );
