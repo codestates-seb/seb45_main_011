@@ -22,11 +22,7 @@ public class PlantObj {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long plantObjectId;
-
-    private String nickName;
-
-    private String imageUrl;
+    private Long plantObjId;
 
 
     @OneToOne
@@ -42,8 +38,22 @@ public class PlantObj {
     @JoinColumn(name = "LEAF_ID")
     private Leaf leaf;
 
+    @ManyToOne
+    @JoinColumn(name = "ACCOUNT_ID")
+    private Account account;
 
-    public void update(Leaf leaf) {
+
+    public void updateLeaf(Leaf leaf) {
         this.leaf = leaf;
+        if(leaf.getPlantObj() != this) {
+            leaf.updatePlantObj(this);
+        }
+    }
+
+    public void updateAccount(Account account) {
+        this.account=account;
+        if(account.getPlantObjs().stream().noneMatch(plantObj -> plantObj.getPlantObjId()!=this.plantObjId)) {
+            account.addPlantObj(this);
+        }
     }
 }

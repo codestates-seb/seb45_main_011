@@ -3,8 +3,11 @@ package com.growstory.domain.account.service;
 import com.growstory.domain.account.dto.AccountDto;
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.account.repository.AccountRepository;
+import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.point.entity.Point;
 import com.growstory.domain.point.service.PointService;
+import com.growstory.domain.product.entity.Product;
+import com.growstory.global.auth.config.SecurityConfiguration;
 import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.auth.utils.CustomAuthorityUtils;
 import com.growstory.global.aws.service.S3Uploader;
@@ -12,6 +15,8 @@ import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -116,32 +121,47 @@ public class AccountService {
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_ALREADY_EXISTS);
     }
 
+    @Transactional(readOnly = true)
+    public Account findVerifiedAccount(Long accountId) {
+        return accountRepository.findById(accountId).orElseThrow(() ->
+                new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_FOUND));
+    }
+
     public void isAuthIdMatching(Long accountId) {
-        Map<String, Object> claims = (Map<String, Object>) authUserUtils.getAuthUser();
-        if ((Long) claims.get("accountId") != accountId)
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Map<String, Object> claims = (Map<String, Object>) authentication.getPrincipal();
+
+        // 사용자가 인증되지 않거나 익명인지 확인하고 그렇다면 401 예외 던지기
+        if (authentication.getName() == null || authentication.getName().equals("anonymousUser")) {
+            throw new BusinessLogicException(ExceptionCode.ACCOUNT_UNAUTHORIZED);   // 🚨 예외처리
+        }
+
+        // 사용자가 일치하지 않으면 405 예외 던지기
+        if (Long.valueOf((Integer) claims.get("accountId")) != accountId)
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
     }
 
-    public void buy(Account account, int price) {
+    public void buy(Account account, Product product) {
         Point accountPoint = account.getPoint();
+        int price = product.getPrice();
         int userPointScore = account.getPoint().getScore();
         if(price > userPointScore) {
             throw new BusinessLogicException(ExceptionCode.NOT_ENOUGH_POINTS);
         } else { // price <= this.point.getScore()
             int updatedScore = accountPoint.getScore()-price;
-//            point.toBuilder().score(updatedScore).build(); //🔥 [refact] 더티체킹 여부 체크
-//            account.toBuilder().point(point); //🔥 [refact] 필요?
             accountPoint.updateScore(updatedScore);
-            account.updatePoint(accountPoint);
         }
     }
 
-    public void resell(Account account, int price) {
+    public void resell(Account account, PlantObj plantObj) {
         Point accountPoint = account.getPoint();
         int userPointScore = account.getPoint().getScore();
 
-        int updatedScore = userPointScore + price;
+        int updatedScore = userPointScore + plantObj.getProduct().getPrice();
         accountPoint.updateScore(updatedScore);
-        account.updatePoint(accountPoint);
+        // 부모 객체에서 해당 PlantObj를 제거하여 고아 객체 -> 해당 인스턴스 삭제
+        account.removePlantObj(plantObj);
     }
+
+
 }

@@ -43,4 +43,15 @@ public class Leaf extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "leaf")
     private List<Journal> journals;
+
+    public void updateAccount(Account account) {
+        this.account = account;
+    }
+
+    public void updatePlantObj(PlantObj plantObj) {
+        this.plantObj = plantObj;
+        if(plantObj.getLeaf()!=this) {
+            plantObj.updateLeaf(this);
+        }
+    }
 }

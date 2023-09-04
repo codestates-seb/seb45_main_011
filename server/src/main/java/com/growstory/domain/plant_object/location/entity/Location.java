@@ -1,13 +1,13 @@
 package com.growstory.domain.plant_object.location.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 
-@NoArgsConstructor
 @Getter
 @Entity
 public class Location {
@@ -23,6 +23,12 @@ public class Location {
 
     @Column(name = "IS_INSTALLED", nullable = false)
     private boolean isInstalled = false; // 구입 했을 당시에는 미설치된 상황이므로 초기값 false
+
+    public Location() {
+        this.x = 0;
+        this.y = 0;
+        this.isInstalled = false;
+    }
 
     public void update(int x, int y, boolean isInstalled) {
         this.x = x;
