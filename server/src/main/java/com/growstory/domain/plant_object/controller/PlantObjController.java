@@ -2,6 +2,7 @@ package com.growstory.domain.plant_object.controller;
 
 import com.growstory.domain.plant_object.dto.PlantObjDto;
 import com.growstory.domain.plant_object.service.PlantObjService;
+import com.growstory.global.response.SingleResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,18 +24,21 @@ public class PlantObjController {
 
     // GET : 정원 페이지의 모든 관련 정보 조회
     @GetMapping("/{account-id}")
-    public ResponseEntity<HttpStatus> getGardenInfo(@Positive @PathVariable("account-id")Long accountId) {
+    public ResponseEntity<SingleResponseDto> getGardenInfo(@Positive @PathVariable("account-id")Long accountId) {
 
         PlantObjDto.GardenInfoResponse gardenInfo = plantObjService.finAllGardenInfo(accountId);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(SingleResponseDto.builder()
+                .data(gardenInfo)
+                .status(HttpStatus.OK.value())
+                .message(HttpStatus.OK.getReasonPhrase())
+                .build());
     }
 
     // POST : 유저 포인트로 오브젝트 구입
     @PostMapping("/{account-id}/purchase")
     public ResponseEntity<HttpStatus> postPurchaseObj(@Positive @PathVariable("account-id") Long accountId,
-                                                      @RequestParam("product-id") Long productId,
-                                                      @RequestBody PlantObjDto.Post boughtObj) {
+                                                      @RequestParam("product-id") Long productId) {
         plantObjService.buyProduct(accountId, productId);
 
         return ResponseEntity.noContent().build();
@@ -43,16 +47,16 @@ public class PlantObjController {
     // DELETE : 오브젝트 되팔기
     @DeleteMapping("/{account-id}/refund")
     public ResponseEntity<HttpStatus> deleteRefundObj(@Positive @PathVariable("account-id") Long accountId,
-                                                      @RequestParam("product-id") Long productId) {
-        plantObjService.refundPlantObj(accountId, productId);
+                                                      @RequestParam("plantobj-id") Long plantObjId) {
+        plantObjService.refundPlantObj(accountId, plantObjId);
 
         return ResponseEntity.noContent().build();
     }
 
     // POST : 오브젝트 배치 (편집 완료)
-    @PostMapping("/{account-id}/location")
-    public ResponseEntity<HttpStatus> postLocation(@Positive @PathVariable("account-id") Long accountId,
-                                                   @RequestBody List<PlantObjDto.PatchLocation> patchObjLocations) {
+    @PatchMapping("/{account-id}/location")
+    public ResponseEntity<HttpStatus> patchLocations(@Positive @PathVariable("account-id") Long accountId,
+                                                    @RequestBody List<PlantObjDto.PatchLocation> patchObjLocations) {
         plantObjService.saveLocation(accountId, patchObjLocations);
 
         return ResponseEntity.noContent().build();

@@ -26,9 +26,9 @@ public class LocationService {
         Location findLocation = findVerifiedLocation(locationDto.getLocationId());
 
         boolean isChanged =
-                    findLocation.getX() == locationDto.getX() &&
-                    findLocation.getY() == locationDto.getY() &&
-                    findLocation.isInstalled() == locationDto.isInstalled();
+                    findLocation.getX() != locationDto.getX() ||
+                    findLocation.getY() != locationDto.getY() ||
+                    findLocation.isInstalled() != locationDto.isInstalled();
 
         if(isChanged) {
             findLocation.update(locationDto.getX(), locationDto.getY(), locationDto.isInstalled());
