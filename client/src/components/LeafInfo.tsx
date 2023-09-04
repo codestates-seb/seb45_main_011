@@ -6,6 +6,11 @@ import PageTitle from './common/PageTitle';
 import Screws from './common/Screws';
 import CommonButton from './common/CommonButton';
 import LeafDiary from './LeafDiary';
+import useModalStore from '@/stores/modalStore';
+import ModalPortal from './common/ModalPortal';
+import Modal from './common/Modal';
+import { useState } from 'react';
+import DiaryForm from './DiaryForm';
 
 interface LeafInfoProps {
   leaf: LeafDataInfo;
@@ -19,7 +24,7 @@ const getDayElapsed = (now: Date, day: Date) => {
 
 export default function LeafInfo({ leaf }: LeafInfoProps) {
   if (leaf === null) return;
-
+  const [modalCategory, setModalCategory] = useState('');
   const startDay = new Date(leaf.start);
   const now = new Date();
   /** 식물 카드를 등록한 날로부터 경과한 일수 */
@@ -29,9 +34,20 @@ export default function LeafInfo({ leaf }: LeafInfoProps) {
     ? getDayElapsed(now, new Date(leaf.diary[leaf.diary.length - 1].date)) +
       '일 전'
     : null;
-
+  const isModalOpen = useModalStore((state) => state.isDiaryModalOpen);
+  const setIsModalOpen = useModalStore((state) => state.setIsDiaryModalOpen);
+  const handleDiaryAddAndEdit = (e: React.MouseEvent, category: string) => {
+    setModalCategory(category);
+    setIsModalOpen(true);
+    console.log('edit');
+  };
+  const handleDiaryDelete = (e: React.MouseEvent, category: string) => {
+    setModalCategory(category);
+    setIsModalOpen(true);
+    console.log('delete');
+  };
   return (
-    <div className="flex justify-center items-center">
+    <div className="w-full flex justify-center items-center">
       <div className="relative w-full max-w-[720px] h-[645px] border-gradient rounded-xl">
         <Screws />
         <div className="h-full p-5">
@@ -52,7 +68,10 @@ export default function LeafInfo({ leaf }: LeafInfoProps) {
                 <CommonButton usage="button" size="sm">
                   정원에 설치하기
                 </CommonButton>
-                <CommonButton usage="button" size="sm">
+                <CommonButton
+                  usage="button"
+                  size="sm"
+                  handleAddDiary={(e) => handleDiaryAddAndEdit(e, 'add')}>
                   일지 작성
                 </CommonButton>
               </div>
@@ -74,6 +93,19 @@ export default function LeafInfo({ leaf }: LeafInfoProps) {
           </div>
         </div>
       </div>
+      {isModalOpen ? (
+        <ModalPortal>
+          <Modal>
+            {modalCategory === 'add' ? (
+              <DiaryForm />
+            ) : modalCategory === 'edit' ? (
+              <div>edit</div>
+            ) : (
+              <div>delete</div>
+            )}
+          </Modal>
+        </ModalPortal>
+      ) : null}
     </div>
   );
 }

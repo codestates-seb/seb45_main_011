@@ -37,7 +37,6 @@ export default function Leaf({ location, data }: LeafProps) {
       router.push(`/leaf/${userId}/${data.leafId}`);
       return null;
     }
-
     setIsClicked((previous) => !previous);
   };
 
@@ -45,15 +44,18 @@ export default function Leaf({ location, data }: LeafProps) {
     e.stopPropagation();
     router.push(`/leaf/edit/${userId}/${data.leafId}`);
   };
+
   const handleDeleteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     setIsLeafDeleteModalOpen(true);
   };
+
   const handleDeleteClickAtModal = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     setIsLeafDeleteModalOpen(false);
     // fetch(...)
   };
+
   const handleCancelClickAtModal = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     setIsLeafDeleteModalOpen(false);

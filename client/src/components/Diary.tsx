@@ -22,7 +22,6 @@ export default function Diary({ item }: { item: DiaryInfo }) {
   const replaceContent = item?.content.replace(/\n/g, '<br/>');
 
   const startDay = new Date(item.date);
-
   const [month, day] = [startDay.getMonth() + 1, startDay.getDate()];
 
   return (
@@ -33,8 +32,14 @@ export default function Diary({ item }: { item: DiaryInfo }) {
         </span>
         <div className="relative grid grid-cols-1 gap-3 w-full max-w-[331px] max-h-[137px] p-4 pb-[0.9rem] bg-brown-10 border-2 border-brown-50 rounded-lg">
           <div className="absolute right-[10px] top-[10px] flex gap-2">
-            <ControlButton usage="edit" />
-            <ControlButton usage="delete" />
+            <ControlButton
+              usage="edit"
+              // handleDiaryEdit={handleDiaryAddAndEdit}
+            />
+            <ControlButton
+              usage="delete"
+              // handleDiaryDelete={handleDiaryDelete}
+            />
           </div>
           <p className="text-[0.875rem] font-bold text-brown-80 ">
             {item.title}

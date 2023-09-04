@@ -48,4 +48,5 @@ export type InputValues = {
   hashTag: string;
   image: FileList;
   fieldState: string;
+  isBoard: boolean;
 };

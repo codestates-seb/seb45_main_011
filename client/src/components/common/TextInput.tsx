@@ -91,6 +91,6 @@ export default function TextInput({
 
 const INPUT_SIZE = {
   plantName: 'max-w-[248px] ',
-  title: 'max-w-[369px ]',
+  title: 'max-w-[369px]',
   nickname: 'max-w-[248px]',
 };
