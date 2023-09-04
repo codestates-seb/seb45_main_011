@@ -31,45 +31,47 @@ export default function LeafInfo({ leaf }: LeafInfoProps) {
     : null;
 
   return (
-    <div className="relative w-full max-w-[720px] h-[645px] border-gradient rounded-xl">
-      <Screws />
-      <div className="h-full p-5">
-        <div className="h-full overflow-y-scroll scrollbar">
-          <div className="flex flex-col items-center">
-            <PageTitle className=" mb-5" text={leaf.leafNickname} />
-            <Image
-              className="w-[232px] h-[180px] object-cover mb-2 border-2 border-brown-50 rounded-lg"
-              src={leaf.imageUrl}
-              alt={leaf.leafNickname}
-              width={232}
-              height={180}
-            />
-            <p className="p-[10px] mb-5 max-w-[232px] w-full bg-brown-10 border-2 border-brown-50 rounded-lg text-xs font-normal text-center">
-              {leaf.content}
-            </p>
-            <div className="flex gap-2 mb-3">
-              <CommonButton usage="button" size="sm">
-                정원에 설치하기
-              </CommonButton>
-              <CommonButton usage="button" size="sm">
-                일지 작성
-              </CommonButton>
+    <div className="flex justify-center items-center">
+      <div className="relative w-full max-w-[720px] h-[645px] border-gradient rounded-xl">
+        <Screws />
+        <div className="h-full p-5">
+          <div className="h-full overflow-y-scroll scrollbar">
+            <div className="flex flex-col items-center">
+              <PageTitle className=" mb-5" text={leaf.leafNickname} />
+              <Image
+                className="w-[232px] h-[180px] object-cover mb-2 border-2 border-brown-50 rounded-lg"
+                src={leaf.imageUrl}
+                alt={leaf.leafNickname}
+                width={232}
+                height={180}
+              />
+              <p className="p-[10px] mb-5 max-w-[232px] w-full bg-brown-10 border-2 border-brown-50 rounded-lg text-xs font-normal text-center">
+                {leaf.content}
+              </p>
+              <div className="flex gap-2 mb-3">
+                <CommonButton usage="button" size="sm">
+                  정원에 설치하기
+                </CommonButton>
+                <CommonButton usage="button" size="sm">
+                  일지 작성
+                </CommonButton>
+              </div>
+              <p className="mb-2 font-bold text-sm leading-4 text-brown-70">
+                키우기 시작한 지 :{' '}
+                <b className="text-[1rem] font-bold leading-4 text-brown-80">
+                  {daysSinceStart}일 째
+                </b>
+              </p>
+              <p className="mb-6 font-bold text-sm leading-4 text-brown-70">
+                최근 관리 :{' '}
+                <b className="text-[1rem] font-bold leading-4 text-brown-80">
+                  {recentManaged || ' - '}
+                </b>
+              </p>
             </div>
-            <p className="mb-2 font-bold text-sm leading-4 text-brown-70">
-              키우기 시작한 지 :{' '}
-              <b className="text-[1rem] font-bold leading-4 text-brown-80">
-                {daysSinceStart}일 째
-              </b>
-            </p>
-            <p className="mb-6 font-bold text-sm leading-4 text-brown-70">
-              최근 관리 :{' '}
-              <b className="text-[1rem] font-bold leading-4 text-brown-80">
-                {recentManaged || ' - '}
-              </b>
-            </p>
-          </div>
 
-          <LeafDiary leafId={leaf.leafId} diary={leaf.diary || []} />
+            <LeafDiary leafId={String(leaf.leafId)} diary={leaf.diary || []} />
+          </div>
         </div>
       </div>
     </div>

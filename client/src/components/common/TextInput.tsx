@@ -1,7 +1,7 @@
 'use client';
 
 import { ErrorMessage } from '@hookform/error-message';
-import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import { FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 
 import { DefaultProps, InputValues } from '@/types/common';
 
@@ -12,6 +12,8 @@ interface TextInputProps extends DefaultProps {
   register: UseFormRegister<InputValues>;
   errors: FieldErrors<InputValues>;
   required?: boolean;
+  setValue?: UseFormSetValue<InputValues>;
+  value?: string;
 }
 
 /**
@@ -62,10 +64,11 @@ export default function TextInput({
   register,
   errors,
   required,
+  value,
+  setValue,
 }: TextInputProps) {
   const TypeFormat = getTypeFormat(name);
-
-  if (TypeFormat === null) return null;
+  if (setValue) setValue(name, value || '');
   return (
     <div className={`w-full flex flex-col ', ${INPUT_SIZE[name]}`}>
       <input

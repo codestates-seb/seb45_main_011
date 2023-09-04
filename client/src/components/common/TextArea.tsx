@@ -1,7 +1,7 @@
 'use client';
 
 import { ErrorMessage } from '@hookform/error-message';
-import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import { FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 
 import { DefaultProps, InputValues } from '@/types/common';
 
@@ -12,6 +12,8 @@ interface TextAreaProps extends DefaultProps {
   register: UseFormRegister<InputValues>;
   errors: FieldErrors<InputValues>;
   required?: boolean;
+  setValue?: UseFormSetValue<InputValues>;
+  value?: string;
 }
 const getTypeFormat = (name: string) => {
   if (name === 'leafContent') {
@@ -43,8 +45,11 @@ export default function TextArea({
   register,
   errors,
   required,
+  setValue,
+  value,
 }: TextAreaProps) {
   const TypeFormat = getTypeFormat(name);
+  if (setValue) setValue(name, value || '');
   return (
     <div className={`flex flex-col w-full ${TEXTAREA_CONTAINER_SIZE[name]}`}>
       <textarea
@@ -54,7 +59,7 @@ export default function TextArea({
         {...register(name, TypeFormat?.validationSchema)}
       />
 
-      <div className="h-[12px] mt-[8px] pl-3 w-full text-[0.6rem] leading-3 text-red-50">
+      <div className="h-[12px] mt-[8px] pl-3 w-full text-[0.6rem] l+eading-3 text-red-50">
         <ErrorMessage
           errors={errors}
           name={name}

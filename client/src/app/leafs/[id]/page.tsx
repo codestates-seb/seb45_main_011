@@ -1,8 +1,7 @@
 'use client';
 
-import Link from 'next/link';
-
 import LeafStore from '@/stores/leafStore';
+import UserStore from '@/stores/userStore';
 
 import AddLeafButton from '@/components/AddLeafButton';
 import Leaf from '@/components/common/Leaf';
@@ -11,8 +10,11 @@ import Screws from '@/components/common/Screws';
 
 export default function Leafs({ params }: { params: { id: string } }) {
   // URL path ID
+  const leafs = LeafStore((state) => state.leafs);
   const userId = params.id;
-  const { leafs } = LeafStore();
+  const setUserId = UserStore((state) => state.setUserId);
+  setUserId(userId);
+
   return (
     <div className="flex justify-center items-center">
       <div className="relative w-full max-w-[720px] h-[528px] border-gradient">
@@ -22,9 +24,7 @@ export default function Leafs({ params }: { params: { id: string } }) {
           <div className="pr-3 w-full h-[404px] flex flex-wrap justify-center gap-4 overflow-y-scroll scrollbar">
             <AddLeafButton />
             {leafs.map((leaf) => (
-              <Link key={leaf.leafId} href={`/leaf/${userId}/${leaf.leafId}`}>
-                <Leaf location="leaf" data={leaf} />
-              </Link>
+              <Leaf key={leaf.leafId} location="leaf" data={leaf} />
             ))}
           </div>
         </div>

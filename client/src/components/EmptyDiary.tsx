@@ -3,7 +3,6 @@ interface EmptyDiaryProps {
 }
 
 export default function EmptyDiary({ leafId }: EmptyDiaryProps) {
-  console.log(leafId);
   return (
     <div className="w-full flex flex-col items-center">
       <div className="w-full pt-6 pb-5 flex flex-col gap-[1.1rem] justify-center items-center max-w-[414px] h-[137px] bg-brown-10 border-2 border-brown-50 rounded-lg">

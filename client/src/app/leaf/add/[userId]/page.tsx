@@ -23,7 +23,7 @@ export default function AddLeaf() {
     <div className="flex justify-center items-center">
       <div className="relative w-full max-w-[720px] h-[600px] border-gradient">
         <Screws />
-        <div className="pt-5 pb-6 h-full">
+        <div className="p-5 h-full">
           <div className="w-full h-full flex flex-col items-center overflow-y-scroll scrollbar">
             <PageTitle text="식물 카드 등록" className="mb-5" />
 
