@@ -5,18 +5,13 @@ import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
+import java.time.LocalDateTime;
 
 public class LeafDto {
     @Getter
     public static class Post {
         @NotBlank
         private String leafName;
-
-        @NotBlank
-        private String leafNickName;
-
-        @NotBlank
-        private String place;
 
         @NotBlank
         private String content;
@@ -31,12 +26,6 @@ public class LeafDto {
         private String leafName;
 
         @NotBlank
-        private String leafNickName;
-
-        @NotBlank
-        private String place;
-
-        @NotBlank
         private String content;
     }
 
@@ -44,10 +33,10 @@ public class LeafDto {
     @Builder
     public static class Response {
         private Long leafId;
-        private String leafNickName;
+        private String leafName;
         private String leafImageUrl;
-        private String place;
         private String content;
+        private LocalDateTime createdAt;
     }
 
     @Getter
