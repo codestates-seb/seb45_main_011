@@ -28,10 +28,10 @@ public class Point extends BaseTimeEntity {
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
 
-    public void setAccount(Account account) {
+    public void updateAccount(Account account) {
         this.account = account;
         if (account.getPoint() != this)
-            account.setPoint(this);
+            account.updatePoint(this);
     }
     public void updateScore(int updatedScore) {
         this.score = updatedScore;
