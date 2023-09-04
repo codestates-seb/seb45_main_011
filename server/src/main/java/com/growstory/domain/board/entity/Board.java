@@ -32,6 +32,10 @@ public class Board extends BaseTimeEntity {
     @Column(nullable = false)
     private String content;
 
+    @Column(nullable = false)
+    private Boolean isConnection;
+
+
     @ManyToOne
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
