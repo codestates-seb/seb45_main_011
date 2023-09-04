@@ -5,7 +5,7 @@ import { PlantInfo } from '@/types/common';
 
 type SidebarState = 'shop' | 'inventory';
 
-export interface TargetPlant extends PlantObj {
+export interface MoveTarget extends PlantObj {
   plantSize: 'sm' | 'lg';
   imageSize: 'sm' | 'lg';
 }
@@ -19,37 +19,42 @@ interface GardenState {
   shop: [] | PlantInfo[];
   inventory: [] | PlantInfo[];
   plants: [] | PlantObj[];
-  targetPlant: TargetPlant | null;
+  moveTarget: MoveTarget | null;
+  infoTarget: PlantObj | null;
+  purchaseTarget: PlantInfo | null;
   cache: Cache | null;
   setIsEditMode: (isEditMode: boolean) => void;
   setSidebarState: (sidbarState: SidebarState) => void;
   setPoint: (point: number) => void;
   setShop: (shop: PlantInfo[]) => void;
   setInventory: (inventory: PlantInfo[]) => void;
-  putInInventory: (plant: PlantInfo) => void;
   setPlants: (plants: PlantObj[]) => void;
-  setTargetPlant: (targetPlant: TargetPlant | null) => void;
+  setMoveTarget: (moveTarget: MoveTarget | null) => void;
+  setInfoTarget: (infoTarget: PlantObj | null) => void;
+  setPurchaseTarget: (purchaseTarget: PlantInfo | null) => void;
   setCache: (cache: Cache) => void;
 }
 
-const useGardenStore = create<GardenState>((set, get) => ({
+const useGardenStore = create<GardenState>((set) => ({
   isEditMode: false,
   sidebarState: 'shop',
   point: 0,
   shop: [],
   inventory: [],
-  targetPlant: null,
   plants: [],
+  moveTarget: null,
+  infoTarget: null,
+  purchaseTarget: null,
   cache: null,
   setIsEditMode: (isEditMode) => set(() => ({ isEditMode })),
   setSidebarState: (sidebarState) => set(() => ({ sidebarState })),
   setPoint: (point) => set(() => ({ point })),
   setShop: (shop) => set(() => ({ shop })),
   setInventory: (inventory) => set(() => ({ inventory })),
-  putInInventory: (plant) =>
-    set((state) => ({ inventory: [...state.inventory, plant] })),
   setPlants: (plants) => set(() => ({ plants })),
-  setTargetPlant: (targetPlant) => set(() => ({ targetPlant })),
+  setMoveTarget: (moveTarget) => set(() => ({ moveTarget })),
+  setInfoTarget: (infoTarget) => set(() => ({ infoTarget })),
+  setPurchaseTarget: (purchaseTarget) => set(() => ({ purchaseTarget })),
   setCache: (cache) => set(() => ({ cache })),
 }));
 
