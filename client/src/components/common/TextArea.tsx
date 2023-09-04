@@ -12,8 +12,6 @@ interface TextAreaProps extends DefaultProps {
   register: UseFormRegister<InputValues>;
   errors: FieldErrors<InputValues>;
   required?: boolean;
-  setValue?: UseFormSetValue<InputValues>;
-  value?: string;
 }
 const getTypeFormat = (name: string) => {
   if (name === 'leafContent') {
@@ -45,11 +43,8 @@ export default function TextArea({
   register,
   errors,
   required,
-  setValue,
-  value,
 }: TextAreaProps) {
   const TypeFormat = getTypeFormat(name);
-  if (setValue) setValue(name, value || '');
   return (
     <div className={`flex flex-col w-full ${TEXTAREA_CONTAINER_SIZE[name]}`}>
       <textarea

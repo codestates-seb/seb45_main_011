@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
 import { InputValues } from '@/types/common';
@@ -11,7 +12,9 @@ import TextArea from '@/components/common/TextArea';
 import TextInput from '@/components/common/TextInput';
 import ImageUpload from '@/components/common/ImageUpload';
 
-export default function AddLeaf() {
+export default function AddLeaf({ params }: { params: { userId: string } }) {
+  const router = useRouter();
+  const userId = params.userId;
   const {
     register,
     formState: { errors },
@@ -19,6 +22,8 @@ export default function AddLeaf() {
     clearErrors,
     setValue,
   } = useForm<InputValues>();
+
+  const handleCancelClick = () => router.push(`/leafs/${userId}`);
   return (
     <div className="flex justify-center items-center">
       <div className="relative w-full max-w-[720px] h-[600px] border-gradient">
@@ -66,7 +71,10 @@ export default function AddLeaf() {
                 <CommonButton usage="submit" size="sm">
                   완료
                 </CommonButton>
-                <CommonButton usage="button" size="sm">
+                <CommonButton
+                  usage="button"
+                  size="sm"
+                  handleCancelClick={handleCancelClick}>
                   취소
                 </CommonButton>
               </div>

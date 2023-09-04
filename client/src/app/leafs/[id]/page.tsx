@@ -19,12 +19,17 @@ export default function Leafs({ params }: { params: { id: string } }) {
     <div className="flex justify-center items-center">
       <div className="relative w-full max-w-[720px] h-[528px] border-gradient">
         <Screws />
-        <div className="pt-5 pb-4 pl-6 pr-5 flex flex-col items-center gap-5">
+        <div className="pt-5 pb-4 pl-6 pr-5 flex flex-col gap-5">
           <PageTitle text="내 식물 카드" />
-          <div className="pr-3 w-full h-[404px] flex flex-wrap justify-center gap-4 overflow-y-scroll scrollbar">
+          <div className="pr-3 w-full h-[404px] flex flex-wrap  gap-4 overflow-y-scroll scrollbar">
             <AddLeafButton />
             {leafs.map((leaf) => (
-              <Leaf key={leaf.leafId} location="leaf" data={leaf} />
+              <Leaf
+                key={leaf.leafId}
+                location="leaf"
+                data={leaf}
+                userId={userId}
+              />
             ))}
           </div>
         </div>

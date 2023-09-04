@@ -11,6 +11,7 @@ import TextArea from '@/components/common/TextArea';
 import TextInput from '@/components/common/TextInput';
 import ImageUpload from '@/components/common/ImageUpload';
 import data from '@/mock/leaf.json';
+import { useRouter } from 'next/navigation';
 
 export default function EditLeaf({
   params,
@@ -18,15 +19,21 @@ export default function EditLeaf({
   params: { userId: string; leafId: string };
 }) {
   const { userId, leafId } = params;
+  const router = useRouter();
   const leaf = data.find((ele) => ele.leafId === parseInt(leafId));
   const {
     register,
     formState: { errors },
     handleSubmit,
-    watch,
     clearErrors,
     setValue,
-  } = useForm<InputValues>();
+  } = useForm<InputValues>({
+    defaultValues: {
+      plantName: leaf?.leafNickname,
+      leafContent: leaf?.content,
+    },
+  });
+  const handleCancelClick = () => router.push(`/leafs/{userId}`);
   return (
     <div className="flex justify-center items-center">
       <div className="relative w-full max-w-[720px] h-[600px] border-gradient">
@@ -42,9 +49,9 @@ export default function EditLeaf({
                 <ImageUpload
                   required
                   register={register}
-                  watch={watch}
                   errors={errors}
                   clearErrors={clearErrors}
+                  setValue={setValue}
                 />
                 <div className="w-full flex justify-center gap-2 mb-3">
                   <label className="pt-2 text-xl leading-5 text-brown-80 font-bold">
@@ -55,8 +62,6 @@ export default function EditLeaf({
                     register={register}
                     errors={errors}
                     required
-                    setValue={setValue}
-                    value={leaf?.leafNickname}
                   />
                 </div>
                 <div className="w-full flex justify-center gap-2 mb-3">
@@ -68,8 +73,6 @@ export default function EditLeaf({
                     register={register}
                     errors={errors}
                     required
-                    setValue={setValue}
-                    value={leaf?.content}
                   />
                 </div>
               </div>
@@ -78,7 +81,10 @@ export default function EditLeaf({
                 <CommonButton usage="submit" size="sm">
                   완료
                 </CommonButton>
-                <CommonButton usage="button" size="sm">
+                <CommonButton
+                  usage="button"
+                  size="sm"
+                  handleCancelClick={handleCancelClick}>
                   취소
                 </CommonButton>
               </div>

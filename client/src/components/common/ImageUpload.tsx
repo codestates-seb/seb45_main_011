@@ -40,7 +40,8 @@ function ImageUpload({
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   // 이미지 미리보기 설정하는 함수
   const setPreview = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
+    console.log(e.target.files);
+    if (e.target.files?.length) {
       const file = e.target.files;
       if (checkFileSize(file[0])) {
         setImagePreview(URL.createObjectURL(file[0]));

@@ -1,8 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 import UserStore from '@/stores/userStore';
 import useModalStore from '@/stores/modalStore';
@@ -17,10 +17,10 @@ import Modal from './Modal';
 interface LeafProps extends DefaultProps {
   location: 'garden' | 'leaf';
   data: LeafDataInfo;
+  userId: string;
 }
 
-export default function Leaf({ location, data }: LeafProps) {
-  const userId = UserStore((state) => state.userId);
+export default function Leaf({ location, data, userId }: LeafProps) {
   const [isClicked, setIsClicked] = useState(false);
   const router = useRouter();
 
