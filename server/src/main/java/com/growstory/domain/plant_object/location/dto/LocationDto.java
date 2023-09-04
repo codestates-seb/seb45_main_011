@@ -22,7 +22,6 @@ public class LocationDto {
         boolean isInstalled;
     }
 
-    //TODO: GardenInfo에도 Response를 줘야 한다.
     @Getter
     @Builder
     public static class Response {

@@ -32,6 +32,7 @@ public class BoardService {
     private final BoardImageService boardImageService;
 
     public ResponseBoardDto createBoard(Long leafId, RequestBoardDto.Post requestBoardDto, MultipartFile image) {
+        //TODO: accountService로직 변경으로 인한 수정 필요
         Account findAccount = accountService.findVerifiedAccount();
 
         boardImageService.saveBoardImage(image);
