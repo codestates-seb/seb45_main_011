@@ -2,16 +2,24 @@ export interface DefaultProps {
   className?: string;
 }
 
-export type LeafType = {
-  id: number;
-  name: string;
-  date: string;
-  imgUrl: string;
-  diary: DiaryInfo[] | null;
+export type addPrefixToHandler<T, P extends string> = {
+  [K in keyof T as K extends string
+    ? `${P}${K}`
+    : never]: React.MouseEventHandler<HTMLButtonElement>;
+};
+
+export type LeafDataInfo = {
+  leafId: number;
+  leafNickname: string;
+  start: string;
+  content: string;
+  imageUrl: string;
+  diary?: DiaryInfo[] | null;
 };
 
 export type PlantInfo = {
   name: string;
+  korName: string;
   imageUrl: string;
   price: number;
 };
@@ -23,7 +31,8 @@ export interface DiaryInfo {
   title: string;
   content: string;
 }
-type InputValues = {
+
+export type InputValues = {
   plantName: string;
   title: string;
   nickname: string;
@@ -33,4 +42,6 @@ type InputValues = {
   leafContent: string;
   diaryContent: string;
   hashTag: string;
+  image: FileList;
+  fieldState: string;
 };
