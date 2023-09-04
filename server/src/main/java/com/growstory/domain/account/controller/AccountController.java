@@ -35,7 +35,7 @@ public class AccountController {
     }
 
     // 나의 정보 수정(프로필 사진)
-    @PatchMapping("/profileImage")
+    @PatchMapping("/profileimage")
     public ResponseEntity<HttpStatus> patchProfileImage(@RequestPart MultipartFile profileImage) {
         accountService.updateProfileImage(profileImage);
 
@@ -66,7 +66,8 @@ public class AccountController {
         return ResponseEntity.ok(SingleResponseDto.builder()
                 .status(HttpStatusCode.OK.getStatusCode())
                 .message(HttpStatusCode.OK.getMessage())
-                .data(responseDto).build()
+                .data(responseDto)
+                .build()
         );
     }
 

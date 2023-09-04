@@ -60,12 +60,6 @@ public class Account extends BaseTimeEntity {
         leaves.add(leaf);
     }
 
-    public void setPoint(Point point) {
-        this.point = point;
-        if (point.getAccount() != this)
-            point.setAccount(this);
-    }
-
     public Account(Long accountId, String email, String displayName, String password, String profileImageUrl, List<String> roles) {
         this.accountId = accountId;
         this.email = email;
@@ -75,8 +69,11 @@ public class Account extends BaseTimeEntity {
         this.roles = roles;
     }
 
+
     public void updatePoint(Point point) {
         this.point = point;
+        if (point.getAccount() != this)
+            point.updateAccount(this);
     }
 
     public void addPlantObj(PlantObj plantObj) {
@@ -85,6 +82,7 @@ public class Account extends BaseTimeEntity {
             plantObj.updateAccount(this);
         }
     }
+
     public void removePlantObj(PlantObj plantObj) {
         this.plantObjs.remove(plantObj);
     }

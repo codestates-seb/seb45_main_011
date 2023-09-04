@@ -56,7 +56,7 @@ public class AccountService {
                 .roles(roles)
                 .build());
 
-        point.setAccount(savedAccount);
+        point.updateAccount(savedAccount);
 
         return AccountDto.Response.builder()
                 .accountId(savedAccount.getAccountId())
@@ -100,7 +100,7 @@ public class AccountService {
 
         return AccountDto.Response.builder()
                 .accountId(findAccount.getAccountId())
-                .displayName(authUserUtils.getAuthUser().getDisplayName())
+                .displayName(findAccount.getDisplayName())
                 .profileImageUrl(findAccount.getProfileImageUrl())
                 .point(findAccount.getPoint())
                 .build();
@@ -120,17 +120,6 @@ public class AccountService {
         if(findAccount.isPresent())
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_ALREADY_EXISTS);
     }
-
-//    @Transactional(readOnly = true)
-//    public Account findVerifiedAccount() {
-////        Map<String, Object> principal = (Map<String, Object>) authUserUtils.getAuthUser();
-//
-//        Account principal = authUserUtils.getAuthUser();
-//        return accountRepository.findById(principal.getAccountId()).orElseThrow(() ->
-//                new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_FOUND));
-////        return accountRepository.findById((Long) principal.get("accountId")).orElseThrow(() ->
-////                new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_FOUND));
-//    }
 
     @Transactional(readOnly = true)
     public Account findVerifiedAccount(Long accountId) {

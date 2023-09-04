@@ -64,7 +64,7 @@ public class LeafService {
         Account findAccount = authUserUtils.getAuthUser();
 
         return leafRepository.findByAccount(findAccount).stream()
-                .map(leaf -> getLeafResponseDto(leaf))
+                .map(this::getLeafResponseDto)
                 .collect(Collectors.toList());
     }
 
@@ -85,7 +85,7 @@ public class LeafService {
         Leaf findLeaf = findVerifiedLeaf(findAccount.getAccountId(), leafId);
 
         s3Uploader.deleteImageFromS3(findLeaf.getLeafImageUrl(), LEAF_IMAGE_PROCESS_TYPE);
-        // account에서 leaf 삭제하면 cascade로 인해 leafRepo.delete() 없이 db에서 자동 삭제
+
         findAccount.getLeaves().remove(findLeaf);
     }
 
@@ -98,7 +98,7 @@ public class LeafService {
         else return findLeaf;
     }
 
-    private static LeafDto.Response getLeafResponseDto(Leaf findLeaf) {
+    private LeafDto.Response getLeafResponseDto(Leaf findLeaf) {
         return LeafDto.Response.builder()
                 .leafId(findLeaf.getLeafId())
                 .leafImageUrl(findLeaf.getLeafImageUrl())
