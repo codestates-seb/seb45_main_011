@@ -1,7 +1,7 @@
+import { PlantObj } from '@/types/data';
 import { blockedLocations } from '@/constants/values';
-import { ProcessedPlant } from '@/stores/gardenStore';
 
-export const getInitialMapInfo = (plants: ProcessedPlant[]) => {
+export const getInitialMapInfo = (plants: PlantObj[]) => {
   let uninstallableLocations = [...blockedLocations];
 
   const installedPlants = plants.filter(({ location }) => location.isInstalled);

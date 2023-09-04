@@ -1,11 +1,6 @@
 import Image from 'next/image';
 
-import { ProcessedPlant } from '@/stores/gardenStore';
-
-export interface TargetPlant extends ProcessedPlant {
-  imageUrl: string;
-  imageSize: 'sm' | 'lg';
-}
+import { TargetPlant } from '@/stores/gardenStore';
 
 interface TrackedPlantProps {
   targetX: number;
@@ -18,11 +13,11 @@ export default function TrackedPlant({
   targetY,
   targetPlant,
 }: TrackedPlantProps) {
-  const { imageUrl, productName, imageSize } = targetPlant;
+  const { productName, imageUrlTable, plantSize, imageSize } = targetPlant;
 
   return (
     <Image
-      src={imageUrl}
+      src={imageUrlTable[plantSize]}
       alt={productName}
       width={TARGETPLANT_SIZE[imageSize]}
       height={TARGETPLANT_SIZE[imageSize]}
