@@ -1,19 +1,19 @@
 import Image from 'next/image';
 
-import { TargetPlant } from '@/stores/gardenStore';
+import { MoveTarget } from '@/stores/gardenStore';
 
 interface TrackedPlantProps {
   targetX: number;
   targetY: number;
-  targetPlant: TargetPlant;
+  moveTarget: MoveTarget;
 }
 
 export default function TrackedPlant({
   targetX,
   targetY,
-  targetPlant,
+  moveTarget,
 }: TrackedPlantProps) {
-  const { productName, imageUrlTable, plantSize, imageSize } = targetPlant;
+  const { productName, imageUrlTable, plantSize, imageSize } = moveTarget;
 
   return (
     <Image
@@ -23,7 +23,7 @@ export default function TrackedPlant({
       height={TARGETPLANT_SIZE[imageSize]}
       className="absolute"
       style={{
-        transform: `translate(${targetX - 10}px, ${targetY - 110}px)`,
+        transform: `translate(${targetX - 140}px, ${targetY - 160}px)`,
       }}
     />
   );
