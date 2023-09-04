@@ -57,6 +57,7 @@ export type SignupFormValue = {
   nickname: string;
   password: string;
   password_check: string;
+  code?: string;
 };
 
 export type cookieOption = {
