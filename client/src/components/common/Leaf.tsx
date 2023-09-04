@@ -48,11 +48,11 @@ export default function Leaf({ location, data }: LeafProps) {
       ) : null}
 
       <Image
-        src={data.imgUrl}
+        src={data.imageUrl}
         alt="로고"
         width={200}
         height={160}
-        className="object-cover w-[200px] h-[160px] rounded-xl border-2 border-brown-50"
+        className="object-cover w-[200px] h-[160px] rounded-xl border-2 border-brown-50 shadow-outer/down"
       />
 
       <LeafName name={'바질'} />

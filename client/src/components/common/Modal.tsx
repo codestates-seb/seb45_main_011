@@ -1,12 +1,25 @@
-import Screws from './Screws';
-import { DefaultProps } from '@/types/common';
+'use client';
+
+import { useEffect } from 'react';
 import { twMerge } from 'tailwind-merge';
+
+import Screws from './Screws';
+
+import { DefaultProps } from '@/types/common';
 
 interface ModalProps extends DefaultProps {
   children: React.ReactNode;
 }
 
 export default function Modal({ children, className }: ModalProps) {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.removeProperty('overflow');
+    };
+  }, []);
+
   return (
     <>
       <div

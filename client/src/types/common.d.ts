@@ -9,10 +9,10 @@ export type addPrefixToHandler<T, P extends string> = {
 };
 
 export type LeafType = {
-  id: number;
-  name: string;
-  date: string;
-  imgUrl: string;
+  leafId: number;
+  leafNickname: string;
+  start: string;
+  imageUrl: string;
   diary: DiaryInfo[] | null;
 };
 
