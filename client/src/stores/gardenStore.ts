@@ -10,7 +10,7 @@ export interface MoveTarget extends PlantObj {
   imageSize: 'sm' | 'lg';
 }
 
-export type Cache = { inventory: PlantInfo[]; plants: PlantObj[] };
+export type Reference = { inventory: PlantInfo[]; plants: PlantObj[] };
 
 interface GardenState {
   isEditMode: boolean;
@@ -22,17 +22,17 @@ interface GardenState {
   moveTarget: MoveTarget | null;
   infoTarget: PlantObj | null;
   purchaseTarget: PlantInfo | null;
-  cache: Cache | null;
-  setIsEditMode: (isEditMode: boolean) => void;
-  setSidebarState: (sidbarState: SidebarState) => void;
+  reference: Reference | null;
+  changeEditMode: (isEditMode: boolean) => void;
+  changeSidebarState: (sidbarState: SidebarState) => void;
   setPoint: (point: number) => void;
   setShop: (shop: PlantInfo[]) => void;
   setInventory: (inventory: PlantInfo[]) => void;
   setPlants: (plants: PlantObj[]) => void;
-  setMoveTarget: (moveTarget: MoveTarget | null) => void;
-  setInfoTarget: (infoTarget: PlantObj | null) => void;
-  setPurchaseTarget: (purchaseTarget: PlantInfo | null) => void;
-  setCache: (cache: Cache) => void;
+  changeMoveTarget: (moveTarget: MoveTarget | null) => void;
+  changeInfoTarget: (infoTarget: PlantObj | null) => void;
+  changePurchaseTarget: (purchaseTarget: PlantInfo | null) => void;
+  saveReference: (reference: Reference) => void;
 }
 
 const useGardenStore = create<GardenState>((set) => ({
@@ -45,17 +45,17 @@ const useGardenStore = create<GardenState>((set) => ({
   moveTarget: null,
   infoTarget: null,
   purchaseTarget: null,
-  cache: null,
-  setIsEditMode: (isEditMode) => set(() => ({ isEditMode })),
-  setSidebarState: (sidebarState) => set(() => ({ sidebarState })),
+  reference: null,
+  changeEditMode: (isEditMode) => set(() => ({ isEditMode })),
+  changeSidebarState: (sidebarState) => set(() => ({ sidebarState })),
   setPoint: (point) => set(() => ({ point })),
   setShop: (shop) => set(() => ({ shop })),
   setInventory: (inventory) => set(() => ({ inventory })),
   setPlants: (plants) => set(() => ({ plants })),
-  setMoveTarget: (moveTarget) => set(() => ({ moveTarget })),
-  setInfoTarget: (infoTarget) => set(() => ({ infoTarget })),
-  setPurchaseTarget: (purchaseTarget) => set(() => ({ purchaseTarget })),
-  setCache: (cache) => set(() => ({ cache })),
+  changeMoveTarget: (moveTarget) => set(() => ({ moveTarget })),
+  changeInfoTarget: (infoTarget) => set(() => ({ infoTarget })),
+  changePurchaseTarget: (purchaseTarget) => set(() => ({ purchaseTarget })),
+  saveReference: (reference) => set(() => ({ reference })),
 }));
 
 export default useGardenStore;
