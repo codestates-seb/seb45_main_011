@@ -1,8 +1,7 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-
-import { InputValues } from '@/types/common';
 
 import CommonButton from '@/components/common/CommonButton';
 import PageTitle from '@/components/common/PageTitle';
@@ -11,8 +10,8 @@ import TextArea from '@/components/common/TextArea';
 import TextInput from '@/components/common/TextInput';
 import ImageUpload from '@/components/common/ImageUpload';
 import data from '@/mock/leaf.json';
-import { useRouter } from 'next/navigation';
 
+import { InputValues } from '@/types/common';
 export default function EditLeaf({
   params,
 }: {
@@ -47,11 +46,11 @@ export default function EditLeaf({
               className="w-full">
               <div className="w-full flex flex-col items-center gap-2 mb-1">
                 <ImageUpload
-                  required
                   register={register}
                   errors={errors}
                   clearErrors={clearErrors}
                   setValue={setValue}
+                  imageUrl={leaf?.imageUrl}
                 />
                 <div className="w-full flex justify-center gap-2 mb-3">
                   <label className="pt-2 text-xl leading-5 text-brown-80 font-bold">

@@ -1,15 +1,16 @@
-import { LeafDataInfo } from '@/types/common';
 import create from 'zustand';
-import data from '@/mock/leaf.json';
 
-interface Leaf {
-  leafs: LeafDataInfo[];
-  addLeaf: (leaf: LeafDataInfo) => void;
+import { DiaryInfo } from '@/types/common';
+
+interface LeafState {
+  diary: DiaryInfo | null;
+  setDiary: (diary: DiaryInfo) => void;
 }
 
-const LeafStore = create<Leaf>((set) => ({
-  leafs: data,
-  addLeaf: (leaf) => set((state) => ({ leafs: [...state.leafs, leaf] })),
+const useLeafStore = create<LeafState>((set) => ({
+  diary: null,
+
+  setDiary: (diary) => set((state) => ({ diary })),
 }));
 
-export default LeafStore;
+export default useLeafStore;

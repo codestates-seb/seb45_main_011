@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 
-import { InputValues } from '@/types/common';
+import { DiaryInfo, InputValues } from '@/types/common';
 import useModalStore from '@/stores/modalStore';
 
 import ImageUpload from './common/ImageUpload';
@@ -10,14 +10,23 @@ import TextInput from './common/TextInput';
 import TextArea from './common/TextArea';
 import CommonButton from './common/CommonButton';
 
-export default function DiaryForm() {
+interface DiaryFormProps {
+  diary?: DiaryInfo | null;
+}
+
+export default function DiaryForm({ diary }: DiaryFormProps) {
   const {
     register,
     formState: { errors },
     clearErrors,
     handleSubmit,
     setValue,
-  } = useForm<InputValues>();
+  } = useForm<InputValues>({
+    defaultValues: {
+      title: diary?.title,
+      diaryContent: diary?.content,
+    },
+  });
   const [isChecked, setIsChecked] = useState(false);
   const setIsModalOpen = useModalStore((state) => state.setIsDiaryModalOpen);
   const handleModalCancel = () => {
@@ -35,6 +44,7 @@ export default function DiaryForm() {
             errors={errors}
             clearErrors={clearErrors}
             setValue={setValue}
+            imageUrl={diary?.imgUrl}
           />
           <div className="w-full flex justify-center gap-2 mb-3">
             <label className="pt-2 text-xl leading-5 text-brown-80 font-bold">

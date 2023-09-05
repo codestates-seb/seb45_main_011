@@ -1,8 +1,10 @@
 import Image from 'next/image';
 
-import { DiaryInfo } from '@/types/common';
-
+import useModalStore from '@/stores/modalStore';
+import useLeafStore from '@/stores/leafStore';
 import ControlButton from './common/ControlButton';
+
+import { DiaryInfo } from '@/types/common';
 
 interface FormatContentProps {
   content: string;
@@ -21,8 +23,14 @@ export default function Diary({ item }: { item: DiaryInfo }) {
   // 서버로부터 받은 줄바꿈(\n)을 <br/> 태그로 변환
   const replaceContent = item?.content.replace(/\n/g, '<br/>');
 
+  const setIsModalOpen = useModalStore((state) => state.setIsDiaryModalOpen);
   const startDay = new Date(item.date);
   const [month, day] = [startDay.getMonth() + 1, startDay.getDate()];
+  const setDiary = useLeafStore((statet) => statet.setDiary);
+  const handleEditDiary = (item: DiaryInfo) => {
+    setIsModalOpen(true);
+    setDiary(item);
+  };
 
   return (
     <li className="w-full max-w-[414px]">
@@ -34,7 +42,7 @@ export default function Diary({ item }: { item: DiaryInfo }) {
           <div className="absolute right-[10px] top-[10px] flex gap-2">
             <ControlButton
               usage="edit"
-              // handleDiaryEdit={handleDiaryAddAndEdit}
+              handleEditDiary={() => handleEditDiary(item)}
             />
             <ControlButton
               usage="delete"

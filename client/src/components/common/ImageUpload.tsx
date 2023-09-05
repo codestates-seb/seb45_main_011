@@ -17,6 +17,7 @@ interface ImageUploadProps {
   required?: boolean;
   clearErrors: UseFormClearErrors<InputValues>;
   setValue: UseFormSetValue<InputValues>;
+  imageUrl?: string;
 }
 
 // 파일 크기가 2mb 이하인지 확인하는 함수
@@ -35,12 +36,14 @@ function ImageUpload({
   errors,
   clearErrors,
   setValue,
+  imageUrl,
 }: ImageUploadProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | undefined>(
+    imageUrl,
+  );
   // 이미지 미리보기 설정하는 함수
   const setPreview = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.files);
     if (e.target.files?.length) {
       const file = e.target.files;
       if (checkFileSize(file[0])) {
