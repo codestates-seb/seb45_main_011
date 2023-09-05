@@ -15,7 +15,7 @@ export default function PurchaseModal() {
     setPoint,
     setInventory,
     setPlants,
-    changePurchaseTarget,
+    unobserve,
   } = useGardenStore();
   const { close } = useGardenModalStore();
 
@@ -62,7 +62,7 @@ export default function PurchaseModal() {
       setPoint(newPoint);
     }
 
-    changePurchaseTarget(null);
+    unobserve();
     close();
   };
 

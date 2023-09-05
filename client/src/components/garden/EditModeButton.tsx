@@ -14,7 +14,7 @@ export default function EditModebutton() {
     changeSidebarState,
     setInventory,
     setPlants,
-    changeMoveTarget,
+    unobserve,
     saveReference,
   } = useGardenStore();
   const { changeType, open } = useModalStore();
@@ -42,8 +42,8 @@ export default function EditModebutton() {
     setInventory(isEditMode ? (reference as Reference).inventory : inventory);
     setPlants(isEditMode ? (reference as Reference).plants : plants);
 
-    changeMoveTarget(null);
     changeEditMode(!isEditMode);
+    unobserve();
   };
 
   return (
