@@ -2,14 +2,21 @@
 
 import Image from 'next/image';
 import { useEffect } from 'react';
+// import { useQuery, useQueryClient } from '@tanstack/react-query';
+// import axios, { AxiosResponse } from 'axios';
+
+// import { fetchGardenData } from '@/api/garden';
 import useGardenStore from '@/stores/gardenStore';
-import useModalStore from '@/stores/modalStore';
+import useGardenModalStore, {
+  GardenModalType,
+} from '@/stores/gardenModalStore';
 
 import {
   EditModeButton,
   GardenMap,
   GardenSidebar,
-  ConnectLeafModal,
+  LeafExistModal,
+  NoLeafExistModal,
   SelectLeafModal,
   PurchaseInfoModal,
   PurchaseModal,
@@ -17,38 +24,55 @@ import {
 } from '@/components/garden';
 
 import { RawGardenInfo } from '@/types/data';
+// import { PlantObj, RawGardenInfo } from '@/types/data';
 
 export default function Garden() {
   const { point, setPoint, setShop, setInventory, setPlants } =
     useGardenStore();
-  const {
-    isLeafExistModalOpen,
-    isNoLeafExistModalOpen,
-    isSelectLeafModalOpen,
-    isPurchaseInfoModalOpen,
-    isPurchaseModalOpen,
-    isInventoryEmptyModalOpen,
-  } = useModalStore();
+  const { isOpen, type } = useGardenModalStore();
+
+  // const { data, isLoading, isError } = useQuery<RawGardenInfo>(
+  //   ['garden'],
+  //   fetchGardenData,
+  // );
+
+  // const inventory = data?.plantObjs
+  //   .filter(({ location }) => !location.isInstalled)
+  //   .map((plant) => {
+  //     const { plantObjId, productName, korName, imageUrlTable, price } = plant;
+
+  //     return {
+  //       id: plantObjId,
+  //       name: productName,
+  //       korName,
+  //       imageUrlTable,
+  //       price,
+  //     };
+  //   });
 
   useEffect(() => {
-    // fetch 가능성
     const { point, plantObjs, products } =
       require('@/mock/garden.json') as RawGardenInfo;
 
-    // id 로직 수정 필요
-    const processedProducts = products.map((product, index) => ({
-      id: index + 1,
-      ...product,
-    }));
+    const gardens = { point, plantObjs, products };
 
-    const inventory = plantObjs
+    syncGardens(gardens);
+  }, []);
+
+  // 스토어에 있는 데이터와 서버 데이터를 동기화한다는 의미
+  // useEffectOnce에 콜백 함수로 전달
+  // hook 사용하여 결합도 낮추거나, store에서 작업하거나, action으로 처리하거나
+  const syncGardens = (gardens: RawGardenInfo) => {
+    const { point, products, plantObjs } = gardens;
+
+    const newInventory = plantObjs
       .filter(({ location }) => !location.isInstalled)
       .map((plant) => {
         const { plantObjId, productName, korName, imageUrlTable, price } =
           plant;
 
         return {
-          id: plantObjId,
+          productId: plantObjId,
           name: productName,
           korName,
           imageUrlTable,
@@ -57,10 +81,19 @@ export default function Garden() {
       });
 
     setPoint(point);
-    setShop(processedProducts);
-    setInventory(inventory);
+    setShop(products);
+    setInventory(newInventory);
     setPlants(plantObjs);
-  }, []);
+  };
+
+  const renderModal = (type: GardenModalType) => {
+    if (type === 'leafExist') return <LeafExistModal />;
+    if (type === 'noLeafExist') return <NoLeafExistModal />;
+    if (type === 'selectLeaf') return <SelectLeafModal />;
+    if (type === 'purchaseInfo') return <PurchaseInfoModal />;
+    if (type === 'purchase') return <PurchaseModal />;
+    if (type === 'emptyInventory') return <InventoryEmptyModal />;
+  };
 
   return (
     <div className="mt-[52px] mx-auto">
@@ -80,11 +113,7 @@ export default function Garden() {
         <GardenMap />
         <GardenSidebar />
       </div>
-      {(isLeafExistModalOpen || isNoLeafExistModalOpen) && <ConnectLeafModal />}
-      {isSelectLeafModalOpen && <SelectLeafModal />}
-      {isPurchaseInfoModalOpen && <PurchaseInfoModal />}
-      {isPurchaseModalOpen && <PurchaseModal />}
-      {isInventoryEmptyModalOpen && <InventoryEmptyModal />}
+      {isOpen && renderModal(type)}
     </div>
   );
 }
