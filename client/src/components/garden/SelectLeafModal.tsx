@@ -1,7 +1,8 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import useModalStore from '@/stores/modalStore';
+
+import useGardenModalStore from '@/stores/gardenModalStore';
 
 import ModalPortal from '@/components/common/ModalPortal';
 import Modal from '@/components/common/Modal';
@@ -12,7 +13,7 @@ import { LeafDataInfo } from '@/types/common';
 
 export default function SelectLeafModal() {
   const router = useRouter();
-  const { setIsSelectLeafModalOpen } = useModalStore();
+  const { close } = useGardenModalStore();
 
   // fetch 가능성
   const leafs = require('@/mock/leaf.json') as LeafDataInfo[];
@@ -22,13 +23,13 @@ export default function SelectLeafModal() {
   // Leaf 컴포넌트의 동작 방식 살짝 변경해야 할 듯
   const handleComplete = () => {};
 
-  const handleCancel = () => setIsSelectLeafModalOpen(false);
+  const handleCancel = () => close();
 
   const handleCreate = () => {
     // 추후 사용자 ID로 변경
     router.push('/leaf/add/1');
 
-    setIsSelectLeafModalOpen(false);
+    close();
   };
 
   const divStyle = leafs.length > 0 ? 'w-[512px]' : 'w-[420px]';
@@ -46,15 +47,12 @@ export default function SelectLeafModal() {
               </section>
               <div className="flex gap-3 mx-auto">
                 <CommonButton
-                  handleComplete={handleComplete}
-                  usage="button"
+                  onComplete={handleComplete}
+                  type="button"
                   size="md">
                   완료
                 </CommonButton>
-                <CommonButton
-                  handleCancel={handleCancel}
-                  usage="button"
-                  size="md">
+                <CommonButton onCancel={handleCancel} type="button" size="md">
                   취소
                 </CommonButton>
               </div>
@@ -67,10 +65,7 @@ export default function SelectLeafModal() {
               <p className="mb-7 text-2xl text-brown-70 leading-6">
                 식물 카드를 생성해보세요!
               </p>
-              <CommonButton
-                handleCreate={handleCreate}
-                usage="button"
-                size="lg">
+              <CommonButton onCreate={handleCreate} type="button" size="lg">
                 식물 카드 생성
               </CommonButton>
             </section>

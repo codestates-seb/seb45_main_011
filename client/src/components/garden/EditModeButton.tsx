@@ -1,43 +1,49 @@
 'use client';
 
 import cloneDeep from 'lodash/cloneDeep';
-import useGardenStore, { Cache } from '@/stores/gardenStore';
-import useModalStore from '@/stores/modalStore';
+import useGardenStore, { Reference } from '@/stores/gardenStore';
+import useModalStore from '@/stores/gardenModalStore';
 
 export default function EditModebutton() {
   const {
     isEditMode,
     inventory,
     plants,
-    cache,
-    setIsEditMode,
-    setSidebarState,
+    reference,
+    changeEditMode,
+    changeSidebarState,
     setInventory,
     setPlants,
-    setMoveTarget,
-    setCache,
+    changeMoveTarget,
+    saveReference,
   } = useGardenStore();
-  const { setIsInventoryEmptyModalOpen } = useModalStore();
+  const { changeType, open } = useModalStore();
 
   const handleClick = () => {
     if (plants.length === 0 && inventory.length === 0) {
-      setIsInventoryEmptyModalOpen(true);
+      changeType('emptyInventory');
+      open();
+
       return;
     }
 
+    // 취소하는 행위와 동일하다는 명칭으로 만들기
+    // 함수로 분리 rollback
     if (!isEditMode)
-      setCache({
+      // 명칭이 너무 범용적, 기획자가 단어를 봐도 이해할 수 있도록
+      // setReference
+      saveReference({
         inventory: cloneDeep(inventory),
         plants: cloneDeep(plants),
       });
 
-    setSidebarState('inventory');
+    changeSidebarState('inventory');
 
-    setInventory(isEditMode ? (cache as Cache).inventory : inventory);
-    setPlants(isEditMode ? (cache as Cache).plants : plants);
-    setMoveTarget(null);
+    setInventory(isEditMode ? (reference as Reference).inventory : inventory);
+    setPlants(isEditMode ? (reference as Reference).plants : plants);
 
-    setIsEditMode(!isEditMode);
+    changeMoveTarget(null);
+    changeEditMode(!isEditMode);
   };
 
   return (

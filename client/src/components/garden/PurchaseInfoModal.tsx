@@ -1,25 +1,22 @@
 'use client';
 
 import useGardenStore from '@/stores/gardenStore';
-import useModalStore from '@/stores/modalStore';
+import useGardenModalStore from '@/stores/gardenModalStore';
 
 import ModalPortal from '@/components/common/ModalPortal';
 import Modal from '@/components/common/Modal';
 import CommonButton from '@/components/common/CommonButton';
 
 export default function PurchaseInfoModal() {
-  const { purchaseTarget, setPurchaseTarget } = useGardenStore();
-  const { setIsPurchaseInfoModalOpen, setIsPurchaseModalOpen } =
-    useModalStore();
+  const { purchaseTarget, changePurchaseTarget } = useGardenStore();
+  const { changeType, close } = useGardenModalStore();
 
-  const handlePurchase = () => {
-    setIsPurchaseInfoModalOpen(false);
-    setIsPurchaseModalOpen(true);
-  };
+  const handlePurchase = () => changeType('purchase');
 
   const handleCancel = () => {
-    setPurchaseTarget(null);
-    setIsPurchaseInfoModalOpen(false);
+    changePurchaseTarget(null);
+
+    close();
   };
 
   return (
@@ -36,13 +33,10 @@ export default function PurchaseInfoModal() {
             구매하시겠습니까?
           </p>
           <div className="flex gap-3">
-            <CommonButton
-              handlePurchase={handlePurchase}
-              usage="button"
-              size="md">
+            <CommonButton onPurchase={handlePurchase} type="button" size="md">
               구매
             </CommonButton>
-            <CommonButton handleCancel={handleCancel} usage="button" size="md">
+            <CommonButton onCancel={handleCancel} type="button" size="md">
               취소
             </CommonButton>
           </div>
