@@ -29,9 +29,10 @@ interface GardenState {
   setShop: (shop: PlantInfo[]) => void;
   setInventory: (inventory: PlantInfo[]) => void;
   setPlants: (plants: PlantObj[]) => void;
-  changeMoveTarget: (moveTarget: MoveTarget | null) => void;
-  changeInfoTarget: (infoTarget: PlantObj | null) => void;
-  changePurchaseTarget: (purchaseTarget: PlantInfo | null) => void;
+  observeMoveTarget: (moveTarget: MoveTarget | null) => void;
+  observeInfoTarget: (infoTarget: PlantObj | null) => void;
+  observePurchaseTarget: (purchaseTarget: PlantInfo | null) => void;
+  unobserve: () => void;
   saveReference: (reference: Reference) => void;
 }
 
@@ -52,9 +53,11 @@ const useGardenStore = create<GardenState>((set) => ({
   setShop: (shop) => set(() => ({ shop })),
   setInventory: (inventory) => set(() => ({ inventory })),
   setPlants: (plants) => set(() => ({ plants })),
-  changeMoveTarget: (moveTarget) => set(() => ({ moveTarget })),
-  changeInfoTarget: (infoTarget) => set(() => ({ infoTarget })),
-  changePurchaseTarget: (purchaseTarget) => set(() => ({ purchaseTarget })),
+  observeMoveTarget: (moveTarget) => set(() => ({ moveTarget })),
+  observeInfoTarget: (infoTarget) => set(() => ({ infoTarget })),
+  observePurchaseTarget: (purchaseTarget) => set(() => ({ purchaseTarget })),
+  unobserve: () =>
+    set(() => ({ moveTarget: null, infoTarget: null, purchaseTarget: null })),
   saveReference: (reference) => set(() => ({ reference })),
 }));
 
