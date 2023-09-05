@@ -1,6 +1,7 @@
 package com.growstory.domain.journal.service;
 
 import com.growstory.domain.images.entity.JournalImage;
+import com.growstory.domain.images.service.JournalImageService;
 import com.growstory.domain.journal.dto.JournalDto;
 import com.growstory.domain.journal.entity.Journal;
 import com.growstory.domain.journal.mapper.JournalMapper;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 public class JournalService {
 
     private final JournalRepository journalRepository;
+    private final JournalImageService journalImageService;
     private final LeafService leafService;
     private final JournalMapper journalMapper;
     private final S3Uploader s3Uploader;
@@ -43,7 +45,7 @@ public class JournalService {
         Leaf findLeaf = leafService.findLeafEntityBy(leafId);
         Journal journal = createJournalWithNoImg(findLeaf, postDto);
         //image가 null일 경우
-        if(image==null) {
+        if(image==null|| image.isEmpty()) {
             return journalMapper.toResponseFrom(journal);
         }
         //image가 null이 아닐 경우 이미지 업로드 및 DB 저장
@@ -54,8 +56,9 @@ public class JournalService {
                 .originName(image.getOriginalFilename())
                 .journal(journal)
                 .build();
-        //image 정보 Journal에 업데이트
-        journal.updateImg(journalImage);
+        JournalImage savedJournalImage = journalImageService.createJournalImg(journalImage);
+//        image 정보 Journal에 업데이트
+        journal.updateImg(savedJournalImage);
 
         return journalMapper.toResponseFrom(journalRepository.save(journal));
     }

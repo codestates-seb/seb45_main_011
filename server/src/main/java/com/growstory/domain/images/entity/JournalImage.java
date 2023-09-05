@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class JournalImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long journalImageId;
+    private long journalImageId;
 
     @Column(name = "ORIGIN_NAME", nullable = false)
     private String originName;

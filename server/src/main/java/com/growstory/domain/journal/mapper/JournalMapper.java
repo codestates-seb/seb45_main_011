@@ -11,12 +11,15 @@ import javax.persistence.ManyToOne;
 @Component
 public class JournalMapper {
     public JournalDto.Response toResponseFrom(Journal journal) {
+        String imgUrl = journal.getJournalImage() == null ?
+                null : journal.getJournalImage().getImageUrl();
+
         return JournalDto.Response
                 .builder()
                 .journalId(journal.getJournalId())
                 .title(journal.getTitle())
                 .content(journal.getContent())
-                .imageUrl(journal.getJournalImage().getImageUrl())
+                .imageUrl(imgUrl) //nullable
                 .build();
     }
 
