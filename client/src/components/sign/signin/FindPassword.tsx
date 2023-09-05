@@ -15,7 +15,7 @@ import { SIGNIN_REQUIRE, SIGNIN_VAILDATION } from '@/constants/contents';
 import { SigninFormValue } from '@/types/common';
 
 export default function FindPassword() {
-  const [isEmailMatched, setIsEmailMatched] = useState<string>('successModal');
+  const [isEmailMatched, setIsEmailMatched] = useState('successModal');
 
   const {
     register,
