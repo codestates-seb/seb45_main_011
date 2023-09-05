@@ -24,6 +24,7 @@ public enum ExceptionCode {
     JOURNAL_NOT_FOUND(404, "Journal not found"),
     JOURNAL_NOT_ALLOW(405, "Journal doesn't match the author"),
     JOURNAL_EXISTS(409, "Journal already Exists"),
+    JOURNAL_IMG_NOT_FOUND(404, "Journal Image not found"),
 
     POINT_TYPE_NOT_FOUND(404, "Earn point type not found."),
 
