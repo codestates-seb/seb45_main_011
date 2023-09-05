@@ -60,4 +60,12 @@ public class JournalController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/{leaf-id}/journals/{journal-id}")
+    public ResponseEntity<HttpStatus> deleteJournal(@Positive @PathVariable("leaf-id") Long leafId,
+                                                    @Positive @PathVariable("journal-id") Long journalId) {
+        journalService.deleteJournal(leafId, journalId);
+
+        return ResponseEntity.noContent().build();
+    }
 }

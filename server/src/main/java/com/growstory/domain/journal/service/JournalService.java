@@ -104,6 +104,10 @@ public class JournalService {
             }
         }
     }
+    public void deleteJournal(Long leafId, Long journalId) {
+        Journal journal = findVerifiedJournalBy(journalId);
+        journalRepository.delete(journal);
+    }
 
     private Journal findVerifiedJournalBy(Long journalId) {
         return journalRepository.findById(journalId)
