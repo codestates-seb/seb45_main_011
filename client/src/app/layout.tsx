@@ -75,6 +75,7 @@ export default function RootLayout({
               <Link href="/post/edit/1">게시글 편집</Link>
             </li>
           </ul>
+          <div id="modal-root"></div>
         </AuthContext>
       </body>
     </html>
