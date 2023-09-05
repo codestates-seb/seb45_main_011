@@ -48,9 +48,14 @@ public class Journal extends BaseTimeEntity {
     }
 
     public void updateTitle(String title) {
+        this.title = title;
     }
 
-    public void updateContent(String title) {
+    public void updateContent(String content) {
+        this.content = content;
+    }
 
+    public void removeJournalImage(JournalImage journalImage) {
+        this.journalImage = null;
     }
 }

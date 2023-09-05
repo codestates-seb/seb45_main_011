@@ -50,21 +50,20 @@ public class JournalController {
         return ResponseEntity.created(location).build();
     }
 
-    @PatchMapping("/{leaf-id}/journals/{journal-id}")
-    public ResponseEntity<HttpStatus> patchJournal(@Positive @PathVariable("leaf-id") Long leafId,
+    @PatchMapping("/journals/{journal-id}")
+    public ResponseEntity<HttpStatus> patchJournal(@Positive Long accountId,
                                                    @Positive @PathVariable("journal-id") Long journalId,
                                                    @Valid @RequestPart JournalDto.Patch patchDto,
                                                    @RequestPart(required = false) MultipartFile image) {
 
-        journalService.updateJournal(leafId, journalId, patchDto, image);
+        journalService.updateJournal(accountId, journalId, patchDto, image);
 
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{leaf-id}/journals/{journal-id}")
-    public ResponseEntity<HttpStatus> deleteJournal(@Positive @PathVariable("leaf-id") Long leafId,
-                                                    @Positive @PathVariable("journal-id") Long journalId) {
-        journalService.deleteJournal(leafId, journalId);
+    @DeleteMapping("/journals/{journal-id}")
+    public ResponseEntity<HttpStatus> deleteJournal(@Positive @PathVariable("journal-id") Long journalId) {
+        journalService.deleteJournal(journalId);
 
         return ResponseEntity.noContent().build();
     }
