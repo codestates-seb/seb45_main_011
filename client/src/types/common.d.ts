@@ -18,7 +18,7 @@ export type LeafDataInfo = {
 };
 
 export type PlantInfo = {
-  id: number;
+  productId: number;
   name: string;
   korName: string;
   imageUrlTable: {

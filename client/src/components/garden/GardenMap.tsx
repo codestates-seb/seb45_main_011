@@ -1,9 +1,9 @@
 'use client';
 
-import useGardenStore, { Cache } from '@/stores/gardenStore';
-import useModalStore from '@/stores/modalStore';
+import useGardenStore, { Reference } from '@/stores/gardenStore';
+import useModalStore from '@/stores/gardenModalStore';
 
-import CommonButton from './common/CommonButton';
+import CommonButton from '@/components/common/CommonButton';
 import EditModeInfo from './EditModeInfo';
 import MapController from './MapController';
 import GardenSquares from './GardenSquares';
@@ -15,20 +15,22 @@ import { getInstallable } from '@/utils/getInstallable';
 import { getInitialMapInfo } from '@/utils/getInitialMapInfo';
 
 export default function GardenMap() {
+  // 데이터를 줄이기 위해 노력해보기
+  // open.. close... toggle... 이렇게 한 단어로 줄일 수 있으면 좋음
   const {
     isEditMode,
     plants,
     moveTarget,
-    cache,
-    setIsEditMode,
-    setSidebarState,
+    reference,
+    changeEditMode,
+    changeSidebarState,
     setInventory,
     setPlants,
-    setMoveTarget,
-    setInfoTarget,
+    changeMoveTarget,
+    changeInfoTarget,
   } = useGardenStore();
-  const { setIsLeafExistModalOpen, setIsNoLeafExistModalOpen } =
-    useModalStore();
+  const { changeType, open } = useModalStore();
+
   const { targetX, targetY, setMousePosition } = useMouseTrack();
 
   const { uninstallableLocations, installedPlants } = getInitialMapInfo(plants);
@@ -46,6 +48,8 @@ export default function GardenMap() {
     if (e.target instanceof HTMLDivElement) handleSquares(e);
   };
 
+  // plants, squares 는 몰라도 됨
+  // hook으로 분리해보기
   const handlePlants = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target instanceof HTMLImageElement) {
       if (moveTarget) return;
@@ -57,11 +61,13 @@ export default function GardenMap() {
           (plant) => Number(targetId) === plant.plantObjId,
         );
 
-        selectedPlant && setInfoTarget(selectedPlant);
+        selectedPlant && changeInfoTarget(selectedPlant);
 
         selectedPlant?.leafDto
-          ? setIsLeafExistModalOpen(true)
-          : setIsNoLeafExistModalOpen(true);
+          ? changeType('leafExist')
+          : changeType('noLeafExist');
+
+        open();
       }
 
       if (isEditMode) {
@@ -74,7 +80,7 @@ export default function GardenMap() {
             ? 'lg'
             : 'sm';
 
-          setMoveTarget({ ...plant, plantSize, imageSize });
+          changeMoveTarget({ ...plant, plantSize, imageSize });
 
           return {
             ...plant,
@@ -118,7 +124,8 @@ export default function GardenMap() {
       });
 
       setPlants(newPlants);
-      setMoveTarget(null);
+
+      changeMoveTarget(null);
     }
   };
 
@@ -130,19 +137,19 @@ export default function GardenMap() {
 
   const handleSave = () => {
     // fetch 가능성
+    // 바뀐 전체 정보 응답으로!
     setPlants(plants);
 
-    setIsEditMode(false);
+    changeEditMode(false);
   };
 
   const handleCancel = () => {
-    setSidebarState('inventory');
+    setInventory((reference as Reference).inventory);
+    setPlants((reference as Reference).plants);
 
-    setInventory((cache as Cache).inventory);
-    setPlants((cache as Cache).plants);
-    setMoveTarget(null);
-
-    setIsEditMode(false);
+    changeSidebarState('inventory');
+    changeMoveTarget(null);
+    changeEditMode(false);
   };
 
   return (
@@ -154,10 +161,10 @@ export default function GardenMap() {
         {isEditMode && <EditModeInfo />}
         {isEditMode && (
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-            <CommonButton handleSave={handleSave} usage="button" size="sm">
+            <CommonButton onSave={handleSave} type="button" size="sm">
               저장
             </CommonButton>
-            <CommonButton handleCancel={handleCancel} usage="button" size="sm">
+            <CommonButton onCancel={handleCancel} type="button" size="sm">
               취소
             </CommonButton>
           </div>
