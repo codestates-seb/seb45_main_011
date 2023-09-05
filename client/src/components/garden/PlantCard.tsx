@@ -1,10 +1,10 @@
 'use client';
 
 import useGardenStore from '@/stores/gardenStore';
-import useModalStore from '@/stores/modalStore';
+import useModalStore from '@/stores/gardenModalStore';
 
 import Plant from './Plant';
-import CommonButton from './common/CommonButton';
+import CommonButton from '@/components/common/CommonButton';
 
 import { PlantInfo } from '@/types/common';
 import { PLANT_SIZES, PLANT_CARD_BUTTON_CONTENTS } from '@/constants/contents';
@@ -20,32 +20,34 @@ export default function PlantCard({ usage, plantInfo }: PlantCardProps) {
     shop,
     inventory,
     plants,
-    setIsEditMode,
+    changeEditMode,
     setInventory,
     setPlants,
-    setPurchaseTarget,
+    changePurchaseTarget,
   } = useGardenStore();
-  const { setIsPurchaseInfoModalOpen } = useModalStore();
+  const { changeType, open } = useModalStore();
 
   const handlePurchase = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (e.target instanceof HTMLElement) {
       const targetId = e.target.closest('li')?.dataset.shopId;
-      const item = shop.find(({ id }) => id === Number(targetId)) || null;
+      const item =
+        shop.find(({ productId }) => productId === Number(targetId)) || null;
 
-      setPurchaseTarget(item);
+      changePurchaseTarget(item);
     }
 
-    setIsPurchaseInfoModalOpen(true);
+    changeType('purchaseInfo');
+    open();
   };
 
   const handleInstall = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setIsEditMode(true);
+    changeEditMode(true);
 
     if (e.target instanceof HTMLElement) {
       const targetId = e.target.closest('li')?.dataset.plantId;
 
       const newInventory = inventory.filter(
-        ({ id }) => id !== Number(targetId),
+        ({ productId }) => productId !== Number(targetId),
       );
       const newPlants = plants.map((plant) =>
         plant.plantObjId === Number(targetId)
@@ -67,14 +69,14 @@ export default function PlantCard({ usage, plantInfo }: PlantCardProps) {
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) =>
     sidebarState === 'shop' ? handlePurchase(e) : handleInstall(e);
 
-  const { id, name, korName, imageUrlTable, price } = plantInfo;
+  const { productId, name, korName, imageUrlTable, price } = plantInfo;
 
   const plantSize = name.startsWith('building') ? 'lg' : 'sm';
 
   return (
     <li
-      data-shop-id={sidebarState === 'shop' && id}
-      data-plant-id={sidebarState === 'inventory' && id}
+      data-shop-id={sidebarState === 'shop' && productId}
+      data-plant-id={sidebarState === 'inventory' && productId}
       className={`flex flex-col gap-1 items-center w-[126px] border-2 border-brown-50 rounded-lg bg-repeat bg-[url('/assets/img/bg_paper.png')] font-bold shadow-outer/down ${PLANT_CARD_SIZE[usage]}`}>
       <Plant
         name={korName}
@@ -92,8 +94,8 @@ export default function PlantCard({ usage, plantInfo }: PlantCardProps) {
         </p>
       )}
       <CommonButton
-        handleClick={handleClick}
-        usage="button"
+        onClick={handleClick}
+        type="button"
         size="sm"
         className="my-[10px]">
         {PLANT_CARD_BUTTON_CONTENTS[usage]}

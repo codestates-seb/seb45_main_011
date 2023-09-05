@@ -1,15 +1,15 @@
 'use client';
 
-import useModalStore from '@/stores/modalStore';
+import useGardenModalStore from '@/stores/gardenModalStore';
 
-import CommonButton from './common/CommonButton';
-import Modal from './common/Modal';
-import ModalPortal from './common/ModalPortal';
+import Modal from '@/components/common/Modal';
+import ModalPortal from '@/components/common/ModalPortal';
+import CommonButton from '@/components/common/CommonButton';
 
 export default function InventoryEmptyModal() {
-  const { setIsInventoryEmptyModalOpen } = useModalStore();
+  const { close } = useGardenModalStore();
 
-  const handleClose = () => setIsInventoryEmptyModalOpen(false);
+  const handleClose = () => close;
 
   return (
     <ModalPortal>
@@ -19,7 +19,7 @@ export default function InventoryEmptyModal() {
             <p className="text-[32px] text-brown-70">설치할 식물이 없어요.</p>
             <p className="text-[28px] text-brown-90">상점에서 구매해보세요!</p>
           </div>
-          <CommonButton handleClose={handleClose} usage="button" size="md">
+          <CommonButton onClose={handleClose} type="button" size="md">
             닫기
           </CommonButton>
         </section>

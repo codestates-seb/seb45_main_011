@@ -5,15 +5,15 @@ import { twMerge } from 'tailwind-merge';
 import { DefaultProps, addPrefixToHandler } from '@/types/common';
 
 interface CommonButtonProps
-  extends addPrefixToHandler<any, 'handle'>,
+  extends addPrefixToHandler<any, 'on'>,
     DefaultProps {
-  usage: 'button' | 'submit';
+  type: 'button' | 'submit';
   size: 'sm' | 'md' | 'lg' | 'fix';
   children: string;
 }
 
 export default function CommonButton({
-  usage,
+  type,
   size,
   children,
   className,
@@ -24,7 +24,7 @@ export default function CommonButton({
   return (
     <button
       onClick={handleClick}
-      type={usage}
+      type={type}
       className={twMerge(
         `font-bold border-brown-70 rounded-lg text-brown-10 bg-contain bg-center bg-repeat bg-[url('/assets/img/bg_wood_dark.png')] shadow-outer/down ${BUTTON_STYLE[size]}`,
         className,
