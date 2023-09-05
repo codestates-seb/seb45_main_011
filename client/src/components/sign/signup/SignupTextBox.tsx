@@ -205,7 +205,6 @@ export default function SignupTextBox() {
           type="text"
           autoComplete="off"
           {...nicknameRsegister}
-          // onClick={() => !isSuccess && alert('먼저 이메일 인증을 해주세요.')}
           disabled={!isSuccess ? true : false}
         />
         {nicknameError(errors)}
