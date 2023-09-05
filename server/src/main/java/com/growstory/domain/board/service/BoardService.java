@@ -10,6 +10,7 @@ import com.growstory.domain.hashTag.service.HashTagService;
 import com.growstory.domain.images.service.BoardImageService;
 import com.growstory.domain.leaf.entity.Leaf;
 import com.growstory.domain.leaf.repository.LeafRepository;
+import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
@@ -30,10 +31,11 @@ public class BoardService {
     private final AccountService accountService;
     private final HashTagService hashTagService;
     private final BoardImageService boardImageService;
+    private final AuthUserUtils authUserUtils;
 
     public ResponseBoardDto createBoard(Long leafId, RequestBoardDto.Post requestBoardDto, MultipartFile image) {
         //TODO: accountService로직 변경으로 인한 수정 필요
-        Account findAccount = accountService.findVerifiedAccount();
+        Account findAccount = authUserUtils.getAuthUser();
 
         boardImageService.saveBoardImage(image);
 
@@ -77,7 +79,7 @@ public class BoardService {
     }
 
     public void modifyBoard(Long boardId, RequestBoardDto.Patch requestBoardDto, MultipartFile image) {
-        Account findBoard = accountService.findVerifiedAccount();
+        Account findBoard = authUserUtils.getAuthUser();
 
 //        Leaf findLeaf = leafRepository.findById(leafId)
 //                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.LEAF_NOT_FOUND));
