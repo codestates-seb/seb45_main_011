@@ -24,12 +24,19 @@ export default function Diary({ item }: { item: DiaryInfo }) {
   const replaceContent = item?.content.replace(/\n/g, '<br/>');
 
   const setIsModalOpen = useModalStore((state) => state.setIsDiaryModalOpen);
+  const setModalCategory = useLeafStore((state) => state.setModalCategory);
   const startDay = new Date(item.date);
   const [month, day] = [startDay.getMonth() + 1, startDay.getDate()];
   const setDiary = useLeafStore((statet) => statet.setDiary);
   const handleEditDiary = (item: DiaryInfo) => {
     setIsModalOpen(true);
+    setModalCategory('add');
     setDiary(item);
+  };
+  const handleDeleteDiary = (item: DiaryInfo) => {
+    setIsModalOpen(true);
+    setModalCategory('delete');
+    // fetch(item~~)
   };
 
   return (
@@ -46,7 +53,7 @@ export default function Diary({ item }: { item: DiaryInfo }) {
             />
             <ControlButton
               usage="delete"
-              // handleDiaryDelete={handleDiaryDelete}
+              handleDeleteDiary={() => handleDeleteDiary(item)}
             />
           </div>
           <p className="text-[0.875rem] font-bold text-brown-80 ">

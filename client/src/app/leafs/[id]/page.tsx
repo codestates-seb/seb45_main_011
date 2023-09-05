@@ -11,6 +11,7 @@ import useModalStore from '@/stores/modalStore';
 import ModalPortal from '@/components/common/ModalPortal';
 import Modal from '@/components/common/Modal';
 import CommonButton from '@/components/common/CommonButton';
+import { LeafDeleteModal } from '@/components/LeafDeleteModal';
 
 export default function Leafs({ params }: { params: { id: string } }) {
   // URL path ID
@@ -22,18 +23,7 @@ export default function Leafs({ params }: { params: { id: string } }) {
   const isLeafDeleteModalOpen = useModalStore(
     (state) => state.isLeafDeleteModalOpen,
   );
-  const setIsLeafDeleteModalOpen = useModalStore(
-    (state) => state.setIsLeafDeleteModalOpen,
-  );
 
-  const handleDeleteClickAtModal = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setIsLeafDeleteModalOpen(false);
-    // fetch(...)
-  };
-
-  const handleCancelClickAtModal = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setIsLeafDeleteModalOpen(false);
-  };
   return (
     <div className="flex justify-center items-center">
       <div className="relative w-full max-w-[720px] h-[528px] border-gradient">
@@ -57,29 +47,7 @@ export default function Leafs({ params }: { params: { id: string } }) {
       {isLeafDeleteModalOpen ? (
         <ModalPortal>
           <Modal>
-            <div className="flex flex-col justify-center w-full max-w-[531px] h-[316px] px-[3.25rem]">
-              <p className="text-center font-bold text-[1.75rem] leading-9 text-brown-90 mb-10">
-                정원에 설치한 식물 카드의 경우{' '}
-                <b className="text-red-50">연결이 해제</b>됩니다.
-              </p>
-              <p className="text-center font-bold text-[2rem] leading-8 text-brown-70 mb-[2.875rem]">
-                그래도 삭제하시겠습니까?
-              </p>
-              <div className="flex gap-1 justify-center">
-                <CommonButton
-                  usage="button"
-                  size="lg"
-                  handleDeleteClick={handleDeleteClickAtModal}>
-                  삭제
-                </CommonButton>
-                <CommonButton
-                  usage="button"
-                  size="lg"
-                  handleCancelClick={handleCancelClickAtModal}>
-                  취소
-                </CommonButton>
-              </div>
-            </div>
+            <LeafDeleteModal />
           </Modal>
         </ModalPortal>
       ) : null}

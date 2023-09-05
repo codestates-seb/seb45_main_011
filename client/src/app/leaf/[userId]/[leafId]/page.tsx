@@ -14,10 +14,12 @@ import Screws from '@/components/common/Screws';
 import data from '@/mock/leaf.json';
 
 import { LeafDataInfo } from '@/types/common';
+import { DiaryDeleteModal } from '@/components/DiaryDeleteModal';
 
 export default function Leaf({ params }: { params: { leafId: string } }) {
   const isModalOpen = useModalStore((state) => state.isDiaryModalOpen);
   const diary = useLeafStore((state) => state.diary);
+  const modalCategory = useLeafStore((state) => state.modalCategory);
   const [leaf, setLeaf] = useState<LeafDataInfo | null>(null);
   const leafId = params.leafId;
   useEffect(() => {
@@ -36,7 +38,11 @@ export default function Leaf({ params }: { params: { leafId: string } }) {
             {isModalOpen ? (
               <ModalPortal>
                 <Modal>
-                  <DiaryForm diary={diary} />
+                  {modalCategory === 'add' ? (
+                    <DiaryForm diary={diary} />
+                  ) : (
+                    <DiaryDeleteModal />
+                  )}
                 </Modal>
               </ModalPortal>
             ) : null}
