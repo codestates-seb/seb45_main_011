@@ -20,7 +20,7 @@ import {
   SelectLeafModal,
   PurchaseInfoModal,
   PurchaseModal,
-  InventoryEmptyModal,
+  EmptyInventoryModal,
 } from '@/components/garden';
 
 import { RawGardenInfo } from '@/types/data';
@@ -92,7 +92,7 @@ export default function Garden() {
     if (type === 'selectLeaf') return <SelectLeafModal />;
     if (type === 'purchaseInfo') return <PurchaseInfoModal />;
     if (type === 'purchase') return <PurchaseModal />;
-    if (type === 'emptyInventory') return <InventoryEmptyModal />;
+    if (type === 'emptyInventory') return <EmptyInventoryModal />;
   };
 
   return (
