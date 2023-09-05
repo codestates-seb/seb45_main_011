@@ -26,8 +26,9 @@ export default function GardenMap() {
     changeSidebarState,
     setInventory,
     setPlants,
-    changeMoveTarget,
-    changeInfoTarget,
+    observeMoveTarget,
+    observeInfoTarget,
+    unobserve,
   } = useGardenStore();
   const { changeType, open } = useModalStore();
 
@@ -61,7 +62,7 @@ export default function GardenMap() {
           (plant) => Number(targetId) === plant.plantObjId,
         );
 
-        selectedPlant && changeInfoTarget(selectedPlant);
+        selectedPlant && observeInfoTarget(selectedPlant);
 
         selectedPlant?.leafDto
           ? changeType('leafExist')
@@ -80,7 +81,7 @@ export default function GardenMap() {
             ? 'lg'
             : 'sm';
 
-          changeMoveTarget({ ...plant, plantSize, imageSize });
+          observeMoveTarget({ ...plant, plantSize, imageSize });
 
           return {
             ...plant,
@@ -102,7 +103,7 @@ export default function GardenMap() {
       const y = Number(e.target.dataset.positionY);
 
       if (
-        moveTarget.plantSize === 'lg' &&
+        moveTarget.imageSize === 'lg' &&
         !uninstallableLocations.every((position) =>
           getInstallable(x, y, position, 'lg'),
         )
@@ -125,7 +126,7 @@ export default function GardenMap() {
 
       setPlants(newPlants);
 
-      changeMoveTarget(null);
+      unobserve();
     }
   };
 
@@ -148,8 +149,8 @@ export default function GardenMap() {
     setPlants((reference as Reference).plants);
 
     changeSidebarState('inventory');
-    changeMoveTarget(null);
     changeEditMode(false);
+    unobserve();
   };
 
   return (
