@@ -1,11 +1,10 @@
 'use client';
 
 import uuid from 'react-uuid';
+import useGardenStore from '@/stores/gardenStore';
 
 import CommonButton from './common/CommonButton';
 import PlantCard from './PlantCard';
-
-import useGardenStore from '@/stores/gardenStore';
 
 export default function GardenSidebar() {
   const { isEditMode, sidebarState, shop, inventory, setSidebarState } =
@@ -20,16 +19,21 @@ export default function GardenSidebar() {
   const listBlank = plantList.length > 2 ? 'px-3 mr-[10px]' : 'px-5';
 
   return (
-    <section className="w-[182px] h-[496px] border-gradient rounded-xl shadow-outer/down">
+    <section className="max-w-[182px] h-[496px] border-gradient rounded-xl shadow-outer/down">
       {!isEditMode && (
         <div className="flex gap-2 w-fit mx-auto my-3">
-          <CommonButton usage="button" size="sm" handleShop={handleShop}>
+          <CommonButton
+            handleShop={handleShop}
+            usage="button"
+            size="sm"
+            className="whitespace-nowrap">
             상점
           </CommonButton>
           <CommonButton
+            handleInventory={handleInventory}
             usage="button"
             size="sm"
-            handleInventory={handleInventory}>
+            className="whitespace-nowrap">
             보관함
           </CommonButton>
         </div>

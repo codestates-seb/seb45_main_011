@@ -1,34 +1,29 @@
 import Image from 'next/image';
 
-import { ProcessedPlant } from '@/stores/gardenStore';
-
-export interface TargetPlant extends ProcessedPlant {
-  imageUrl: string;
-  imageSize: 'sm' | 'lg';
-}
+import { MoveTarget } from '@/stores/gardenStore';
 
 interface TrackedPlantProps {
   targetX: number;
   targetY: number;
-  targetPlant: TargetPlant;
+  moveTarget: MoveTarget;
 }
 
 export default function TrackedPlant({
   targetX,
   targetY,
-  targetPlant,
+  moveTarget,
 }: TrackedPlantProps) {
-  const { imageUrl, productName, imageSize } = targetPlant;
+  const { productName, imageUrlTable, plantSize, imageSize } = moveTarget;
 
   return (
     <Image
-      src={imageUrl}
+      src={imageUrlTable[plantSize]}
       alt={productName}
       width={TARGETPLANT_SIZE[imageSize]}
       height={TARGETPLANT_SIZE[imageSize]}
       className="absolute"
       style={{
-        transform: `translate(${targetX - 10}px, ${targetY - 110}px)`,
+        transform: `translate(${targetX - 140}px, ${targetY - 160}px)`,
       }}
     />
   );
