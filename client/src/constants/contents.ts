@@ -29,6 +29,7 @@ export const SIGNIN_REQUIRE = {
   nickname: '닉네임을 입력해주세요.',
   pw: '비밀번호를 입력해주세요.',
   pwCheck: '동일한 비밀번호를 다시 입력해주세요.',
+  code: '인증 번호를 입력해주세요.',
 } as const;
 
 export const SIGNIN_VAILDATION = {
@@ -36,6 +37,14 @@ export const SIGNIN_VAILDATION = {
   nickname: '2글자 이상의 영문 또는 한글을 사용해야 합니다.',
   pw: '6~12글자의 영문과 숫자를 함께 사용해야 합니다.',
   pwCheck: '비밀번호가 일치하지 않습니다.',
+  code: '올바른 인증 번호 형식이 아닙니다.',
+} as const;
+
+export const SIGN_DEFAULT_VALUE = {
+  email: '',
+  nickname: '',
+  pw: '',
+  pwCheck: '',
 } as const;
 
 export const PLANT_CARD_CONTENTS = {

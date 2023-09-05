@@ -1,4 +1,7 @@
-'use cilent';
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { setCookie } from 'cookies-next';
 
 import {
   FieldErrors,
@@ -7,26 +10,64 @@ import {
   useForm,
 } from 'react-hook-form';
 
+import { SigninFormValue, cookieOption } from '@/types/common';
+
 import { SIGNIN_REQUIRE, SIGNIN_VAILDATION } from '@/constants/contents';
 import CommonButton from '@/components/common/CommonButton';
 
-interface FormValue {
-  email: string;
-  password: string;
-}
-
 export default function SigninTextBox() {
+  //TODO: 이메일, 비밀번호를 전송하면 버튼 disable 처리 해주기
+  //! 아직 CommonButton에 disable 속성이 없는 것 같다...!
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<FormValue>();
+    formState: { errors, isSubmitting },
+  } = useForm<SigninFormValue>();
+
+  const cookieOption: cookieOption = {
+    //! 서버와 연동 시 domain, path는 변경해야함
+    domain: 'localhost',
+    path: '/',
+    expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    httpOnly: true,
+  };
 
   // Submit Button
-  const handleOnSubmit: SubmitHandler<FormValue> = (data) => {
-    // 모든 항목이 정상적으로 입력되었을 때 처리할 로직으로 변경 예정
-    console.log(data);
+  const handleOnSubmit: SubmitHandler<SigninFormValue> = async (data) => {
+    try {
+      const response = await fetch(`url`, {
+        method: 'POST',
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+        }),
+        headers: {
+          'Content-type': 'application/json',
+        },
+      });
+
+      if (response.status === 200) {
+        const data = await response.json();
+
+        const accessToken = data.accessToken;
+        const refreshToken = data.refreshToken;
+
+        // 엑세스 토큰과 리프레쉬 토큰을 넣어 cookie 생성
+        setCookie('accessToken', accessToken, cookieOption);
+        setCookie('refreshToken', refreshToken, cookieOption);
+
+        router.push('/');
+      }
+
+      alert('로그인에 실패했습니다. 다시 로그인해 주세요.');
+
+      //! https 연결 여부 논의 필요
+      //! 추후에 개인정보 처리방침 알림 제공하기
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // Error Message
@@ -57,6 +98,7 @@ export default function SigninTextBox() {
   // Input Register
   const emailRegister = {
     ...register('email', {
+      required: true,
       pattern: {
         value: /\S+@\S+\.\S+/,
         message: SIGNIN_VAILDATION.email,
@@ -66,7 +108,7 @@ export default function SigninTextBox() {
 
   const passwordRegister = {
     ...register('password', {
-      // required: true,
+      required: true,
       pattern: {
         value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,15}$/,
         message: SIGNIN_VAILDATION.pw,
@@ -91,7 +133,7 @@ export default function SigninTextBox() {
         />
         {emailError(errors)}
       </div>
-      <div className="mb-[20px]">
+      <div>
         <input
           className={`min-w-[300px] pl-9 py-[10px] font-normal text-[12px] border-2 border-brown-70 rounded-lg bg-[center_left_12px] bg-no-repeat ${SIGN_INPUT_BG.pw} leading-[12px] outline-none shadow-outer/down`}
           placeholder={SIGNIN_REQUIRE.pw}
@@ -100,12 +142,13 @@ export default function SigninTextBox() {
         />
         {passwordError(errors)}
       </div>
-      <div className="flex gap-2 justify-center ">
+      <div className="flex gap-2 justify-center mt-2">
         <CommonButton
           usage="submit"
           size="sm"
           children="로그인"
           className="w-[92px] h-[44px] text-[20px]"
+          //  disabled={isSubmitting}
         />
         <CommonButton
           usage="submit"

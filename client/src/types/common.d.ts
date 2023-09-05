@@ -49,3 +49,25 @@ export type InputValues = {
   image: FileList;
   fieldState: string;
 };
+
+export type SigninFormValue = {
+  email?: string;
+  password?: string;
+};
+
+export type SignupFormValue = {
+  email: string;
+  nickname: string;
+  password: string;
+  password_check: string;
+  code?: string;
+};
+
+export type cookieOption = {
+  domain: string;
+  path: string;
+  expires?: Date;
+  secure?: boolean;
+  httpOnly: boolean;
+  samSite?: string;
+};
