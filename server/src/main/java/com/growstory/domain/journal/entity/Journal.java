@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter
@@ -27,8 +26,6 @@ public class Journal extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private boolean isConnectedToBoard;
-
     @OneToOne(mappedBy = "journal", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private JournalImage journalImage;
 
@@ -41,5 +38,19 @@ public class Journal extends BaseTimeEntity {
         if(journalImage.getJournal()!=this) {
             journalImage.updateJournal(this);
         }
+    }
+
+    public void updateLeaf(Leaf findLeaf) {
+        this.leaf=findLeaf;
+//        if(!findLeaf.getJournals().contains(this)) {
+//            findLeaf.getJournals().add(this);
+//        }
+    }
+
+    public void updateTitle(String title) {
+    }
+
+    public void updateContent(String title) {
+
     }
 }

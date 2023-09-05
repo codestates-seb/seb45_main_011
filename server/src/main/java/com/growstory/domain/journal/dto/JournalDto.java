@@ -1,5 +1,6 @@
 package com.growstory.domain.journal.dto;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,15 +14,12 @@ public class JournalDto {
         String title;
         @NotBlank
         String content;
-        @NotNull
-        boolean isConnectedToBoard; //게시판 연동
     }
 
     @Getter
     public static class Patch {
         String title;
         String content;
-        boolean isConnectedToBoard;
     }
 
     @Getter

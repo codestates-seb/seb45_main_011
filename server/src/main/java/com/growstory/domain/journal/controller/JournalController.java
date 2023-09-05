@@ -2,7 +2,6 @@ package com.growstory.domain.journal.controller;
 
 import com.growstory.domain.journal.dto.JournalDto;
 import com.growstory.domain.journal.service.JournalService;
-import com.growstory.domain.leaf.dto.LeafDto;
 import com.growstory.global.response.SingleResponseDto;
 import com.growstory.global.utils.UriCreator;
 import org.springframework.http.HttpStatus;
@@ -49,5 +48,16 @@ public class JournalController {
         URI location = UriCreator.createUri(DEFAULT_URL, journal.getJournalId());
 
         return ResponseEntity.created(location).build();
+    }
+
+    @PatchMapping("/{leaf-id}/journals/{journal-id}")
+    public ResponseEntity<HttpStatus> patchJournal(@Positive @PathVariable("leaf-id") Long leafId,
+                                                   @Positive @PathVariable("journal-id") Long journalId,
+                                                   @Valid @RequestPart JournalDto.Patch patchDto,
+                                                   @RequestPart(required = false) MultipartFile image) {
+
+        journalService.updateJournal(leafId, journalId, patchDto, image);
+
+        return ResponseEntity.noContent().build();
     }
 }
