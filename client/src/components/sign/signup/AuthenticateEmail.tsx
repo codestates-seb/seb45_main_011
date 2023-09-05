@@ -20,7 +20,6 @@ export default function AuthenticateEmail({
   const [isCode, setIsCode] = useState<string>('codeModal');
   const [userCode, setUserCode] = useState('');
 
-  // 이메일 인증을 하지 않는다면 회원 가입을 못하게 막기
   const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserCode(e.target.value);
   };

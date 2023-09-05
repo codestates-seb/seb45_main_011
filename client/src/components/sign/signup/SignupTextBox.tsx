@@ -35,7 +35,6 @@ export default function SignupTextBox() {
 
   // Submit Button
   const handleOnSubmit: SubmitHandler<SignupFormValue> = async (data) => {
-    // 모든 항목이 정상적으로 입력되었을 때 처리할 로직으로 변경 예정
     try {
       const response = await fetch(`url`, {
         method: 'POST',
@@ -43,7 +42,6 @@ export default function SignupTextBox() {
           email: data.email,
           nickname: data.nickname,
           password: data.password,
-          //! 요구사항 정의서에 나와있는 request의 profileImage...뭐지용...?
         }),
         headers: {
           'Content-type': 'application/json',
@@ -54,7 +52,7 @@ export default function SignupTextBox() {
         router.push('/signin');
       }
 
-      //TODO: 회원가입 실패 시 처리 로직 필요
+      alert('회원 가입에 실패했습니다. 다시 시도해주세요.');
 
       //! https 연결 여부 논의 필요
       //! 추후에 개인정보 처리방침 알림 제공하기
@@ -207,6 +205,8 @@ export default function SignupTextBox() {
           type="text"
           autoComplete="off"
           {...nicknameRsegister}
+          // onClick={() => !isSuccess && alert('먼저 이메일 인증을 해주세요.')}
+          disabled={!isSuccess ? true : false}
         />
         {nicknameError(errors)}
       </div>
@@ -216,6 +216,7 @@ export default function SignupTextBox() {
           placeholder={SIGNIN_REQUIRE.pw}
           type="password"
           {...passwordRegister}
+          disabled={!isSuccess ? true : false}
         />
         {passwordError(errors)}
       </div>
@@ -225,6 +226,7 @@ export default function SignupTextBox() {
           placeholder={SIGNIN_REQUIRE.pwCheck}
           type="password"
           {...passwordCheckRegister}
+          disabled={!isSuccess ? true : false}
         />
         {passwordCheckError(errors)}
       </div>
