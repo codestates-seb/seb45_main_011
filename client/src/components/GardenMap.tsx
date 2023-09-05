@@ -1,48 +1,37 @@
 'use client';
 
-import CommonButton from './common/CommonButton';
-import GardenSquares from './GardenSquares';
-
 import useGardenStore, { Cache } from '@/stores/gardenStore';
+import useModalStore from '@/stores/modalStore';
+
+import CommonButton from './common/CommonButton';
+import EditModeInfo from './EditModeInfo';
+import MapController from './MapController';
+import GardenSquares from './GardenSquares';
+import InstalledPlants from './InstalledPlants';
+import TrackedPlant from './TrackedPlant';
+
 import useMouseTrack from '@/hooks/useMouseTrack';
 import { getInstallable } from '@/utils/getInstallable';
 import { getInitialMapInfo } from '@/utils/getInitialMapInfo';
-import InstalledPlants from './InstalledPlants';
-import EditModeInfo from './EditModeInfo';
-import TrackedPlant from './TrackedPlant';
-import MapController from './MapController';
 
 export default function GardenMap() {
   const {
     isEditMode,
     plants,
-    targetPlant,
+    moveTarget,
     cache,
     setIsEditMode,
     setSidebarState,
     setInventory,
     setPlants,
-    setTargetPlant,
+    setMoveTarget,
+    setInfoTarget,
   } = useGardenStore();
+  const { setIsLeafExistModalOpen, setIsNoLeafExistModalOpen } =
+    useModalStore();
   const { targetX, targetY, setMousePosition } = useMouseTrack();
 
   const { uninstallableLocations, installedPlants } = getInitialMapInfo(plants);
-
-  const handleSave = () => {
-    setPlants(plants);
-
-    setIsEditMode(false);
-  };
-
-  const handleCancel = () => {
-    setSidebarState('inventory');
-
-    setInventory((cache as Cache).inventory);
-    setPlants((cache as Cache).plants);
-    setTargetPlant(null);
-
-    setIsEditMode(false);
-  };
 
   const handleGarden = (e: React.MouseEvent<HTMLDivElement>) => {
     if (
@@ -59,68 +48,101 @@ export default function GardenMap() {
 
   const handlePlants = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target instanceof HTMLImageElement) {
-      if (targetPlant || !isEditMode) return;
+      if (moveTarget) return;
 
-      const targetId = e.target.dataset && (e.target.dataset.plantId as string);
-      const newPlants = plants.map((plant) => {
-        if (+targetId !== plant.plantObjId)
-          return { ...plant, isClicked: false };
+      const targetId = e.target.dataset.plantId;
 
-        const plantSize =
-          plant.leafDto && plant.leafDto.journalCount >= 10 ? 'lg' : 'sm';
-        const imageUrl = `${process.env.NEXT_PUBLIC_PRODUCTS_IMAGE_URL}${plant.productName}_${plantSize}.svg`;
-        const imageSize = plant.productName.startsWith('building')
-          ? 'lg'
-          : 'sm';
+      if (!isEditMode) {
+        const selectedPlant = plants.find(
+          (plant) => Number(targetId) === plant.plantObjId,
+        );
 
-        setTargetPlant({ ...plant, imageUrl, imageSize });
+        selectedPlant && setInfoTarget(selectedPlant);
 
-        return {
-          ...plant,
-          location: { ...plant.location, isInstalled: false },
-        };
-      });
+        selectedPlant?.leafDto
+          ? setIsLeafExistModalOpen(true)
+          : setIsNoLeafExistModalOpen(true);
+      }
 
-      setPlants(newPlants);
+      if (isEditMode) {
+        const newPlants = plants.map((plant) => {
+          if (Number(targetId) !== plant.plantObjId) return plant;
+
+          const plantSize =
+            plant.leafDto && plant.leafDto.journalCount >= 10 ? 'lg' : 'sm';
+          const imageSize = plant.productName.startsWith('building')
+            ? 'lg'
+            : 'sm';
+
+          setMoveTarget({ ...plant, plantSize, imageSize });
+
+          return {
+            ...plant,
+            location: { ...plant.location, isInstalled: false },
+          };
+        });
+
+        setPlants(newPlants);
+      }
     }
   };
 
   const handleSquares = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target instanceof HTMLDivElement) {
       if (e.target.dataset.installable === 'false') return;
-      if (!(isEditMode && targetPlant)) return;
+      if (!(isEditMode && moveTarget)) return;
 
       const x = Number(e.target.dataset.positionX);
       const y = Number(e.target.dataset.positionY);
-      const isLargeSize = targetPlant?.productName.startsWith('building');
 
       if (
-        isLargeSize &&
+        moveTarget.plantSize === 'lg' &&
         !uninstallableLocations.every((position) =>
           getInstallable(x, y, position, 'lg'),
         )
       )
         return;
 
-      const newPlant = {
-        ...targetPlant,
-        location: {
-          ...targetPlant.location,
-          x,
-          y,
-        },
-        isInstalled: true,
-      };
+      const newPlants = plants.map((plant) => {
+        if (moveTarget.plantObjId !== plant.plantObjId) return plant;
 
-      setPlants([...plants, newPlant]);
-      setTargetPlant(null);
+        return {
+          ...plant,
+          location: {
+            ...plant.location,
+            isInstalled: true,
+            x,
+            y,
+          },
+        };
+      });
+
+      setPlants(newPlants);
+      setMoveTarget(null);
     }
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!targetPlant) return;
+    if (!moveTarget) return;
 
     setMousePosition({ x: e.clientX, y: e.clientY });
+  };
+
+  const handleSave = () => {
+    // fetch 가능성
+    setPlants(plants);
+
+    setIsEditMode(false);
+  };
+
+  const handleCancel = () => {
+    setSidebarState('inventory');
+
+    setInventory((cache as Cache).inventory);
+    setPlants((cache as Cache).plants);
+    setMoveTarget(null);
+
+    setIsEditMode(false);
   };
 
   return (
@@ -140,7 +162,7 @@ export default function GardenMap() {
             </CommonButton>
           </div>
         )}
-        <MapController className="min-[960px]:hidden bottom-4 left-4 z-50" />
+        <MapController className="min-[960px]:hidden bottom-4 left-4 z-30" />
         {isEditMode && (
           <GardenSquares uninstallableLocations={uninstallableLocations} />
         )}
@@ -148,11 +170,11 @@ export default function GardenMap() {
           isEditMode={isEditMode}
           installedPlants={installedPlants}
         />
-        {targetPlant && (
+        {moveTarget && (
           <TrackedPlant
             targetX={targetX}
             targetY={targetY}
-            targetPlant={targetPlant}
+            moveTarget={moveTarget}
           />
         )}
       </div>

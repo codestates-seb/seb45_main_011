@@ -1,6 +1,6 @@
 'use cilent';
 
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   FieldErrors,
   FieldValues,
@@ -8,23 +8,64 @@ import {
   useForm,
 } from 'react-hook-form';
 
-import { SIGNIN_REQUIRE, SIGNIN_VAILDATION } from '@/constants/contents';
-import CommonButton from '@/components/common/CommonButton';
+import {
+  SIGNIN_REQUIRE,
+  SIGNIN_VAILDATION,
+  SIGN_DEFAULT_VALUE,
+} from '@/constants/contents';
 import { SignupFormValue } from '@/types/common';
 
+import CommonButton from '@/components/common/CommonButton';
+import AuthenticateEmail from './AuthenticateEmail';
+import { useRouter } from 'next/navigation';
+
 export default function SignupTextBox() {
+  const [isAuthEmail, setIsAuthEmail] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting },
-  } = useForm<SignupFormValue>();
+    reset,
+    formState: { errors, isSubmitSuccessful },
+  } = useForm<SignupFormValue>({ defaultValues: SIGN_DEFAULT_VALUE });
 
   // Submit Button
-  const handleOnSubmit: SubmitHandler<SignupFormValue> = (data) => {
-    // 모든 항목이 정상적으로 입력되었을 때 처리할 로직으로 변경 예정
-    console.log(data);
+  const handleOnSubmit: SubmitHandler<SignupFormValue> = async (data) => {
+    try {
+      const response = await fetch(`url`, {
+        method: 'POST',
+        body: JSON.stringify({
+          email: data.email,
+          nickname: data.nickname,
+          password: data.password,
+        }),
+        headers: {
+          'Content-type': 'application/json',
+        },
+      });
+
+      if (response.status === 200) {
+        router.push('/signin');
+      }
+
+      alert('회원 가입에 실패했습니다. 다시 시도해주세요.');
+
+      //! https 연결 여부 논의 필요
+      //! 추후에 개인정보 처리방침 알림 제공하기
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful, reset]);
 
   const passwordRef = useRef<string | null>(null);
   passwordRef.current = watch('password');
@@ -117,25 +158,54 @@ export default function SignupTextBox() {
     }),
   };
 
+  const passwordCheckRegister = {
+    ...register('password_check', {
+      required: true,
+      validate: (value) =>
+        value !== passwordRef.current && SIGNIN_VAILDATION.pwCheck,
+    }),
+  };
+
   return (
     <form
       className="flex flex-col gap-5 w-[300px]"
       onSubmit={handleSubmit(handleOnSubmit)}>
-      <div className="">
+      <div>
         <input
           className={`min-w-[300px] pl-9 py-[10px] font-normal text-[12px] border-2 border-brown-70 rounded-lg bg-[center_left_12px] bg-no-repeat ${SIGN_INPUT_BG.email} leading-[12px] outline-none shadow-outer/down`}
           placeholder={SIGNIN_REQUIRE.email}
           type="email"
+          autoComplete="off"
           {...emailRegister}
         />
         {emailError(errors)}
+        <div className="flex justify-center mt-3">
+          <CommonButton
+            usage="button"
+            size="sm"
+            //TODO: 이메일을 적고 이메일 인증 버튼을 누를 수 있게 구현하기
+            //TODO: 인증 성공일 때 disable 처리하기
+            children={isSuccess ? '인증 성공!' : '이메일 인증하기'}
+            handleCode={() => setIsAuthEmail(!isAuthEmail)}
+            // disabled={isSuccess}
+          />
+          {isAuthEmail && (
+            <AuthenticateEmail
+              isAuthEmail={isAuthEmail}
+              setIsAuthEmail={setIsAuthEmail}
+              setIsSuccess={setIsSuccess}
+            />
+          )}
+        </div>
       </div>
       <div>
         <input
           className={`min-w-[300px] pl-9 py-[10px] font-normal text-[12px] border-2 border-brown-70 rounded-lg bg-[center_left_12px] bg-no-repeat ${SIGN_INPUT_BG.nickname} leading-[12px] outline-none shadow-outer/down`}
           placeholder={SIGNIN_REQUIRE.nickname}
           type="text"
+          autoComplete="off"
           {...nicknameRsegister}
+          disabled={!isSuccess ? true : false}
         />
         {nicknameError(errors)}
       </div>
@@ -145,23 +215,21 @@ export default function SignupTextBox() {
           placeholder={SIGNIN_REQUIRE.pw}
           type="password"
           {...passwordRegister}
+          disabled={!isSuccess ? true : false}
         />
         {passwordError(errors)}
       </div>
-      <div className="mb-[25px]">
+      <div className="">
         <input
           className={`min-w-[300px] pl-9 py-[10px] font-normal text-[12px] border-2 border-brown-70 rounded-lg bg-[center_left_12px] bg-no-repeat ${SIGN_INPUT_BG.pw} leading-[12px] outline-none shadow-outer/down`}
           placeholder={SIGNIN_REQUIRE.pwCheck}
           type="password"
-          {...register('password_check', {
-            required: true,
-            validate: (value) =>
-              value !== passwordRef.current && SIGNIN_VAILDATION.pwCheck,
-          })}
+          {...passwordCheckRegister}
+          disabled={!isSuccess ? true : false}
         />
         {passwordCheckError(errors)}
       </div>
-      <div className="flex gap-2 justify-center">
+      <div className="flex justify-center">
         <CommonButton
           usage="submit"
           size="sm"

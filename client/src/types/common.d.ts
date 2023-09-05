@@ -21,7 +21,10 @@ export type PlantInfo = {
   id: number;
   name: string;
   korName: string;
-  imageUrl: string;
+  imageUrlTable: {
+    sm: string;
+    lg: string;
+  };
   price: number;
 };
 
@@ -57,6 +60,7 @@ export type SignupFormValue = {
   nickname: string;
   password: string;
   password_check: string;
+  code?: string;
 };
 
 export type cookieOption = {
