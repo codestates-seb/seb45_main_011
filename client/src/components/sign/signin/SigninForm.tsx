@@ -12,7 +12,7 @@ import SigninTextBox from './SigninTextBox';
 
 export default function SigninForm() {
   const [isClicked, setIsClicked] = useState('forButton');
-  const { data } = useSession();
+  // const { data } = useSession();
   const router = useRouter();
 
   // console.log(data);
@@ -47,9 +47,8 @@ export default function SigninForm() {
               handleEmailLogin={() => setIsClicked('textBox')}
             />
             <button
-              onClick={(e) => {
-                e.preventDefault();
-                signIn('google', { callbackUrl: '/' });
+              onClick={() => {
+                signIn('google');
               }}>
               구글
             </button>
