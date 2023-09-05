@@ -3,7 +3,7 @@
 import useGardenStore, { Cache } from '@/stores/gardenStore';
 import useModalStore from '@/stores/modalStore';
 
-import CommonButton from './common/CommonButton';
+import CommonButton from '@/components/common/CommonButton';
 import EditModeInfo from './EditModeInfo';
 import MapController from './MapController';
 import GardenSquares from './GardenSquares';
@@ -130,6 +130,7 @@ export default function GardenMap() {
 
   const handleSave = () => {
     // fetch 가능성
+    // 바뀐 전체 정보 응답으로!
     setPlants(plants);
 
     setIsEditMode(false);

@@ -2,9 +2,9 @@
 
 import useModalStore from '@/stores/modalStore';
 
-import CommonButton from './common/CommonButton';
-import Modal from './common/Modal';
-import ModalPortal from './common/ModalPortal';
+import CommonButton from '@/components/common/CommonButton';
+import Modal from '@/components/common/Modal';
+import ModalPortal from '@/components/common/ModalPortal';
 
 export default function InventoryEmptyModal() {
   const { setIsInventoryEmptyModalOpen } = useModalStore();

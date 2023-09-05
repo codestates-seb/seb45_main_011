@@ -1,7 +1,7 @@
 'use client';
 
 import Plant from './Plant';
-import LeafTag from './LeafTag';
+import LeafTag from '@/components/LeafTag';
 
 import useGardenStore from '@/stores/gardenStore';
 import { PlantObj } from '@/types/data';

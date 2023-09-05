@@ -3,7 +3,7 @@
 import uuid from 'react-uuid';
 import useGardenStore from '@/stores/gardenStore';
 
-import CommonButton from './common/CommonButton';
+import CommonButton from '@/components/common/CommonButton';
 import PlantCard from './PlantCard';
 
 export default function GardenSidebar() {

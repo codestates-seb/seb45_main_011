@@ -4,7 +4,7 @@ import useGardenStore from '@/stores/gardenStore';
 import useModalStore from '@/stores/modalStore';
 
 import Plant from './Plant';
-import CommonButton from './common/CommonButton';
+import CommonButton from '@/components/common/CommonButton';
 
 import { PlantInfo } from '@/types/common';
 import { PLANT_SIZES, PLANT_CARD_BUTTON_CONTENTS } from '@/constants/contents';

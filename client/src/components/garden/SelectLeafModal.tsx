@@ -3,19 +3,19 @@
 import { useRouter } from 'next/navigation';
 import useModalStore from '@/stores/modalStore';
 
-import ModalPortal from './common/ModalPortal';
-import Modal from './common/Modal';
-import Leaf from './common/Leaf';
-import CommonButton from './common/CommonButton';
+import ModalPortal from '@/components/common/ModalPortal';
+import Modal from '@/components/common/Modal';
+import Leaf from '@/components/common/Leaf';
+import CommonButton from '@/components/common/CommonButton';
 
-import { LeafType } from '@/types/common';
+import { LeafDataInfo } from '@/types/common';
 
 export default function SelectLeafModal() {
   const router = useRouter();
   const { setIsSelectLeafModalOpen } = useModalStore();
 
   // fetch 가능성
-  const leafs = require('@/mock/leaf.json') as LeafType[];
+  const leafs = require('@/mock/leaf.json') as LeafDataInfo[];
   // const leafs = [] as LeafType[] | [];
 
   // 추가 구현 필요

@@ -3,9 +3,9 @@
 import useGardenStore from '@/stores/gardenStore';
 import useModalStore from '@/stores/modalStore';
 
-import ModalPortal from './common/ModalPortal';
-import Modal from './common/Modal';
-import CommonButton from './common/CommonButton';
+import ModalPortal from '@/components/common/ModalPortal';
+import Modal from '@/components/common/Modal';
+import CommonButton from '@/components/common/CommonButton';
 
 export default function PurchaseInfoModal() {
   const { purchaseTarget, setPurchaseTarget } = useGardenStore();

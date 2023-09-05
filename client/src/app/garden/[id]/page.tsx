@@ -5,14 +5,16 @@ import { useEffect } from 'react';
 import useGardenStore from '@/stores/gardenStore';
 import useModalStore from '@/stores/modalStore';
 
-import EditModeButton from '@/components/EditModeButton';
-import GardenMap from '@/components/GardenMap';
-import GardenSidebar from '@/components/GardenSidebar';
-import LeafConnectModal from '@/components/LeafConnectModal';
-import SelectLeafModal from '@/components/SelectLeafModal';
-import PurchaseInfoModal from '@/components/PurchaseInfoModal';
-import PurchaseModal from '@/components/PurchaseModal';
-import InventoryEmptyModal from '@/components/InventoryEmptyModal';
+import {
+  EditModeButton,
+  GardenMap,
+  GardenSidebar,
+  ConnectLeafModal,
+  SelectLeafModal,
+  PurchaseInfoModal,
+  PurchaseModal,
+  InventoryEmptyModal,
+} from '@/components/garden';
 
 import { RawGardenInfo } from '@/types/data';
 
@@ -33,6 +35,7 @@ export default function Garden() {
     const { point, plantObjs, products } =
       require('@/mock/garden.json') as RawGardenInfo;
 
+    // id 로직 수정 필요
     const processedProducts = products.map((product, index) => ({
       id: index + 1,
       ...product,
@@ -77,7 +80,7 @@ export default function Garden() {
         <GardenMap />
         <GardenSidebar />
       </div>
-      {(isLeafExistModalOpen || isNoLeafExistModalOpen) && <LeafConnectModal />}
+      {(isLeafExistModalOpen || isNoLeafExistModalOpen) && <ConnectLeafModal />}
       {isSelectLeafModalOpen && <SelectLeafModal />}
       {isPurchaseInfoModalOpen && <PurchaseInfoModal />}
       {isPurchaseModalOpen && <PurchaseModal />}
