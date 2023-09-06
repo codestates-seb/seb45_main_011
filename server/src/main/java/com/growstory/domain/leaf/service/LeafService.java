@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -29,14 +30,20 @@ public class LeafService {
 
     public LeafDto.Response createLeaf(LeafDto.Post leafPostDto, MultipartFile leafImage) {
         Account findAccount = authUserUtils.getAuthUser();
-        String leafImageUrl = s3Uploader.uploadImageToS3(leafImage, LEAF_IMAGE_PROCESS_TYPE);
-
-        Leaf savedLeaf = leafRepository.save(Leaf.builder()
+        Leaf leaf = Leaf.builder()
                 .leafName(leafPostDto.getLeafName())
-                .leafImageUrl(leafImageUrl)
                 .content(leafPostDto.getContent())
                 .account(findAccount)
-                .build());
+                .build();
+
+        String leafImageUrl = leaf.getLeafImageUrl();
+
+        if (!leafImage.isEmpty())
+            leafImageUrl = s3Uploader.uploadImageToS3(leafImage, LEAF_IMAGE_PROCESS_TYPE);
+
+        Leaf savedLeaf = leafRepository.save(leaf.toBuilder()
+                        .leafImageUrl(leafImageUrl)
+                        .build());
 
         findAccount.addLeaf(savedLeaf);
 
@@ -48,13 +55,18 @@ public class LeafService {
     public void updateLeaf(LeafDto.Patch leafPatchDto, MultipartFile leafImage) {
         Account findAccount = authUserUtils.getAuthUser();
         Leaf findLeaf = findVerifiedLeaf(findAccount.getAccountId(), leafPatchDto.getLeafId());
+        String leafImageUrl = findLeaf.getLeafImageUrl();
 
-        s3Uploader.deleteImageFromS3(findLeaf.getLeafImageUrl(), LEAF_IMAGE_PROCESS_TYPE);
+        if (leafPatchDto.getIsImageUpdated()) {
+            leafImageUrl = s3Uploader.uploadImageToS3(leafImage, LEAF_IMAGE_PROCESS_TYPE);
+            Optional.ofNullable(leafImageUrl).ifPresent(imageUrl ->
+                    s3Uploader.deleteImageFromS3(imageUrl, LEAF_IMAGE_PROCESS_TYPE));
+        }
 
         leafRepository.save(findLeaf.toBuilder()
-                .leafName(leafPatchDto.getLeafName())
-                .leafImageUrl(s3Uploader.uploadImageToS3(leafImage, LEAF_IMAGE_PROCESS_TYPE))
-                .content(leafPatchDto.getContent())
+                .leafName(Optional.ofNullable(leafPatchDto.getLeafName()).orElse(findLeaf.getLeafName()))
+                .leafImageUrl(leafImageUrl)
+                .content(Optional.ofNullable(leafPatchDto.getContent()).orElse(findLeaf.getContent()))
                 .build());
     }
 
@@ -87,7 +99,8 @@ public class LeafService {
         Account findAccount = authUserUtils.getAuthUser();
         Leaf findLeaf = findVerifiedLeaf(findAccount.getAccountId(), leafId);
 
-        s3Uploader.deleteImageFromS3(findLeaf.getLeafImageUrl(), LEAF_IMAGE_PROCESS_TYPE);
+        Optional.ofNullable(findLeaf.getLeafImageUrl()).ifPresent(leafImageUrl ->
+                s3Uploader.deleteImageFromS3(leafImageUrl, LEAF_IMAGE_PROCESS_TYPE));
 
         findAccount.getLeaves().remove(findLeaf);
     }
