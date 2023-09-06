@@ -71,7 +71,7 @@ public class PlantObjService {
     }
 
     // POST : 유저 포인트로 오브젝트 구입
-    public PlantObjDto.Response buyProduct(Long accountId, Long productId) {
+    public PlantObjDto.Trade buyProduct(Long accountId, Long productId) {
         // 시큐리티 컨텍스트 인증정보 확인
         accountService.isAuthIdMatching(accountId);
 
@@ -98,8 +98,9 @@ public class PlantObjService {
                     boughtPlantObj
                 )
         );
+        Point afterPoint = boughtPlantObj.getAccount().getPoint();
 
-        return plantObjMapper.toPlantObjResponse(boughtPlantObj);
+        return plantObjMapper.toTradeResponse(boughtPlantObj, afterPoint);
     }
 
     // PATCH : 오브젝트 되팔기

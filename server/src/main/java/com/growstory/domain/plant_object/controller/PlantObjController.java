@@ -40,7 +40,7 @@ public class PlantObjController {
     @PostMapping("/{account-id}/purchase")
     public ResponseEntity<SingleResponseDto> postPurchaseObj(@Positive @PathVariable("account-id") Long accountId,
                                                       @RequestParam("product-id") Long productId) {
-        PlantObjDto.Response plantObj = plantObjService.buyProduct(accountId, productId);
+        PlantObjDto.Trade plantObj = plantObjService.buyProduct(accountId, productId);
 
         return ResponseEntity.ok().body(SingleResponseDto.builder()
                         .data(plantObj)
