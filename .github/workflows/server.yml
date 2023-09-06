@@ -49,7 +49,7 @@ jobs:
           --build-arg RDS_ENDPOINT="${{env.RDS_ENDPOINT}}" \
           --build-arg AWS_BUCKET_NAME=${{env.AWS_BUCKET_NAME}} \
           --build-arg ADMIN_EMAIL=${{env.ADMIN_EMAIL}} \
-          --build-arg GROWSTORY_EMAIL_USERNAME=${{env.GROWSTORY_EMAIL_USERNAME}}\
+          --build-arg GROWSTORY_EMAIL_USERNAME=${{env.GROWSTORY_EMAIL_USERNAME}} \
           --build-arg GROWSTORY_EMAIL_PASSWORD=${{env.GROWSTORY_EMAIL_PASSWORD}} \
           --build-arg G_CLIENT_ID=${{env.G_CLIENT_ID}} \
           --build-arg G_CLIENT_SECRET=${{env.G_CLIENT_SECRET}} \
