@@ -30,4 +30,9 @@ public class JournalDto {
         String content;
         String imageUrl;
     }
+
+    @Getter
+    public static class LeafAuthor {
+        long accountId;
+    }
 }
