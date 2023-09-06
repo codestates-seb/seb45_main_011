@@ -43,10 +43,11 @@ public class BoardService {
     public Long createBoard(RequestHashTagDto hashTagsDto, RequestBoardDto.Post requestBoardDto, MultipartFile image) {
         Account findAccount = authUserUtils.getAuthUser();
 
+        // TODO: image가 null일 경우 아에 saveBoardImage 실행이 되지 않도록 수정 해야 됨
         // S3 Upload && save image in Board_Image
         boardImageService.saveBoardImage(image);
 
-
+        // TODO: 해시 태그 - 현재 입력 안됨. null로 비워두고 요청 보낼 것, 추후 해시 태그 부분 리팩토링
         // Save HashTags
         if (hashTagsDto != null) {
             for (String tag : hashTagsDto.getTags()) {
