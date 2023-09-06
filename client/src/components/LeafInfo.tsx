@@ -69,13 +69,10 @@ export default function LeafInfo({
         {content}
       </p>
       <div className="flex gap-2 mb-3">
-        <CommonButton
-          usage="button"
-          size="sm"
-          handleGardenClick={navigateToGarden}>
+        <CommonButton type="button" size="sm" onClick={navigateToGarden}>
           정원에 설치하기
         </CommonButton>
-        <CommonButton usage="button" size="sm" handleAddDiary={AddDiary}>
+        <CommonButton type="button" size="sm" onClick={AddDiary}>
           일지 작성
         </CommonButton>
       </div>

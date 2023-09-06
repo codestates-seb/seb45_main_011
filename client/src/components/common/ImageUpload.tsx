@@ -86,10 +86,10 @@ function ImageUpload({
       />
       <label htmlFor="image">
         <CommonButton
-          usage="button"
+          type="button"
           size="sm"
           className="mt-3 mb-3 leading-4"
-          handleImageUploadClick={handleImageUploadClick}>
+          onClick={handleImageUploadClick}>
           이미지 등록
         </CommonButton>
       </label>

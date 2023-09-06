@@ -31,7 +31,7 @@ export default function EditLeaf({
     setValue,
   } = useForm<InputValues>({
     defaultValues: {
-      plantName: leaf?.leafNickname,
+      plantName: leaf?.leafName,
       leafContent: leaf?.content,
     },
   });
@@ -85,13 +85,13 @@ export default function EditLeaf({
               </div>
 
               <div className="flex justify-center gap-2">
-                <CommonButton usage="submit" size="sm">
+                <CommonButton type="submit" size="sm">
                   완료
                 </CommonButton>
                 <CommonButton
-                  usage="button"
+                  type="button"
                   size="sm"
-                  handleCancelClick={handleCancelClick}>
+                  onClick={handleCancelClick}>
                   취소
                 </CommonButton>
               </div>

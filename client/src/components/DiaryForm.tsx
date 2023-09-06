@@ -126,13 +126,10 @@ export default function DiaryForm({
         </div>
 
         <div className="flex justify-center gap-2">
-          <CommonButton usage="submit" size="sm">
+          <CommonButton type="submit" size="sm">
             완료
           </CommonButton>
-          <CommonButton
-            usage="button"
-            size="sm"
-            handleModalCancel={handleModalCancel}>
+          <CommonButton type="button" size="sm" onClick={handleModalCancel}>
             취소
           </CommonButton>
         </div>

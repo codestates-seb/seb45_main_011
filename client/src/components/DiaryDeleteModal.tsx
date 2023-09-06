@@ -49,16 +49,10 @@ export function DiaryDeleteModal({
         그래도 삭제하시겠습니까?
       </p>
       <div className="flex gap-1 justify-center">
-        <CommonButton
-          usage="button"
-          size="lg"
-          handleDeleteClick={handleDeleteDiary}>
+        <CommonButton type="button" size="lg" onClick={handleDeleteDiary}>
           삭제
         </CommonButton>
-        <CommonButton
-          usage="button"
-          size="lg"
-          handleCancelClick={handleCancelModal}>
+        <CommonButton type="button" size="lg" onClick={handleCancelModal}>
           취소
         </CommonButton>
       </div>

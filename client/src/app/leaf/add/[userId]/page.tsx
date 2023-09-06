@@ -89,14 +89,14 @@ export default function AddLeaf({ params }: { params: { userId: string } }) {
               </div>
 
               <div className="flex justify-center gap-2">
-                <CommonButton usage="submit" size="sm">
+                <CommonButton type="submit" size="sm">
                   완료
                 </CommonButton>
                 <CommonButton
-                  usage="button"
+                  type="button"
                   size="sm"
                   // onCancel -> 자식 컴포넌트로 전달할때는 관습이다.
-                  handleCancelClick={handleCancel}>
+                  onClick={handleCancel}>
                   취소
                 </CommonButton>
               </div>

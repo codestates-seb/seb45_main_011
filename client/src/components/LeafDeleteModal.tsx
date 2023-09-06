@@ -51,10 +51,10 @@ export function LeafDeleteModal() {
         그래도 삭제하시겠습니까?
       </p>
       <div className="flex gap-2 justify-center">
-        <CommonButton usage="button" size="lg" handleDeleteClick={handleDelete}>
+        <CommonButton type="button" size="lg" onClick={handleDelete}>
           삭제
         </CommonButton>
-        <CommonButton usage="button" size="lg" handleCancel={handleCancel}>
+        <CommonButton type="button" size="lg" onClick={handleCancel}>
           취소
         </CommonButton>
       </div>
