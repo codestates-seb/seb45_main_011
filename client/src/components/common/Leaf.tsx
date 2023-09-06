@@ -1,29 +1,58 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-
-import { DefaultProps, LeafInfo } from '@/types/common';
 
 import ControlButton from './ControlButton';
 import LeafName from './LeafName';
 
-interface LeafProps extends DefaultProps {
+import useLeafsStore from '@/stores/leafsStore';
+
+interface LeafProps {
   location: 'garden' | 'leaf';
-  data: LeafInfo;
+  userId: string;
+  imageUrl: string;
+  name: string;
+  leafId: number;
 }
 
-export default function Leaf({ location, data }: LeafProps) {
+export default function Leaf({
+  location,
+  name,
+  imageUrl,
+  userId,
+  leafId,
+}: LeafProps) {
+  const router = useRouter();
+
   const [isClicked, setIsClicked] = useState(false);
+
+  const modalOpen = useLeafsStore((state) => state.modalOpen);
+  const setDeleteTargetId = useLeafsStore((state) => state.setDeleteTargetId);
+
   const handleLeafClick = () => {
     if (location === 'leaf') {
-      console.log('식물 카드 목록에서 클릭된 Leaf');
+      router.push(`/leaf/${userId}/${leafId}`);
       return null;
     }
-
-    console.log('정원 페이지에서 클릭된 Leaf');
     setIsClicked((previous) => !previous);
   };
+
+  const handleEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    router.push(`/leaf/edit/${userId}/${leafId}`);
+  };
+
+  const handleDelete = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    leafId: number,
+  ) => {
+    e.stopPropagation();
+    setDeleteTargetId(leafId);
+    modalOpen();
+  };
+
   return (
     <div
       className={
@@ -42,22 +71,25 @@ export default function Leaf({ location, data }: LeafProps) {
         </div>
       ) : null}
 
-      {location === 'leaf' ? (
+      {location === 'leaf' && (
         <div className="flex gap-2 absolute right-2.5 top-2.5">
-          <ControlButton usage="edit" />
-          <ControlButton usage="delete" />
+          <ControlButton usage="edit" handleEdit={handleEdit} />
+          <ControlButton
+            usage="delete"
+            handleDelete={(event) => handleDelete(event, leafId)}
+          />
         </div>
-      ) : null}
+      )}
 
       <Image
-        src={data.imageUrl}
-        alt="로고"
+        src={imageUrl}
+        alt={name}
         width={200}
         height={160}
         className="object-cover w-[200px] h-[160px] rounded-xl border-2 border-brown-50 shadow-outer/down"
       />
 
-      <LeafName name={data.leafNickname} />
+      <LeafName name={name} />
     </div>
   );
 }

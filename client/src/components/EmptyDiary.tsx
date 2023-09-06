@@ -1,9 +1,9 @@
-interface EmptyDiaryProps {
-  leafId: string;
-}
+import useModalStore from '@/stores/modalStore';
 
-export default function EmptyDiary({ leafId }: EmptyDiaryProps) {
-  console.log(leafId);
+export default function EmptyDiary() {
+  const setIsDiaryModalOpen = useModalStore(
+    (state) => state.setIsDiaryModalOpen,
+  );
   return (
     <div className="w-full flex flex-col items-center">
       <div className="w-full pt-6 pb-5 flex flex-col gap-[1.1rem] justify-center items-center max-w-[414px] h-[137px] bg-brown-10 border-2 border-brown-50 rounded-lg">
@@ -15,7 +15,9 @@ export default function EmptyDiary({ leafId }: EmptyDiaryProps) {
             일지를 작성해보세요!
           </p>
         </div>
-        <button className="px-3 py-2 bg-[url('/assets/img/bg_wood_dark.png')] bg-contain border-2 border-brown-70 rounded-lg shadow-outer/down text-sm font-bold text-brown-10">
+        <button
+          className="px-3 py-2 bg-[url('/assets/img/bg_wood_dark.png')] bg-contain border-2 border-brown-70 rounded-lg shadow-outer/down text-sm font-bold text-brown-10"
+          onClick={() => setIsDiaryModalOpen(true)}>
           일지 작성
         </button>
       </div>
