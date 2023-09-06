@@ -1,36 +1,36 @@
 [
   {
     "leafId": 0,
-    "leafNickname": "솜솜이",
-    "start": "2023-08-29 18:00:00.123",
+    "leafName": "솜솜이",
+    "createdAt": "2023-08-20 18:00:00.123",
     "imageUrl": "https://steptohealth.co.kr/wp-content/uploads/2018/08/The-Incredible-Medicinal-Properties-of-Basil.jpg?auto=webp&quality=60&width=1920&crop=16:9,smart,safe",
     "content": "나만의 작고 귀여운 솜솜이",
     "diary": [
       {
         "id": 1,
-        "date": "8/25",
-        "imgUrl": "https://steptohealth.co.kr/wp-content/uploads/2018/08/The-Incredible-Medicinal-Properties-of-Basil.jpg?auto=webp&quality=60&width=1920&crop=16:9,smart,safe",
+        "createdAt": "2023-08-20 18:00:00.123",
+        "imageUrl": "https://steptohealth.co.kr/wp-content/uploads/2018/08/The-Incredible-Medicinal-Properties-of-Basil.jpg?auto=webp&quality=60&width=1920&crop=16:9,smart,safe",
         "title": "제목 1 입니다.",
         "content": "데려와서 화분에 옮기고물도 줬다!\n\n무럭 무럭 자라라 : )"
       },
       {
         "id": 2,
-        "date": "8/26",
-        "imgUrl": "https://steptohealth.co.kr/wp-content/uploads/2018/08/The-Incredible-Medicinal-Properties-of-Basil.jpg?auto=webp&quality=60&width=1920&crop=16:9,smart,safe",
+        "createdAt": "2023-08-20 18:00:00.123",
+        "imageUrl": "https://steptohealth.co.kr/wp-content/uploads/2018/08/The-Incredible-Medicinal-Properties-of-Basil.jpg?auto=webp&quality=60&width=1920&crop=16:9,smart,safe",
         "title": "제목 2 입니다.",
         "content": "내용 2 입니다 :)"
       },
       {
         "id": 3,
-        "date": "8/27",
-        "imgUrl": "https://steptohealth.co.kr/wp-content/uploads/2018/08/The-Incredible-Medicinal-Properties-of-Basil.jpg?auto=webp&quality=60&width=1920&crop=16:9,smart,safe",
+        "createdAt": "2023-08-20 18:00:00.123",
+        "imageUrl": "https://steptohealth.co.kr/wp-content/uploads/2018/08/The-Incredible-Medicinal-Properties-of-Basil.jpg?auto=webp&quality=60&width=1920&crop=16:9,smart,safe",
         "title": "제목 3 입니다.",
         "content": "내용 3 입니다 :)"
       },
       {
         "id": 4,
-        "date": "8/28",
-        "imgUrl": "https://steptohealth.co.kr/wp-content/uploads/2018/08/The-Incredible-Medicinal-Properties-of-Basil.jpg?auto=webp&quality=60&width=1920&crop=16:9,smart,safe",
+        "createdAt": "2023-08-23 18:00:00.123",
+        "imageUrl": "https://steptohealth.co.kr/wp-content/uploads/2018/08/The-Incredible-Medicinal-Properties-of-Basil.jpg?auto=webp&quality=60&width=1920&crop=16:9,smart,safe",
         "title": "제목 4 입니다.",
         "content": "내용 4 입니다 :)"
       }
@@ -38,8 +38,8 @@
   },
   {
     "leafId": 1,
-    "leafNickname": "니드몬",
-    "start": "2023-08-30 18:00:00.123",
+    "leafName": "니드몬",
+    "createdAt": "2023-08-20 18:00:00.123",
     "content": "나만의 작고 귀여운 니드몬",
     "imageUrl": "https://steptohealth.co.kr/wp-content/uploads/2018/08/The-Incredible-Medicinal-Properties-of-Basil.jpg?auto=webp&quality=60&width=1920&crop=16:9,smart,safe"
   }

@@ -1,11 +1,11 @@
 'use client';
 
 import useGardenStore from '@/stores/gardenStore';
-import useModalStore from '@/stores/modalStore';
+import useGardenModalStore from '@/stores/gardenModalStore';
 
-import ModalPortal from './common/ModalPortal';
-import Modal from './common/Modal';
-import CommonButton from './common/CommonButton';
+import ModalPortal from '@/components/common/ModalPortal';
+import Modal from '@/components/common/Modal';
+import CommonButton from '@/components/common/CommonButton';
 
 export default function PurchaseModal() {
   const {
@@ -15,9 +15,9 @@ export default function PurchaseModal() {
     setPoint,
     setInventory,
     setPlants,
-    setPurchaseTarget,
+    unobserve,
   } = useGardenStore();
-  const { setIsPurchaseModalOpen } = useModalStore();
+  const { close } = useGardenModalStore();
 
   const isPurchasable = purchaseTarget && point > purchaseTarget.price;
 
@@ -48,7 +48,7 @@ export default function PurchaseModal() {
             plant;
 
           return {
-            id: plantObjId,
+            productId: plantObjId,
             name: productName,
             korName,
             imageUrlTable,
@@ -62,8 +62,8 @@ export default function PurchaseModal() {
       setPoint(newPoint);
     }
 
-    setPurchaseTarget(null);
-    setIsPurchaseModalOpen(false);
+    unobserve();
+    close();
   };
 
   return (
@@ -83,7 +83,7 @@ export default function PurchaseModal() {
               <span className="text-[32px] text-red-50">부족합니다!</span>
             </p>
           )}
-          <CommonButton handleClose={handleClose} usage="button" size="md">
+          <CommonButton onClose={handleClose} type="button" size="md">
             닫기
           </CommonButton>
         </section>

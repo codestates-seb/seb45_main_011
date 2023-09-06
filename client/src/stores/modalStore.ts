@@ -3,37 +3,26 @@ import { create } from 'zustand';
 interface ModalState {
   isLeafExistModalOpen: boolean;
   isNoLeafExistModalOpen: boolean;
-  isSelectLeafModalOpen: boolean;
-  isPurchaseInfoModalOpen: boolean;
-  isPurchaseModalOpen: boolean;
-  isInventoryEmptyModalOpen: boolean;
+  isLeafDeleteModalOpen: boolean;
+  isDiaryModalOpen: boolean;
   setIsLeafExistModalOpen: (isLeafExistModalOpen: boolean) => void;
   setIsNoLeafExistModalOpen: (isNoLeafExistModalOpen: boolean) => void;
-  setIsSelectLeafModalOpen: (isSelectLeafModalOpen: boolean) => void;
-  setIsPurchaseInfoModalOpen: (isPurchaseInfoModalOpen: boolean) => void;
-  setIsPurchaseModalOpen: (isPurchaseModalOpen: boolean) => void;
-  setIsInventoryEmptyModalOpen: (isInventoryEmptyModalOpen: boolean) => void;
+  setIsLeafDeleteModalOpen: (isNoLeafExistModalOpen: boolean) => void;
+  setIsDiaryModalOpen: (isDiaryDeleteModalOpen: boolean) => void;
 }
 
 const useModalStore = create<ModalState>((set) => ({
   isLeafExistModalOpen: false,
   isNoLeafExistModalOpen: false,
-  isSelectLeafModalOpen: false,
-  isPurchaseInfoModalOpen: false,
-  isPurchaseModalOpen: false,
-  isInventoryEmptyModalOpen: false,
+  isLeafDeleteModalOpen: false,
+  isDiaryModalOpen: false,
   setIsLeafExistModalOpen: (isLeafExistModalOpen) =>
     set(() => ({ isLeafExistModalOpen })),
   setIsNoLeafExistModalOpen: (isNoLeafExistModalOpen) =>
     set(() => ({ isNoLeafExistModalOpen })),
-  setIsSelectLeafModalOpen: (isSelectLeafModalOpen) =>
-    set(() => ({ isSelectLeafModalOpen })),
-  setIsPurchaseInfoModalOpen: (isPurchaseInfoModalOpen) =>
-    set(() => ({ isPurchaseInfoModalOpen })),
-  setIsPurchaseModalOpen: (isPurchaseModalOpen) =>
-    set(() => ({ isPurchaseModalOpen })),
-  setIsInventoryEmptyModalOpen: (isInventoryEmptyModalOpen) =>
-    set(() => ({ isInventoryEmptyModalOpen })),
+  setIsLeafDeleteModalOpen: (isLeafDeleteModalOpen) =>
+    set(() => ({ isLeafDeleteModalOpen })),
+  setIsDiaryModalOpen: (isDiaryModalOpen) => set(() => ({ isDiaryModalOpen })),
 }));
 
 export default useModalStore;

@@ -21,16 +21,44 @@ export type PlantObj = {
   } | null;
 };
 
+export type Product = {
+  productId: number;
+  name: string;
+  korName: string;
+  imageUrlTable: {
+    sm: string;
+    lg: string;
+  };
+  price: number;
+};
+
 export interface RawGardenInfo {
   point: number;
   plantObjs: PlantObj[];
-  products: {
-    name: string;
-    korName: string;
-    imageUrlTable: {
-      sm: string;
-      lg: string;
-    };
-    price: number;
-  }[];
+  products: Product[];
+}
+
+export interface LeafsDataInfo {
+  leafId: number;
+  leafName: string;
+  createAt: string;
+  imageUrl: string;
+}
+
+export interface DiaryDataInfo {
+  diaryId: number;
+  createdAt: string;
+  modifiedAt?: string;
+  imageUrl?: string;
+  content: string;
+  title: string;
+}
+
+export interface LeafDataInfo {
+  leafId?: number;
+  leafName?: string;
+  imageUrl?: string;
+  content?: string;
+  createdAt?: string;
+  diary?: DiaryDataInfo[] | null;
 }

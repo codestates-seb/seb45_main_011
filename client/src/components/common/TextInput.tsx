@@ -1,7 +1,7 @@
 'use client';
 
-import { ErrorMessage } from '@hookform/error-message';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import { ErrorMessage } from '@hookform/error-message';
 
 import { DefaultProps, InputValues } from '@/types/common';
 
@@ -64,8 +64,6 @@ export default function TextInput({
   required,
 }: TextInputProps) {
   const TypeFormat = getTypeFormat(name);
-
-  if (TypeFormat === null) return null;
   return (
     <div className={`w-full flex flex-col ', ${INPUT_SIZE[name]}`}>
       <input
@@ -88,6 +86,6 @@ export default function TextInput({
 
 const INPUT_SIZE = {
   plantName: 'max-w-[248px] ',
-  title: 'max-w-[369px ]',
+  title: 'max-w-[369px]',
   nickname: 'max-w-[248px]',
 };

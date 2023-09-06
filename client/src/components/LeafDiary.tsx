@@ -1,24 +1,28 @@
-import { DiaryInfo } from '@/types/common';
-
 import EmptyDiary from './EmptyDiary';
 import Diary from './Diary';
 
+import { DiaryDataInfo } from '@/types/data';
+
 interface LeafDiaryProps {
-  leafId: string;
-  diary: DiaryInfo[];
+  leafId?: number;
+  diaries?: DiaryDataInfo[] | null;
 }
-export default function LeafDiary({ leafId, diary }: LeafDiaryProps) {
+export default function LeafDiary({ diaries = [] }: LeafDiaryProps) {
+  if (!diaries) return <EmptyDiary />;
+
   return (
-    <>
-      {diary.length ? (
-        <ul className="w-full flex flex-col items-center gap-4">
-          {diary.map((item) => (
-            <Diary key={item.id} item={item} />
-          ))}
-        </ul>
-      ) : (
-        <EmptyDiary leafId={leafId} />
-      )}
-    </>
+    <ul className="w-full flex flex-col items-center gap-4">
+      {diaries.map((diary) => (
+        <Diary
+          key={diary.diaryId}
+          diaryId={diary.diaryId}
+          createdAt={diary.createdAt}
+          imageUrl={diary.imageUrl}
+          content={diary.content}
+          title={diary.title}
+          modifiedAt={diary.modifiedAt}
+        />
+      ))}
+    </ul>
   );
 }
