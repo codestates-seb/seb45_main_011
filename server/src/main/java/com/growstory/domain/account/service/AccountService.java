@@ -108,7 +108,8 @@ public class AccountService {
     public void deleteAccount() {
         Account findAccount = authUserUtils.getAuthUser();
 
-        s3Uploader.deleteImageFromS3(findAccount.getProfileImageUrl(), ACCOUNT_IMAGE_PROCESS_TYPE);
+        Optional.ofNullable(findAccount.getProfileImageUrl()).ifPresent(profileImageUrl ->
+                s3Uploader.deleteImageFromS3(profileImageUrl, ACCOUNT_IMAGE_PROCESS_TYPE));
 
         accountRepository.delete(findAccount);
     }
