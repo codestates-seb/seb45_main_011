@@ -36,10 +36,6 @@ public class Account extends BaseTimeEntity {
     @Column(name = "PROFILE_IMAGE_URL")
     private String profileImageUrl;
 
-    // 자신이 좋아요 받은 횟수
-    @Column
-    private int likeNum = 0;
-
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Board> boards = new ArrayList<>();
 
@@ -47,8 +43,12 @@ public class Account extends BaseTimeEntity {
     private List<Leaf> leaves = new ArrayList<>();
 
     // 자신이 좋아요 누른 계정 리스트
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AccountLike> accountLikes;
+    @OneToMany(mappedBy = "givingAccount", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AccountLike> givingAccountLikes;
+
+    // 자신이 좋아요 받은 계정 리스트
+    @OneToMany(mappedBy = "receivingAccount", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AccountLike> receivingAccountLikes;
 
     @JsonIgnore
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -65,8 +65,12 @@ public class Account extends BaseTimeEntity {
         leaves.add(leaf);
     }
 
-    public void addAccountLike(AccountLike accountLike) {
-        accountLikes.add(accountLike);
+    public void addGivingAccountLike(AccountLike accountLike) {
+        givingAccountLikes.add(accountLike);
+    }
+
+    public void addReceivingAccountLike(AccountLike accountLike) {
+        receivingAccountLikes.add(accountLike);
     }
 
     public Account(Long accountId, String email, String displayName, String password, String profileImageUrl, List<String> roles) {
@@ -76,10 +80,6 @@ public class Account extends BaseTimeEntity {
         this.password = password;
         this.profileImageUrl = profileImageUrl;
         this.roles = roles;
-    }
-
-    public void updateLikeNum(int num) {
-        this.likeNum += num;
     }
 
     public void updatePoint(Point point) {

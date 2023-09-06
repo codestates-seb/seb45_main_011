@@ -19,7 +19,21 @@ import javax.validation.constraints.Positive;
 public class LikeController {
     private final LikeService likeService;
 
-    @PostMapping("/{account-id}")
+    @PostMapping("/boards/{board-id}") // 좋아요를 받을 게시글
+    public ResponseEntity<HttpStatus> postBoardLike(@PathVariable("board-id") @Positive Long boardId) {
+        likeService.pressBoardLike(boardId);
+
+        return ResponseEntity.noContent().build();
+    }
+
+//    @PostMapping("/comments/{comment-id}") // 좋아요를 받을 댓글
+//    public ResponseEntity<HttpStatus> postCommentLike(@PathVariable("comment-id") @Positive Long commentId) {
+//        likeService.pressCommentLike(commentId);
+//
+//        return ResponseEntity.noContent().build();
+//    }
+
+    @PostMapping("/gardens/{account-id}") // 좋아요를 받을 계정
     public ResponseEntity<HttpStatus> postAccountLike(@PathVariable("account-id") @Positive Long ownerAccountId) {
         likeService.pressAccountLike(ownerAccountId);
 

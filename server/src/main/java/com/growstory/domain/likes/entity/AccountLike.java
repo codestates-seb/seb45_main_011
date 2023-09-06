@@ -19,6 +19,10 @@ public class AccountLike {
     private long accountLikeId;
 
     @ManyToOne
-    @JoinColumn(name = "ACCOUNT_ID")
-    private Account account;
+    @JoinColumn(name = "GIVING_ACCOUNT_ID")
+    private Account givingAccount;
+
+    @ManyToOne
+    @JoinColumn(name = "RECEIVING_ACCOUNT_ID")
+    private Account receivingAccount;
 }

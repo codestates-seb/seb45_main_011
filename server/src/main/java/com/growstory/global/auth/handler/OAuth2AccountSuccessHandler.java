@@ -113,9 +113,9 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
                 .newInstance()
                 .scheme("http")
                 .host("localhost")
-                .port(80)
-//                .port(3000)
-//                .path("/login")
+//                .port(80)
+                .port(3000)
+                .path("/signin")
 //                .host("se-sof.s3-website.ap-northeast-2.amazonaws.com") //"http://seveneleven-stackoverflow-s3.s3-website.ap-northeast-2.amazonaws.com"
 //                .port(requestPort) //S3는 80포트
                 .queryParam("accountId", account.getAccountId())
