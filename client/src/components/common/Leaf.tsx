@@ -11,7 +11,7 @@ import useLeafsStore from '@/stores/leafsStore';
 
 interface LeafProps {
   location: 'garden' | 'leaf';
-  userId: string;
+  userId: number;
   imageUrl: string;
   name: string;
   leafId: number;

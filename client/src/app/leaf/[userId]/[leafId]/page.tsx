@@ -19,18 +19,20 @@ import { getLeaf } from '@/api/LeafAPI';
 import { DiaryDataInfo, LeafDataInfo } from '@/types/data';
 
 interface LeafProps {
-  params: { leafId: number; userId: number };
+  params: { leafId: string; userId: string };
 }
 // TODO: leaf 리팩토링, 비동기처리 로직 작성
 export default function Leaf({ params }: LeafProps) {
-  const { leafId, userId } = params;
+  const leafId = Number(params.leafId);
+  const userId = Number(params.userId);
+
   const {
     data: leaf,
     isLoading,
     isError,
   } = useQuery<LeafDataInfo>({
     queryKey: ['leaf'],
-    queryFn: () => getLeaf(params.leafId),
+    queryFn: () => getLeaf(leafId),
   });
 
   if (isLoading) return <div>loading</div>;

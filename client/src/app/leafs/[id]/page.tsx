@@ -11,13 +11,10 @@ import Modal from '@/components/common/Modal';
 import { LeafDeleteModal } from '@/components/LeafDeleteModal';
 
 import useLeafsStore from '@/stores/leafsStore';
-import useUserStore from '@/stores/userStore';
 
 import { getLeafs } from '@/api/LeafAPI';
 
 import { LeafsDataInfo } from '@/types/data';
-
-import useEffectOnce from '@/hooks/useEffectOnce';
 
 interface LeafsProps {
   params: { id: string };
@@ -38,11 +35,7 @@ export default function Leafs({ params }: LeafsProps) {
   console.log(leafs);
 
   // URL path userId
-  const userId = params.id;
-
-  const setUserId = useUserStore((state) => state.setUserId);
-
-  useEffectOnce(() => setUserId(userId));
+  const userId = Number(params.id);
 
   const isModalOpen = useLeafsStore((state) => state.isModalOpen);
 
@@ -53,7 +46,7 @@ export default function Leafs({ params }: LeafsProps) {
         <div className="pt-5 pb-4 pl-6 pr-5 flex flex-col gap-5">
           <PageTitle text="내 식물 카드" />
           <div className="pr-3 w-full h-[404px] flex flex-wrap  gap-4 overflow-y-scroll scrollbar">
-            <AddLeafButton />
+            <AddLeafButton userId={userId} />
             {leafs?.map((leaf) => (
               <Leaf
                 key={leaf.leafId}
@@ -71,7 +64,7 @@ export default function Leafs({ params }: LeafsProps) {
       {isModalOpen && (
         <ModalPortal>
           <Modal>
-            <LeafDeleteModal />
+            <LeafDeleteModal userId={userId} />
           </Modal>
         </ModalPortal>
       )}

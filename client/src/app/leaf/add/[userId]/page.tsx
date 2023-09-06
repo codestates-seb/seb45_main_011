@@ -1,9 +1,9 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
 
-import { InputValues } from '@/types/common';
+import { useForm } from 'react-hook-form';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import CommonButton from '@/components/common/CommonButton';
 import PageTitle from '@/components/common/PageTitle';
@@ -11,12 +11,21 @@ import Screws from '@/components/common/Screws';
 import TextArea from '@/components/common/TextArea';
 import TextInput from '@/components/common/TextInput';
 import ImageUpload from '@/components/common/ImageUpload';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+
+import { InputValues } from '@/types/common';
+
 import { addLeaf } from '@/api/LeafAPI';
 
-export default function AddLeaf({ params }: { params: { userId: string } }) {
+interface AddLeafProps {
+  params: { leafId: string; userId: string };
+}
+
+export default function AddLeaf({ params }: AddLeafProps) {
+  const userId = Number(params.userId);
+
   const router = useRouter();
-  const userId = params.userId;
+  const queryClient = useQueryClient();
+
   const {
     register,
     formState: { errors },
@@ -25,7 +34,6 @@ export default function AddLeaf({ params }: { params: { userId: string } }) {
     setValue,
   } = useForm<InputValues>();
 
-  const queryClient = useQueryClient();
   // mutate 함수는 UI상 변화는 x
   const { mutate, isLoading, isError } = useMutation({
     mutationFn: addLeaf,
@@ -42,7 +50,7 @@ export default function AddLeaf({ params }: { params: { userId: string } }) {
 
   const handleSubmitAddLeaf = (data: InputValues) => {
     console.log(data);
-    // mutate(data);
+    mutate(data);
   };
 
   return (

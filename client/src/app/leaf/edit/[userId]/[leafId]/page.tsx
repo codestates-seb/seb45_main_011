@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+
 import { useForm } from 'react-hook-form';
 
 import CommonButton from '@/components/common/CommonButton';
@@ -19,10 +20,11 @@ export default function EditLeaf({
   // 형 변환은 서버로 데이터 받을때
   params: { userId: string; leafId: string };
 }) {
-  const { userId, leafId } = params;
+  const leafId = Number(params.leafId);
   const router = useRouter();
+
   // 타입을 api랑 미리 맞추거나 아니면 타입을 비교안하는 방식 (==) 등으로 처리한다.
-  const leaf = leafs.find((leafInfo) => leafInfo.leafId == parseInt(leafId));
+  const leaf = leafs.find((leafInfo) => leafInfo.leafId === leafId);
   const {
     register,
     formState: { errors },
@@ -48,7 +50,6 @@ export default function EditLeaf({
         <div className="p-5 h-full">
           <div className="w-full h-full flex flex-col items-center overflow-y-scroll scrollbar">
             <PageTitle text="식물 카드 수정" className="mb-5" />
-
             <form
               onSubmit={handleSubmit(handleSubmitEditLeaf)}
               className="w-full">

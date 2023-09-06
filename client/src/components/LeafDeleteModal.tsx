@@ -3,16 +3,16 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import CommonButton from './common/CommonButton';
 
-import useUserStore from '@/stores/userStore';
 import useLeafsStore from '@/stores/leafsStore';
 
 import { deleteLeaf } from '@/api/LeafAPI';
 
-export function LeafDeleteModal() {
+interface LeafDeleteModal {
+  userId: number;
+}
+export function LeafDeleteModal({ userId }: LeafDeleteModal) {
   const router = useRouter();
   const queryClient = useQueryClient();
-
-  const userId = useUserStore((state) => state.userId);
 
   const { mutate, isLoading, isError } = useMutation({
     mutationFn: deleteLeaf,
