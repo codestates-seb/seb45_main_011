@@ -29,7 +29,7 @@ public class LeafController {
     // 식물카드 등록
     @PostMapping
     public ResponseEntity<HttpStatus> postLeaf(@Valid @RequestPart LeafDto.Post leafPostDto,
-                                               @RequestPart MultipartFile leafImage) {
+                                               @RequestPart(required = false) MultipartFile leafImage) {
         LeafDto.Response leafResponseDto = leafService.createLeaf(leafPostDto, leafImage);
         URI location = UriCreator.createUri(LEAF_DEFAUTL_URL, leafResponseDto.getLeafId());
 
@@ -39,7 +39,7 @@ public class LeafController {
     // 식물카드 수정
     @PatchMapping
     public ResponseEntity<HttpStatus> patchProfileImage(@Valid @RequestPart LeafDto.Patch leafPatchDto,
-                                                        @RequestPart MultipartFile leafImage) {
+                                                        @RequestPart(required = false) MultipartFile leafImage) {
         leafService.updateLeaf(leafPatchDto, leafImage);
 
         return ResponseEntity.noContent().build();
