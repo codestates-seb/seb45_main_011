@@ -36,9 +36,6 @@ public class Leaf extends BaseTimeEntity {
     private Account account;
 
     @OneToOne(mappedBy = "leaf")
-    private Board board;
-
-    @OneToOne(mappedBy = "leaf")
     private PlantObj plantObj;
 
     @OneToMany(mappedBy = "leaf")

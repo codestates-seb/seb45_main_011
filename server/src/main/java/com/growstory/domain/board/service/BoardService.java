@@ -1,15 +1,19 @@
 package com.growstory.domain.board.service;
 
 import com.growstory.domain.account.entity.Account;
-import com.growstory.domain.account.service.AccountService;
 import com.growstory.domain.board.dto.RequestBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardDto;
+import com.growstory.domain.board.dto.ResponseBoardPageDto;
 import com.growstory.domain.board.entity.Board;
+import com.growstory.domain.board.entity.Board_HashTag;
 import com.growstory.domain.board.repository.BoardRepository;
+import com.growstory.domain.comment.entity.Comment;
+import com.growstory.domain.comment.service.CommentService;
+import com.growstory.domain.hashTag.dto.RequestHashTagDto;
+import com.growstory.domain.hashTag.entity.HashTag;
 import com.growstory.domain.hashTag.service.HashTagService;
+import com.growstory.domain.images.entity.BoardImage;
 import com.growstory.domain.images.service.BoardImageService;
-import com.growstory.domain.leaf.entity.Leaf;
-import com.growstory.domain.leaf.repository.LeafRepository;
 import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
@@ -20,6 +24,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 public class BoardService {
@@ -27,73 +34,86 @@ public class BoardService {
     private static final String BOARD_IMAGE_PROCESS_TYPE = "boards";
 
     private final BoardRepository boardRepository;
-    private final LeafRepository leafRepository;
-    private final AccountService accountService;
     private final HashTagService hashTagService;
     private final BoardImageService boardImageService;
     private final AuthUserUtils authUserUtils;
+    private final CommentService commentService;
 
-    public ResponseBoardDto createBoard(Long leafId, RequestBoardDto.Post requestBoardDto, MultipartFile image) {
-        //TODO: accountService로직 변경으로 인한 수정 필요
+
+    public Long createBoard(RequestHashTagDto hashTagsDto, RequestBoardDto.Post requestBoardDto, MultipartFile image) {
         Account findAccount = authUserUtils.getAuthUser();
 
+        // S3 Upload && save image in Board_Image
         boardImageService.saveBoardImage(image);
 
-        Leaf findLeaf = leafRepository.findById(leafId)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.LEAF_NOT_FOUND));
 
+        // Save HashTags
+        if (hashTagsDto != null) {
+            for (String tag : hashTagsDto.getTags()) {
+                hashTagService.createHashTag(tag);
+            }
+        }
 
-        // S3 Upload && save image in Board_Image
-        hashTagService.createHashTag(requestBoardDto.getHashTag());
 
         Board board = Board.builder()
                 .title(requestBoardDto.getTitle())
                 .content(requestBoardDto.getContent())
                 .account(findAccount)
-                .leaf(findLeaf)
-                .isConnection(requestBoardDto.getIsConnection())
                 .build();
 
-        boardRepository.save(board);
+        Board saveBoard = boardRepository.save(board);
 
-        return ResponseBoardDto.builder()
-                .boardId(board.getBoardId())
-                .build();
+        return saveBoard.getBoardId();
     }
-
-    public Page<ResponseBoardDto> findBoards(int page, int size) {
-        Page<ResponseBoardDto> pageBoards = boardRepository.findAll(PageRequest.of(page, size, Sort.by("createdAt").descending()))
-                .map(board -> ResponseBoardDto.builder()
-                        .boardId(board.getBoardId())
-                        .title(board.getTitle())
-                        .imageUrl(board.getAccount().getProfileImageUrl())
-                        .displayName(board.getAccount().getDisplayName())
-                        .leafName(board.getLeaf().getLeafName())
-                        .leafImage(board.getLeaf().getLeafImageUrl())
-                        .likeNum(board.getBoardLikes().size())
-//                        .createAt()
-//                        .modifiedAt()
-                        .build());
-
-        return pageBoards;
-    }
-
-    public void modifyBoard(Long boardId, RequestBoardDto.Patch requestBoardDto, MultipartFile image) {
+//
+    public ResponseBoardDto getBoard(Long boardId) {
         Account findAccount = authUserUtils.getAuthUser();
 
-//        Leaf findLeaf = leafRepository.findById(leafId)
-//                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.LEAF_NOT_FOUND));
+        Board findBoard = findVerifiedBoard(boardId);
 
-        // image가 null일 경우 S3에 저장된 image Object 삭제 + Board_Image(DB) 삭제
+        BoardImage findBoardImage = boardImageService.verifyExistBoardImage(boardId);
 
-        // image가 있을 경우 S3에 저장된 image Object 삭제 + Board_Image(DB) 저장
+        List<HashTag> findHashTag = hashTagService.getHashTags(boardId);
 
+        List<Comment> findComment = commentService.getComments(boardId);
+
+        return getResponseBoardDto(findBoard, findBoardImage, findAccount, findHashTag, findComment);
     }
 
+    public Page<ResponseBoardPageDto> findBoards(int page, int size) {
+        Page<ResponseBoardPageDto> boards = boardRepository.findAll(PageRequest.of(page, size, Sort.by("createdAt").descending()))
+                .map(board -> ResponseBoardPageDto.builder()
+                        .boardId(board.getBoardId())
+                        .title(board.getTitle())
+                        .content(board.getContent())
+                        .boardImageUrl(board.getBoardImages().get(0).getStoredImagePath())
+                        .likeNum(board.getBoardLikes().size())
+                        .commentNum(board.getBoardComments().size())
+                        .build());
+                // boardImage 여러 개일 경우 ResponseBoardPageDto 에서 imageUrl 타입을 List로 변경 후
+//                .boardImageUrl(board.getBoardImages().stream().map(boardImage -> boardImage.getStoredImagePath()).collect(Collectors.toList()))
 
+        return boards;
+    }
+//
+//    public void modifyBoard(Long boardId, RequestBoardDto.Patch requestBoardDto, MultipartFile image) {
+//        Account findBoard = authUserUtils.getAuthUser();
+//
+////        Leaf findLeaf = leafRepository.findById(leafId)
+////                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.LEAF_NOT_FOUND));
+//
+//        // image가 null일 경우 S3에 저장된 image Object 삭제 + Board_Image(DB) 삭제
+//
+//        // image가 있을 경우 S3에 저장된 image Object 삭제 + Board_Image(DB) 저장
+//
+//    }
+//
+//
     public void removeBoard(Long boardId) {
         Board findBoard = findVerifiedBoard(boardId);
 
+        // delete Board Image in S3
+        boardImageService.deleteBoardImage(findBoard.getBoardId());
 
         boardRepository.delete(findBoard);
     }
@@ -102,6 +122,23 @@ public class BoardService {
     private Board findVerifiedBoard(Long boardId) {
         return boardRepository.findById(boardId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
+    }
+
+    private static ResponseBoardDto getResponseBoardDto(Board findBoard, BoardImage findBoardImage, Account findAccount, List<HashTag> findHashTag, List<Comment> findComment) {
+        return ResponseBoardDto.builder()
+                .boardId(findBoard.getBoardId())
+                .title(findBoard.getTitle())
+                .content(findBoard.getContent())
+                .boardImageUrl(findBoardImage.getStoredImagePath())
+                .likeNum(findBoard.getBoardLikes().size())
+                .createAt(findBoard.getCreatedAt())
+                .modifiedAt(findBoard.getModifiedAt())
+                .accountId(findAccount.getAccountId())
+                .displayName(findAccount.getDisplayName())
+                .profileImageUrl(findAccount.getProfileImageUrl())
+                .hashTags(findHashTag)
+                .comments(findComment)
+                .build();
     }
 }
 

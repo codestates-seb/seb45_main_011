@@ -1,30 +1,56 @@
-spring:
-    datasource:
-      url: ${RDS_ENDPOINT}
-      username: ${MYSQL_USERNAME}
-      password: ${MYSQL_PASSWORD}
-      driver-class-name: com.mysql.cj.jdbc.Driver
+cloud:
+  aws:
+    credentials:
+      accessKey: ${AWS_ACCESS_KEY}
+      secretKey: ${AWS_SECRET_KEY}
+    s3:
+      bucket: ${AWS_BUCKET_NAME}
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
 
-    jpa:
-      database-platform: org.hibernate.dialect.MySQL8Dialect
-      database: mysql
-      show-sql: true
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: ${RDS_ENDPOINT}
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database: mysql
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    properties:
       hibernate:
-        ddl-auto: create
-      properties:
-        hibernate:
-          format_sql: true
-security:
-  oauth2:
-    client:
-      registration:
-        google:
-          client-id: ${G_CLIENT_ID}
-          client-secret: ${G_CLIENT_SECRET}
-          redirect-uri: http://ec2-3-36-128-133.ap-northeast-2.compute.amazonaws.com/login/oauth2/code/google
-          scope:
-            - email
-            - profile
+        format_sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${G_CLIENT_ID}
+            client-secret: ${G_CLIENT_SECRET}
+            redirect-uri: http://ec2-3-36-128-133.ap-northeast-2.compute.amazonaws.com/login/oauth2/code/google
+            scope:
+              - email
+              - profile
+  mail:
+    host: smtp.gmail.com
+    port: 587 # SMTP에서 보안성을 추가한 SMTPS의 서버 포트 = 587
+    username: ${GROWSTORY_EMAIL_USERNAME}
+    password: ${GROWSTORY_EMAIL_PASSWORD}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      # SMTP(Simple Mail Transfer Protocol)
+      # starttls는 목적지 서버에서 TLS(Transport Layer Security)를 지원하지 않더라도 587포트를 사용가능하게 한다
+
 jwt:
   key:
     secret: ${JWT_SECRET_KEY}               # ??? ??? ??? ?? ???? ??
@@ -54,8 +80,10 @@ springdoc:
   paths-to-match:
     - /v1/**
 
-#mail:
-#  admin:
-#    address: ${ADMIN_EMAIL}
+# mail
+mail:
+  admin:
+    address: ${ADMIN_EMAIL}
+
 server:
   port: 8080
