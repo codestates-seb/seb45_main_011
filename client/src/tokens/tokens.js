@@ -44,6 +44,7 @@ const tokens = {
     black: { 10: '#212529', 30: '#1a1e21', 50: '#141619' },
     border: {
       10: '#ec9254',
+      30: '#ec9355',
     },
     transparent: 'rgba(0, 0, 0, 0)',
   },

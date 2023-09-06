@@ -1,0 +1,52 @@
+{
+  "products": [
+    {
+      "name": "building_brown",
+      "korName": "벽돌 유적",
+      "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/products/building_brown_sm.svg",
+      "price": 500
+    },
+    {
+      "name": "building_yellow",
+      "korName": "콜로세움",
+      "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/products/building_yellow_sm.svg",
+      "price": 500
+    },
+    {
+      "name": "tree_cherry",
+      "korName": "벚나무",
+      "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/products/tree_cherry_sm.svg",
+      "price": 300
+    },
+    {
+      "name": "tree_maple",
+      "korName": "단풍 나무",
+      "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/products/tree_maple_sm.svg",
+      "price": 300
+    },
+    {
+      "name": "stone_yellow",
+      "korName": "토파즈 광맥",
+      "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/products/stone_yellow_sm.svg",
+      "price": 200
+    },
+    {
+      "name": "stone_purple",
+      "korName": "자수정 광맥",
+      "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/products/stone_purple_sm.svg",
+      "price": 200
+    },
+    {
+      "name": "bush_blue",
+      "korName": "푸른 마법 덤불",
+      "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/products/bush_blue_sm.svg",
+      "price": 100
+    },
+    {
+      "name": "bush_snow",
+      "korName": "겨울 덤불",
+      "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/products/bush_snow_sm.svg",
+      "price": 100
+    }
+  ]
+}

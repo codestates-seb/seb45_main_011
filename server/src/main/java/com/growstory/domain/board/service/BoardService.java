@@ -79,7 +79,7 @@ public class BoardService {
     }
 
     public void modifyBoard(Long boardId, RequestBoardDto.Patch requestBoardDto, MultipartFile image) {
-        Account findBoard = authUserUtils.getAuthUser();
+        Account findAccount = authUserUtils.getAuthUser();
 
 //        Leaf findLeaf = leafRepository.findById(leafId)
 //                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.LEAF_NOT_FOUND));

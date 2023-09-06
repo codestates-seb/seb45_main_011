@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import Link from 'next/link';
 import '@/styles/globals.css';
-import Logo from '@/components/common/Logo';
 
 const galmuri = localFont({
   src: [
@@ -72,9 +71,6 @@ export default function RootLayout({
             <Link href="/post/edit/1">게시글 편집</Link>
           </li>
         </ul>
-        <Logo size="small" />
-        <Logo size="medium" />
-        <Logo size="large" />
       </body>
     </html>
   );
