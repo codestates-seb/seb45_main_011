@@ -9,7 +9,7 @@ export type GardenModalType =
   | 'emptyInventory'
   | null;
 
-interface GardenModalState {
+export interface GardenModalState {
   isOpen: boolean;
   type: GardenModalType;
   changeType: (type: GardenModalType) => void;

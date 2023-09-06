@@ -4,7 +4,7 @@ import GardenMap from './GardenMap';
 import GardenSidebar from './GardenSidebar';
 import GardenSquares from './GardenSquares';
 import InstalledPlants from './InstalledPlants';
-import InventoryEmptyModal from './InventoryEmptyModal';
+import EmptyInventoryModal from './EmptyInventoryModal';
 import LeafExistModal from './LeafExistModal';
 import MapController from './MapController';
 import NoLeafExistModal from './NoLeafExistModal';
@@ -18,11 +18,11 @@ import TrackedPlant from './TrackedPlant';
 export {
   EditModeButton,
   EditModeInfo,
+  EmptyInventoryModal,
   GardenMap,
   GardenSidebar,
   GardenSquares,
   InstalledPlants,
-  InventoryEmptyModal,
   LeafExistModal,
   MapController,
   NoLeafExistModal,

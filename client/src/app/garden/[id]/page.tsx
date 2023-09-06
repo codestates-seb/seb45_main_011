@@ -20,7 +20,7 @@ import {
   SelectLeafModal,
   PurchaseInfoModal,
   PurchaseModal,
-  InventoryEmptyModal,
+  EmptyInventoryModal,
 } from '@/components/garden';
 
 import { RawGardenInfo } from '@/types/data';
@@ -35,29 +35,6 @@ export default function Garden() {
   //   ['garden'],
   //   fetchGardenData,
   // );
-
-  // const inventory = data?.plantObjs
-  //   .filter(({ location }) => !location.isInstalled)
-  //   .map((plant) => {
-  //     const { plantObjId, productName, korName, imageUrlTable, price } = plant;
-
-  //     return {
-  //       id: plantObjId,
-  //       name: productName,
-  //       korName,
-  //       imageUrlTable,
-  //       price,
-  //     };
-  //   });
-
-  useEffect(() => {
-    const { point, plantObjs, products } =
-      require('@/mock/garden.json') as RawGardenInfo;
-
-    const gardens = { point, plantObjs, products };
-
-    syncGardens(gardens);
-  }, []);
 
   // 스토어에 있는 데이터와 서버 데이터를 동기화한다는 의미
   // useEffectOnce에 콜백 함수로 전달
@@ -86,13 +63,22 @@ export default function Garden() {
     setPlants(plantObjs);
   };
 
+  useEffect(() => {
+    const { point, plantObjs, products } =
+      require('@/mock/garden.json') as RawGardenInfo;
+
+    const gardens = { point, plantObjs, products };
+
+    syncGardens(gardens);
+  }, []);
+
   const renderModal = (type: GardenModalType) => {
     if (type === 'leafExist') return <LeafExistModal />;
     if (type === 'noLeafExist') return <NoLeafExistModal />;
     if (type === 'selectLeaf') return <SelectLeafModal />;
     if (type === 'purchaseInfo') return <PurchaseInfoModal />;
     if (type === 'purchase') return <PurchaseModal />;
-    if (type === 'emptyInventory') return <InventoryEmptyModal />;
+    if (type === 'emptyInventory') return <EmptyInventoryModal />;
   };
 
   return (

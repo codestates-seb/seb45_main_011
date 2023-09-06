@@ -1,4 +1,4 @@
-import { getInstallable } from '@/utils/getInstallable';
+import { createSquares } from '@/utils/createSquares';
 
 interface GardenSquaresProps {
   uninstallableLocations: { x: number; y: number }[];
@@ -7,19 +7,7 @@ interface GardenSquaresProps {
 export default function GardenSquares({
   uninstallableLocations,
 }: GardenSquaresProps) {
-  const squares = Array.from({ length: 96 }, (_, index) => {
-    const x = index % 12;
-    const y = Math.floor(index / 12);
-    const installable = uninstallableLocations.every((position) =>
-      getInstallable(x, y, position, 'sm'),
-    );
-
-    return {
-      x,
-      y,
-      installable,
-    };
-  });
+  const squares = createSquares(uninstallableLocations);
 
   return (
     <>

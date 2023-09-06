@@ -23,7 +23,7 @@ export default function PlantCard({ usage, plantInfo }: PlantCardProps) {
     changeEditMode,
     setInventory,
     setPlants,
-    changePurchaseTarget,
+    observePurchaseTarget,
   } = useGardenStore();
   const { changeType, open } = useModalStore();
 
@@ -33,7 +33,7 @@ export default function PlantCard({ usage, plantInfo }: PlantCardProps) {
       const item =
         shop.find(({ productId }) => productId === Number(targetId)) || null;
 
-      changePurchaseTarget(item);
+      observePurchaseTarget(item);
     }
 
     changeType('purchaseInfo');

@@ -1,22 +1,13 @@
 'use client';
 
-import cloneDeep from 'lodash/cloneDeep';
-import useGardenStore, { Reference } from '@/stores/gardenStore';
+import useGardenStore from '@/stores/gardenStore';
 import useModalStore from '@/stores/gardenModalStore';
 
+import useRollback from '@/hooks/useRollback';
+
 export default function EditModebutton() {
-  const {
-    isEditMode,
-    inventory,
-    plants,
-    reference,
-    changeEditMode,
-    changeSidebarState,
-    setInventory,
-    setPlants,
-    changeMoveTarget,
-    saveReference,
-  } = useGardenStore();
+  const gardenStore = useGardenStore();
+  const { inventory, plants } = useGardenStore();
   const { changeType, open } = useModalStore();
 
   const handleClick = () => {
@@ -27,23 +18,7 @@ export default function EditModebutton() {
       return;
     }
 
-    // 취소하는 행위와 동일하다는 명칭으로 만들기
-    // 함수로 분리 rollback
-    if (!isEditMode)
-      // 명칭이 너무 범용적, 기획자가 단어를 봐도 이해할 수 있도록
-      // setReference
-      saveReference({
-        inventory: cloneDeep(inventory),
-        plants: cloneDeep(plants),
-      });
-
-    changeSidebarState('inventory');
-
-    setInventory(isEditMode ? (reference as Reference).inventory : inventory);
-    setPlants(isEditMode ? (reference as Reference).plants : plants);
-
-    changeMoveTarget(null);
-    changeEditMode(!isEditMode);
+    useRollback(gardenStore);
   };
 
   return (

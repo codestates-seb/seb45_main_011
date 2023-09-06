@@ -8,14 +8,13 @@ import Modal from '@/components/common/Modal';
 import CommonButton from '@/components/common/CommonButton';
 
 export default function PurchaseInfoModal() {
-  const { purchaseTarget, changePurchaseTarget } = useGardenStore();
+  const { purchaseTarget, unobserve } = useGardenStore();
   const { changeType, close } = useGardenModalStore();
 
   const handlePurchase = () => changeType('purchase');
 
   const handleCancel = () => {
-    changePurchaseTarget(null);
-
+    unobserve();
     close();
   };
 

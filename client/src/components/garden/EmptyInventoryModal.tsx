@@ -6,7 +6,7 @@ import Modal from '@/components/common/Modal';
 import ModalPortal from '@/components/common/ModalPortal';
 import CommonButton from '@/components/common/CommonButton';
 
-export default function InventoryEmptyModal() {
+export default function EmptyInventoryModal() {
   const { close } = useGardenModalStore();
 
   const handleClose = () => close;
