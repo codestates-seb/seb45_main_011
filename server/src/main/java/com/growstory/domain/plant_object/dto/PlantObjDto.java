@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -20,8 +22,11 @@ public class PlantObjDto {
     @Builder
     // 오브젝트 구입 시 입력 Dto
     public static class Post {
+        @NotBlank
         private String nickName;
+        @NotBlank
         private LocationDto.Post locationDto;
+        @NotBlank
         private Long leafId;
     }
 
@@ -32,6 +37,7 @@ public class PlantObjDto {
     @Builder
     public static class PatchLocation {
        private Long plantObjId;
+       @NotBlank
        private LocationDto.Patch locationDto;
     }
 
