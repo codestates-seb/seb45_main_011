@@ -116,6 +116,7 @@
   ],
   "products": [
     {
+      "productId": 1,
       "name": "building_brown",
       "korName": "벽돌 유적",
       "imageUrlTable": {
@@ -125,6 +126,7 @@
       "price": 500
     },
     {
+      "productId": 2,
       "name": "building_yellow",
       "korName": "콜로세움",
       "imageUrlTable": {
@@ -134,6 +136,7 @@
       "price": 500
     },
     {
+      "productId": 3,
       "name": "building_blue",
       "korName": "잊혀진 연구소",
       "imageUrlTable": {
@@ -143,6 +146,7 @@
       "price": 500
     },
     {
+      "productId": 4,
       "name": "building_white",
       "korName": "대리석 신전",
       "imageUrlTable": {
@@ -152,6 +156,7 @@
       "price": 500
     },
     {
+      "productId": 5,
       "name": "tree_cherry",
       "korName": "벚나무",
       "imageUrlTable": {
@@ -161,6 +166,7 @@
       "price": 300
     },
     {
+      "productId": 6,
       "name": "tree_pine",
       "korName": "소나무",
       "imageUrlTable": {
@@ -170,6 +176,7 @@
       "price": 300
     },
     {
+      "productId": 7,
       "name": "tree_apple",
       "korName": "사과 나무",
       "imageUrlTable": {
@@ -179,6 +186,7 @@
       "price": 300
     },
     {
+      "productId": 8,
       "name": "tree_palm",
       "korName": "야자 나무",
       "imageUrlTable": {
@@ -188,6 +196,7 @@
       "price": 300
     },
     {
+      "productId": 9,
       "name": "tree_oak",
       "korName": "참나무",
       "imageUrlTable": {
@@ -197,6 +206,7 @@
       "price": 300
     },
     {
+      "productId": 10,
       "name": "tree_maple",
       "korName": "단풍 나무",
       "imageUrlTable": {
@@ -206,6 +216,7 @@
       "price": 300
     },
     {
+      "productId": 11,
       "name": "tree_coconut",
       "korName": "코코넛 나무",
       "imageUrlTable": {
@@ -215,6 +226,7 @@
       "price": 300
     },
     {
+      "productId": 12,
       "name": "tree_christmas",
       "korName": "눈 덮인 나무",
       "imageUrlTable": {
@@ -224,6 +236,7 @@
       "price": 300
     },
     {
+      "productId": 13,
       "name": "tree_snow",
       "korName": "겨울 나무",
       "imageUrlTable": {
@@ -233,6 +246,7 @@
       "price": 300
     },
     {
+      "productId": 14,
       "name": "tree_stump",
       "korName": "나무 밑동",
       "imageUrlTable": {
@@ -242,6 +256,7 @@
       "price": 300
     },
     {
+      "productId": 15,
       "name": "stone_red",
       "korName": "가넷 광맥",
       "imageUrlTable": {
@@ -251,6 +266,7 @@
       "price": 200
     },
     {
+      "productId": 16,
       "name": "stone_yellow",
       "korName": "토파즈 광맥",
       "imageUrlTable": {
@@ -260,6 +276,7 @@
       "price": 200
     },
     {
+      "productId": 17,
       "name": "stone_purple",
       "korName": "자수정 광맥",
       "imageUrlTable": {
@@ -269,6 +286,7 @@
       "price": 200
     },
     {
+      "productId": 18,
       "name": "stone_pink",
       "korName": "로즈쿼츠 광맥",
       "imageUrlTable": {
@@ -278,6 +296,7 @@
       "price": 200
     },
     {
+      "productId": 19,
       "name": "stone_blue",
       "korName": "사파이어 광맥",
       "imageUrlTable": {
@@ -287,6 +306,7 @@
       "price": 200
     },
     {
+      "productId": 20,
       "name": "stone_black",
       "korName": "흑요석 광맥",
       "imageUrlTable": {
@@ -296,6 +316,7 @@
       "price": 200
     },
     {
+      "productId": 21,
       "name": "stone_brown",
       "korName": "바위",
       "imageUrlTable": {
@@ -305,6 +326,7 @@
       "price": 200
     },
     {
+      "productId": 22,
       "name": "stone_green",
       "korName": "이끼 낀 바위",
       "imageUrlTable": {
@@ -314,6 +336,7 @@
       "price": 200
     },
     {
+      "productId": 23,
       "name": "bush_blue",
       "korName": "푸른 마법 덤불",
       "imageUrlTable": {
@@ -323,6 +346,7 @@
       "price": 100
     },
     {
+      "productId": 24,
       "name": "bush_orange",
       "korName": "노란 마법 덤불",
       "imageUrlTable": {
@@ -332,6 +356,7 @@
       "price": 100
     },
     {
+      "productId": 25,
       "name": "bush_fern",
       "korName": "고사리 덤불",
       "imageUrlTable": {
@@ -341,6 +366,7 @@
       "price": 100
     },
     {
+      "productId": 26,
       "name": "bush_maple",
       "korName": "단풍 덤불",
       "imageUrlTable": {
@@ -350,6 +376,7 @@
       "price": 100
     },
     {
+      "productId": 27,
       "name": "bush_snow",
       "korName": "겨울 덤불",
       "imageUrlTable": {

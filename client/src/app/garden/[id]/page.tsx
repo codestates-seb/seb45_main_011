@@ -2,53 +2,89 @@
 
 import Image from 'next/image';
 import { useEffect } from 'react';
+// import { useQuery, useQueryClient } from '@tanstack/react-query';
+// import axios, { AxiosResponse } from 'axios';
 
+// import { fetchGardenData } from '@/api/garden';
 import useGardenStore from '@/stores/gardenStore';
-import EditModeButton from '@/components/EditModeButton';
-import GardenMap from '@/components/GardenMap';
-import GardenSidebar from '@/components/GardenSidebar';
+import useGardenModalStore, {
+  GardenModalType,
+} from '@/stores/gardenModalStore';
+
+import {
+  EditModeButton,
+  GardenMap,
+  GardenSidebar,
+  LeafExistModal,
+  NoLeafExistModal,
+  SelectLeafModal,
+  PurchaseInfoModal,
+  PurchaseModal,
+  EmptyInventoryModal,
+} from '@/components/garden';
 
 import { RawGardenInfo } from '@/types/data';
-import { PlantInfo } from '@/types/common';
+// import { PlantObj, RawGardenInfo } from '@/types/data';
 
 export default function Garden() {
   const { point, setPoint, setShop, setInventory, setPlants } =
     useGardenStore();
+  const { isOpen, type } = useGardenModalStore();
+
+  // const { data, isLoading, isError } = useQuery<RawGardenInfo>(
+  //   ['garden'],
+  //   fetchGardenData,
+  // );
+
+  // 스토어에 있는 데이터와 서버 데이터를 동기화한다는 의미
+  // useEffectOnce에 콜백 함수로 전달
+  // hook 사용하여 결합도 낮추거나, store에서 작업하거나, action으로 처리하거나
+  const syncGardens = (gardens: RawGardenInfo) => {
+    const { point, products, plantObjs } = gardens;
+
+    const newInventory = plantObjs
+      .filter(({ location }) => !location.isInstalled)
+      .map((plant) => {
+        const { plantObjId, productName, korName, imageUrlTable, price } =
+          plant;
+
+        return {
+          productId: plantObjId,
+          name: productName,
+          korName,
+          imageUrlTable,
+          price,
+        };
+      });
+
+    setPoint(point);
+    setShop(products);
+    setInventory(newInventory);
+    setPlants(plantObjs);
+  };
 
   useEffect(() => {
     const { point, plantObjs, products } =
       require('@/mock/garden.json') as RawGardenInfo;
 
-    const processedProducts = products.map((product, index) => ({
-      id: index + 1,
-      ...product,
-    }));
+    const gardens = { point, plantObjs, products };
 
-    const inventory = plantObjs
-      .filter(({ location }) => !location.isInstalled)
-      .reduce(
-        (inventory, currentPlant) => {
-          const plant = processedProducts.find(
-            ({ name }) => name === currentPlant.productName,
-          );
-
-          return plant
-            ? [...inventory, { ...plant, id: currentPlant.plantObjId }]
-            : inventory;
-        },
-        [] as PlantInfo[] | [],
-      );
-
-    setPoint(point);
-    setShop(processedProducts);
-    setInventory(inventory);
-    setPlants(plantObjs);
+    syncGardens(gardens);
   }, []);
 
+  const renderModal = (type: GardenModalType) => {
+    if (type === 'leafExist') return <LeafExistModal />;
+    if (type === 'noLeafExist') return <NoLeafExistModal />;
+    if (type === 'selectLeaf') return <SelectLeafModal />;
+    if (type === 'purchaseInfo') return <PurchaseInfoModal />;
+    if (type === 'purchase') return <PurchaseModal />;
+    if (type === 'emptyInventory') return <EmptyInventoryModal />;
+  };
+
   return (
-    <>
+    <div className="mt-[52px] mx-auto">
       <section className="flex gap-2">
-        <p className="flex items-center gap-[6px] w-fit h-fit px-4 py-2 text-xl text-brown-70 font-bold border-8 border-b-0 border-border-30 rounded-t-xl bg-contain bg-repeat bg-[url('/assets/img/bg_wood_yellow.png')] leading-6">
+        <p className="flex items-center gap-[6px] min-w-max h-fit px-4 py-2 text-xl text-brown-70 font-bold border-8 border-b-0 border-border-30 rounded-t-xl bg-contain bg-repeat bg-[url('/assets/img/bg_wood_yellow.png')] leading-6">
           <Image
             src="/assets/img/point.svg"
             width={24}
@@ -59,10 +95,11 @@ export default function Garden() {
         </p>
         <EditModeButton />
       </section>
-      <div className="flex gap-5">
+      <div className="flex gap-4">
         <GardenMap />
         <GardenSidebar />
       </div>
-    </>
+      {isOpen && renderModal(type)}
+    </div>
   );
 }

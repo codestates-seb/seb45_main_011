@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function useMouseTrack() {
+const useMouseTrack = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   return {
@@ -8,6 +8,6 @@ function useMouseTrack() {
     targetY: mousePosition.y,
     setMousePosition,
   };
-}
+};
 
 export default useMouseTrack;

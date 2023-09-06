@@ -21,18 +21,21 @@ export type PlantObj = {
   } | null;
 };
 
+export type Product = {
+  productId: number;
+  name: string;
+  korName: string;
+  imageUrlTable: {
+    sm: string;
+    lg: string;
+  };
+  price: number;
+};
+
 export interface RawGardenInfo {
   point: number;
   plantObjs: PlantObj[];
-  products: {
-    name: string;
-    korName: string;
-    imageUrlTable: {
-      sm: string;
-      lg: string;
-    };
-    price: number;
-  }[];
+  products: Product[];
 }
 
 export interface LeafsDataInfo {

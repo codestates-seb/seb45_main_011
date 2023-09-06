@@ -3,54 +3,62 @@ import { create } from 'zustand';
 import { PlantObj } from '@/types/data';
 import { PlantInfo } from '@/types/common';
 
-type SidebarState = 'shop' | 'inventory';
+export type SidebarState = 'shop' | 'inventory';
 
-export interface TargetPlant extends PlantObj {
+export interface MoveTarget extends PlantObj {
   plantSize: 'sm' | 'lg';
   imageSize: 'sm' | 'lg';
 }
 
-export type Cache = { inventory: PlantInfo[]; plants: PlantObj[] };
+export type Reference = { inventory: PlantInfo[]; plants: PlantObj[] };
 
-interface GardenState {
+export interface GardenState {
   isEditMode: boolean;
   sidebarState: SidebarState;
   point: number;
   shop: [] | PlantInfo[];
   inventory: [] | PlantInfo[];
   plants: [] | PlantObj[];
-  targetPlant: TargetPlant | null;
-  cache: Cache | null;
-  setIsEditMode: (isEditMode: boolean) => void;
-  setSidebarState: (sidbarState: SidebarState) => void;
+  moveTarget: MoveTarget | null;
+  infoTarget: PlantObj | null;
+  purchaseTarget: PlantInfo | null;
+  reference: Reference | null;
+  changeEditMode: (isEditMode: boolean) => void;
+  changeSidebarState: (sidbarState: SidebarState) => void;
   setPoint: (point: number) => void;
   setShop: (shop: PlantInfo[]) => void;
   setInventory: (inventory: PlantInfo[]) => void;
-  putInInventory: (plant: PlantInfo) => void;
   setPlants: (plants: PlantObj[]) => void;
-  setTargetPlant: (targetPlant: TargetPlant | null) => void;
-  setCache: (cache: Cache) => void;
+  observeMoveTarget: (moveTarget: MoveTarget | null) => void;
+  observeInfoTarget: (infoTarget: PlantObj | null) => void;
+  observePurchaseTarget: (purchaseTarget: PlantInfo | null) => void;
+  unobserve: () => void;
+  saveReference: (reference: Reference) => void;
 }
 
-const useGardenStore = create<GardenState>((set, get) => ({
+const useGardenStore = create<GardenState>((set) => ({
   isEditMode: false,
   sidebarState: 'shop',
   point: 0,
   shop: [],
   inventory: [],
-  targetPlant: null,
   plants: [],
-  cache: null,
-  setIsEditMode: (isEditMode) => set(() => ({ isEditMode })),
-  setSidebarState: (sidebarState) => set(() => ({ sidebarState })),
+  moveTarget: null,
+  infoTarget: null,
+  purchaseTarget: null,
+  reference: null,
+  changeEditMode: (isEditMode) => set(() => ({ isEditMode })),
+  changeSidebarState: (sidebarState) => set(() => ({ sidebarState })),
   setPoint: (point) => set(() => ({ point })),
   setShop: (shop) => set(() => ({ shop })),
   setInventory: (inventory) => set(() => ({ inventory })),
-  putInInventory: (plant) =>
-    set((state) => ({ inventory: [...state.inventory, plant] })),
   setPlants: (plants) => set(() => ({ plants })),
-  setTargetPlant: (targetPlant) => set(() => ({ targetPlant })),
-  setCache: (cache) => set(() => ({ cache })),
+  observeMoveTarget: (moveTarget) => set(() => ({ moveTarget })),
+  observeInfoTarget: (infoTarget) => set(() => ({ infoTarget })),
+  observePurchaseTarget: (purchaseTarget) => set(() => ({ purchaseTarget })),
+  unobserve: () =>
+    set(() => ({ moveTarget: null, infoTarget: null, purchaseTarget: null })),
+  saveReference: (reference) => set(() => ({ reference })),
 }));
 
 export default useGardenStore;
