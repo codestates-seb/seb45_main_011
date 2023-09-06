@@ -16,7 +16,7 @@ spring:
       on-profile: prod
   datasource:
     url: ${RDS_ENDPOINT}
-    username: ${MYSQL_USERNAME}
+    username: ${MYSQL_USER}
     password: ${MYSQL_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 

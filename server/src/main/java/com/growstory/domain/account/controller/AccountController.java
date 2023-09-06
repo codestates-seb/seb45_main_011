@@ -26,9 +26,8 @@ public class AccountController {
 
     // 회원가입
     @PostMapping("/signup")
-    public ResponseEntity<HttpStatus> postAccount(@Valid @RequestPart AccountDto.Post accountPostDto,
-                                      @RequestPart MultipartFile profileImage) {
-        AccountDto.Response accountResponseDto = accountService.createAccount(accountPostDto, profileImage);
+    public ResponseEntity<HttpStatus> postAccount(@Valid @RequestBody AccountDto.Post accountPostDto) {
+        AccountDto.Response accountResponseDto = accountService.createAccount(accountPostDto);
         URI location = UriCreator.createUri(ACCOUNT_DEFAULT_URL, accountResponseDto.getAccountId());
 
         return ResponseEntity.created(location).build();

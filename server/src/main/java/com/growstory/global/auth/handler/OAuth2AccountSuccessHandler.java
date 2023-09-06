@@ -5,8 +5,6 @@ import com.growstory.domain.account.repository.AccountRepository;
 import com.growstory.domain.point.service.PointService;
 import com.growstory.global.auth.jwt.JwtTokenizer;
 import com.growstory.global.auth.utils.CustomAuthorityUtils;
-import com.growstory.global.exception.BusinessLogicException;
-import com.growstory.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -20,7 +18,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -49,7 +50,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
                                 .displayName(name)
                                 .password("")
                                 .profileImageUrl(profileImageUrl)
-                                .point(pointService.createPoint())
+                                .point(pointService.createPoint(email))
                                 .roles(authorities)
                                 .build()
                 ));
@@ -112,12 +113,11 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host("localhost")
-//                .port(80)
-                .port(3000)
+//                .host("localhost")
+//                .port(3000)
+                .host("growstory.s3-website.ap-northeast-2.amazonaws.com")
+                .port(80) //S3는 80포트
                 .path("/signin")
-//                .host("se-sof.s3-website.ap-northeast-2.amazonaws.com") //"http://seveneleven-stackoverflow-s3.s3-website.ap-northeast-2.amazonaws.com"
-//                .port(requestPort) //S3는 80포트
                 .queryParam("accountId", account.getAccountId())
                 .queryParams(queryParams)
                 .encode()
