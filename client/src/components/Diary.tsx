@@ -1,10 +1,10 @@
 import Image from 'next/image';
 
-import useModalStore from '@/stores/modalStore';
-import useLeafStore from '@/stores/leafStore';
 import ControlButton from './common/ControlButton';
 
-import { DiaryInfo } from '@/types/common';
+import useLeafStore from '@/stores/leafStore';
+
+import { DiaryDataInfo } from '@/types/data';
 
 interface FormatContentProps {
   content: string;
@@ -18,23 +18,32 @@ function FormatContent({ content, className }: FormatContentProps) {
     <p className={className} dangerouslySetInnerHTML={{ __html: content }}></p>
   );
 }
-
-export default function Diary({ item }: { item: DiaryInfo }) {
-  // 서버로부터 받은 줄바꿈(\n)을 <br/> 태그로 변환
-  const replaceContent = item?.content.replace(/\n/g, '<br/>');
-
-  const setIsModalOpen = useModalStore((state) => state.setIsDiaryModalOpen);
+export default function Diary({
+  diaryId,
+  createdAt,
+  imageUrl,
+  content,
+  title,
+  modifiedAt,
+}: DiaryDataInfo) {
+  const modalOpen = useLeafStore((state) => state.modalOpen);
   const setModalCategory = useLeafStore((state) => state.setModalCategory);
-  const startDay = new Date(item.date);
+  const setDiayTargetId = useLeafStore((state) => state.setDiaryTargetId);
+
+  // 서버로부터 받은 줄바꿈(\n)을 <br/> 태그로 변환
+  const replaceContent = content?.replace(/\n/g, '<br/>');
+
+  const startDay = new Date(createdAt as string);
   const [month, day] = [startDay.getMonth() + 1, startDay.getDate()];
-  const setDiary = useLeafStore((statet) => statet.setDiary);
-  const handleEditDiary = (item: DiaryInfo) => {
-    setIsModalOpen(true);
+
+  const handleEditDiary = () => {
+    modalOpen();
     setModalCategory('add');
-    setDiary(item);
   };
-  const handleDeleteDiary = (item: DiaryInfo) => {
-    setIsModalOpen(true);
+
+  const handleDeleteDiary = (diaryId: number) => {
+    modalOpen();
+    setDiayTargetId(diaryId);
     setModalCategory('delete');
     // fetch(item~~)
   };
@@ -47,22 +56,17 @@ export default function Diary({ item }: { item: DiaryInfo }) {
         </span>
         <div className="relative grid grid-cols-1 gap-3 w-full max-w-[331px] max-h-[137px] p-4 pb-[0.9rem] bg-brown-10 border-2 border-brown-50 rounded-lg">
           <div className="absolute right-[10px] top-[10px] flex gap-2">
-            <ControlButton
-              usage="edit"
-              handleEditDiary={() => handleEditDiary(item)}
-            />
+            <ControlButton usage="edit" handleEditDiary={handleEditDiary} />
             <ControlButton
               usage="delete"
-              handleDeleteDiary={() => handleDeleteDiary(item)}
+              handleDeleteDiary={() => handleDeleteDiary(diaryId)}
             />
           </div>
-          <p className="text-[0.875rem] font-bold text-brown-80 ">
-            {item.title}
-          </p>
+          <p className="text-[0.875rem] font-bold text-brown-80 ">{title}</p>
           <div className="flex gap-3">
             <Image
               className="rounded-lg w-[106px] h-[81px]"
-              src={item.imgUrl}
+              src={imageUrl || ''}
               alt=""
               width={106}
               height={81}

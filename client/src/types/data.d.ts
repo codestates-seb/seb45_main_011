@@ -34,3 +34,28 @@ export interface RawGardenInfo {
     price: number;
   }[];
 }
+
+export interface LeafsDataInfo {
+  leafId: number;
+  leafName: string;
+  createAt: string;
+  imageUrl: string;
+}
+
+export interface DiaryDataInfo {
+  diaryId: number;
+  createdAt: string;
+  modifiedAt?: string;
+  imageUrl?: string;
+  content: string;
+  title: string;
+}
+
+export interface LeafDataInfo {
+  leafId?: number;
+  leafName?: string;
+  imageUrl?: string;
+  content?: string;
+  createdAt?: string;
+  diary?: DiaryDataInfo[] | null;
+}

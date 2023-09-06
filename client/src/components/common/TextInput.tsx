@@ -1,7 +1,7 @@
 'use client';
 
+import { FieldErrors, UseFormRegister } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
-import { FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 
 import { DefaultProps, InputValues } from '@/types/common';
 

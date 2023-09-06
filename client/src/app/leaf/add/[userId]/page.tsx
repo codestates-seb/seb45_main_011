@@ -11,6 +11,8 @@ import Screws from '@/components/common/Screws';
 import TextArea from '@/components/common/TextArea';
 import TextInput from '@/components/common/TextInput';
 import ImageUpload from '@/components/common/ImageUpload';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { addLeaf } from '@/api/LeafAPI';
 
 export default function AddLeaf({ params }: { params: { userId: string } }) {
   const router = useRouter();
@@ -23,7 +25,26 @@ export default function AddLeaf({ params }: { params: { userId: string } }) {
     setValue,
   } = useForm<InputValues>();
 
-  const handleCancelClick = () => router.push(`/leafs/${userId}`);
+  const queryClient = useQueryClient();
+  // mutate 함수는 UI상 변화는 x
+  const { mutate, isLoading, isError } = useMutation({
+    mutationFn: addLeaf,
+    // mutate가 성공하면 리다이렉트
+    onSuccess: () => {
+      router.push(`/leafs/${userId}`);
+      // 성공 후 새로운 쿼리를 다시 가져올 수 있도록 캐시 무효화
+      queryClient.invalidateQueries(['leafs']);
+    },
+  });
+
+  // 여러가지 방식이라 구별할때는 click
+  const handleCancel = () => router.push(`/leafs/${userId}`);
+
+  const handleSubmitAddLeaf = (data: InputValues) => {
+    console.log(data);
+    // mutate(data);
+  };
+
   return (
     <div className="flex justify-center items-center">
       <div className="relative w-full max-w-[720px] h-[600px] border-gradient">
@@ -33,7 +54,7 @@ export default function AddLeaf({ params }: { params: { userId: string } }) {
             <PageTitle text="식물 카드 등록" className="mb-5" />
 
             <form
-              onSubmit={handleSubmit((data) => console.log(data))}
+              onSubmit={handleSubmit(handleSubmitAddLeaf)}
               className="w-full">
               <div className="w-full flex flex-col">
                 <ImageUpload
@@ -74,7 +95,8 @@ export default function AddLeaf({ params }: { params: { userId: string } }) {
                 <CommonButton
                   usage="button"
                   size="sm"
-                  handleCancelClick={handleCancelClick}>
+                  // onCancel -> 자식 컴포넌트로 전달할때는 관습이다.
+                  handleCancelClick={handleCancel}>
                   취소
                 </CommonButton>
               </div>

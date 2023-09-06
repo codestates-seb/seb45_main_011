@@ -1,16 +1,22 @@
 import create from 'zustand';
 
-import { LeafDataInfo } from '@/types/common';
-import data from '@/mock/leaf.json';
-
 interface LeafsState {
-  leafs: LeafDataInfo[];
-  addLeaf: (leaf: LeafDataInfo) => void;
+  isModalOpen: boolean;
+  deleteTargetLeafsId: number | null;
+
+  modalOpen: () => void;
+  modalClose: () => void;
+  setDeleteTargetId: (deleteTargetId: number) => void;
 }
 
 const useLeafsStore = create<LeafsState>((set) => ({
-  leafs: data,
-  addLeaf: (leaf) => set((state) => ({ leafs: [...state.leafs, leaf] })),
+  isModalOpen: false,
+  deleteTargetLeafsId: null,
+
+  modalOpen: () => set((state) => ({ ...state, isModalOpen: true })),
+  modalClose: () => set((state) => ({ ...state, isModalOpen: false })),
+  setDeleteTargetId: (deleteTargetLeafsId) =>
+    set((state) => ({ ...state, deleteTargetLeafsId })),
 }));
 
 export default useLeafsStore;

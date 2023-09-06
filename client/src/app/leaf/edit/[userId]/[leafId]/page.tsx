@@ -9,17 +9,20 @@ import Screws from '@/components/common/Screws';
 import TextArea from '@/components/common/TextArea';
 import TextInput from '@/components/common/TextInput';
 import ImageUpload from '@/components/common/ImageUpload';
-import data from '@/mock/leaf.json';
+import leafs from '@/mock/leaf.json';
 
 import { InputValues } from '@/types/common';
+import { editLeaf } from '@/api/LeafAPI';
 export default function EditLeaf({
   params,
 }: {
+  // 형 변환은 서버로 데이터 받을때
   params: { userId: string; leafId: string };
 }) {
   const { userId, leafId } = params;
   const router = useRouter();
-  const leaf = data.find((ele) => ele.leafId === parseInt(leafId));
+  // 타입을 api랑 미리 맞추거나 아니면 타입을 비교안하는 방식 (==) 등으로 처리한다.
+  const leaf = leafs.find((leafInfo) => leafInfo.leafId == parseInt(leafId));
   const {
     register,
     formState: { errors },
@@ -32,6 +35,11 @@ export default function EditLeaf({
       leafContent: leaf?.content,
     },
   });
+
+  const handleSubmitEditLeaf = (leafs: InputValues) => {
+    editLeaf(leafs, leafId);
+    console.log(leafs);
+  };
   const handleCancelClick = () => router.push(`/leafs/{userId}`);
   return (
     <div className="flex justify-center items-center">
@@ -42,7 +50,7 @@ export default function EditLeaf({
             <PageTitle text="식물 카드 수정" className="mb-5" />
 
             <form
-              onSubmit={handleSubmit((data) => console.log(data))}
+              onSubmit={handleSubmit(handleSubmitEditLeaf)}
               className="w-full">
               <div className="w-full flex flex-col items-center gap-2 mb-1">
                 <ImageUpload

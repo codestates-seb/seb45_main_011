@@ -1,28 +1,50 @@
 'use client';
 
-import useLeafsStore from '@/stores/leafsStore';
-import UserStore from '@/stores/userStore';
+import { useQuery } from '@tanstack/react-query';
 
 import AddLeafButton from '@/components/AddLeafButton';
 import Leaf from '@/components/common/Leaf';
 import PageTitle from '@/components/common/PageTitle';
 import Screws from '@/components/common/Screws';
-import useModalStore from '@/stores/modalStore';
 import ModalPortal from '@/components/common/ModalPortal';
 import Modal from '@/components/common/Modal';
-import CommonButton from '@/components/common/CommonButton';
 import { LeafDeleteModal } from '@/components/LeafDeleteModal';
 
-export default function Leafs({ params }: { params: { id: string } }) {
-  // URL path ID
-  const leafs = useLeafsStore((state) => state.leafs);
-  const userId = params.id;
-  const setUserId = UserStore((state) => state.setUserId);
-  setUserId(userId);
+import useLeafsStore from '@/stores/leafsStore';
+import useUserStore from '@/stores/userStore';
 
-  const isLeafDeleteModalOpen = useModalStore(
-    (state) => state.isLeafDeleteModalOpen,
-  );
+import { getLeafs } from '@/api/LeafAPI';
+
+import { LeafsDataInfo } from '@/types/data';
+
+import useEffectOnce from '@/hooks/useEffectOnce';
+
+interface LeafsProps {
+  params: { id: string };
+}
+
+export default function Leafs({ params }: LeafsProps) {
+  const {
+    data: leafs,
+    isLoading,
+    isError,
+  } = useQuery<LeafsDataInfo[] | null>({
+    queryKey: ['leafs'],
+    queryFn: getLeafs,
+  });
+
+  if (isLoading) return <div>loading</div>;
+  if (isError) return <div>error</div>;
+  console.log(leafs);
+
+  // URL path userId
+  const userId = params.id;
+
+  const setUserId = useUserStore((state) => state.setUserId);
+
+  useEffectOnce(() => setUserId(userId));
+
+  const isModalOpen = useLeafsStore((state) => state.isModalOpen);
 
   return (
     <div className="flex justify-center items-center">
@@ -32,11 +54,13 @@ export default function Leafs({ params }: { params: { id: string } }) {
           <PageTitle text="내 식물 카드" />
           <div className="pr-3 w-full h-[404px] flex flex-wrap  gap-4 overflow-y-scroll scrollbar">
             <AddLeafButton />
-            {leafs.map((leaf) => (
+            {leafs?.map((leaf) => (
               <Leaf
                 key={leaf.leafId}
                 location="leaf"
-                data={leaf}
+                name={leaf.leafName}
+                imageUrl={leaf.imageUrl}
+                leafId={leaf.leafId}
                 userId={userId}
               />
             ))}
@@ -44,13 +68,13 @@ export default function Leafs({ params }: { params: { id: string } }) {
         </div>
       </div>
 
-      {isLeafDeleteModalOpen ? (
+      {isModalOpen && (
         <ModalPortal>
           <Modal>
             <LeafDeleteModal />
           </Modal>
         </ModalPortal>
-      ) : null}
+      )}
     </div>
   );
 }

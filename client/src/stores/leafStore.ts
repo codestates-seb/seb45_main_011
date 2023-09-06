@@ -1,18 +1,27 @@
 import create from 'zustand';
 
-import { DiaryInfo } from '@/types/common';
-
 interface LeafState {
-  diary: DiaryInfo | null;
+  isModalOpen: boolean;
   modalCategory: 'add' | 'delete' | null;
-  setDiary: (diary: DiaryInfo) => void;
+  diaryTargetId?: number | null;
+
+  modalOpen: () => void;
+  modalClose: () => void;
+
+  setDiaryTargetId: (deleteTargetId: number) => void;
   setModalCategory: (modalCategory: 'add' | 'delete') => void;
 }
 
 const useLeafStore = create<LeafState>((set) => ({
-  diary: null,
+  isModalOpen: false,
   modalCategory: null,
-  setDiary: (diary) => set((state) => ({ ...state, diary })),
+  diaryTargetId: null,
+
+  modalOpen: () => set((state) => ({ ...state, isModalOpen: true })),
+  modalClose: () => set((state) => ({ ...state, isModalOpen: false })),
+
+  setDiaryTargetId: (diaryTargetId) =>
+    set((state) => ({ ...state, diaryTargetId })),
   setModalCategory: (modalCategory) =>
     set((state) => ({ ...state, modalCategory })),
 }));

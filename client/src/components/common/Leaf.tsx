@@ -4,43 +4,53 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import useModalStore from '@/stores/modalStore';
-
-import { DefaultProps, LeafDataInfo } from '@/types/common';
-
 import ControlButton from './ControlButton';
 import LeafName from './LeafName';
 
-interface LeafProps extends DefaultProps {
+import useLeafsStore from '@/stores/leafsStore';
+
+interface LeafProps {
   location: 'garden' | 'leaf';
-  data: LeafDataInfo;
   userId: string;
+  imageUrl: string;
+  name: string;
+  leafId: number;
 }
 
-export default function Leaf({ location, data, userId }: LeafProps) {
-  const [isClicked, setIsClicked] = useState(false);
+export default function Leaf({
+  location,
+  name,
+  imageUrl,
+  userId,
+  leafId,
+}: LeafProps) {
   const router = useRouter();
 
-  const setIsLeafDeleteModalOpen = useModalStore(
-    (state) => state.setIsLeafDeleteModalOpen,
-  );
+  const [isClicked, setIsClicked] = useState(false);
+
+  const modalOpen = useLeafsStore((state) => state.modalOpen);
+  const setDeleteTargetId = useLeafsStore((state) => state.setDeleteTargetId);
 
   const handleLeafClick = () => {
     if (location === 'leaf') {
-      router.push(`/leaf/${userId}/${data.leafId}`);
+      router.push(`/leaf/${userId}/${leafId}`);
       return null;
     }
     setIsClicked((previous) => !previous);
   };
 
-  const handleEditClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    router.push(`/leaf/edit/${userId}/${data.leafId}`);
+    router.push(`/leaf/edit/${userId}/${leafId}`);
   };
 
-  const handleDeleteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleDelete = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    leafId: number,
+  ) => {
     e.stopPropagation();
-    setIsLeafDeleteModalOpen(true);
+    setDeleteTargetId(leafId);
+    modalOpen();
   };
 
   return (
@@ -61,22 +71,25 @@ export default function Leaf({ location, data, userId }: LeafProps) {
         </div>
       ) : null}
 
-      {location === 'leaf' ? (
+      {location === 'leaf' && (
         <div className="flex gap-2 absolute right-2.5 top-2.5">
-          <ControlButton usage="edit" handleEditClick={handleEditClick} />
-          <ControlButton usage="delete" handleDeleteClick={handleDeleteClick} />
+          <ControlButton usage="edit" handleEdit={handleEdit} />
+          <ControlButton
+            usage="delete"
+            handleDelete={(event) => handleDelete(event, leafId)}
+          />
         </div>
-      ) : null}
+      )}
 
       <Image
-        src={data.imageUrl}
-        alt="로고"
+        src={imageUrl}
+        alt={name}
         width={200}
         height={160}
         className="object-cover w-[200px] h-[160px] rounded-xl border-2 border-brown-50"
       />
 
-      <LeafName name={data.leafNickname} />
+      <LeafName name={name} />
     </div>
   );
 }

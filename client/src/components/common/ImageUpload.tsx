@@ -1,14 +1,16 @@
 import React, { useRef, useState } from 'react';
 
-import NoImage from './NoImage';
-import CommonButton from './CommonButton';
-import Preview from './Preview';
 import {
   FieldErrors,
   UseFormClearErrors,
   UseFormRegister,
   UseFormSetValue,
 } from 'react-hook-form';
+
+import NoImage from './NoImage';
+import CommonButton from './CommonButton';
+import Preview from './Preview';
+
 import { InputValues } from '@/types/common';
 
 interface ImageUploadProps {
@@ -42,6 +44,7 @@ function ImageUpload({
   const [imagePreview, setImagePreview] = useState<string | undefined>(
     imageUrl,
   );
+
   // 이미지 미리보기 설정하는 함수
   const setPreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) {
@@ -74,12 +77,12 @@ function ImageUpload({
               }
             : {},
         )}
-        ref={(e) => {
-          inputRef.current = e;
+        ref={(event) => {
+          inputRef.current = event;
         }}
         type="file"
         accept="image/*"
-        onChange={(e) => setPreview(e)}
+        onChange={(event) => setPreview(event)}
       />
       <label htmlFor="image">
         <CommonButton
