@@ -2,7 +2,7 @@
 FROM openjdk:11
 
 # ⭐ 'ARG' 예약어를 통해 인자로 전달 받아야 한다.
-ARG MYSQL_USERNAME \
+ARG MYSQL_USER \
     MYSQL_PASSWORD \
     RDS_ENDPOINT \
     AWS_BUCKET_NAME \
@@ -17,7 +17,7 @@ ARG MYSQL_USERNAME \
 
 
 # ⭐ 'ENV' 예약어를 통해 전달받은 값을 실제 값과 매칭시켜야 한다.
-ENV MYSQL_USER=${MYSQL_ID} \
+ENV MYSQL_USER=${MYSQL_USER} \
     MYSQL_PASSWORD=${MYSQL_PASSWORD} \
     RDS_ENDPOINT=${RDS_ENDPOINT} \
     AWS_BUCKET_NAME=${AWS_BUCKET_NAME} \
