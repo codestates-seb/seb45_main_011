@@ -47,4 +47,8 @@ public class Board extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Board_HashTag> boardHashTags = new ArrayList<>();
+
+    public void addBoardLike(BoardLike boardLike) {
+        boardLikes.add(boardLike);
+    }
 }

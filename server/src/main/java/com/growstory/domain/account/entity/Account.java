@@ -1,5 +1,6 @@
 package com.growstory.domain.account.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.leaf.entity.Leaf;
 import com.growstory.domain.likes.entity.AccountLike;
@@ -41,15 +42,20 @@ public class Account extends BaseTimeEntity {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Leaf> leaves = new ArrayList<>();
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AccountLike> accountLikes;
+    // 자신이 좋아요 누른 계정 리스트
+    @OneToMany(mappedBy = "givingAccount", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AccountLike> givingAccountLikes;
 
+    // 자신이 좋아요 받은 계정 리스트
+    @OneToMany(mappedBy = "receivingAccount", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AccountLike> receivingAccountLikes;
+
+    @JsonIgnore
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private Point point;
 
     // 단방향관계, 1:N 디폴트 - 지연 로딩,
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "PLANT_OBJ_ID")
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlantObj> plantObjs;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -59,10 +65,12 @@ public class Account extends BaseTimeEntity {
         leaves.add(leaf);
     }
 
-    public void setPoint(Point point) {
-        this.point = point;
-        if (point.getAccount() != this)
-            point.setAccount(this);
+    public void addGivingAccountLike(AccountLike accountLike) {
+        givingAccountLikes.add(accountLike);
+    }
+
+    public void addReceivingAccountLike(AccountLike accountLike) {
+        receivingAccountLikes.add(accountLike);
     }
 
     public Account(Long accountId, String email, String displayName, String password, String profileImageUrl, List<String> roles) {
@@ -76,6 +84,15 @@ public class Account extends BaseTimeEntity {
 
     public void updatePoint(Point point) {
         this.point = point;
+        if (point.getAccount() != this)
+            point.updateAccount(this);
+    }
+
+    public void addPlantObj(PlantObj plantObj) {
+        this.plantObjs.add(plantObj);
+        if(plantObj.getAccount()!= this) {
+            plantObj.updateAccount(this);
+        }
     }
 
     public void removePlantObj(PlantObj plantObj) {

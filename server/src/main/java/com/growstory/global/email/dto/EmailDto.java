@@ -17,7 +17,13 @@ public class EmailDto {
 
     @Getter
     @Builder
-    public static class Response {
+    public static class SignUpResponse {
         private String authCode;
+    }
+
+    @Getter
+    @Builder(toBuilder = true)
+    public static class PasswordResponse {
+        private Boolean isMatched;
     }
 }

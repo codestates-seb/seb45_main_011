@@ -29,16 +29,16 @@ public class PlantObjMapper {
             return null;
         }
 
-        long plantObjId = plantObj.getPlantObjectId();
-        String nickName = plantObj.getNickName();
+        long plantObjId = plantObj.getPlantObjId();
+        String productName = plantObj.getProduct().getName();
         LocationDto.Response locationResponse = locationMapper.toLocationResponseDtoFrom(plantObj.getLocation());
         LeafDto.ResponseForGardenInfo leafResponse = leafMapper.toLeafResponseForGarden(plantObj.getLeaf());
 
         return PlantObjDto.Response.builder()
                 .plantObjId(plantObjId)
-                .nickName(nickName)
-                .locationResponse(locationResponse)
-                .leafResponse(leafResponse)
+                .productName(productName)
+                .location(locationResponse)
+                .leafDto(leafResponse)
                 .build();
     }
 

@@ -34,7 +34,6 @@ public class LeafService {
         Leaf savedLeaf = leafRepository.save(Leaf.builder()
                 .leafName(leafPostDto.getLeafName())
                 .leafImageUrl(leafImageUrl)
-                .place(leafPostDto.getPlace())
                 .content(leafPostDto.getContent())
                 .account(findAccount)
                 .build());
@@ -55,7 +54,6 @@ public class LeafService {
         leafRepository.save(findLeaf.toBuilder()
                 .leafName(leafPatchDto.getLeafName())
                 .leafImageUrl(s3Uploader.uploadImageToS3(leafImage, LEAF_IMAGE_PROCESS_TYPE))
-                .place(leafPatchDto.getPlace())
                 .content(leafPatchDto.getContent())
                 .build());
     }
@@ -64,7 +62,7 @@ public class LeafService {
         Account findAccount = authUserUtils.getAuthUser();
 
         return leafRepository.findByAccount(findAccount).stream()
-                .map(leaf -> getLeafResponseDto(leaf))
+                .map(this::getLeafResponseDto)
                 .collect(Collectors.toList());
     }
 
@@ -72,6 +70,11 @@ public class LeafService {
         Account findAccount = authUserUtils.getAuthUser();
 
         return getLeafResponseDto(findVerifiedLeaf(findAccount.getAccountId(), leafId));
+    }
+
+    public Leaf findLeafEntityWithNoAuth(Long leafId) {
+        return leafRepository.findById(leafId).orElseThrow(() ->
+                    new BusinessLogicException(ExceptionCode.LEAF_NOT_FOUND));
     }
 
     public Leaf findLeafEntityBy(Long leafId) {
@@ -85,7 +88,7 @@ public class LeafService {
         Leaf findLeaf = findVerifiedLeaf(findAccount.getAccountId(), leafId);
 
         s3Uploader.deleteImageFromS3(findLeaf.getLeafImageUrl(), LEAF_IMAGE_PROCESS_TYPE);
-        // account에서 leaf 삭제하면 cascade로 인해 leafRepo.delete() 없이 db에서 자동 삭제
+
         findAccount.getLeaves().remove(findLeaf);
     }
 
@@ -98,12 +101,13 @@ public class LeafService {
         else return findLeaf;
     }
 
-    private static LeafDto.Response getLeafResponseDto(Leaf findLeaf) {
+    private LeafDto.Response getLeafResponseDto(Leaf findLeaf) {
         return LeafDto.Response.builder()
                 .leafId(findLeaf.getLeafId())
+                .leafName(findLeaf.getLeafName())
                 .leafImageUrl(findLeaf.getLeafImageUrl())
-                .place(findLeaf.getPlace())
                 .content(findLeaf.getContent())
+                .createdAt(findLeaf.getCreatedAt())
                 .build();
     }
 }

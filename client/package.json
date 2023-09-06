@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/error-message": "^2.0.1",
     "@tanstack/react-query": "^4.33.0",
     "@types/node": "20.5.7",
     "@types/react": "18.2.21",
