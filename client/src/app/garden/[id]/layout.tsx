@@ -1,4 +1,4 @@
-import Header from "@/components/common/Header/Header";
+import Header from '@/components/common/Header/Header';
 
 export default function GardenLayout({
   children,
@@ -8,7 +8,7 @@ export default function GardenLayout({
   return (
     <>
       <Header />
-      <main>{children}</main>
+      {children}
     </>
-  )
+  );
 }

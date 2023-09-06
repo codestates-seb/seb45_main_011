@@ -5,9 +5,16 @@ import { DefaultProps } from '@/types/common';
 interface PlantProps extends DefaultProps {
   name: string;
   imageUrl: string;
+  style?: React.CSSProperties;
 }
 
-export default function Plant({ name, imageUrl, className }: PlantProps) {
+export default function Plant({
+  name,
+  imageUrl,
+  style,
+  className,
+  ...props
+}: PlantProps) {
   const size = name.startsWith('building') ? 'lg' : 'sm';
 
   const [width, height] = PLANT_IMG_SIZE[size];
@@ -20,6 +27,8 @@ export default function Plant({ name, imageUrl, className }: PlantProps) {
       height={height}
       priority
       className={className}
+      style={style}
+      {...props}
     />
   );
 }
