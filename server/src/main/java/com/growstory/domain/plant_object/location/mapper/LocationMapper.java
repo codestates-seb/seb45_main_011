@@ -7,5 +7,14 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface LocationMapper {
     Location toEntityFrom(LocationDto.Patch patch);
-    LocationDto.Response toLocationResponseDtoFrom(Location location);
+    default LocationDto.Response toLocationResponseDtoFrom(Location location) {
+        if(location == null) return null;
+
+        return LocationDto.Response.builder()
+                .locationId(location.getLocationId())
+                .x(location.getX())
+                .y(location.getY())
+                .isInstalled(location.isInstalled())
+                .build();
+    };
 }

@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -52,7 +51,7 @@ public class PlantObjService {
 
     // GET : 정원 페이지의 모든 관련 정보 조회
     @Transactional(readOnly = true)
-    public PlantObjDto.GardenInfoResponse finAllGardenInfo(Long accountId) {
+    public PlantObjDto.GardenInfoResponse findAllGardenInfo(Long accountId) {
 
         Account findAccount = accountService.findVerifiedAccount(accountId);
         //point (Response)
@@ -72,7 +71,7 @@ public class PlantObjService {
     }
 
     // POST : 유저 포인트로 오브젝트 구입
-    public void buyProduct(Long accountId, Long productId) {
+    public PlantObjDto.Response buyProduct(Long accountId, Long productId) {
         // 시큐리티 컨텍스트 인증정보 확인
         accountService.isAuthIdMatching(accountId);
 
@@ -85,21 +84,26 @@ public class PlantObjService {
         // 조회한 계정, 포인트, 상품정보를 바탕으로 구입 메서드 실행
         accountService.buy(findAccount,findProduct);
 
+        // 구입한 오브젝트 객체 생성
+        PlantObj boughtPlantObj = PlantObj.builder()
+                .product(findProduct)
+                .leaf(null)
+                .location(new Location())
+                .account(findAccount)
+                .build();
+
         //구입한 오브젝트를 DB에 저장 및 findAccount에 추가
         findAccount.addPlantObj(
                 plantObjRepository.save(
-                PlantObj.builder()
-                        .product(findProduct)
-                        .leaf(null)
-                        .location(new Location())
-                        .account(findAccount)
-                        .build()
+                    boughtPlantObj
                 )
         );
+
+        return plantObjMapper.toPlantObjResponse(boughtPlantObj);
     }
 
     // PATCH : 오브젝트 되팔기
-    public void refundPlantObj(Long accountId, Long plantObjId) {
+    public PointDto.Response refundPlantObj(Long accountId, Long plantObjId) {
         accountService.isAuthIdMatching(accountId);
 
         Account findAccount = authUserUtils.getAuthUser();
@@ -111,7 +115,9 @@ public class PlantObjService {
         } else { // 사용자가 보유하고 있는 plantObj 중 해당 품목이 없다면 예외 던지기
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
         }
-
+        return PointDto.Response.builder()
+                .score(findAccount.getPoint().getScore())
+                .build();
     }
 
 
@@ -133,7 +139,7 @@ public class PlantObjService {
 
     // PATCH : 오브젝트와 식물 카드 연결 / 해제 / 교체
 
-    public void updateLeafConnection(Long accountId, Long plantObjId, Long leafId) {
+    public PlantObjDto.Response updateLeafConnection(Long accountId, Long plantObjId, Long leafId) {
         accountService.isAuthIdMatching(accountId);
         boolean isLeafNull = leafId == null;
         PlantObj findPlantObj = findVerifiedPlantObj(plantObjId);
@@ -145,6 +151,7 @@ public class PlantObjService {
             Leaf nullLeaf = null;
             findPlantObj.updateLeaf(nullLeaf);
         }
+        return plantObjMapper.toPlantObjResponse(findPlantObj);
     }
 
     private PlantObj findVerifiedPlantObj (long plantObjId) {
