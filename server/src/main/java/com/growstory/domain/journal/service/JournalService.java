@@ -46,13 +46,13 @@ public class JournalService {
     public JournalDto.Response createJournal(Long leafId, JournalDto.Post postDto, MultipartFile image) {
         Leaf findLeaf = leafService.findLeafEntityBy(leafId);
         Journal journal = createJournalWithNoImg(findLeaf, postDto);
-        //image가 null일 경우
+        //image가 null이거나 비어있을 경우 ResponseDto로 변환하여 반환
         if(image==null|| image.isEmpty()) {
             return journalMapper.toResponseFrom(journal);
         }
         //image가 null이 아닐 경우 이미지 업로드 및 DB 저장
         JournalImage savedJournalImage = journalImageService.createJournalImgWithS3(image, JOURNAL_IMAGE_PROCESS_TYPE, journal);
-//        image 정보 Journal에 업데이트
+        //image 정보 Journal에 업데이트
         journal.updateImg(savedJournalImage);
 
         return journalMapper.toResponseFrom(journalRepository.save(journal));
@@ -83,30 +83,23 @@ public class JournalService {
     // 기존 DB와 S3에 저장된 이미지 정보를 업로드 이미지 여부에 따라 수정
     private void updateLoadImage(MultipartFile image, Journal journal, String type) {
         JournalImage journalImage = journal.getJournalImage();
-        if (image == null || image.isEmpty()) { //전송 이미지가 없을 경우
-            if (journalImage != null) {
-                // 업로드 이미지가 전송되지 않은 경우 테이블 삭제 및 기존 S3에서 해당 파일 삭제
-                journalImageService.deleteJournalImageWithS3(journalImage, type);
-            }
-            // 수정 요청 이미지가 null 또는 empty이면 값을 수정하지 않는다.
-            return;
-        }
-        // (image != null && !image.isEmpty()) : 업로드 이미지가 전송된 경우
-        if (journalImage != null) { // 기존 이미지가 존재하는 경우
-            //TODO: 기존 이미지와 일치하는지 비교 후 삭제하고 싶은데 방법이 없을까? (원본이름 또는 URL의 비교?)
-            // 원본 이름은 비교하는 의미가 없고, URL은 UUID를 통한 변화한 이름이 포함되기 때문에 비교 불가능.
-            // 클라이언트에서 이미지 수정을 하지 않으면 image를 null 또는 isEmpty() 형태로 보내주면 되겠구나! -> 애초에 수정한 게시물만 이 단계로 오게된다.
 
-            // 업로드 이미지가 전송된 경우 기존 이미지 삭제 후 재업로드
+        // image == null (수정하지 않았을 경우) return
+        if(image == null) return;
+
+        // image를 수정하지 않았으면서 기존 이미지도 보유하고 있는 경우 삭제
+        if(image != null && journalImage != null)
             journalImageService.deleteJournalImageWithS3(journalImage, type);
-        }
-        // 업로드 이미지가 존재하면 JournalImage DB에 업데이트 이후 S3에 업로드한다.
-        journalImageService.createJournalImgWithS3(image, type, journal);
+
+        // image가 존재하면 등록
+        if(!image.isEmpty())
+            journalImageService.createJournalImgWithS3(image, type, journal);
+
     }
 
     public void deleteJournal(Long journalId) {
         Journal journal = findVerifiedJournalBy(journalId);
-        //TODO: 저널에 딸린 이미지들도 S3에서 삭제해야 한다.
+        //저널에 귀속되어 있는 이미지들도 S3에서 삭제해야 한다.
         JournalImage journalImage = journal.getJournalImage();
         journalImageService.deleteJournalImageWithS3(journalImage, JOURNAL_IMAGE_PROCESS_TYPE);
         journalRepository.delete(journal);
