@@ -69,8 +69,8 @@ public class BoardController {
                 .message(HttpStatusCode.OK.getMessage())
                 .data(responseBoardDtos.getContent()).page(responseBoardDtos).build());
     }
-//
-//
+
+
 //    @Operation(summary = "Update Board API", description = "게시판 수정 기능")
 //    @PatchMapping("/{boardId}")
 //    public ResponseEntity<HttpStatus> patchBoard(@Positive @PathVariable("boardId") Long boardId,
@@ -81,8 +81,8 @@ public class BoardController {
 //
 //        return ResponseEntity.noContent().build();
 //    }
-//
-//
+
+
     @Operation(summary = "Delete Board API", description = "게시판 삭제 기능")
     @DeleteMapping("/{boardId}")
     public ResponseEntity<HttpStatus> deleteBoard(@Positive @PathVariable("boardId") Long boardId) {
