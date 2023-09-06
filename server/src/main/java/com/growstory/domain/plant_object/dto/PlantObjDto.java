@@ -47,6 +47,7 @@ public class PlantObjDto {
     @NoArgsConstructor
     @Builder
     public static class Response {
+        private long productId;
         private long plantObjId;
         private String productName;
         private LocationDto.Response location;
