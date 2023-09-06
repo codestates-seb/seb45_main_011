@@ -116,14 +116,6 @@ public class AccountService {
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_ALREADY_EXISTS);
     }
 
-    @Transactional(readOnly = true)
-    public Account findVerifiedAccount() {
-        Map<String, Object> principal = (Map<String, Object>) authUserUtils.getAuthUser();
-
-        return accountRepository.findById((Long) principal.get("accountId")).orElseThrow(() ->
-                new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_FOUND));
-    }
-
     public void isAuthIdMatching(Long accountId) {
         Map<String, Object> claims = (Map<String, Object>) authUserUtils.getAuthUser();
         if ((Long) claims.get("accountId") != accountId)
