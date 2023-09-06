@@ -21,6 +21,7 @@ public class JournalImageService {
 
     // 테이블 인스턴스 생성 및 S3 파일 업로드
     public JournalImage createJournalImgWithS3(MultipartFile image, String type, Journal journal) {
+        if(image.isEmpty() || type == null || journal == null) return null;
         String imgUrl = s3Uploader.uploadImageToS3(image, type);
         JournalImage journalImage =
                 JournalImage.builder()
@@ -36,12 +37,12 @@ public class JournalImageService {
         if(journalImage == null) return;
 
         //TODO: 오류가 없는데 journalImageRepository.deleteById(id); 로직이 전혀 동작하지 않음.
-//        long id = journalImage.getJournalImageId();
-        journalImageRepository.delete(journalImage);
-//        journalImageRepository.deleteById(id);
+        long id = journalImage.getJournalImageId();
+        journalImageRepository.deleteById(id);
+//        journalImageRepository.delete(journalImage);
 
-        Journal journal = journalImage.getJournal();
-        journal.removeJournalImage(journalImage);
+//        Journal journal = journalImage.getJournal();
+//        journal.removeJournalImage(journalImage);
 
         s3Uploader.deleteImageFromS3(journalImage.getImageUrl(), type);
     }

@@ -35,10 +35,10 @@ public class BoardController {
 
     @Operation(summary = "Create Board API", description = "게시판 추가 기능")
     @PostMapping
-    public ResponseEntity<HttpStatus> postBoard(@RequestPart RequestHashTagDto hashTagsDto,
+    public ResponseEntity<HttpStatus> postBoard(
                                                 @Valid @RequestPart RequestBoardDto.Post requestBoardDto,
                                                 @RequestPart(value = "image", required = false) MultipartFile image) {
-        Long boardId = boardService.createBoard(hashTagsDto, requestBoardDto, image);
+        Long boardId = boardService.createBoard(requestBoardDto, image);
 
         // https://localhost:8888/v1/boards/{boardId}
         URI location = UriCreator.createUri(BOARD_DEFAULT_URL, boardId);

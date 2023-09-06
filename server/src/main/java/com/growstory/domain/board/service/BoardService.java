@@ -5,9 +5,7 @@ import com.growstory.domain.board.dto.RequestBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardPageDto;
 import com.growstory.domain.board.entity.Board;
-import com.growstory.domain.board.entity.Board_HashTag;
 import com.growstory.domain.board.repository.BoardRepository;
-import com.growstory.domain.comment.entity.Comment;
 import com.growstory.domain.comment.service.CommentService;
 import com.growstory.domain.hashTag.dto.RequestHashTagDto;
 import com.growstory.domain.hashTag.entity.HashTag;
@@ -25,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -37,10 +34,10 @@ public class BoardService {
     private final HashTagService hashTagService;
     private final BoardImageService boardImageService;
     private final AuthUserUtils authUserUtils;
-    private final CommentService commentService;
+//    private final CommentService commentService;
 
 
-    public Long createBoard(RequestHashTagDto hashTagsDto, RequestBoardDto.Post requestBoardDto, MultipartFile image) {
+    public Long createBoard(RequestBoardDto.Post requestBoardDto, MultipartFile image) {
         Account findAccount = authUserUtils.getAuthUser();
 
         // TODO: image가 null일 경우 아에 saveBoardImage 실행이 되지 않도록 수정 해야 됨
@@ -49,11 +46,11 @@ public class BoardService {
 
         // TODO: 해시 태그 - 현재 입력 안됨. null로 비워두고 요청 보낼 것, 추후 해시 태그 부분 리팩토링
         // Save HashTags
-        if (hashTagsDto != null) {
-            for (String tag : hashTagsDto.getTags()) {
-                hashTagService.createHashTag(tag);
-            }
-        }
+//        if (hashTagsDto != null) {
+//            for (String tag : hashTagsDto.getTags()) {
+//                hashTagService.createHashTag(tag);
+//            }
+//        }
 
 
         Board board = Board.builder()
@@ -76,9 +73,10 @@ public class BoardService {
 
         List<HashTag> findHashTag = hashTagService.getHashTags(boardId);
 
-        List<Comment> findComment = commentService.getComments(boardId);
+//        List<Comment> findComment = commentService.getComments(boardId);
 
-        return getResponseBoardDto(findBoard, findBoardImage, findAccount, findHashTag, findComment);
+        return getResponseBoardDto(findBoard, findBoardImage, findAccount, findHashTag);
+//        return getResponseBoardDto(findBoard, findBoardImage, findAccount, findHashTag, findComment);
     }
 
     public Page<ResponseBoardPageDto> findBoards(int page, int size) {
@@ -120,12 +118,12 @@ public class BoardService {
     }
 
 
-    private Board findVerifiedBoard(Long boardId) {
+    public Board findVerifiedBoard(Long boardId) {
         return boardRepository.findById(boardId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
     }
 
-    private static ResponseBoardDto getResponseBoardDto(Board findBoard, BoardImage findBoardImage, Account findAccount, List<HashTag> findHashTag, List<Comment> findComment) {
+    private static ResponseBoardDto getResponseBoardDto(Board findBoard, BoardImage findBoardImage, Account findAccount, List<HashTag> findHashTag) {
         return ResponseBoardDto.builder()
                 .boardId(findBoard.getBoardId())
                 .title(findBoard.getTitle())
@@ -138,7 +136,7 @@ public class BoardService {
                 .displayName(findAccount.getDisplayName())
                 .profileImageUrl(findAccount.getProfileImageUrl())
                 .hashTags(findHashTag)
-                .comments(findComment)
+//                .comments(findComment)
                 .build();
     }
 }
