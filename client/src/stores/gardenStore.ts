@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { PlantObj } from '@/types/data';
 import { PlantInfo } from '@/types/common';
 
-type SidebarState = 'shop' | 'inventory';
+export type SidebarState = 'shop' | 'inventory';
 
 export interface MoveTarget extends PlantObj {
   plantSize: 'sm' | 'lg';
@@ -12,7 +12,7 @@ export interface MoveTarget extends PlantObj {
 
 export type Reference = { inventory: PlantInfo[]; plants: PlantObj[] };
 
-interface GardenState {
+export interface GardenState {
   isEditMode: boolean;
   sidebarState: SidebarState;
   point: number;
