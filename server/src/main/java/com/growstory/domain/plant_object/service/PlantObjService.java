@@ -62,9 +62,7 @@ public class PlantObjService {
         List<PlantObj> plantObjList = findAccount.getPlantObjs();
         List<PlantObjDto.Response> plantObjects = plantObjMapper.toPlantObjResponseList(plantObjList);
         //products (Response)
-        List<Product> productList = productService.findAllProducts();
-        List< ProductDto.Response> products
-                = productList.stream().map(productMapper::toResponseFrom).collect(Collectors.toList());
+        List<ProductDto.Response> products = productService.findAllProducts();
 
         return PlantObjDto.GardenInfoResponse.builder()
                 .plantObjs(plantObjects)
