@@ -39,11 +39,10 @@ public class AccountService {
     private final S3Uploader s3Uploader;
     private final AuthUserUtils authUserUtils;
 
-    public AccountDto.Response createAccount(AccountDto.Post accountPostDto, MultipartFile profileImage) {
+    public AccountDto.Response createAccount(AccountDto.Post accountPostDto) {
         verifyExistsEmail(accountPostDto.getEmail());
 
         String encryptedPassword = passwordEncoder.encode(accountPostDto.getPassword());
-        String profileImageUrl = s3Uploader.uploadImageToS3(profileImage, ACCOUNT_IMAGE_PROCESS_TYPE);
         List<String> roles = authorityUtils.createRoles(accountPostDto.getEmail());
         Point point = pointService.createPoint();
 
@@ -52,7 +51,6 @@ public class AccountService {
                 .email(accountPostDto.getEmail())
                 .password(encryptedPassword)
                 .point(point)
-                .profileImageUrl(profileImageUrl)
                 .roles(roles)
                 .build());
 
@@ -66,7 +64,8 @@ public class AccountService {
     public void updateProfileImage(MultipartFile profileImage) {
         Account findAccount = authUserUtils.getAuthUser();
 
-        s3Uploader.deleteImageFromS3(findAccount.getProfileImageUrl(), ACCOUNT_IMAGE_PROCESS_TYPE);
+        Optional.ofNullable(findAccount.getProfileImageUrl()).ifPresent(profileImageUrl ->
+                s3Uploader.deleteImageFromS3(profileImageUrl, ACCOUNT_IMAGE_PROCESS_TYPE));
 
         accountRepository.save(findAccount.toBuilder()
                 .profileImageUrl(s3Uploader.uploadImageToS3(profileImage, ACCOUNT_IMAGE_PROCESS_TYPE))
