@@ -25,7 +25,9 @@ public class Product {
 
     private String korName;
 
-    private String imageUrl;
-
     private int price;
+
+    private String imageUrlLarge;
+
+    private String imageUrlSmall;
 }

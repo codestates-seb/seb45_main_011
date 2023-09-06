@@ -6,6 +6,7 @@ import com.growstory.domain.plant_object.dto.PlantObjDto;
 import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.plant_object.location.dto.LocationDto;
 import com.growstory.domain.plant_object.location.mapper.LocationMapper;
+import com.growstory.domain.product.entity.Product;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -35,6 +36,7 @@ public class PlantObjMapper {
         LeafDto.ResponseForGardenInfo leafResponse = leafMapper.toLeafResponseForGarden(plantObj.getLeaf());
 
         return PlantObjDto.Response.builder()
+                .productId(plantObj.getProduct().getProductId())
                 .plantObjId(plantObjId)
                 .productName(productName)
                 .location(locationResponse)

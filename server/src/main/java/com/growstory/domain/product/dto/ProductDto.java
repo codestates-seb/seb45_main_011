@@ -3,6 +3,7 @@ package com.growstory.domain.product.dto;
 import lombok.Builder;
 import lombok.Getter;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class ProductDto {
@@ -10,10 +11,13 @@ public class ProductDto {
     @Getter
     @Builder
     public static class Post {
+        @NotNull
         private String name;
+        @NotNull
         private String korName;
-        private String imageUrl;
+        @NotNull
         private int price;
+        private ImageUrlTable imageUrlTable;
     }
 
     @Getter
@@ -25,9 +29,17 @@ public class ProductDto {
     @Getter
     @Builder
     public static class Response {
+        private long productId;
         private String name;
         private String korName;
-        private String imageUrl;
         private int price;
+        private ImageUrlTable imageUrlTable;
+    }
+
+    @Builder
+    @Getter
+    public static class ImageUrlTable {
+        private String sm;
+        private String lg;
     }
 }
