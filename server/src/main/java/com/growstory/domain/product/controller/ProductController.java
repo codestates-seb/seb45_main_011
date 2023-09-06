@@ -2,14 +2,10 @@ package com.growstory.domain.product.controller;
 
 import com.growstory.domain.product.dto.ProductDto;
 import com.growstory.domain.product.service.ProductService;
-import com.growstory.global.utils.UriCreator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -33,5 +29,11 @@ public class ProductController {
                 .toUri();
 
         return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductDto.Response>> getProducts() {
+        List<ProductDto.Response> products = productService.findAllProducts();
+        return ResponseEntity.ok().body(products);
     }
 }

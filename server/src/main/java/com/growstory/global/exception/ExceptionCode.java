@@ -32,6 +32,7 @@ public enum ExceptionCode {
     PLANT_OBJ_NOT_FOUND(404, "PlantObj not found"),
 
     LOCATION_NOT_FOUND(404, "Location not found"),
+    LOCATION_NOT_ALLOW(405, "Location change not allowed"),
 
     NOT_ENOUGH_POINTS(403, "Not Enough Points");
 
