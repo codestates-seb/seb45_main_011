@@ -1,7 +1,7 @@
 'use client';
 
 import useGardenStore, { Reference } from '@/stores/gardenStore';
-import useModalStore from '@/stores/gardenModalStore';
+import useGardenModalStore from '@/stores/gardenModalStore';
 
 import CommonButton from '@/components/common/CommonButton';
 import EditModeInfo from './EditModeInfo';
@@ -11,12 +11,13 @@ import InstalledPlants from './InstalledPlants';
 import TrackedPlant from './TrackedPlant';
 
 import useMouseTrack from '@/hooks/useMouseTrack';
-import { getInstallable } from '@/utils/getInstallable';
+import usePlants from '@/hooks/usePlants';
+import useSquares from '@/hooks/useSquares';
+
 import { getInitialMapInfo } from '@/utils/getInitialMapInfo';
 
 export default function GardenMap() {
-  // 데이터를 줄이기 위해 노력해보기
-  // open.. close... toggle... 이렇게 한 단어로 줄일 수 있으면 좋음
+  const gardenStore = useGardenStore();
   const {
     isEditMode,
     plants,
@@ -26,108 +27,28 @@ export default function GardenMap() {
     changeSidebarState,
     setInventory,
     setPlants,
-    observeMoveTarget,
-    observeInfoTarget,
     unobserve,
   } = useGardenStore();
-  const { changeType, open } = useModalStore();
+  const gardenModalStore = useGardenModalStore();
 
   const { targetX, targetY, setMousePosition } = useMouseTrack();
 
   const { uninstallableLocations, installedPlants } = getInitialMapInfo(plants);
 
-  const handleGarden = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleGarden = (event: React.MouseEvent<HTMLDivElement>) => {
     if (
       !(
-        e.target instanceof HTMLImageElement ||
-        e.target instanceof HTMLDivElement
+        event.target instanceof HTMLImageElement ||
+        event.target instanceof HTMLDivElement
       )
     )
       return;
 
-    if (e.target instanceof HTMLImageElement) handlePlants(e);
-    if (e.target instanceof HTMLDivElement) handleSquares(e);
-  };
+    if (event.target instanceof HTMLImageElement)
+      usePlants(event, gardenStore, gardenModalStore);
 
-  // plants, squares 는 몰라도 됨
-  // hook으로 분리해보기
-  const handlePlants = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target instanceof HTMLImageElement) {
-      if (moveTarget) return;
-
-      const targetId = e.target.dataset.plantId;
-
-      if (!isEditMode) {
-        const selectedPlant = plants.find(
-          (plant) => Number(targetId) === plant.plantObjId,
-        );
-
-        selectedPlant && observeInfoTarget(selectedPlant);
-
-        selectedPlant?.leafDto
-          ? changeType('leafExist')
-          : changeType('noLeafExist');
-
-        open();
-      }
-
-      if (isEditMode) {
-        const newPlants = plants.map((plant) => {
-          if (Number(targetId) !== plant.plantObjId) return plant;
-
-          const plantSize =
-            plant.leafDto && plant.leafDto.journalCount >= 10 ? 'lg' : 'sm';
-          const imageSize = plant.productName.startsWith('building')
-            ? 'lg'
-            : 'sm';
-
-          observeMoveTarget({ ...plant, plantSize, imageSize });
-
-          return {
-            ...plant,
-            location: { ...plant.location, isInstalled: false },
-          };
-        });
-
-        setPlants(newPlants);
-      }
-    }
-  };
-
-  const handleSquares = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target instanceof HTMLDivElement) {
-      if (e.target.dataset.installable === 'false') return;
-      if (!(isEditMode && moveTarget)) return;
-
-      const x = Number(e.target.dataset.positionX);
-      const y = Number(e.target.dataset.positionY);
-
-      if (
-        moveTarget.imageSize === 'lg' &&
-        !uninstallableLocations.every((position) =>
-          getInstallable(x, y, position, 'lg'),
-        )
-      )
-        return;
-
-      const newPlants = plants.map((plant) => {
-        if (moveTarget.plantObjId !== plant.plantObjId) return plant;
-
-        return {
-          ...plant,
-          location: {
-            ...plant.location,
-            isInstalled: true,
-            x,
-            y,
-          },
-        };
-      });
-
-      setPlants(newPlants);
-
-      unobserve();
-    }
+    if (event.target instanceof HTMLDivElement)
+      useSquares(event, uninstallableLocations, gardenStore);
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
