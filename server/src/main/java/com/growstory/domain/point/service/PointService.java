@@ -16,6 +16,7 @@ public class PointService {
     @Value("${mail.admin.address}")
     private String adminMailAddress;
 
+    // 관리자 전용 포인트
     private static final int ADMIN_POINT = 100000000;
     private static final int REGISTER_POINT = 500; // 회원가입시 지급 포인트
     private static final int POSTING_POINT = 30; // 게시글 등록시 지급 포인트
