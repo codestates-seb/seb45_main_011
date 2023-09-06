@@ -27,6 +27,8 @@ public class LeafDto {
 
         @NotBlank
         private String content;
+
+        private Boolean isImageUpdated;
     }
 
     @Getter
