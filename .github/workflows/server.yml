@@ -10,7 +10,7 @@ jobs:
 
     env:
       RDS_ENDPOINT: ${{secrets.RDS_ENDPOINT}}
-      MYSQL_ID: ${{secrets.MYSQL_USER}}
+      MYSQL_USER: ${{secrets.MYSQL_USER}}
       MYSQL_PASSWORD: ${{secrets.MYSQL_PASSWORD}}
       AWS_BUCKET_NAME: ${{secrets.AWS_BUCKET_NAME}}
       ADMIN_EMAIL: ${{secrets.ADMIN_EMAIL}}
