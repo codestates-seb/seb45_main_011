@@ -44,7 +44,7 @@ public class AccountService {
 
         String encryptedPassword = passwordEncoder.encode(accountPostDto.getPassword());
         List<String> roles = authorityUtils.createRoles(accountPostDto.getEmail());
-        Point point = pointService.createPoint();
+        Point point = pointService.createPoint(accountPostDto.getEmail());
 
         Account savedAccount = accountRepository.save(Account.builder()
                 .displayName(accountPostDto.getDisplayName())
