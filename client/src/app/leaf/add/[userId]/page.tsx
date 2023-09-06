@@ -45,13 +45,9 @@ export default function AddLeaf({ params }: AddLeafProps) {
     },
   });
 
-  // 여러가지 방식이라 구별할때는 click
   const handleCancel = () => router.push(`/leafs/${userId}`);
 
-  const handleSubmitAddLeaf = (data: InputValues) => {
-    console.log(data);
-    mutate(data);
-  };
+  const submitAddLeaf = (data: InputValues) => mutate(data);
 
   return (
     <div className="flex justify-center items-center">
@@ -61,9 +57,7 @@ export default function AddLeaf({ params }: AddLeafProps) {
           <div className="w-full h-full flex flex-col overflow-y-scroll scrollbar">
             <PageTitle text="식물 카드 등록" className="mb-5" />
 
-            <form
-              onSubmit={handleSubmit(handleSubmitAddLeaf)}
-              className="w-full">
+            <form onSubmit={handleSubmit(submitAddLeaf)} className="w-full">
               <div className="w-full flex flex-col">
                 <ImageUpload
                   required

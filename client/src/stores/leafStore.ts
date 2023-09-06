@@ -2,14 +2,14 @@ import create from 'zustand';
 
 interface LeafState {
   isModalOpen: boolean;
-  modalCategory: 'add' | 'delete' | null;
+  modalCategory: 'add' | 'delete' | 'edit' | null;
   diaryTargetId?: number | null;
 
   modalOpen: () => void;
   modalClose: () => void;
 
   setDiaryTargetId: (deleteTargetId: number) => void;
-  setModalCategory: (modalCategory: 'add' | 'delete') => void;
+  setModalCategory: (modalCategory: 'add' | 'delete' | 'edit') => void;
 }
 
 const useLeafStore = create<LeafState>((set) => ({

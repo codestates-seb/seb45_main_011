@@ -11,7 +11,7 @@ import CommonButton from './common/CommonButton';
 
 import useModalStore from '@/stores/modalStore';
 
-import { addDiary } from '@/api/LeafAPI';
+import { addDiary, editDiary } from '@/api/LeafAPI';
 
 import { InputValues } from '@/types/common';
 import { useRouter } from 'next/navigation';
@@ -20,8 +20,10 @@ export interface DiaryFormProps {
   imageUrl?: string;
   content?: string;
   title?: string;
-  leafId?: number;
-  userId?: number;
+  leafId: number;
+  diaryId?: number | null;
+  userId: number;
+  mode: 'add' | 'edit';
 }
 export default function DiaryForm({
   imageUrl,
@@ -29,12 +31,27 @@ export default function DiaryForm({
   content,
   leafId,
   userId,
+  diaryId,
+  mode,
 }: DiaryFormProps) {
   const router = useRouter();
 
   const queryClient = useQueryClient();
   const { mutate, isLoading, isError } = useMutation({
-    mutationFn: addDiary,
+    mutationFn: ({
+      diaryId,
+      leafId,
+      diary,
+      userId,
+    }: {
+      leafId: number;
+      diaryId?: number | null;
+      diary: InputValues;
+      userId: number;
+    }) =>
+      mode === 'edit'
+        ? editDiary({ diaryId, diary, userId })
+        : addDiary({ leafId, diary }),
     // mutate가 성공하면 리다이렉트
     onSuccess: () => {
       router.push(`/leaf/${userId}/${leafId}`);
@@ -60,8 +77,8 @@ export default function DiaryForm({
 
   const setIsModalOpen = useModalStore((state) => state.setIsDiaryModalOpen);
 
-  const handleSubmitDiary = (data: InputValues) => {
-    if (leafId) mutate({ leafId, data });
+  const handleSubmitDiary = (diary: InputValues) => {
+    mutate({ leafId, diary, userId, diaryId });
   };
 
   const handleModalCancel = () => {

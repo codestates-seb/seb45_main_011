@@ -84,11 +84,20 @@ export default function Leaf({ params }: LeafProps) {
                 <Modal>
                   {modalCategory === 'add' && (
                     <DiaryForm
+                      leafId={leafId}
+                      userId={userId}
+                      mode={modalCategory}
+                    />
+                  )}
+                  {modalCategory === 'edit' && (
+                    <DiaryForm
                       imageUrl={diary?.imageUrl}
                       content={diary?.content}
                       title={diary?.title}
                       leafId={leafId}
                       userId={userId}
+                      diaryId={diaryTargetId}
+                      mode={modalCategory}
                     />
                   )}
                   {modalCategory === 'delete' && (

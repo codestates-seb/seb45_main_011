@@ -38,7 +38,8 @@ export default function Diary({
 
   const handleEditDiary = () => {
     modalOpen();
-    setModalCategory('add');
+    setDiayTargetId(diaryId);
+    setModalCategory('edit');
   };
 
   const handleDeleteDiary = (diaryId: number) => {

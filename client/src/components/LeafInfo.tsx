@@ -52,8 +52,8 @@ export default function LeafInfo({
   const navigateToGarden = () => router.push(`/garden/${userId}`);
 
   const AddDiary = () => {
-    modalOpen();
     setModalCategory('add');
+    modalOpen();
   };
   return (
     <div className="flex flex-col items-center">
