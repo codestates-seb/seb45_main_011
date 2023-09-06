@@ -52,6 +52,8 @@ jobs:
           --build-arg G_CLIENT_ID=${{env.G_CLIENT_ID}} \
           --build-arg G_CLIENT_SECRET=${{env.G_CLIENT_SECRET}} \
           --build-arg JWT_SECRET_KEY=${{env.JWT_SECRET_KEY}} \
+          --build-arg AWS_ACCESS_KEY=${{secrets.AWS_ACCESS_KEY}} \
+          --build-arg AWS_SECRET_KEY=${{secrets.AWS_SECRET_KEY}} \
           -t growstory-cicd . 
           docker tag growstory-cicd dokyung94/growstory-cicd:${GITHUB_SHA::7}
           docker push dokyung94/growstory-cicd:${GITHUB_SHA::7}

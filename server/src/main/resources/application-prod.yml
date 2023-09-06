@@ -1,9 +1,24 @@
+cloud:
+  aws:
+    credentials:
+      accessKey: ${AWS_ACCESS_KEY}
+      secretKey: ${AWS_SECRET_KEY}
+    s3:
+      bucket: ${BUCKET_NAME}
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
 spring:
-    datasource:
-      url: ${RDS_ENDPOINT}
-      username: ${MYSQL_USERNAME}
-      password: ${MYSQL_PASSWORD}
-      driver-class-name: com.mysql.cj.jdbc.Driver
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: ${RDS_ENDPOINT}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
