@@ -22,3 +22,7 @@ export const blockedLocations = [
   { x: 10, y: 6 },
   { x: 11, y: 6 },
 ];
+
+export const SQAURE_QUANTITY = 96;
+
+export const GARDEN_MAP_COLUMNS = 12;

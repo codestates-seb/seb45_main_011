@@ -12,7 +12,7 @@ import CommonButton from '@/components/common/CommonButton';
 export default function LeafExistModal() {
   const router = useRouter();
 
-  const { plants, infoTarget, setPlants, changeInfoTarget } = useGardenStore();
+  const { plants, infoTarget, setPlants, unobserve } = useGardenStore();
   const { changeType, close } = useGardenModalStore();
 
   const handleConnect = () => changeType('selectLeaf');
@@ -31,8 +31,8 @@ export default function LeafExistModal() {
       );
 
     setPlants(newPlants || plants);
-    changeInfoTarget(null);
 
+    unobserve();
     close();
   };
 
