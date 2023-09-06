@@ -1,0 +1,61 @@
+spring:
+    datasource:
+      url: ${RDS_ENDPOINT}
+      username: ${MYSQL_USERNAME}
+      password: ${MYSQL_PASSWORD}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+    jpa:
+      database-platform: org.hibernate.dialect.MySQL8Dialect
+      database: mysql
+      show-sql: true
+      hibernate:
+        ddl-auto: update
+      properties:
+        hibernate:
+          format_sql: true
+security:
+  oauth2:
+    client:
+      registration:
+        google:
+          client-id: ${G_CLIENT_ID}
+          client-secret: ${G_CLIENT_SECRET}
+          redirect-uri: http://ec2-3-36-128-133.ap-northeast-2.compute.amazonaws.com/login/oauth2/code/google
+          scope:
+            - email
+            - profile
+jwt:
+  key:
+    secret: ${JWT_SECRET_KEY}               # ??? ??? ??? ?? ???? ??
+  access-token-expiration-minutes: 30
+  refresh-token-expiration-minutes: 420
+
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor: trace
+
+# swagger
+springdoc:
+  swagger-ui:
+    path: /swagger
+    operationsSorter: alpha
+    tags-sorter: alpha
+    disable-swagger-default-url: true
+    display-request-duration: true
+  api-docs:
+    path: /api-docs
+  show-actuator: true
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  paths-to-match:
+    - /v1/**
+
+#mail:
+#  admin:
+#    address: ${ADMIN_EMAIL}
+server:
+  port: 8080
