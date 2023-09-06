@@ -13,6 +13,7 @@ import com.growstory.domain.plant_object.repository.PlantObjRepository;
 import com.growstory.domain.point.entity.Point;
 import com.growstory.domain.product.entity.Product;
 import com.growstory.domain.product.service.ProductService;
+import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
 import org.springframework.stereotype.Service;
@@ -29,15 +30,17 @@ public class PlantObjService {
     private final LocationService locationService;
     private final LeafService leafService;
     private final PlantObjMapper plantObjMapper;
+    private final AuthUserUtils authUserUtils;
 
     public PlantObjService(PlantObjRepository plantObjRepository, ProductService productService, AccountService accountService,
-                           LocationService locationService, LeafService leafService, PlantObjMapper plantObjMapper) {
+                           LocationService locationService, LeafService leafService, PlantObjMapper plantObjMapper, AuthUserUtils authUserUtils) {
         this.plantObjRepository = plantObjRepository;
         this.productService = productService;
         this.accountService = accountService;
         this.locationService = locationService;
         this.leafService = leafService;
         this.plantObjMapper = plantObjMapper;
+        this.authUserUtils = authUserUtils;
     }
 
     // GET : 정원 페이지의 모든 관련 정보 조회
@@ -46,7 +49,7 @@ public class PlantObjService {
         //클라이언트에서 받은 accountId와 Auth 정보가 일치 여부를 확인하여 일치하지 않으면 405 예외를 던짐
         accountService.isAuthIdMatching(accountId);
 
-        Account findAccount = accountService.findVerifiedAccount();
+        Account findAccount = authUserUtils.getAuthUser();
         //포인트
         Point userPoint = findAccount.getPoint();
         //plantObjs를 꺼내서 responseDtoList로 매핑
@@ -65,7 +68,7 @@ public class PlantObjService {
         accountService.isAuthIdMatching(accountId);
 
         // 인증 정보를 바탕으로 Account 엔티티 조회
-        Account findAccount = accountService.findVerifiedAccount();
+        Account findAccount = authUserUtils.getAuthUser();
 
         // 클라이언트에서 전송된 productId 기반으로 product 정보 조회
         Product findProduct = productService.findVerifiedProduct(productId);
@@ -80,7 +83,7 @@ public class PlantObjService {
     public void refundPlantObj(Long accountId, Long plantObjId) {
         accountService.isAuthIdMatching(accountId);
 
-        Account findAccount = accountService.findVerifiedAccount();
+        Account findAccount = authUserUtils.getAuthUser();
 
         // 부모 객체에서 해당 PlantObj를 제거하여 고아 객체 -> 해당 인스턴스 삭제
         PlantObj plantObj = findVerifiedPlantObj(plantObjId);
