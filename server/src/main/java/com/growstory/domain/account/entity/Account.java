@@ -42,8 +42,13 @@ public class Account extends BaseTimeEntity {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Leaf> leaves = new ArrayList<>();
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AccountLike> accountLikes;
+    // 자신이 좋아요 누른 계정 리스트
+    @OneToMany(mappedBy = "givingAccount", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AccountLike> givingAccountLikes;
+
+    // 자신이 좋아요 받은 계정 리스트
+    @OneToMany(mappedBy = "receivingAccount", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AccountLike> receivingAccountLikes;
 
     @JsonIgnore
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -60,6 +65,14 @@ public class Account extends BaseTimeEntity {
         leaves.add(leaf);
     }
 
+    public void addGivingAccountLike(AccountLike accountLike) {
+        givingAccountLikes.add(accountLike);
+    }
+
+    public void addReceivingAccountLike(AccountLike accountLike) {
+        receivingAccountLikes.add(accountLike);
+    }
+
     public Account(Long accountId, String email, String displayName, String password, String profileImageUrl, List<String> roles) {
         this.accountId = accountId;
         this.email = email;
@@ -68,7 +81,6 @@ public class Account extends BaseTimeEntity {
         this.profileImageUrl = profileImageUrl;
         this.roles = roles;
     }
-
 
     public void updatePoint(Point point) {
         this.point = point;
