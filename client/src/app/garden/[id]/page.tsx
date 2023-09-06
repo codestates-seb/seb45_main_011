@@ -36,29 +36,6 @@ export default function Garden() {
   //   fetchGardenData,
   // );
 
-  // const inventory = data?.plantObjs
-  //   .filter(({ location }) => !location.isInstalled)
-  //   .map((plant) => {
-  //     const { plantObjId, productName, korName, imageUrlTable, price } = plant;
-
-  //     return {
-  //       id: plantObjId,
-  //       name: productName,
-  //       korName,
-  //       imageUrlTable,
-  //       price,
-  //     };
-  //   });
-
-  useEffect(() => {
-    const { point, plantObjs, products } =
-      require('@/mock/garden.json') as RawGardenInfo;
-
-    const gardens = { point, plantObjs, products };
-
-    syncGardens(gardens);
-  }, []);
-
   // 스토어에 있는 데이터와 서버 데이터를 동기화한다는 의미
   // useEffectOnce에 콜백 함수로 전달
   // hook 사용하여 결합도 낮추거나, store에서 작업하거나, action으로 처리하거나
@@ -85,6 +62,15 @@ export default function Garden() {
     setInventory(newInventory);
     setPlants(plantObjs);
   };
+
+  useEffect(() => {
+    const { point, plantObjs, products } =
+      require('@/mock/garden.json') as RawGardenInfo;
+
+    const gardens = { point, plantObjs, products };
+
+    syncGardens(gardens);
+  }, []);
 
   const renderModal = (type: GardenModalType) => {
     if (type === 'leafExist') return <LeafExistModal />;
