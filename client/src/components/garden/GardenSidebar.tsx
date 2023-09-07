@@ -1,6 +1,7 @@
 'use client';
 
 import uuid from 'react-uuid';
+
 import useGardenStore from '@/stores/gardenStore';
 
 import CommonButton from '@/components/common/CommonButton';
@@ -9,17 +10,19 @@ import PlantCard from './PlantCard';
 export default function GardenSidebar() {
   const { isEditMode, sidebarState, shop, inventory, changeSidebarState } =
     useGardenStore();
-  const plantList =
-    sidebarState === 'inventory' || isEditMode ? inventory : shop;
 
   const handleShop = () => changeSidebarState('shop');
+
   const handleInventory = () => changeSidebarState('inventory');
+
+  const plantList =
+    sidebarState === 'inventory' || isEditMode ? inventory : shop;
 
   const listHeight = isEditMode ? 'h-[456px] mt-3' : 'h-[412px]';
   const listBlank = plantList.length > 2 ? 'px-3 mr-[10px]' : 'px-5';
 
   return (
-    <section className="max-w-[182px] h-[496px] border-gradient rounded-xl shadow-outer/down">
+    <section className="w-[182px] h-[496px] border-gradient rounded-xl shadow-outer/down">
       {!isEditMode && (
         <div className="flex gap-2 w-fit mx-auto my-3">
           <CommonButton
