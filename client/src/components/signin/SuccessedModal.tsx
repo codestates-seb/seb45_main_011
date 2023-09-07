@@ -1,8 +1,15 @@
+'use client';
+
+import useSignModalStore from '@/stores/signModalStore';
+
 import CommonButton from '../common/CommonButton';
+
 import Modal from '../common/Modal';
 import ModalPortal from '../common/ModalPortal';
 
 export default function SuccessedModal() {
+  const { close } = useSignModalStore();
+
   return (
     <ModalPortal>
       <Modal className="min-w-[531px] h-[240px] flex flex-col justify-center items-center">
@@ -18,11 +25,11 @@ export default function SuccessedModal() {
           </div>
           <div>
             <CommonButton
-              usage="button"
+              type="button"
               size="md"
               children="닫기"
               className="w-[155px] h-[52px] text-[24px]"
-              handleClose={() => setIsEmailMatched('')}
+              onClose={close}
             />
           </div>
         </div>
