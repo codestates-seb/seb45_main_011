@@ -18,7 +18,7 @@ export default function SignInput({
   errors,
   disabled,
 }: SignInputProps) {
-  const errorMsg = errors[type]?.message as string;
+  const errorMsg = errors[type]?.message;
 
   const getRegisterByType = (type: string) => {
     if (type === 'email') {
