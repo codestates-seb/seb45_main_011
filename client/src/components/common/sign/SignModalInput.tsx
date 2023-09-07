@@ -1,28 +1,22 @@
+import { UseFormRegister } from 'react-hook-form';
+
 import { SIGNIN_REQUIRE, SIGNIN_VAILDATION } from '@/constants/contents';
 import { SignFormValue } from '@/types/common';
-import { FieldErrors, UseFormRegister, UseFormWatch } from 'react-hook-form';
 
 interface SignModalInputProps {
   type: 'code' | 'email';
   register: UseFormRegister<SignFormValue>;
-  errors: FieldErrors<SignFormValue>;
-  watch: UseFormWatch<SignFormValue>;
 }
 
 export default function SignModalInput({
   type,
   register,
-  errors,
-  watch,
 }: SignModalInputProps) {
-  const getRegisterByType = (
-    type: string,
-    watch: UseFormWatch<SignFormValue>,
-  ) => {
+  const getRegisterByType = (type: string) => {
     if (type === 'email') {
       return {
         validation: {
-          required: '이 필드는 필수 입력 사항입니다. 반드시 값을 입력해주세요.',
+          required: '올바른 인증번호를 입력해주세요.',
           pattern: {
             value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8}$/,
             message: SIGNIN_VAILDATION[type],
@@ -34,7 +28,7 @@ export default function SignModalInput({
     if (type === 'password') {
       return {
         validation: {
-          required: '이 필드는 필수 입력 사항입니다. 반드시 값을 입력해주세요.',
+          required: '올바른 이메일을 입력해주세요.',
           pattern: {
             value: /\S+@\S+\.\S+/,
             message: SIGNIN_VAILDATION[type],
@@ -46,7 +40,7 @@ export default function SignModalInput({
     return null;
   };
 
-  const registerFormat = getRegisterByType(type, watch);
+  const registerFormat = getRegisterByType(type);
 
   return (
     <>
