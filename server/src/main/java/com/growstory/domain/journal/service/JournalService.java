@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -40,6 +41,7 @@ public class JournalService {
         Leaf leaf = leafService.findLeafEntityWithNoAuth(leafId);
         List<Journal> journals = journalRepository.findAllByOrderByCreatedAtDesc();
         return journals.stream()
+                .filter(journal -> Objects.equals(journal.getLeaf().getLeafId(), leaf.getLeafId()))
                 .map(journalMapper::toResponseFrom)
                 .collect(Collectors.toList());
     }

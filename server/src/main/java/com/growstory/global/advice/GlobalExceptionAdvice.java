@@ -1,6 +1,7 @@
 package com.growstory.global.advice;
 
 import com.growstory.global.exception.BusinessLogicException;
+import com.growstory.global.response.ErrorResponder;
 import com.growstory.global.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,8 +9,13 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
+import java.io.IOException;
 
 @RestControllerAdvice
 public class GlobalExceptionAdvice {
@@ -27,11 +33,14 @@ public class GlobalExceptionAdvice {
         return ErrorResponse.of(e.getConstraintViolations());
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(BusinessLogicException.class)
     // BusinessLogicException 처리
-    public ResponseEntity handleBusinessLogicException(BusinessLogicException e) {
-        final ErrorResponse response = ErrorResponse.of(e.getExceptionCode());
+    public ResponseEntity handleBusinessLogicException(BusinessLogicException e) throws IOException {
+        final ErrorResponse errorResponse = ErrorResponse.of(e.getExceptionCode());
 
-        return new ResponseEntity(response, HttpStatus.valueOf(e.getExceptionCode().getStatus()));
+//        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getResponse();
+//        ErrorResponder.sendErrorResponse(response, e.getExceptionCode().getStatus() ,e.getExceptionCode().getMessage());
+
+        return new ResponseEntity(errorResponse, HttpStatus.valueOf(e.getExceptionCode().getStatus()));
     }
 }
