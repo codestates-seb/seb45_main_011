@@ -8,7 +8,10 @@ import com.growstory.domain.plant_object.location.dto.LocationDto;
 import com.growstory.domain.plant_object.location.mapper.LocationMapper;
 import com.growstory.domain.point.dto.PointDto;
 import com.growstory.domain.point.entity.Point;
+import com.growstory.domain.product.dto.ProductDto;
 import com.growstory.domain.product.entity.Product;
+import lombok.Builder;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -36,11 +39,19 @@ public class PlantObjMapper {
         String productName = plantObj.getProduct().getName();
         LocationDto.Response locationResponse = locationMapper.toLocationResponseDtoFrom(plantObj.getLocation());
         LeafDto.ResponseForGardenInfo leafResponse = leafMapper.toLeafResponseForGarden(plantObj.getLeaf());
+        ProductDto.ImageUrlTable imageUrlTable =
+                ProductDto.ImageUrlTable.builder()
+                        .lg(plantObj.getProduct().getImageUrlLarge())
+                        .sm(plantObj.getProduct().getImageUrlSmall())
+                        .build();
 
         return PlantObjDto.Response.builder()
                 .productId(plantObj.getProduct().getProductId())
                 .plantObjId(plantObjId)
                 .productName(productName)
+                .korName(plantObj.getProduct().getKorName())
+                .imageUrlTable(imageUrlTable)
+                .price(plantObj.getProduct().getPrice())
                 .location(locationResponse)
                 .leafDto(leafResponse)
                 .build();
@@ -64,5 +75,5 @@ public class PlantObjMapper {
                 .collect(Collectors.toList());
     }
 
-    // Patch : Location 정보 변경용 매퍼
+
 }
