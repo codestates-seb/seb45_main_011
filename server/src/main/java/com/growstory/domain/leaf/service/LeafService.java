@@ -38,7 +38,7 @@ public class LeafService {
 
         String leafImageUrl = leaf.getLeafImageUrl();
 
-        if (!leafImage.isEmpty())
+        if (Optional.ofNullable(leafImage).isPresent())
             leafImageUrl = s3Uploader.uploadImageToS3(leafImage, LEAF_IMAGE_PROCESS_TYPE);
 
         Leaf savedLeaf = leafRepository.save(leaf.toBuilder()
@@ -58,9 +58,10 @@ public class LeafService {
         String leafImageUrl = findLeaf.getLeafImageUrl();
 
         if (leafPatchDto.getIsImageUpdated()) {
-            leafImageUrl = s3Uploader.uploadImageToS3(leafImage, LEAF_IMAGE_PROCESS_TYPE);
             Optional.ofNullable(leafImageUrl).ifPresent(imageUrl ->
                     s3Uploader.deleteImageFromS3(imageUrl, LEAF_IMAGE_PROCESS_TYPE));
+
+            leafImageUrl = s3Uploader.uploadImageToS3(leafImage, LEAF_IMAGE_PROCESS_TYPE);
         }
 
         leafRepository.save(findLeaf.toBuilder()
