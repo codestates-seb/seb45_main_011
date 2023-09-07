@@ -36,14 +36,16 @@ public class JournalService {
     private static final String JOURNAL_IMAGE_PROCESS_TYPE = "journal_image";
 
     @Transactional(readOnly = true)
-    public List<JournalDto.Response> findAllJournals(Long leafId) {
+    public List<JournalDto.Response> findAllJournals(Long accountId, Long leafId) {
+        accountService.isAuthIdMatching(accountId);
         Leaf leaf = leafService.findLeafEntityWithNoAuth(leafId);
         return leaf.getJournals().stream()
                 .map(journalMapper::toResponseFrom)
                 .collect(Collectors.toList());
     }
 
-    public JournalDto.Response createJournal(Long leafId, JournalDto.Post postDto, MultipartFile image) {
+    public JournalDto.Response createJournal(Long accountId, Long leafId, JournalDto.Post postDto, MultipartFile image) {
+        accountService.isAuthIdMatching(accountId);
         Leaf findLeaf = leafService.findLeafEntityBy(leafId);
         Journal journal = createJournalWithNoImg(findLeaf, postDto);
         //image가 null이거나 비어있을 경우 ResponseDto로 변환하여 반환
@@ -68,8 +70,8 @@ public class JournalService {
     }
 
     public void updateJournal(Long accountId, Long journalId, JournalDto.Patch patchDto, MultipartFile image) {
-        accountService.isAuthIdMatching(accountId);
         Journal findJournal = findVerifiedJournalBy(journalId);
+        accountService.isAuthIdMatching(accountId);
 
         Optional.ofNullable(patchDto.getTitle())
                 .ifPresent(findJournal::updateTitle);
@@ -97,7 +99,8 @@ public class JournalService {
 
     }
 
-    public void deleteJournal(Long journalId) {
+    public void deleteJournal(Long accountId, Long journalId) {
+        accountService.isAuthIdMatching(accountId);
         Journal journal = findVerifiedJournalBy(journalId);
         //저널에 귀속되어 있는 이미지들도 S3에서 삭제해야 한다.
         JournalImage journalImage = journal.getJournalImage();

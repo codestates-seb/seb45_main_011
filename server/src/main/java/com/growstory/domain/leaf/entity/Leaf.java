@@ -25,10 +25,8 @@ public class Leaf extends BaseTimeEntity {
     private String leafName;
 
     @Lob
-    @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
     private String leafImageUrl;
 
     @ManyToOne
