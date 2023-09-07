@@ -24,11 +24,11 @@ export default function FailureModal() {
           </div>
           <div>
             <CommonButton
-              usage="button"
+              type="button"
               size="md"
               children="뒤로 가기"
               className="w-[155px] h-[52px] text-[24px]"
-              handleFail={handleCodeFailure}
+              onFailure={handleCodeFailure}
             />
           </div>
         </div>
