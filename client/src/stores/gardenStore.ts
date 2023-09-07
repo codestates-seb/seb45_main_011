@@ -16,9 +16,10 @@ export interface GardenState {
   isEditMode: boolean;
   sidebarState: SidebarState;
   point: number;
-  shop: [] | PlantInfo[];
-  inventory: [] | PlantInfo[];
-  plants: [] | PlantObj[];
+  shop: PlantInfo[] | [];
+  inventory: PlantInfo[] | [];
+  plants: PlantObj[] | [];
+  selectedLeafId: number | null;
   moveTarget: MoveTarget | null;
   infoTarget: PlantObj | null;
   purchaseTarget: PlantInfo | null;
@@ -29,6 +30,7 @@ export interface GardenState {
   setShop: (shop: PlantInfo[]) => void;
   setInventory: (inventory: PlantInfo[]) => void;
   setPlants: (plants: PlantObj[]) => void;
+  setSelectedLeafId: (selectedLeafId: number | null) => void;
   observeMoveTarget: (moveTarget: MoveTarget | null) => void;
   observeInfoTarget: (infoTarget: PlantObj | null) => void;
   observePurchaseTarget: (purchaseTarget: PlantInfo | null) => void;
@@ -46,6 +48,7 @@ const useGardenStore = create<GardenState>((set) => ({
   moveTarget: null,
   infoTarget: null,
   purchaseTarget: null,
+  selectedLeafId: null,
   reference: null,
   changeEditMode: (isEditMode) => set(() => ({ isEditMode })),
   changeSidebarState: (sidebarState) => set(() => ({ sidebarState })),
@@ -53,6 +56,7 @@ const useGardenStore = create<GardenState>((set) => ({
   setShop: (shop) => set(() => ({ shop })),
   setInventory: (inventory) => set(() => ({ inventory })),
   setPlants: (plants) => set(() => ({ plants })),
+  setSelectedLeafId: (selectedLeafId) => set(() => ({ selectedLeafId })),
   observeMoveTarget: (moveTarget) => set(() => ({ moveTarget })),
   observeInfoTarget: (infoTarget) => set(() => ({ infoTarget })),
   observePurchaseTarget: (purchaseTarget) => set(() => ({ purchaseTarget })),

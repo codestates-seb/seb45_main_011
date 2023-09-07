@@ -1,6 +1,6 @@
 'use client';
 
-import useGardenStore from '@/stores/gardenStore';
+import useArchive from '@/hooks/useArchive';
 
 import Plant from './Plant';
 import LeafTag from '@/components/LeafTag';
@@ -16,44 +16,7 @@ export default function InstalledPlants({
   isEditMode,
   installedPlants,
 }: InstalledPlantsProps) {
-  const { inventory, plants, setInventory, setPlants } = useGardenStore();
-
-  const handleArchive = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (e.target instanceof HTMLElement) {
-      const targetId = e.target.closest('div')?.dataset.plantId;
-      const targetPlant = plants.find(
-        ({ plantObjId }) => plantObjId === Number(targetId),
-      );
-
-      if (targetPlant) {
-        const { plantObjId, productName, korName, imageUrlTable, price } =
-          targetPlant;
-
-        const newItem = {
-          productId: plantObjId,
-          name: productName,
-          korName: korName,
-          imageUrlTable: imageUrlTable,
-          price: price,
-        };
-
-        const newPlants = plants.map((plant) =>
-          plant.plantObjId === Number(targetId)
-            ? {
-                ...plant,
-                location: {
-                  ...plant.location,
-                  isInstalled: false,
-                },
-              }
-            : plant,
-        );
-
-        setInventory([...inventory, newItem]);
-        setPlants(newPlants);
-      }
-    }
-  };
+  const { handleArchive } = useArchive();
 
   return (
     <>
@@ -80,7 +43,7 @@ export default function InstalledPlants({
             }}>
             {leafDto && (
               <LeafTag
-                name={leafDto.leafName}
+                name={leafDto.name}
                 className={`-mt-12 mb-4 ${tagStyle}`}
               />
             )}

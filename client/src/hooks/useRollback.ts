@@ -1,8 +1,8 @@
 import cloneDeep from 'lodash/cloneDeep';
 
-import { GardenState, Reference } from '@/stores/gardenStore';
+import useGardenStore from '@/stores/gardenStore';
 
-const useRollback = (gardenStore: GardenState) => {
+const useRollback = () => {
   const {
     isEditMode,
     inventory,
@@ -14,21 +14,27 @@ const useRollback = (gardenStore: GardenState) => {
     setPlants,
     unobserve,
     saveReference,
-  } = gardenStore;
+  } = useGardenStore();
 
-  if (!isEditMode)
-    saveReference({
-      inventory: cloneDeep(inventory),
-      plants: cloneDeep(plants),
-    });
+  const handleRollback = () => {
+    if (!isEditMode)
+      saveReference({
+        inventory: cloneDeep(inventory),
+        plants: cloneDeep(plants),
+      });
 
-  changeSidebarState('inventory');
+    if (reference) {
+      setInventory(isEditMode ? reference.inventory : inventory);
+      setPlants(isEditMode ? reference.plants : plants);
+    }
 
-  setInventory(isEditMode ? (reference as Reference).inventory : inventory);
-  setPlants(isEditMode ? (reference as Reference).plants : plants);
+    changeSidebarState('inventory');
+    changeEditMode(!isEditMode);
 
-  changeEditMode(!isEditMode);
-  unobserve();
+    unobserve();
+  };
+
+  return { handleRollback };
 };
 
 export default useRollback;

@@ -1,5 +1,5 @@
 {
-  "point": 10000,
+  "point": { "score": 10000 },
   "plantObjs": [
     {
       "plantObjId": 1,
@@ -18,7 +18,7 @@
       },
       "leafDto": {
         "leafId": 1,
-        "leafName": "바순이",
+        "leafName": "바순이아아앙아아",
         "imageUrl": "https://growstory.s3.ap-northeast-2.amazonaws.com/image/leafs/basil.jpg",
         "journalCount": 11
       }
