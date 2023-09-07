@@ -10,6 +10,7 @@ export type addPrefixToHandler<T, P extends string> = {
 
 export type PlantInfo = {
   productId: number;
+  plantObjId?: number;
   name: string;
   korName: string;
   imageUrlTable: {
@@ -17,6 +18,7 @@ export type PlantInfo = {
     lg: string;
   };
   price: number;
+  isPurchasable?: boolean;
 };
 
 export type InputValues = {

@@ -23,7 +23,7 @@ export default function TrackedPlant({
       height={TARGETPLANT_SIZE[imageSize]}
       className="absolute"
       style={{
-        transform: `translate(${targetX - 160}px, ${targetY - 140}px)`,
+        transform: `translate(${targetX - 40}px, ${targetY - 140}px)`,
       }}
     />
   );
