@@ -30,6 +30,9 @@ public class CommentService {
         Account account = authUserUtils.getAuthUser();
         Board board = boardService.findVerifiedBoard(boardId);
         Comment comment = commentRepository.save(commentDto.toEntity(account, board));
+//        System.out.println("accountcomment" + account.getComments().size());
+//        System.out.println("boardcomment" + account.getComments().size());
+
         return comment.getCommentId();
     }
 
@@ -48,8 +51,12 @@ public class CommentService {
 
     public void deleteComment(Long commentId) {
         findCommentsMatchCommentId(commentId);
-
+        Comment comment = commentRepository.findById(commentId).get();
         commentRepository.deleteById(commentId);
+
+        comment.getAccount().getComments().remove(comment);
+        comment.getBoard().getBoardComments().remove(comment);
+//        System.out.println("accountcomment"+comment.getAccount().getComments().size());
     }
 
     // Account의 Comments의 입력받은 CommentId와 일치하는 댓글을 찾는 메서드
