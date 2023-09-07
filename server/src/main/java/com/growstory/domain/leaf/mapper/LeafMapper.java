@@ -9,6 +9,9 @@ import java.util.Optional;
 @Mapper(componentModel = "spring")
 public interface LeafMapper {
     default LeafDto.ResponseForGardenInfo toLeafResponseForGarden(Leaf leaf) {
+        if(leaf == null) {
+            return null;
+        }
 
         int journalCount = (leaf != null) ? (int) leaf.getJournals().stream().count() : 0;
         Long leafId = (leaf != null) ? leaf.getLeafId() : null;
