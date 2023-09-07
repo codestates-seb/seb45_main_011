@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class CommentService {
 
@@ -42,6 +43,7 @@ public class CommentService {
 
         Comment comment = verifiedComment(commentId);
         comment.update(commentDto.getContent());
+
     }
 
     public void deleteComment(Long commentId) {
