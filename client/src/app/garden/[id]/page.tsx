@@ -1,15 +1,14 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect } from 'react';
-// import { useQuery, useQueryClient } from '@tanstack/react-query';
-// import axios, { AxiosResponse } from 'axios';
 
-// import { fetchGardenData } from '@/api/garden';
-import useGardenStore from '@/stores/gardenStore';
 import useGardenModalStore, {
   GardenModalType,
 } from '@/stores/gardenModalStore';
+import useUserStore from '@/stores/userStore';
+
+import useSyncGarden from '@/hooks/useSyncGarden';
+import useEffectOnce from '@/hooks/useEffectOnce';
 
 import {
   EditModeButton,
@@ -23,54 +22,17 @@ import {
   EmptyInventoryModal,
 } from '@/components/garden';
 
-import { RawGardenInfo } from '@/types/data';
-// import { PlantObj, RawGardenInfo } from '@/types/data';
+interface GardenProps {
+  params: { id: string };
+}
 
-export default function Garden() {
-  const { point, setPoint, setShop, setInventory, setPlants } =
-    useGardenStore();
+export default function Garden({ params }: GardenProps) {
   const { isOpen, type } = useGardenModalStore();
+  const { saveUserId } = useUserStore();
 
-  // const { data, isLoading, isError } = useQuery<RawGardenInfo>(
-  //   ['garden'],
-  //   fetchGardenData,
-  // );
+  const { isLoading, isError, point } = useSyncGarden(params.id);
 
-  // 스토어에 있는 데이터와 서버 데이터를 동기화한다는 의미
-  // useEffectOnce에 콜백 함수로 전달
-  // hook 사용하여 결합도 낮추거나, store에서 작업하거나, action으로 처리하거나
-  const syncGardens = (gardens: RawGardenInfo) => {
-    const { point, products, plantObjs } = gardens;
-
-    const newInventory = plantObjs
-      .filter(({ location }) => !location.isInstalled)
-      .map((plant) => {
-        const { plantObjId, productName, korName, imageUrlTable, price } =
-          plant;
-
-        return {
-          productId: plantObjId,
-          name: productName,
-          korName,
-          imageUrlTable,
-          price,
-        };
-      });
-
-    setPoint(point);
-    setShop(products);
-    setInventory(newInventory);
-    setPlants(plantObjs);
-  };
-
-  useEffect(() => {
-    const { point, plantObjs, products } =
-      require('@/mock/garden.json') as RawGardenInfo;
-
-    const gardens = { point, plantObjs, products };
-
-    syncGardens(gardens);
-  }, []);
+  useEffectOnce(() => saveUserId(params.id));
 
   const renderModal = (type: GardenModalType) => {
     if (type === 'leafExist') return <LeafExistModal />;
@@ -80,6 +42,9 @@ export default function Garden() {
     if (type === 'purchase') return <PurchaseModal />;
     if (type === 'emptyInventory') return <EmptyInventoryModal />;
   };
+
+  if (isLoading) return <div>로딩 중...</div>;
+  if (isError) return <div>에러 발생!</div>;
 
   return (
     <div className="mt-[52px] mx-auto">
