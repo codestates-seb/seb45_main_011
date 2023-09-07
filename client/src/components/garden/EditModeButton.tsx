@@ -6,9 +6,10 @@ import useModalStore from '@/stores/gardenModalStore';
 import useRollback from '@/hooks/useRollback';
 
 export default function EditModebutton() {
-  const gardenStore = useGardenStore();
   const { inventory, plants } = useGardenStore();
   const { changeType, open } = useModalStore();
+
+  const { handleRollback } = useRollback();
 
   const handleClick = () => {
     if (plants.length === 0 && inventory.length === 0) {
@@ -18,7 +19,7 @@ export default function EditModebutton() {
       return;
     }
 
-    useRollback(gardenStore);
+    handleRollback();
   };
 
   return (

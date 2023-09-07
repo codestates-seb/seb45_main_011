@@ -4,6 +4,9 @@ import { useRouter } from 'next/navigation';
 
 import useGardenStore from '@/stores/gardenStore';
 import useGardenModalStore from '@/stores/gardenModalStore';
+import useUserStore from '@/stores/userStore';
+
+import useConnectLeaf from '@/hooks/useConnectLeaf';
 
 import ModalPortal from '@/components/common/ModalPortal';
 import Modal from '@/components/common/Modal';
@@ -12,32 +15,24 @@ import CommonButton from '@/components/common/CommonButton';
 export default function LeafExistModal() {
   const router = useRouter();
 
-  const { plants, infoTarget, setPlants, unobserve } = useGardenStore();
+  const { infoTarget, selectedLeafId, unobserve } = useGardenStore();
   const { changeType, close } = useGardenModalStore();
+  const { userId } = useUserStore();
+
+  const { mutate } = useConnectLeaf();
 
   const handleConnect = () => changeType('selectLeaf');
 
   const handleDisConnect = () => {
-    // fetch 가능성
-    const newPlants =
-      infoTarget &&
-      plants.map((plant) =>
-        plant.plantObjId === infoTarget.plantObjId
-          ? {
-              ...plant,
-              leafDto: null,
-            }
-          : plant,
-      );
-
-    setPlants(newPlants || plants);
+    if (userId && infoTarget)
+      mutate({ userId, plantObjId: infoTarget.plantObjId, selectedLeafId });
 
     unobserve();
     close();
   };
 
   const handleBrowse = () => {
-    router.push(`/leaf/1/${infoTarget?.plantObjId}`);
+    router.push(`/leaf/${userId}/${infoTarget?.plantObjId}`);
 
     close();
   };
