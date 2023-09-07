@@ -49,10 +49,8 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests(authrize -> authrize
                         .antMatchers(HttpMethod.POST, "/v1/accounts/**").permitAll()
-                        .antMatchers(HttpMethod.GET, "/v1/products/**").permitAll()
-                        .antMatchers(HttpMethod.GET, "/v1/gardens/**").permitAll()
+                        .antMatchers(HttpMethod.GET, "/v1/**").permitAll()
                         .antMatchers(HttpMethod.PATCH, "/v1/**").hasAnyRole("ADMIN", "USER")
-                        .antMatchers(HttpMethod.GET, "/v1/**").hasAnyRole("ADMIN", "USER")
                         .antMatchers(HttpMethod.DELETE, "/v1/**").hasAnyRole("ADMIN", "USER")
                         .anyRequest().permitAll())
                 .oauth2Login(oauth2 ->

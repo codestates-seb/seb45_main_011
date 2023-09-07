@@ -12,6 +12,8 @@ jobs:
       RDS_ENDPOINT: ${{secrets.RDS_ENDPOINT}}
       MYSQL_USER: ${{secrets.MYSQL_USER}}
       MYSQL_PASSWORD: ${{secrets.MYSQL_PASSWORD}}
+      AWS_ACCESS_KEY: ${{secrets.AWS_ACCESS_KEY}}
+      AWS_SECRET_KEY: ${{secrets.AWS_SECRET_KEY}}
       AWS_BUCKET_NAME: ${{secrets.AWS_BUCKET_NAME}}
       ADMIN_EMAIL: ${{secrets.ADMIN_EMAIL}}
       GROWSTORY_EMAIL_USERNAME: ${{secrets.GROWSTORY_EMAIL_USERNAME}}
@@ -19,8 +21,6 @@ jobs:
       G_CLIENT_ID: ${{secrets.G_CLIENT_ID}}
       G_CLIENT_SECRET: ${{secrets.G_CLIENT_SECRET}}
       JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
-      AWS_ACCESS_KEY: ${{secrets.AWS_ACCESS_KEY}}
-      AWS_SECRET_KEY: ${{secrets.AWS_SECRET_KEY}}
       working-directory: ./server
 
     steps:
@@ -46,6 +46,8 @@ jobs:
           --build-arg MYSQL_USER="${{env.MYSQL_USER}}" \
           --build-arg MYSQL_PASSWORD="${{env.MYSQL_PASSWORD}}" \
           --build-arg RDS_ENDPOINT="${{env.RDS_ENDPOINT}}" \
+          --build-arg AWS_ACCESS_KEY="${{env.AWS_ACCESS_KEY}}" \
+          --build-arg AWS_SECRET_KEY="${{env.AWS_SECRET_KEY}}" \
           --build-arg AWS_BUCKET_NAME="${{env.AWS_BUCKET_NAME}}" \
           --build-arg ADMIN_EMAIL="${{env.ADMIN_EMAIL}}" \
           --build-arg GROWSTORY_EMAIL_USERNAME="${{env.GROWSTORY_EMAIL_USERNAME}}" \
@@ -53,11 +55,9 @@ jobs:
           --build-arg G_CLIENT_ID="${{env.G_CLIENT_ID}}" \
           --build-arg G_CLIENT_SECRET="${{env.G_CLIENT_SECRET}}" \
           --build-arg JWT_SECRET_KEY="${{env.JWT_SECRET_KEY}}" \
-          --build-arg AWS_ACCESS_KEY="${{env.AWS_ACCESS_KEY}}" \
-          --build-arg AWS_SECRET_KEY="${{env.AWS_SECRET_KEY}}" \
-          -t growstory-cicd .
-          docker tag growstory-cicd dokyung94/growstory-cicd:${GITHUB_SHA::7}
-          docker push dokyung94/growstory-cicd:${GITHUB_SHA::7}
+          -t growstory-cicd . 
+          docker tag growstory-cicd gdh012/growstory-cicd:${GITHUB_SHA::7}
+          docker push gdh012/growstory-cicd:${GITHUB_SHA::7}
         working-directory: ${{ env.working-directory }}
 
       - name: Configure AWS credentials
@@ -76,6 +76,6 @@ jobs:
           envs: GITHUB_SHA
           script: |
             sudo docker rm -f server
-            sudo docker pull dokyung94/growstory-cicd:${GITHUB_SHA::7}
-            sudo docker tag dokyung94/growstory-cicd:${GITHUB_SHA::7} growstory-cicd
+            sudo docker pull gdh012/growstory-cicd:${GITHUB_SHA::7}
+            sudo docker tag gdh012/growstory-cicd:${GITHUB_SHA::7} growstory-cicd
             sudo docker run -d --name server -e TZ=Asia/Seoul -p 8080:8080 growstory-cicd
