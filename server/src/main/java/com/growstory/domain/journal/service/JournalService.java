@@ -30,7 +30,6 @@ public class JournalService {
     private final JournalImageService journalImageService;
     private final LeafService leafService;
     private final JournalMapper journalMapper;
-    private final S3Uploader s3Uploader;
     private final AccountService accountService;
 
     private static final String JOURNAL_IMAGE_PROCESS_TYPE = "journal_image";
@@ -39,7 +38,8 @@ public class JournalService {
     public List<JournalDto.Response> findAllJournals(Long accountId, Long leafId) {
         accountService.isAuthIdMatching(accountId);
         Leaf leaf = leafService.findLeafEntityWithNoAuth(leafId);
-        return leaf.getJournals().stream()
+        List<Journal> journals = journalRepository.findAllByOrderByCreatedAtDesc();
+        return journals.stream()
                 .map(journalMapper::toResponseFrom)
                 .collect(Collectors.toList());
     }
