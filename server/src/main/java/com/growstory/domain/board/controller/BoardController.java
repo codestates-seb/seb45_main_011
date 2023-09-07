@@ -2,9 +2,13 @@ package com.growstory.domain.board.controller;
 
 import com.growstory.domain.board.dto.RequestBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardDto;
+import com.growstory.domain.board.dto.ResponseBoardPageDto;
 import com.growstory.domain.board.service.BoardService;
+import com.growstory.domain.hashTag.dto.RequestHashTagDto;
+import com.growstory.domain.hashTag.entity.HashTag;
 import com.growstory.global.constants.HttpStatusCode;
 import com.growstory.global.response.MultiResponseDto;
+import com.growstory.global.response.SingleResponseDto;
 import com.growstory.global.util.UriCreator;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -27,46 +31,56 @@ public class BoardController {
 
     private final BoardService boardService;
     private final static String BOARD_DEFAULT_URL = "/v1/boards";
-    private final static String ANOTHER_RESOURCE_NAME = "/leaf";
 
 
     @Operation(summary = "Create Board API", description = "게시판 추가 기능")
-    @PostMapping("/leaf/{leafId}")
-    public ResponseEntity<HttpStatus> postBoard(@Positive @PathVariable("leafId") Long leafId,
-                                                @Valid @RequestBody RequestBoardDto.Post requestBoardDto,
+    @PostMapping
+    public ResponseEntity<HttpStatus> postBoard(
+                                                @Valid @RequestPart RequestBoardDto.Post requestBoardDto,
                                                 @RequestPart(value = "image", required = false) MultipartFile image) {
-        ResponseBoardDto responseBoardDto = boardService.createBoard(leafId, requestBoardDto, image);
+        Long boardId = boardService.createBoard(requestBoardDto, image);
 
-        URI location = UriCreator.createUri(BOARD_DEFAULT_URL, responseBoardDto.getBoardId(), ANOTHER_RESOURCE_NAME, leafId);
+        // https://localhost:8888/v1/boards/{boardId}
+        URI location = UriCreator.createUri(BOARD_DEFAULT_URL, boardId);
 
         return ResponseEntity.created(location).build();
     }
 
+    @Operation(summary = "Get Board API", description = "게시판 상세 조회 기능")
+    @GetMapping("/{boardId}")
+    public ResponseEntity<SingleResponseDto<ResponseBoardDto>> getBoard(@Positive @PathVariable("boardId") Long boardId) {
+        ResponseBoardDto responseBoardDto = boardService.getBoard(boardId);
 
-    @Operation(summary = "Get Boards API", description = "전체 게시판 조회 기능")
-    @GetMapping
-    public ResponseEntity<MultiResponseDto<ResponseBoardDto>> getBoards(@Positive @RequestParam(defaultValue = "1") int page,
-                                                                        @Positive @RequestParam(defaultValue = "10") int size) {
-        Page<ResponseBoardDto> pageResponseBoardDtos = boardService.findBoards(page - 1, size);
-
-        return ResponseEntity.ok(MultiResponseDto
-                .<ResponseBoardDto>builder()
+        return ResponseEntity.ok(SingleResponseDto.<ResponseBoardDto>builder()
                 .status(HttpStatusCode.OK.getStatusCode())
                 .message(HttpStatusCode.OK.getMessage())
-                .data(pageResponseBoardDtos.getContent()).page(pageResponseBoardDtos).build());
+                .data(responseBoardDto).build());
+    }
+//
+//
+    @Operation(summary = "Get Boards API", description = "전체 게시판 조회 기능")
+    @GetMapping
+    public ResponseEntity<MultiResponseDto<ResponseBoardPageDto>> getBoards(@Positive @RequestParam(defaultValue = "1") int page,
+                                                                            @Positive @RequestParam(defaultValue = "12") int size) {
+        Page<ResponseBoardPageDto> responseBoardDtos = boardService.findBoards(page - 1, size);
+
+        return ResponseEntity.ok(MultiResponseDto.<ResponseBoardPageDto>builder()
+                .status(HttpStatusCode.OK.getStatusCode())
+                .message(HttpStatusCode.OK.getMessage())
+                .data(responseBoardDtos.getContent()).page(responseBoardDtos).build());
     }
 
 
-    @Operation(summary = "Update Board API", description = "게시판 수정 기능")
-    @PatchMapping("/{boardId}")
-    public ResponseEntity<HttpStatus> patchBoard(@Positive @PathVariable("boardId") Long boardId,
-                                                 @Valid @RequestBody RequestBoardDto.Patch requestBoardDto,
-                                                 @RequestPart(value = "image", required = false) MultipartFile image) {
-
-        boardService.modifyBoard(boardId, requestBoardDto, image);
-
-        return ResponseEntity.noContent().build();
-    }
+//    @Operation(summary = "Update Board API", description = "게시판 수정 기능")
+//    @PatchMapping("/{boardId}")
+//    public ResponseEntity<HttpStatus> patchBoard(@Positive @PathVariable("boardId") Long boardId,
+//                                                 @Valid @RequestPart RequestBoardDto.Patch requestBoardDto,
+//                                                 @RequestPart(value = "image", required = false) MultipartFile image) {
+//
+//        boardService.modifyBoard(boardId, requestBoardDto, image);
+//
+//        return ResponseEntity.noContent().build();
+//    }
 
 
     @Operation(summary = "Delete Board API", description = "게시판 삭제 기능")
