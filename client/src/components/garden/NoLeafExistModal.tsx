@@ -7,17 +7,18 @@ import useGardenModalStore from '@/stores/gardenModalStore';
 import ModalPortal from '@/components/common/ModalPortal';
 import Modal from '@/components/common/Modal';
 import CommonButton from '@/components/common/CommonButton';
+import useUserStore from '@/stores/userStore';
 
 export default function NoLeafExistModal() {
   const router = useRouter();
 
   const { changeType, close } = useGardenModalStore();
+  const { userId } = useUserStore();
 
   const handleConnect = () => changeType('selectLeaf');
 
   const handleCreate = () => {
-    // 추후 사용자 ID로 변경
-    router.push('/leaf/add/1');
+    router.push(`/leaf/add/${userId}`);
 
     close();
   };
