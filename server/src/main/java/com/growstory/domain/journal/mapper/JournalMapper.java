@@ -20,6 +20,7 @@ public class JournalMapper {
                 .title(journal.getTitle())
                 .content(journal.getContent())
                 .imageUrl(imgUrl) //nullable
+                .createdAt(journal.getCreatedAt())
                 .build();
     }
 
