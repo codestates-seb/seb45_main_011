@@ -25,7 +25,7 @@ export default function SignPasswordInput({
   watch,
   disabled,
 }: SignPasswordInputProps) {
-  const errorMsg = errors[tag]?.message as string;
+  const errorMsg = errors[tag]?.message;
 
   const getRegisterByType = (
     tag: string,
@@ -35,8 +35,8 @@ export default function SignPasswordInput({
       return {
         validation: {
           required: true,
-          minLenght: {
-            value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+          pattern: {
+            value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,12}$/,
             message: SIGNIN_VAILDATION[tag],
           },
         },
