@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import { SignModal } from '@/types/common';
-import { isObject } from 'lodash';
 
 interface SignModalState {
   isOpen: boolean;
