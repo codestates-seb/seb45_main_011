@@ -22,7 +22,6 @@ public class PlantObjController {
     public PlantObjController(PlantObjService plantObjService) {
         this.plantObjService = plantObjService;
     }
-
     // GET : 정원 페이지의 모든 관련 정보 조회
     @GetMapping("/{account-id}")
     public ResponseEntity<SingleResponseDto> getGardenInfo(@Positive @PathVariable("account-id")Long accountId) {

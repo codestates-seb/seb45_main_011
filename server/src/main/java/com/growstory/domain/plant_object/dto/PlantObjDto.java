@@ -50,8 +50,11 @@ public class PlantObjDto {
         private long productId;
         private long plantObjId;
         private String productName;
+        private String korName;
+        private int price;
         private LocationDto.Response location;
         private LeafDto.ResponseForGardenInfo leafDto;
+        private ProductDto.ImageUrlTable imageUrlTable;
     }
 
     @Getter
