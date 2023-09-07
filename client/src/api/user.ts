@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 // const url = process.env.NEXT_APP_API_URL;
-const url = 'http://13.209.96.203';
 
 export const postUserInfo = async (email: string, password: string) => {
   const response = await axios.post(`${url}/v1/accounts/authentication`, {
