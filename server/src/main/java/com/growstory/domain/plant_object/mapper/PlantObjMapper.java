@@ -6,6 +6,8 @@ import com.growstory.domain.plant_object.dto.PlantObjDto;
 import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.plant_object.location.dto.LocationDto;
 import com.growstory.domain.plant_object.location.mapper.LocationMapper;
+import com.growstory.domain.point.dto.PointDto;
+import com.growstory.domain.point.entity.Point;
 import com.growstory.domain.product.entity.Product;
 import org.springframework.stereotype.Component;
 
@@ -41,6 +43,17 @@ public class PlantObjMapper {
                 .productName(productName)
                 .location(locationResponse)
                 .leafDto(leafResponse)
+                .build();
+    }
+
+    public PlantObjDto.Trade toTradeResponse(PlantObj boughtPlantObj, Point afterPoint) {
+        PlantObjDto.Response plantObj = toPlantObjResponse(boughtPlantObj);
+        PointDto.Response point =
+                PointDto.Response.builder().score(afterPoint.getScore()).build();
+
+        return PlantObjDto.Trade.builder()
+                .plantObj(plantObj)
+                .point(point)
                 .build();
     }
 
