@@ -30,10 +30,10 @@ public class JournalController {
     // leafAuthor와 현재 인증 정보 비교 과정 필요
     @GetMapping("/{leaf-id}/journals")
     public ResponseEntity<SingleResponseDto> getJournals(
-            @RequestBody JournalDto.LeafAuthor leafAuthor,
+            @RequestParam Long accountId,
             @Positive  @PathVariable("leaf-id") Long leafId) {
 
-        List<JournalDto.Response> journals = journalService.findAllJournals(leafAuthor.getAccountId(), leafId);
+        List<JournalDto.Response> journals = journalService.findAllJournals(accountId, leafId);
 
         return ResponseEntity.ok().body(SingleResponseDto.builder()
                 .status(HttpStatus.OK.value())
