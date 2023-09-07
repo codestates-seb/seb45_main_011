@@ -1,7 +1,7 @@
 'use client';
 
-import { ErrorMessage } from '@hookform/error-message';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import { ErrorMessage } from '@hookform/error-message';
 
 import { DefaultProps, InputValues } from '@/types/common';
 
@@ -54,7 +54,7 @@ export default function TextArea({
         {...register(name, TypeFormat?.validationSchema)}
       />
 
-      <div className="h-[12px] mt-[8px] pl-3 w-full text-[0.6rem] leading-3 text-red-50">
+      <div className="h-[12px] mt-[8px] pl-3 w-full text-[0.6rem] l+eading-3 text-red-50">
         <ErrorMessage
           errors={errors}
           name={name}

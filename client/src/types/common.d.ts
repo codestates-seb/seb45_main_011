@@ -21,14 +21,6 @@ export type PlantInfo = {
   isPurchasable?: boolean;
 };
 
-export interface DiaryInfo {
-  id: number;
-  date: string;
-  imgUrl: string;
-  title: string;
-  content: string;
-}
-
 export type InputValues = {
   plantName: string;
   title: string;
@@ -41,26 +33,25 @@ export type InputValues = {
   hashTag: string;
   image: FileList;
   fieldState: string;
+  isBoard: boolean;
 };
 
-export type SigninFormValue = {
-  email?: string;
-  password?: string;
-};
-
-export type SignupFormValue = {
+export type SignFormValue = {
   email: string;
   nickname: string;
   password: string;
-  password_check: string;
-  code?: string;
+  passwordCheck: string;
+  code: string;
+  onLogin: () => void;
 };
+
+export type SignModal = 'email' | 'password' | null;
 
 export type cookieOption = {
   domain: string;
   path: string;
-  expires?: Date;
-  secure?: boolean;
-  httpOnly: boolean;
-  samSite?: string;
+  expires: Date;
+  // secure: boolean;
+  // httpOnly: boolean;
+  // samSite: string;
 };

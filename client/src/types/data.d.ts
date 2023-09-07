@@ -64,3 +64,19 @@ export interface LeafDataInfo {
   createdAt?: string;
   diary?: DiaryDataInfo[] | null;
 }
+
+export interface LeafsDataInfo {
+  leafId: number;
+  leafName: string;
+  createAt: string;
+  imageUrl: string;
+}
+
+export interface DiaryDataInfo {
+  diaryId: number;
+  createdAt: string;
+  modifiedAt?: string;
+  imageUrl?: string;
+  content: string;
+  title: string;
+}
