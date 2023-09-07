@@ -8,23 +8,21 @@ import Modal from '../common/Modal';
 import ModalPortal from '../common/ModalPortal';
 import SignModalInput from '../common/sign/SignModalInput';
 import CommonButton from '../common/CommonButton';
+
 import useSignModalStore from '@/stores/signModalStore';
+import useSignStore from '@/stores/signStore';
 
 export default function AuthEmailModal() {
-  const {
-    register,
-    formState: { errors },
-    watch,
-  } = useForm<SignFormValue>();
+  const { register, watch } = useForm<SignFormValue>();
 
-  const { close, changeState, currentState, toggle } = useSignModalStore();
+  const { close, changeState, toggle } = useSignModalStore();
+  const { code } = useSignStore();
   const userCode = watch('code');
-  const developerCode = 'test1234';
 
   const handleCodeCheck = () => {
     if (!userCode) return;
 
-    if (userCode === developerCode) {
+    if (userCode === code) {
       return close(), changeState('Successed');
     }
 
@@ -43,27 +41,22 @@ export default function AuthEmailModal() {
               <span className="text-brown-90">인증 번호</span>를 입력해주세요.
             </p>
           </div>
-          <SignModalInput
-            type="code"
-            register={register}
-            watch={watch}
-            errors={errors}
-          />
+          <SignModalInput type="code" register={register} />
         </div>
         <div className="flex gap-2 mt-6">
           <CommonButton
-            usage="button"
+            type="button"
             size="md"
             children="완료"
             className="w-[96px] h-[52px] text-[24px]"
-            handleCheck={handleCodeCheck}
+            onCheck={handleCodeCheck}
           />
           <CommonButton
-            usage="button"
+            type="button"
             size="md"
             children="취소"
             className="w-[96px] h-[52px] text-[24px]"
-            handleClose={toggle}
+            onClose={toggle}
           />
         </div>
       </Modal>
