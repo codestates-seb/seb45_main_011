@@ -1,12 +1,14 @@
 'use client';
 
 import useGardenStore from '@/stores/gardenStore';
-import useModalStore from '@/stores/gardenModalStore';
 
-import Plant from './Plant';
+import usePlantCard from '@/hooks/usePlantCard';
+
 import CommonButton from '@/components/common/CommonButton';
+import Plant from './Plant';
 
 import { PlantInfo } from '@/types/common';
+
 import { PLANT_SIZES, PLANT_CARD_BUTTON_CONTENTS } from '@/constants/contents';
 
 interface PlantCardProps {
@@ -15,68 +17,19 @@ interface PlantCardProps {
 }
 
 export default function PlantCard({ usage, plantInfo }: PlantCardProps) {
-  const {
-    sidebarState,
-    shop,
-    inventory,
-    plants,
-    changeEditMode,
-    setInventory,
-    setPlants,
-    observePurchaseTarget,
-  } = useGardenStore();
-  const { changeType, open } = useModalStore();
+  const { sidebarState } = useGardenStore();
 
-  const handlePurchase = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (e.target instanceof HTMLElement) {
-      const targetId = e.target.closest('li')?.dataset.shopId;
-      const item =
-        shop.find(({ productId }) => productId === Number(targetId)) || null;
+  const { handleClick } = usePlantCard();
 
-      observePurchaseTarget(item);
-    }
-
-    changeType('purchaseInfo');
-    open();
-  };
-
-  const handleInstall = (e: React.MouseEvent<HTMLButtonElement>) => {
-    changeEditMode(true);
-
-    if (e.target instanceof HTMLElement) {
-      const targetId = e.target.closest('li')?.dataset.plantId;
-
-      const newInventory = inventory.filter(
-        ({ productId }) => productId !== Number(targetId),
-      );
-      const newPlants = plants.map((plant) =>
-        plant.plantObjId === Number(targetId)
-          ? {
-              ...plant,
-              location: {
-                ...plant.location,
-                isInstalled: true,
-              },
-            }
-          : plant,
-      );
-
-      setInventory(newInventory);
-      setPlants(newPlants);
-    }
-  };
-
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) =>
-    sidebarState === 'shop' ? handlePurchase(e) : handleInstall(e);
-
-  const { productId, name, korName, imageUrlTable, price } = plantInfo;
+  const { productId, plantObjId, name, korName, imageUrlTable, price } =
+    plantInfo;
 
   const plantSize = name.startsWith('building') ? 'lg' : 'sm';
 
   return (
     <li
       data-shop-id={sidebarState === 'shop' && productId}
-      data-plant-id={sidebarState === 'inventory' && productId}
+      data-plant-id={sidebarState === 'inventory' && plantObjId}
       className={`flex flex-col gap-1 items-center w-[126px] border-2 border-brown-50 rounded-lg bg-repeat bg-[url('/assets/img/bg_paper.png')] font-bold shadow-outer/down ${PLANT_CARD_SIZE[usage]}`}>
       <Plant
         name={korName}
