@@ -1,6 +1,6 @@
 'use client';
 
-import { UseFormRegister, FieldErrors, UseFormWatch } from 'react-hook-form';
+import { UseFormRegister, FieldErrors } from 'react-hook-form';
 
 import { SIGNIN_REQUIRE, SIGNIN_VAILDATION } from '@/constants/contents';
 import { SignFormValue } from '@/types/common';
@@ -63,9 +63,10 @@ export default function SignInput({
         placeholder={SIGNIN_REQUIRE[type]}
         {...register(type, registerFormat?.validation)}
         disabled={disabled}
+        required
       />
       {errors[type] && (
-        <div className="text-[10px] text-red-50 leading-3 ml-10 my-2">
+        <div className="text-[10px] text-red-50 leading-3 ml-10 mt-2">
           {errorMsg}
         </div>
       )}
