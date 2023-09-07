@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .border-gradient {
+    border: 8px solid transparent;
+    background-image: url('/assets/img/bg_wood_yellow.png'),
+      linear-gradient(#ec9355, #dc7737);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+  }
+
+  .shadow-controller {
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
+  }
+
+  .scrollbar::-webkit-scrollbar {
+    width: 8px;
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: #a2573b;
+    /* box-shadow 적용 시 잔상이 생기는 이슈가 있어서 일단 제외 */
+    /* box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25); */
+  }
+    
+  .leaf-tag {
+    border: rgba(103, 46, 24, 1) solid 2px;
+    border-radius: 8px;
+    background-image: url('/assets/img/bg_wood_light.png');
+    background-position: center;
+    background-size: contain;
+    color: rgba(103, 46, 24, 1);
+    position: relative;
+    box-shadow: 0px 0px 16px 6px rgba(255, 242, 211, 1);
+  }
+  
+  .leaf-tag:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border: 11px solid transparent;
+    border-top-color: rgba(103, 46, 24, 1);
+    border-bottom: 0;
+    margin-left: -11px;
+    margin-bottom: -11px;
+    z-index: 2;
+  }
+  
+  .leaf-tag:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border: 9px solid transparent;
+    border-top-color: #fbedcc;
+    border-bottom: 0;
+    margin-left: -9px;
+    margin-bottom: -9px;
+    z-index: 3;
+  }
+}
+
+html {
+  line-height: 1;
+}
+
+ul,
+ol,
+li {
+  list-style: none;
+}
