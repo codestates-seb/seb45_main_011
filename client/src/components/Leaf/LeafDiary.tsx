@@ -9,7 +9,7 @@ import useLeafStore from '@/stores/leafStore';
 
 import { DiaryDataInfo } from '@/types/data';
 
-import { getDiaries } from '@/api/LeafAPI';
+import { getDiaries } from '@/api/leaf';
 
 interface LeafDiaryProps {
   leafId: number;

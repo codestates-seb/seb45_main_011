@@ -4,7 +4,7 @@ import CommonButton from '../common/CommonButton';
 
 import useLeafStore from '@/stores/leafStore';
 
-import { deleteDiary } from '@/api/LeafAPI';
+import { deleteDiary } from '@/api/leaf';
 
 interface DiaryDeleteModalProps {
   deleteTargetId?: number | null;
