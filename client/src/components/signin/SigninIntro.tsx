@@ -1,5 +1,13 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+
+import { fetchLoginToGoogle } from '@/api/user';
+
+import useSignStore from '@/stores/signStore';
+import usePesistStore from '@/stores/persistStore';
+
 import SigninForm from './SigninForm';
 
 import Logo from '@/components/common/Logo';
@@ -7,21 +15,49 @@ import Screws from '@/components/common/Screws';
 import CommonButton from '@/components/common/CommonButton';
 import SignLink from '../common/sign/SignLink';
 
-import useSignStore from '@/stores/signStore';
-
-import { getUserInfoByGoogle } from '@/api/user';
-
 export default function SigninIntro() {
+  const router = useRouter();
   const { isEmailSignin, getSigninForm, getSignupForm } = useSignStore();
+  const {
+    isGoogleLogin,
+    setIsGoogleLogin,
+    setAccessToken,
+    setRefershToken,
+    setDisplayName,
+    setProfileImageUrl,
+  } = usePesistStore();
 
-  const onGoogleLogin = () => {
+  const onGoogleLogin = async () => {
     try {
-      const response = getUserInfoByGoogle();
-      console.log(response);
+      await fetchLoginToGoogle();
+      setIsGoogleLogin(true);
     } catch (error) {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    const queryString = window?.location?.search;
+    const urlParams = new URLSearchParams(queryString);
+
+    const googleAccessToken = urlParams.get('access_token');
+    const googleRefreshToken = urlParams.get('refresh_token');
+    const googleDisplayName = urlParams.get('displayName');
+    const googleProfileImageUrl = urlParams.get('profileImageUrl');
+
+    if (
+      googleAccessToken &&
+      googleRefreshToken &&
+      googleDisplayName &&
+      googleProfileImageUrl
+    ) {
+      setAccessToken(googleAccessToken as string);
+      setRefershToken(googleRefreshToken as string);
+      setDisplayName(googleDisplayName as string);
+      setProfileImageUrl(googleProfileImageUrl as string);
+      router.push('/');
+    }
+  }, [isGoogleLogin]);
 
   return (
     <div className="relative flex flex-col items-center justify-center bg-[url('/assets/img/bg_wood_yellow.png')] w-[480px] h-[420px] rounded-[12px] border-8 border-border-30 shadow-outer/down shadow-container border-gradient">
@@ -46,6 +82,7 @@ export default function SigninIntro() {
               size="fix"
               children="이메일로 로그인"
               onEmailSignin={() => getSigninForm(true)}
+              disabled={isGoogleLogin}
             />
           </div>
         )}
