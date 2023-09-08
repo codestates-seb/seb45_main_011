@@ -72,7 +72,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         LoginDto.Response loginResponseDto = LoginDto.Response.builder()
                 .accountId(account.getAccountId())
                 .email(account.getEmail())
-                .displayName(account.getDisplayName())
+                .displayName(URLEncoder.encode(account.getDisplayName(), "UTF-8"))
                 .profileImageUrl(account.getProfileImageUrl())
                 .build();
 
