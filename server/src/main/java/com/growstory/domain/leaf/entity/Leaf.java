@@ -33,15 +33,11 @@ public class Leaf extends BaseTimeEntity {
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
 
-    @OneToOne(mappedBy = "leaf")
+    @OneToOne(mappedBy = "leaf", cascade = CascadeType.ALL)
     private PlantObj plantObj;
 
-    @OneToMany(mappedBy = "leaf")
+    @OneToMany(mappedBy = "leaf", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Journal> journals;
-
-    public void updateAccount(Account account) {
-        this.account = account;
-    }
 
     public void updatePlantObj(PlantObj plantObj) {
         this.plantObj = plantObj;
