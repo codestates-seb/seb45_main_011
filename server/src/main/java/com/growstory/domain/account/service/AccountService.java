@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -105,9 +106,19 @@ public class AccountService {
                 .build();
     }
 
-//    public AccountDto.Response getAccounts() {
-//
-//    }
+    @Transactional(readOnly = true)
+    public List<AccountDto.Response> getAccounts() {
+        List<Account> accounts = accountRepository.findAll();
+
+        return accounts.stream()
+                .map(account -> AccountDto.Response.builder()
+                        .accountId(account.getAccountId())
+                        .displayName(account.getDisplayName())
+                        .profileImageUrl(account.getProfileImageUrl())
+                        .point(account.getPoint())
+                        .build())
+                .collect(Collectors.toList());
+    }
 
     public void deleteAccount() {
         Account findAccount = authUserUtils.getAuthUser();

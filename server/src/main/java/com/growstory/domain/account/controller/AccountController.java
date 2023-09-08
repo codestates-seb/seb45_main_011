@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @Validated
@@ -70,17 +71,18 @@ public class AccountController {
         );
     }
 
-    // 유저 전체 조회
-//    @GetMapping("/all")
-//    public ResponseEntity getAccounts() {
-//        AccountDto.Response responseDto = accountService.getAccounts();
+//     유저 전체 조회
+    @GetMapping("/all")
+    public ResponseEntity getAccounts() {
+        List<AccountDto.Response> responseDtos = accountService.getAccounts();
 
-//        return ResponseEntity.ok(SingleResponseDto.builder()
-//                .status(HttpStatusCode.OK.getStatusCode())
-//                .message(HttpStatusCode.OK.getMessage())
-//                .data(responseDto)
-//                .build()
-//        );
+        return ResponseEntity.ok(SingleResponseDto.builder()
+                .status(HttpStatusCode.OK.getStatusCode())
+                .message(HttpStatusCode.OK.getMessage())
+                .data(responseDtos)
+                .build()
+        );
+    }
 
     // 회원 탈퇴
     @DeleteMapping
