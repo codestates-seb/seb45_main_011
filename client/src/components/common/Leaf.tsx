@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import ControlButton from './ControlButton';
-import LeafName from './LeafName';
+import LeafName from '../LeafName';
 
 import useLeafsStore from '@/stores/leafsStore';
 

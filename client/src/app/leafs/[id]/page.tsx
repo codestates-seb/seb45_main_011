@@ -2,22 +2,20 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import AddLeafButton from '@/components/AddLeafButton';
+import AddLeafButton from '@/components/Leafs/AddLeafButton';
+import { LeafDeleteModal } from '@/components/Leafs/LeafDeleteModal';
+
+import Modal from '@/components/common/Modal';
 import Leaf from '@/components/common/Leaf';
 import PageTitle from '@/components/common/PageTitle';
 import Screws from '@/components/common/Screws';
 import ModalPortal from '@/components/common/ModalPortal';
-import Modal from '@/components/common/Modal';
-import { LeafDeleteModal } from '@/components/LeafDeleteModal';
 
 import useLeafsStore from '@/stores/leafsStore';
-import useUserStore from '@/stores/userStore';
 
-import { getLeafs } from '@/api/LeafAPI';
+import { getLeafs } from '@/api/leaf';
 
 import { LeafsDataInfo } from '@/types/data';
-
-import useEffectOnce from '@/hooks/useEffectOnce';
 
 interface LeafsProps {
   params: { id: string };
@@ -33,18 +31,13 @@ export default function Leafs({ params }: LeafsProps) {
     queryFn: getLeafs,
   });
 
-  if (isLoading) return <div>loading</div>;
-  if (isError) return <div>error</div>;
-  console.log(leafs);
-
   // URL path userId
-  const userId = params.id;
-
-  const setUserId = useUserStore((state) => state.setUserId);
-
-  useEffectOnce(() => setUserId(userId));
+  const userId = Number(params.id);
 
   const isModalOpen = useLeafsStore((state) => state.isModalOpen);
+
+  if (isLoading) return <div>loading</div>;
+  if (isError) return <div>error</div>;
 
   return (
     <div className="flex justify-center items-center">
@@ -53,13 +46,13 @@ export default function Leafs({ params }: LeafsProps) {
         <div className="pt-5 pb-4 pl-6 pr-5 flex flex-col gap-5">
           <PageTitle text="내 식물 카드" />
           <div className="pr-3 w-full h-[404px] flex flex-wrap  gap-4 overflow-y-scroll scrollbar">
-            <AddLeafButton />
+            <AddLeafButton userId={userId} />
             {leafs?.map((leaf) => (
               <Leaf
                 key={leaf.leafId}
                 location="leaf"
                 name={leaf.leafName}
-                imageUrl={leaf.imageUrl}
+                imageUrl={leaf.leafImageUrl}
                 leafId={leaf.leafId}
                 userId={userId}
               />

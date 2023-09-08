@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { Dispatch, useRef, useState } from 'react';
 
 import {
   FieldErrors,
@@ -20,6 +20,7 @@ interface ImageUploadProps {
   clearErrors: UseFormClearErrors<InputValues>;
   setValue: UseFormSetValue<InputValues>;
   imageUrl?: string;
+  setIsImageUpdated?: Dispatch<boolean>;
 }
 
 // 파일 크기가 2mb 이하인지 확인하는 함수
@@ -39,6 +40,7 @@ function ImageUpload({
   clearErrors,
   setValue,
   imageUrl,
+  setIsImageUpdated,
 }: ImageUploadProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [imagePreview, setImagePreview] = useState<string | undefined>(
@@ -48,6 +50,7 @@ function ImageUpload({
   // 이미지 미리보기 설정하는 함수
   const setPreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) {
+      setIsImageUpdated && setIsImageUpdated(true);
       const file = e.target.files;
       if (checkFileSize(file[0])) {
         setImagePreview(URL.createObjectURL(file[0]));
@@ -66,7 +69,11 @@ function ImageUpload({
   };
   return (
     <div className="w-full flex flex-col items-center">
-      {imagePreview ? <Preview src={imagePreview} /> : <NoImage />}
+      {imagePreview ? (
+        <Preview src={imagePreview} />
+      ) : (
+        <NoImage location="imageUpload" />
+      )}
       <input
         className="hidden"
         {...register(
@@ -86,10 +93,10 @@ function ImageUpload({
       />
       <label htmlFor="image">
         <CommonButton
-          usage="button"
+          type="button"
           size="sm"
           className="mt-3 mb-3 leading-4"
-          handleImageUploadClick={handleImageUploadClick}>
+          onClick={handleImageUploadClick}>
           이미지 등록
         </CommonButton>
       </label>

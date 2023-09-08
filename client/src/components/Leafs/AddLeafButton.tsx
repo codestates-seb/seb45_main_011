@@ -1,10 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import useUserStore from '@/stores/userStore';
+interface AddLeafButtonProps {
+  userId: number;
+}
 
-export default function AddLeafButton() {
-  const userId = useUserStore((state) => state.userId);
+export default function AddLeafButton({ userId }: AddLeafButtonProps) {
   return (
     <Link href={`/leaf/add/${userId}`} className="w-full max-w-[200px]">
       <button
