@@ -104,6 +104,8 @@ public class LeafService {
                 s3Uploader.deleteImageFromS3(leafImageUrl, LEAF_IMAGE_PROCESS_TYPE));
 
         findAccount.getLeaves().remove(findLeaf);
+        // plantobj 연결 해제
+        // 저널 삭제
     }
 
     private Leaf findVerifiedLeaf(Long accountId, Long leafId) {
