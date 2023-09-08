@@ -9,6 +9,7 @@ import LeafForm from '@/components/common/LeafForm';
 import { getLeaf } from '@/api/LeafAPI';
 
 import { LeafDataInfo } from '@/types/data';
+import useTestUserStore from '@/stores/testUserStore';
 
 interface EditLeafProps {
   params: { userId: string; leafId: string };
@@ -16,7 +17,11 @@ interface EditLeafProps {
 
 export default function EditLeaf({ params }: EditLeafProps) {
   const leafId = Number(params.leafId);
-  const userId = Number(params.userId);
+  const pathUserId = Number(params.userId);
+
+  const userId = useTestUserStore((state) => state.userId);
+
+  if (userId !== pathUserId) return null;
 
   const {
     data: leaf,
@@ -27,7 +32,7 @@ export default function EditLeaf({ params }: EditLeafProps) {
     queryFn: () => getLeaf(leafId),
   });
 
-  if (isLoading || leaf === null) return <div>loading</div>;
+  if (isLoading) return <div>loading</div>;
   if (isError) return <div>error</div>;
 
   return (
