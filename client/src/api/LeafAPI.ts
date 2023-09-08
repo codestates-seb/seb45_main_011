@@ -2,12 +2,11 @@ import { InputValues } from '@/types/common';
 import axios from 'axios';
 
 export const commonAxios = axios.create({
-  baseURL: 'http://13.209.96.203/v1',
+  baseURL: '',
   headers: {
-    Authorization:
-      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhY2NvdW50SWQiOjEsImRpc3BsYXlOYW1lIjoi6rSA66as7J6QIiwicm9sZXMiOlsiVVNFUiIsIkFETUlOIl0sInVzZXJuYW1lIjoiYWRtaW5AZ21haWwuY29tIiwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNjk0MTM5Nzc3LCJleHAiOjE2OTQxNDE1Nzd9.fAUbG-1Ib3MkR_GBQY0EOdtN9WlKCWPl6s7CtgK_EvM',
+    Authorization: '',
+
     // Refresh:
-    //   'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTQwMDk3NzIsImV4cCI6MTY5NDAzNDk3Mn0.TN0Of3xvz5vY-QI7xRkBiCVU3dMqrvCJfnfjFK_7jLQ',
   },
   withCredentials: true,
 });
