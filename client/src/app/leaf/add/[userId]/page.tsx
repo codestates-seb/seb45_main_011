@@ -4,13 +4,18 @@ import PageTitle from '@/components/common/PageTitle';
 import Screws from '@/components/common/Screws';
 import LeafForm from '@/components/common/LeafForm';
 
+import useTestUserStore from '@/stores/testUserStore';
+
 interface AddLeafProps {
-  params: { leafId: string; userId: string };
+  params: { userId: string };
 }
 
 export default function AddLeaf({ params }: AddLeafProps) {
-  const userId = Number(params.userId);
+  const pathUserId = Number(params.userId);
 
+  const userId = useTestUserStore((state) => state.userId);
+
+  if (userId !== pathUserId) return null;
   return (
     <div className="flex justify-center items-center">
       <div className="relative w-full max-w-[720px] h-[600px] border-gradient">
