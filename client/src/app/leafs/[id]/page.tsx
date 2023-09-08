@@ -1,20 +1,23 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import { useQuery } from '@tanstack/react-query';
 
-import AddLeafButton from '@/components/Leafs/AddLeafButton';
-import { LeafDeleteModal } from '@/components/Leafs/LeafDeleteModal';
+import { getLeafs } from '@/api/leaf';
+
+import useLeafsStore from '@/stores/leafsStore';
+import useTestUserStore from '@/stores/testUserStore';
+
+import useEffectOnce from '@/hooks/useEffectOnce';
 
 import Modal from '@/components/common/Modal';
 import Leaf from '@/components/common/Leaf';
 import PageTitle from '@/components/common/PageTitle';
 import Screws from '@/components/common/Screws';
 import ModalPortal from '@/components/common/ModalPortal';
-
-import useLeafsStore from '@/stores/leafsStore';
-import useTestUserStore from '@/stores/testUserStore';
-
-import { getLeafs } from '@/api/LeafAPI';
+import AddLeafButton from '@/components/Leafs/AddLeafButton';
+import { LeafDeleteModal } from '@/components/Leafs/LeafDeleteModal';
 
 import { LeafsDataInfo } from '@/types/data';
 
@@ -23,22 +26,31 @@ interface LeafsProps {
 }
 
 export default function Leafs({ params }: LeafsProps) {
-  const {
-    data: leafs,
-    isLoading,
-    isError,
-  } = useQuery<LeafsDataInfo[] | null>({
-    queryKey: ['leafs'],
-    queryFn: () => getLeafs(pathUserId),
-  });
-
   // URL path userId
   const pathUserId = Number(params.id);
 
   const userId = useTestUserStore((state) => state.userId);
   const userName = useTestUserStore((state) => state.userName);
-
   const isModalOpen = useLeafsStore((state) => state.isModalOpen);
+
+  const router = useRouter();
+
+  useEffectOnce(() => {
+    if (!userId) {
+      router.push('/signin');
+    }
+  });
+
+  const {
+    data: leafs,
+    isLoading,
+    isError,
+  } = userId
+    ? useQuery<LeafsDataInfo[] | null>({
+        queryKey: ['leafs'],
+        queryFn: () => getLeafs(pathUserId),
+      })
+    : { data: null, isLoading: false, isError: false };
 
   if (isLoading) return <div>loading</div>;
   if (isError) return <div>error</div>;

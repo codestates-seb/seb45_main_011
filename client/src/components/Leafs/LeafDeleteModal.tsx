@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { deleteLeaf } from '@/api/LeafAPI';
+import { deleteLeaf } from '@/api/leaf';
 
 import useLeafsStore from '@/stores/leafsStore';
 

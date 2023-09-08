@@ -8,7 +8,7 @@ interface User {
 }
 
 const useTestUserStore = create<User>((set) => ({
-  userId: 6,
+  userId: 1,
   userName: 'test',
   saveUserId: (userId) => set(() => ({ userId })),
   saveUserName: (userName) => set(() => ({ userName })),

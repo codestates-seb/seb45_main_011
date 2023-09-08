@@ -1,15 +1,20 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import { useQuery } from '@tanstack/react-query';
+
+import { getLeaf } from '@/api/leaf';
+
+import useTestUserStore from '@/stores/testUserStore';
+
+import useEffectOnce from '@/hooks/useEffectOnce';
 
 import PageTitle from '@/components/common/PageTitle';
 import Screws from '@/components/common/Screws';
 import LeafForm from '@/components/common/LeafForm';
 
-import { getLeaf } from '@/api/LeafAPI';
-
 import { LeafDataInfo } from '@/types/data';
-import useTestUserStore from '@/stores/testUserStore';
 
 interface EditLeafProps {
   params: { userId: string; leafId: string };
@@ -19,18 +24,26 @@ export default function EditLeaf({ params }: EditLeafProps) {
   const leafId = Number(params.leafId);
   const pathUserId = Number(params.userId);
 
+  const router = useRouter();
+
   const userId = useTestUserStore((state) => state.userId);
 
-  if (userId !== pathUserId) return null;
+  useEffectOnce(() => {
+    if (pathUserId !== userId) {
+      router.back();
+    }
+  });
 
   const {
     data: leaf,
     isLoading,
     isError,
-  } = useQuery<LeafDataInfo>({
-    queryKey: ['leaf', leafId],
-    queryFn: () => getLeaf(leafId),
-  });
+  } = userId
+    ? useQuery<LeafDataInfo>({
+        queryKey: ['leaf', leafId],
+        queryFn: () => getLeaf(leafId),
+      })
+    : { data: null, isLoading: false, isError: false };
 
   if (isLoading) return <div>loading</div>;
   if (isError) return <div>error</div>;

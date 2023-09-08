@@ -1,23 +1,25 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import { useQuery } from '@tanstack/react-query';
 
+import { getLeaf } from '@/api/leaf';
+
+import useLeafStore from '@/stores/leafStore';
+import useTestUserStore from '@/stores/testUserStore';
+
+import useEffectOnce from '@/hooks/useEffectOnce';
+
+import Screws from '@/components/common/Screws';
+import ModalPortal from '@/components/common/ModalPortal';
+import Modal from '@/components/common/Modal';
 import LeafInfo from '@/components/Leaf/LeafInfo';
 import LeafDiary from '@/components/Leaf/LeafDiary';
 import DiaryForm from '@/components/Leaf/DiaryForm';
 import { DiaryDeleteModal } from '@/components/Leaf/DiaryDeleteModal';
 
-import Screws from '@/components/common/Screws';
-import ModalPortal from '@/components/common/ModalPortal';
-import Modal from '@/components/common/Modal';
-
-import useLeafStore from '@/stores/leafStore';
-
-import { getLeaf } from '@/api/LeafAPI';
-
 import { LeafDataInfo } from '@/types/data';
-import useTestUserStore from '@/stores/testUserStore';
-import { useRouter } from 'next/navigation';
 
 interface LeafProps {
   params: { leafId: string; userId: string };
@@ -31,23 +33,29 @@ export default function Leaf({ params }: LeafProps) {
 
   const userId = useTestUserStore((state) => state.userId);
 
+  useEffectOnce(() => {
+    if (!userId) {
+      router.push('/signin');
+    }
+  });
+
   const {
     data: leaf,
     isLoading,
     isError,
-  } = useQuery<LeafDataInfo>({
-    queryKey: ['leaf', leafId],
-    queryFn: () => getLeaf(leafId),
-  });
+  } = userId
+    ? useQuery<LeafDataInfo>({
+        queryKey: ['leaf', leafId],
+        queryFn: () => getLeaf(leafId),
+      })
+    : { data: {} as LeafDataInfo, isLoading: false, isError: false };
 
   const modalCategory = useLeafStore((state) => state.modalCategory);
   const isModalOpen = useLeafStore((state) => state.isModalOpen);
   const targetDiary = useLeafStore((state) => state.targetDiary);
 
-  if (!userId) return router.push('/signin');
   if (isLoading) return <div>loading</div>;
   if (isError) return <div>error</div>;
-  if (!leaf) return;
 
   return (
     <div className="w-full flex justify-center items-center">

@@ -13,13 +13,13 @@ import TextArea from './TextArea';
 import { InputValues } from '@/types/common';
 import { LeafDataInfo } from '@/types/data';
 
-import { addLeaf, editLeaf } from '@/api/LeafAPI';
+import { addLeaf, editLeaf } from '@/api/leaf';
 
 interface LeafFormProps {
-  leaf?: LeafDataInfo;
+  leaf?: LeafDataInfo | null;
   leafId?: number;
   mode: 'add' | 'edit';
-  userId: number;
+  userId: number | null;
 }
 
 export default function LeafForm({

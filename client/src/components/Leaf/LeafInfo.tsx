@@ -12,7 +12,7 @@ interface LeafInfoProps {
   imageUrl: string;
   content: string;
   createdAt: string;
-  userId: number;
+  userId: number | null;
 }
 
 /** 현재 날짜(now)와 비교할 날짜(day) 사이의 일수를 계산하는 함수 */
@@ -46,7 +46,7 @@ export default function LeafInfo({
     ? getDayElapsed(now, new Date(lastDiaryDay)) + '일 전'
     : '-';
 
-  const navigateToGarden = () => router.push(`/garden/${pathUserId}`);
+  const navigateToGarden = () => router.push(`/garden/${userId}`);
 
   const AddDiary = () => {
     setModalCategory('add');
