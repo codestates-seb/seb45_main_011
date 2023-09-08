@@ -18,10 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -44,18 +41,18 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
         String profileImageUrl = (String) oAuth2User.getAttributes().get("picture");
         List<String> authorities = authorityUtils.createRoles(email);
 
-        Account findAccount = accountRepository.findByEmail(email)
-                .orElse(accountRepository.save(Account.builder()
-                                .email(email)
-                                .displayName(name)
-                                .password("")
-                                .profileImageUrl(profileImageUrl)
-                                .point(pointService.createPoint(email))
-                                .roles(authorities)
-                                .build()
-                ));
+        Account savedAccount = accountRepository.findByEmail(email)
+                .orElseGet(() -> accountRepository.save(Account.builder()
+                        .email(email)
+                        .displayName(name)
+                        .password("")
+                        .profileImageUrl(profileImageUrl)
+                        .point(pointService.createPoint(email))
+                        .roles(authorities)
+                        .build())
+                );
 
-        redirect(request, response, findAccount, authorities);
+        redirect(request, response, savedAccount, authorities);
     }
 
     private void redirect(HttpServletRequest request, HttpServletResponse response,
