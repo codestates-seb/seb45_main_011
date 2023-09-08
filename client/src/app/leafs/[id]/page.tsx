@@ -2,13 +2,14 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import AddLeafButton from '@/components/AddLeafButton';
+import AddLeafButton from '@/components/Leafs/AddLeafButton';
+import { LeafDeleteModal } from '@/components/Leafs/LeafDeleteModal';
+
+import Modal from '@/components/common/Modal';
 import Leaf from '@/components/common/Leaf';
 import PageTitle from '@/components/common/PageTitle';
 import Screws from '@/components/common/Screws';
 import ModalPortal from '@/components/common/ModalPortal';
-import Modal from '@/components/common/Modal';
-import { LeafDeleteModal } from '@/components/LeafDeleteModal';
 
 import useLeafsStore from '@/stores/leafsStore';
 
@@ -30,14 +31,13 @@ export default function Leafs({ params }: LeafsProps) {
     queryFn: getLeafs,
   });
 
-  if (isLoading) return <div>loading</div>;
-  if (isError) return <div>error</div>;
-  console.log(leafs);
-
   // URL path userId
   const userId = Number(params.id);
 
   const isModalOpen = useLeafsStore((state) => state.isModalOpen);
+
+  if (isLoading) return <div>loading</div>;
+  if (isError) return <div>error</div>;
 
   return (
     <div className="flex justify-center items-center">
@@ -52,7 +52,7 @@ export default function Leafs({ params }: LeafsProps) {
                 key={leaf.leafId}
                 location="leaf"
                 name={leaf.leafName}
-                imageUrl={leaf.imageUrl}
+                imageUrl={leaf.leafImageUrl}
                 leafId={leaf.leafId}
                 userId={userId}
               />
@@ -64,7 +64,7 @@ export default function Leafs({ params }: LeafsProps) {
       {isModalOpen && (
         <ModalPortal>
           <Modal>
-            <LeafDeleteModal userId={userId} />
+            <LeafDeleteModal />
           </Modal>
         </ModalPortal>
       )}

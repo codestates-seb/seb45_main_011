@@ -1,10 +1,8 @@
-import { useRouter } from 'next/navigation';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { QueryClient, useMutation } from '@tanstack/react-query';
+import CommonButton from '../common/CommonButton';
 
-import CommonButton from './common/CommonButton';
-
-import useModalStore from '@/stores/modalStore';
+import useLeafStore from '@/stores/leafStore';
 
 import { deleteDiary } from '@/api/LeafAPI';
 
@@ -21,27 +19,22 @@ export function DiaryDeleteModal({
 }: DiaryDeleteModalProps) {
   if (!deleteTargetId) return null;
 
-  const router = useRouter();
+  const queryClient = useQueryClient();
 
-  const queryClient = new QueryClient();
-  const { mutate, isLoading, isError } = useMutation({
-    mutationFn: deleteDiary,
-    // mutate가 성공하면 리다이렉트
+  const { mutate } = useMutation({
+    mutationFn: () => deleteDiary({ diaryId: deleteTargetId, userId }),
     onSuccess: () => {
-      router.push(`/leaf/${userId}/${leafId}`);
       // 성공 후 새로운 쿼리를 다시 가져올 수 있도록 캐시 무효화
-      queryClient.invalidateQueries(['leaf']);
+      queryClient.invalidateQueries(['diaries', leafId]);
     },
   });
 
-  const setIsModalOpen = useModalStore((state) => state.setIsDiaryModalOpen);
+  const modalClose = useLeafStore((state) => state.modalClose);
 
-  const handleCancelModal = () => {
-    setIsModalOpen(false);
-  };
+  const handleCancelModal = () => modalClose();
   const handleDeleteDiary = () => {
-    mutate(deleteTargetId);
-    setIsModalOpen(false);
+    modalClose();
+    mutate();
   };
   return (
     <div className="flex flex-col justify-center w-full max-w-[515px] h-[300px] px-[4.5rem]">

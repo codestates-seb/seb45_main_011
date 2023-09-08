@@ -1,9 +1,10 @@
 'use client';
 
 import { QueryClientProvider } from '@tanstack/react-query';
-import client from '@/api/client';
 
 import Header from '@/components/common/Header/Header';
+
+import client from '@/api/client';
 
 export default function GardenLayout({
   children,

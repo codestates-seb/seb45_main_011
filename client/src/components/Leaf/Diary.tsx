@@ -1,10 +1,11 @@
 import Image from 'next/image';
 
-import ControlButton from './common/ControlButton';
+import ControlButton from '../common/ControlButton';
 
 import useLeafStore from '@/stores/leafStore';
 
 import { DiaryDataInfo } from '@/types/data';
+import NoImage from '../common/NoImage';
 
 interface FormatContentProps {
   content: string;
@@ -19,32 +20,39 @@ function FormatContent({ content, className }: FormatContentProps) {
   );
 }
 export default function Diary({
-  diaryId,
+  journalId,
   createdAt,
   imageUrl,
   content,
   title,
-  modifiedAt,
 }: DiaryDataInfo) {
+  const diary = {
+    journalId,
+    createdAt,
+    imageUrl,
+    content,
+    title,
+  };
+
   const modalOpen = useLeafStore((state) => state.modalOpen);
   const setModalCategory = useLeafStore((state) => state.setModalCategory);
-  const setDiayTargetId = useLeafStore((state) => state.setDiaryTargetId);
+  const setTargetDiary = useLeafStore((state) => state.setTargetDiary);
 
   // 서버로부터 받은 줄바꿈(\n)을 <br/> 태그로 변환
   const replaceContent = content?.replace(/\n/g, '<br/>');
 
-  const startDay = new Date(createdAt as string);
+  const startDay = new Date(createdAt);
   const [month, day] = [startDay.getMonth() + 1, startDay.getDate()];
 
   const handleEditDiary = () => {
     modalOpen();
-    setDiayTargetId(diaryId);
+    setTargetDiary(diary);
     setModalCategory('edit');
   };
 
-  const handleDeleteDiary = (diaryId: number) => {
+  const handleDeleteDiary = () => {
     modalOpen();
-    setDiayTargetId(diaryId);
+    setTargetDiary(diary);
     setModalCategory('delete');
     // fetch(item~~)
   };
@@ -60,18 +68,23 @@ export default function Diary({
             <ControlButton usage="edit" handleEditDiary={handleEditDiary} />
             <ControlButton
               usage="delete"
-              handleDeleteDiary={() => handleDeleteDiary(diaryId)}
+              handleDeleteDiary={handleDeleteDiary}
             />
           </div>
           <p className="text-[0.875rem] font-bold text-brown-80 ">{title}</p>
           <div className="flex gap-3">
-            <Image
-              className="rounded-lg w-[106px] h-[81px]"
-              src={imageUrl || ''}
-              alt=""
-              width={106}
-              height={81}
-            />
+            {imageUrl ? (
+              <Image
+                className="rounded-lg w-[106px] h-[81px]"
+                src={imageUrl || ''}
+                alt=""
+                width={106}
+                height={81}
+              />
+            ) : (
+              <NoImage location="diary" />
+            )}
+
             <FormatContent
               className="max-w-[131px] font-normal text-xs"
               content={replaceContent}></FormatContent>
