@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import { useQueries } from '@tanstack/react-query';
 
-import { getDiaries, getLeaf } from '@/api/leaf';
+import { getDiariesByLeafAndUserId, getLeafByLeafId } from '@/api/leaf';
 
 import useLeafStore from '@/stores/leafStore';
 import useTestUserStore from '@/stores/testUserStore';
@@ -26,6 +26,7 @@ interface LeafProps {
   params: { leafId: string; userId: string };
 }
 
+// TODO: Leaf 날짜 부분 컴포넌트 분리 / 각 페이지 리팩토링
 export default function Leaf({ params }: LeafProps) {
   const leafId = Number(params.leafId);
   const pathUserId = Number(params.userId);
@@ -47,11 +48,11 @@ export default function Leaf({ params }: LeafProps) {
     queries: [
       {
         queryKey: ['leaf', leafId],
-        queryFn: () => getLeaf(leafId),
+        queryFn: () => getLeafByLeafId(leafId),
       },
       {
         queryKey: ['diaries', leafId],
-        queryFn: () => getDiaries(leafId, pathUserId),
+        queryFn: () => getDiariesByLeafAndUserId(leafId, pathUserId),
       },
     ],
   });

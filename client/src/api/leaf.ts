@@ -1,11 +1,13 @@
-import { InputValues } from '@/types/common';
 import axios from 'axios';
+
+import { InputValues } from '@/types/common';
+import convertToFormData from '@/utils/\bconvertToFormData';
 
 export const commonAxios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
     Authorization:
-      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhY2NvdW50SWQiOjEsImRpc3BsYXlOYW1lIjoi6rSA66as7J6QIiwicm9sZXMiOlsiQURNSU4iLCJVU0VSIl0sInVzZXJuYW1lIjoiYWRtaW5AZ21haWwuY29tIiwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNjk0MTkzOTE5LCJleHAiOjE2OTQxOTU3MTl9.urPcbMLU1rgWOnEk353hvwddm0sEiWHwtPT9cRS3Kvw',
+      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhY2NvdW50SWQiOjcsImRpc3BsYXlOYW1lIjoiYmluY2hvaSIsInJvbGVzIjpbIlVTRVIiXSwidXNlcm5hbWUiOiJiaW5jaG9pQGdtYWlsLmNvbSIsInN1YiI6ImJpbmNob2lAZ21haWwuY29tIiwiaWF0IjoxNjk0MTk3NDk1LCJleHAiOjE2OTQxOTkyOTV9.rxYuo7SzA3j-1DCUmW8eCcOanZ0L3hI5pS3n07OVc8s',
 
     // Refresh:
   },
@@ -13,7 +15,7 @@ export const commonAxios = axios.create({
 });
 
 /** 토큰을 통해 유저의 식물 카드 전체 조회 */
-export async function getLeafs(userId: number) {
+export async function getLeafsByUserId(userId: number) {
   const { data } = await commonAxios
     .get(`/leaves/account/${userId}`)
     .then((res) => res.data);
@@ -22,7 +24,7 @@ export async function getLeafs(userId: number) {
 }
 
 /** leafId를 통해 해당 식물 카드 상세 조회 */
-export async function getLeaf(leafId: number) {
+export async function getLeafByLeafId(leafId: number) {
   const { data } = await commonAxios
     .get(`/leaves/${leafId}`)
     .then((res) => res.data);
@@ -31,17 +33,7 @@ export async function getLeaf(leafId: number) {
 
 /** leaf 데이터를 입력받아 식물 카드 등록 */
 export async function addLeaf(inputs: InputValues) {
-  const formData = new FormData();
-
-  const jsonData = JSON.stringify({
-    leafName: inputs.plantName,
-    content: inputs.leafContent,
-  });
-
-  const blob = new Blob([jsonData], { type: 'application/json' });
-
-  formData.append('leafImage', inputs?.image[0]);
-  formData.append('leafPostDto', blob);
+  const formData = convertToFormData({ usage: 'addLeaf', inputs });
 
   return await commonAxios
     .post(`/leaves`, formData, {
@@ -54,7 +46,6 @@ export async function addLeaf(inputs: InputValues) {
 
 /** leafId를 통해 식물 카드 삭제 */
 export async function deleteLeaf(leafId: number) {
-  console.log(leafId);
   return await commonAxios.delete(`/leaves/${leafId}`).then((res) => res.data);
 }
 
@@ -65,26 +56,15 @@ export async function editLeaf({
   isImageUpdated,
 }: {
   inputs: InputValues;
-  leafId?: number;
+  leafId: number;
   isImageUpdated: boolean;
 }) {
-  if (!leafId) return;
-
-  const formData = new FormData();
-
-  const jsonData = JSON.stringify({
-    leafId: leafId,
-    leafName: inputs.plantName,
-    content: inputs.leafContent,
+  const formData = convertToFormData({
+    usage: 'editLeaf',
+    inputs,
+    leafId,
     isImageUpdated,
   });
-
-  if (isImageUpdated) console.log(jsonData, inputs?.image[0]);
-
-  const blob = new Blob([jsonData], { type: 'application/json' });
-
-  if (isImageUpdated) formData.append('leafImage', inputs?.image[0]);
-  formData.append('leafPatchDto', blob);
 
   return await commonAxios
     .patch(`/leaves`, formData, {
@@ -96,7 +76,10 @@ export async function editLeaf({
 }
 
 /** leafId에 해당하는 다이어리 전체 조회 */
-export async function getDiaries(leafId: number, userId: number) {
+export async function getDiariesByLeafAndUserId(
+  leafId: number,
+  userId: number,
+) {
   const { data } = await commonAxios
     .get(`/leaves/${leafId}/journals`, { params: { accountId: userId } })
     .then((res) => res.data);
@@ -115,26 +98,13 @@ export async function addDiary({
   isImageUpdated?: boolean;
   userId: number;
 }) {
-  const formData = new FormData();
-
-  const postDtoData = JSON.stringify({
-    title: inputs.title,
-    content: inputs.diaryContent,
+  const formData = convertToFormData({
+    usage: 'addDiary',
+    inputs,
     isImageUpdated,
+    leafId,
+    userId,
   });
-
-  const leafAuthorData = JSON.stringify({
-    accountId: userId,
-  });
-
-  const postDtoBlob = new Blob([postDtoData], { type: 'application/json' });
-  const leafAuthorBlob = new Blob([leafAuthorData], {
-    type: 'application/json',
-  });
-
-  if (isImageUpdated) formData.append('image', inputs.image[0]);
-  formData.append('postDto', postDtoBlob);
-  formData.append('leafAuthor', leafAuthorBlob);
 
   return await commonAxios
     .post(`/leaves/${leafId}/journals`, formData, {
@@ -158,25 +128,12 @@ export async function editDiary({
   isImageUpdated?: boolean;
 }) {
   if (!diaryId) return null;
-  const formData = new FormData();
-
-  const patchDtoData = JSON.stringify({
-    title: inputs.title,
-    content: inputs.diaryContent,
+  const formData = convertToFormData({
+    usage: 'editDiary',
+    inputs,
+    userId,
     isImageUpdated,
   });
-  const leafAuthorData = JSON.stringify({
-    accountId: userId,
-  });
-
-  const patchDtoBlob = new Blob([patchDtoData], { type: 'application/json' });
-  const leafAuthorBlob = new Blob([leafAuthorData], {
-    type: 'application/json',
-  });
-
-  if (isImageUpdated) formData.append('image', inputs.image[0]);
-  formData.append('patchDto', patchDtoBlob);
-  formData.append('leafAuthor', leafAuthorBlob);
 
   return await commonAxios
     .patch(`/leaves/journals/${diaryId}`, formData, {

@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 
 import { useQuery } from '@tanstack/react-query';
 
-import { getLeafs } from '@/api/leaf';
+import { getLeafsByUserId } from '@/api/leaf';
 
 import useLeafsStore from '@/stores/leafsStore';
 import useTestUserStore from '@/stores/testUserStore';
@@ -48,7 +48,7 @@ export default function Leafs({ params }: LeafsProps) {
   } = userId
     ? useQuery<LeafsDataInfo[] | null>({
         queryKey: ['leafs'],
-        queryFn: () => getLeafs(pathUserId),
+        queryFn: () => getLeafsByUserId(pathUserId),
       })
     : { data: null, isLoading: false, isError: false };
 

@@ -43,7 +43,8 @@ export default function LeafForm({
     mutationFn:
       mode === 'add'
         ? (inputs: InputValues) => addLeaf(inputs)
-        : (inputs: InputValues) => editLeaf({ inputs, leafId, isImageUpdated }),
+        : (inputs: InputValues) =>
+            editLeaf({ inputs, leafId: leafId as number, isImageUpdated }),
     onSuccess: () => {
       router.push(`/leafs/${userId}`);
       queryClient.invalidateQueries(['leafs']);
@@ -62,11 +63,12 @@ export default function LeafForm({
   };
 
   const cancelEdit = () => router.push(`/leafs/{userId}`);
+
   return (
     <form onSubmit={handleSubmit(submitEditLeaf)} className="w-full">
       <div className="w-full flex flex-col items-center gap-2 mb-1">
         <ImageUpload
-          required={true}
+          required={mode === 'add'}
           register={register}
           errors={errors}
           clearErrors={clearErrors}
