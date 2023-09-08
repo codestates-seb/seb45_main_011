@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -30,7 +31,6 @@ public class JournalService {
     private final JournalImageService journalImageService;
     private final LeafService leafService;
     private final JournalMapper journalMapper;
-    private final S3Uploader s3Uploader;
     private final AccountService accountService;
 
     private static final String JOURNAL_IMAGE_PROCESS_TYPE = "journal_image";
@@ -39,7 +39,9 @@ public class JournalService {
     public List<JournalDto.Response> findAllJournals(Long accountId, Long leafId) {
         accountService.isAuthIdMatching(accountId);
         Leaf leaf = leafService.findLeafEntityWithNoAuth(leafId);
-        return leaf.getJournals().stream()
+        List<Journal> journals = journalRepository.findAllByOrderByCreatedAtDesc();
+        return journals.stream()
+                .filter(journal -> Objects.equals(journal.getLeaf().getLeafId(), leaf.getLeafId()))
                 .map(journalMapper::toResponseFrom)
                 .collect(Collectors.toList());
     }

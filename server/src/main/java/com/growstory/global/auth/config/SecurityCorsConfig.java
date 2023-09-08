@@ -32,6 +32,8 @@ public class SecurityCorsConfig {
         config.addExposedHeader("ProfileImageUrl");
 
         config.addAllowedHeader("*"); //모든 header 허용
+
+        config.addAllowedMethod("OPTIONS");
         config.addAllowedMethod("GET"); //특정 메소드만 허용
         config.addAllowedMethod("POST"); //특정 메소드만 허용
         config.addAllowedMethod("DELETE"); //특정 메소드만 허용
