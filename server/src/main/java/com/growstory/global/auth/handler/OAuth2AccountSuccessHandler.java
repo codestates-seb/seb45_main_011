@@ -112,10 +112,10 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-//                .host("localhost")
-//                .port(3000)
-                .host("growstory.s3-website.ap-northeast-2.amazonaws.com")
-                .port(80) //S3는 80포트
+                .host("localhost")
+                .port(3000)
+//                .host("growstory.s3-website.ap-northeast-2.amazonaws.com")
+//                .port(80) //S3는 80포트
                 .path("/signin")
                 .queryParam("accountId", account.getAccountId())
                 .queryParams(queryParams)
