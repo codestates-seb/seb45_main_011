@@ -6,14 +6,17 @@ import useLeafStore from '@/stores/leafStore';
 
 import { DiaryDataInfo } from '@/types/data';
 import NoImage from '../common/NoImage';
+import useTestUserStore from '@/stores/testUserStore';
 
 interface FormatContentProps {
   content: string;
   className: string;
 }
 
-// 서버에서 string 타입으로 html을 받아온다고 가정하고 삽입하는 함수.
-// dangerouslySetInnerHTML은 react의 가상 DOM을 우회하는 것이라 성능 이슈도 있고 크로스 사이트 스크립팅 공격에 취약하다는데 다른 방법이 있을까요?
+interface DiaryProps extends DiaryDataInfo {
+  pathUserId: number;
+}
+
 function FormatContent({ content, className }: FormatContentProps) {
   return (
     <p className={className} dangerouslySetInnerHTML={{ __html: content }}></p>
@@ -25,7 +28,8 @@ export default function Diary({
   imageUrl,
   content,
   title,
-}: DiaryDataInfo) {
+  pathUserId,
+}: DiaryProps) {
   const diary = {
     journalId,
     createdAt,
@@ -34,6 +38,7 @@ export default function Diary({
     title,
   };
 
+  const userId = useTestUserStore((state) => state.userId);
   const modalOpen = useLeafStore((state) => state.modalOpen);
   const setModalCategory = useLeafStore((state) => state.setModalCategory);
   const setTargetDiary = useLeafStore((state) => state.setTargetDiary);
@@ -64,13 +69,16 @@ export default function Diary({
           {month + '/' + day}
         </span>
         <div className="relative grid grid-cols-1 gap-3 w-full max-w-[331px] max-h-[137px] p-4 pb-[0.9rem] bg-brown-10 border-2 border-brown-50 rounded-lg">
-          <div className="absolute right-[10px] top-[10px] flex gap-2">
-            <ControlButton usage="edit" handleEditDiary={handleEditDiary} />
-            <ControlButton
-              usage="delete"
-              handleDeleteDiary={handleDeleteDiary}
-            />
-          </div>
+          {pathUserId === userId && (
+            <div className="absolute right-[10px] top-[10px] flex gap-2">
+              <ControlButton usage="edit" handleEditDiary={handleEditDiary} />
+              <ControlButton
+                usage="delete"
+                handleDeleteDiary={handleDeleteDiary}
+              />
+            </div>
+          )}
+
           <p className="text-[0.875rem] font-bold text-brown-80 ">{title}</p>
           <div className="flex gap-3">
             {imageUrl ? (

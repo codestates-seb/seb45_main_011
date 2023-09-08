@@ -16,6 +16,8 @@ import useLeafStore from '@/stores/leafStore';
 import { getLeaf } from '@/api/LeafAPI';
 
 import { LeafDataInfo } from '@/types/data';
+import useTestUserStore from '@/stores/testUserStore';
+import { useRouter } from 'next/navigation';
 
 interface LeafProps {
   params: { leafId: string; userId: string };
@@ -23,7 +25,11 @@ interface LeafProps {
 
 export default function Leaf({ params }: LeafProps) {
   const leafId = Number(params.leafId);
-  const userId = Number(params.userId);
+  const pathUserId = Number(params.userId);
+
+  const router = useRouter();
+
+  const userId = useTestUserStore((state) => state.userId);
 
   const {
     data: leaf,
@@ -38,6 +44,7 @@ export default function Leaf({ params }: LeafProps) {
   const isModalOpen = useLeafStore((state) => state.isModalOpen);
   const targetDiary = useLeafStore((state) => state.targetDiary);
 
+  if (!userId) return router.push('/signin');
   if (isLoading) return <div>loading</div>;
   if (isError) return <div>error</div>;
   if (!leaf) return;
@@ -50,12 +57,13 @@ export default function Leaf({ params }: LeafProps) {
             <Screws />
             <LeafInfo
               userId={userId}
+              pathUserId={pathUserId}
               leafName={leaf.leafName}
               imageUrl={leaf.leafImageUrl}
               content={leaf.content}
               createdAt={leaf.createdAt}
             />
-            <LeafDiary userId={userId} leafId={leafId} />
+            <LeafDiary pathUserId={pathUserId} leafId={leafId} />
           </div>
         </div>
       </div>
@@ -63,12 +71,16 @@ export default function Leaf({ params }: LeafProps) {
         <ModalPortal>
           <Modal>
             {modalCategory === 'add' && (
-              <DiaryForm leafId={leafId} userId={userId} mode={modalCategory} />
+              <DiaryForm
+                leafId={leafId}
+                userId={pathUserId}
+                mode={modalCategory}
+              />
             )}
             {modalCategory === 'edit' && (
               <DiaryForm
                 leafId={leafId}
-                userId={userId}
+                userId={pathUserId}
                 diaryId={targetDiary?.journalId}
                 title={targetDiary?.title}
                 content={targetDiary?.content}
@@ -79,7 +91,7 @@ export default function Leaf({ params }: LeafProps) {
             {modalCategory === 'delete' && (
               <DiaryDeleteModal
                 leafId={leafId}
-                userId={userId}
+                userId={pathUserId}
                 deleteTargetId={targetDiary?.journalId}
               />
             )}

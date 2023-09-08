@@ -13,17 +13,17 @@ import { getDiaries } from '@/api/LeafAPI';
 
 interface LeafDiaryProps {
   leafId: number;
-  userId: number;
+  pathUserId: number;
 }
 
-export default function LeafDiary({ leafId, userId }: LeafDiaryProps) {
+export default function LeafDiary({ leafId, pathUserId }: LeafDiaryProps) {
   const {
     data: diaries,
     isLoading,
     isError,
   } = useQuery<DiaryDataInfo[]>({
     queryKey: ['diaries', leafId],
-    queryFn: () => getDiaries(leafId, userId),
+    queryFn: () => getDiaries(leafId, pathUserId),
   });
 
   const setLastDiaryDay = useLeafStore((state) => state.setLastDiaryDay);
@@ -45,6 +45,7 @@ export default function LeafDiary({ leafId, userId }: LeafDiaryProps) {
           imageUrl={diary.imageUrl}
           content={diary.content}
           title={diary.title}
+          pathUserId={pathUserId}
         />
       ))}
     </ul>

@@ -7,11 +7,12 @@ import CommonButton from '../common/CommonButton';
 import useLeafStore from '@/stores/leafStore';
 
 interface LeafInfoProps {
-  userId: number;
+  pathUserId: number;
   leafName: string;
   imageUrl: string;
   content: string;
   createdAt: string;
+  userId: number;
 }
 
 /** 현재 날짜(now)와 비교할 날짜(day) 사이의 일수를 계산하는 함수 */
@@ -25,6 +26,7 @@ export default function LeafInfo({
   imageUrl,
   content,
   createdAt,
+  pathUserId,
   userId,
 }: LeafInfoProps) {
   const router = useRouter();
@@ -44,7 +46,7 @@ export default function LeafInfo({
     ? getDayElapsed(now, new Date(lastDiaryDay)) + '일 전'
     : '-';
 
-  const navigateToGarden = () => router.push(`/garden/${userId}`);
+  const navigateToGarden = () => router.push(`/garden/${pathUserId}`);
 
   const AddDiary = () => {
     setModalCategory('add');
@@ -66,14 +68,17 @@ export default function LeafInfo({
       <p className="p-[10px] mb-5 max-w-[232px] w-full bg-brown-10 border-2 border-brown-50 rounded-lg text-xs font-normal text-center">
         {content}
       </p>
-      <div className="flex gap-2 mb-3">
-        <CommonButton type="button" size="sm" onClick={navigateToGarden}>
-          정원에 설치하기
-        </CommonButton>
-        <CommonButton type="button" size="sm" onClick={AddDiary}>
-          일지 작성
-        </CommonButton>
-      </div>
+      {userId === pathUserId && (
+        <div className="flex gap-2 mb-3">
+          <CommonButton type="button" size="sm" onClick={navigateToGarden}>
+            정원에 설치하기
+          </CommonButton>
+          <CommonButton type="button" size="sm" onClick={AddDiary}>
+            일지 작성
+          </CommonButton>
+        </div>
+      )}
+
       <p className="mb-2 font-bold text-sm leading-4 text-brown-70">
         키우기 시작한 지 :{' '}
         <b className="text-[1rem] font-bold leading-4 text-brown-80">
