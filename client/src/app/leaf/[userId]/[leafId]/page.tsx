@@ -1,10 +1,11 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQueries } from '@tanstack/react-query';
 
-import { getLeaf } from '@/api/leaf';
+import { getDiaries, getLeaf } from '@/api/leaf';
 
 import useLeafStore from '@/stores/leafStore';
 import useTestUserStore from '@/stores/testUserStore';
@@ -19,7 +20,7 @@ import LeafDiary from '@/components/Leaf/LeafDiary';
 import DiaryForm from '@/components/Leaf/DiaryForm';
 import { DiaryDeleteModal } from '@/components/Leaf/DiaryDeleteModal';
 
-import { LeafDataInfo } from '@/types/data';
+import { DiaryDataInfo, LeafDataInfo } from '@/types/data';
 
 interface LeafProps {
   params: { leafId: string; userId: string };
@@ -39,16 +40,29 @@ export default function Leaf({ params }: LeafProps) {
     }
   });
 
-  const {
-    data: leaf,
-    isLoading,
-    isError,
-  } = userId
-    ? useQuery<LeafDataInfo>({
+  const [leaf, setLeaf] = useState<LeafDataInfo>();
+  const [diaries, setDiaries] = useState<DiaryDataInfo[]>();
+
+  const results = useQueries({
+    queries: [
+      {
         queryKey: ['leaf', leafId],
         queryFn: () => getLeaf(leafId),
-      })
-    : { data: {} as LeafDataInfo, isLoading: false, isError: false };
+      },
+      {
+        queryKey: ['diaries', leafId],
+        queryFn: () => getDiaries(leafId, pathUserId),
+      },
+    ],
+  });
+
+  useEffect(() => {
+    setLeaf(results[0].data);
+    setDiaries(results[1].data);
+  }, [results]);
+
+  const isLoading = results.some((result) => result.isLoading);
+  const isError = results.some((result) => result.isError);
 
   const modalCategory = useLeafStore((state) => state.modalCategory);
   const isModalOpen = useLeafStore((state) => state.isModalOpen);
@@ -56,6 +70,8 @@ export default function Leaf({ params }: LeafProps) {
 
   if (isLoading) return <div>loading</div>;
   if (isError) return <div>error</div>;
+
+  if (!leaf || !diaries) return;
 
   return (
     <div className="w-full flex justify-center items-center">
@@ -71,7 +87,7 @@ export default function Leaf({ params }: LeafProps) {
               content={leaf.content}
               createdAt={leaf.createdAt}
             />
-            <LeafDiary pathUserId={pathUserId} leafId={leafId} />
+            <LeafDiary pathUserId={pathUserId} diaries={diaries} />
           </div>
         </div>
       </div>

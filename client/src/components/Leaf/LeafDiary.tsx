@@ -1,39 +1,24 @@
 import { useEffect } from 'react';
 
-import { useQuery } from '@tanstack/react-query';
+import useLeafStore from '@/stores/leafStore';
 
 import EmptyDiary from './EmptyDiary';
 import Diary from './Diary';
 
-import useLeafStore from '@/stores/leafStore';
-
 import { DiaryDataInfo } from '@/types/data';
 
-import { getDiaries } from '@/api/leaf';
-
 interface LeafDiaryProps {
-  leafId: number;
+  diaries: DiaryDataInfo[];
   pathUserId: number;
 }
 
-export default function LeafDiary({ leafId, pathUserId }: LeafDiaryProps) {
-  const {
-    data: diaries,
-    isLoading,
-    isError,
-  } = useQuery<DiaryDataInfo[]>({
-    queryKey: ['diaries', leafId],
-    queryFn: () => getDiaries(leafId, pathUserId),
-  });
-
+export default function LeafDiary({ diaries, pathUserId }: LeafDiaryProps) {
   const setLastDiaryDay = useLeafStore((state) => state.setLastDiaryDay);
 
   useEffect(() => {
     if (diaries && diaries.length !== 0) setLastDiaryDay(diaries[0].createdAt);
   }, [diaries]);
 
-  if (isLoading) return <div>loading</div>;
-  if (isError) return <div>error</div>;
   if (!diaries?.length) return <EmptyDiary />;
   return (
     <ul className="w-full flex flex-col items-center gap-4">
