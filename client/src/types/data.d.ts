@@ -56,27 +56,25 @@ export interface PlantLocation {
   };
 }
 
-export interface LeafDataInfo {
-  leafId: number;
-  leafName: string;
-  leafImageUrl: string;
-  content?: string;
-  createdAt?: string;
-  diary?: DiaryDataInfo[] | null;
-}
-
 export interface LeafsDataInfo {
   leafId: number;
   leafName: string;
   createAt: string;
-  imageUrl: string;
+  leafImageUrl: string;
 }
 
 export interface DiaryDataInfo {
-  diaryId: number;
-  createdAt: string;
-  modifiedAt?: string;
-  imageUrl?: string;
-  content: string;
+  journalId: number;
   title: string;
+  content: string;
+  imageUrl?: string;
+  createdAt: string;
+}
+
+export interface LeafDataInfo {
+  leafId: number;
+  leafName: string;
+  leafImageUrl: string;
+  content: string;
+  createdAt: string;
 }
