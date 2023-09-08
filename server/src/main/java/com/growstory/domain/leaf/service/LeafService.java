@@ -115,7 +115,7 @@ public class LeafService {
         findLeaf.getJournals().clear();
 
         // plantobj 연결 해제
-        findLeaf.removePlantObj();
+        findLeaf.getPlantObj().updateLeaf(null);
 
         findAccount.getLeaves().remove(findLeaf);
     }
