@@ -2,7 +2,7 @@ import { InputValues } from '@/types/common';
 import axios from 'axios';
 
 export const commonAxios = axios.create({
-  baseURL: '',
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
     Authorization: '',
 
@@ -12,8 +12,10 @@ export const commonAxios = axios.create({
 });
 
 /** 토큰을 통해 유저의 식물 카드 전체 조회 */
-export async function getLeafs() {
-  const { data } = await commonAxios.get('/leaves').then((res) => res.data);
+export async function getLeafs(userId: number) {
+  const { data } = await commonAxios
+    .get(`/leaves/account/${userId}`)
+    .then((res) => res.data);
 
   return data;
 }

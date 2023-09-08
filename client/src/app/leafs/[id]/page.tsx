@@ -28,7 +28,7 @@ export default function Leafs({ params }: LeafsProps) {
     isError,
   } = useQuery<LeafsDataInfo[] | null>({
     queryKey: ['leafs'],
-    queryFn: getLeafs,
+    queryFn: () => getLeafs(userId),
   });
 
   // URL path userId
