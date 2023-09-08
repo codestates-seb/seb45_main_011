@@ -13,7 +13,7 @@ import TextArea from './TextArea';
 import { InputValues } from '@/types/common';
 import { LeafDataInfo } from '@/types/data';
 
-import { addLeaf, editLeaf } from '@/api/LeafAPI';
+import { addLeaf, editLeaf } from '@/api/leaf';
 
 interface LeafFormProps {
   leaf?: LeafDataInfo;

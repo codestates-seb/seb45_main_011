@@ -4,7 +4,7 @@ import CommonButton from '../common/CommonButton';
 
 import useLeafsStore from '@/stores/leafsStore';
 
-import { deleteLeaf } from '@/api/LeafAPI';
+import { deleteLeaf } from '@/api/leaf';
 
 export function LeafDeleteModal() {
   const queryClient = useQueryClient();

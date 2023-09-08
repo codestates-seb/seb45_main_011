@@ -6,7 +6,7 @@ import PageTitle from '@/components/common/PageTitle';
 import Screws from '@/components/common/Screws';
 import LeafForm from '@/components/common/LeafForm';
 
-import { getLeaf } from '@/api/LeafAPI';
+import { getLeaf } from '@/api/leaf';
 
 import { LeafDataInfo } from '@/types/data';
 

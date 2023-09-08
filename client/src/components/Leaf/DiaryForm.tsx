@@ -11,7 +11,7 @@ import CommonButton from '../common/CommonButton';
 
 import useLeafStore from '@/stores/leafStore';
 
-import { addDiary, editDiary } from '@/api/LeafAPI';
+import { addDiary, editDiary } from '@/api/leaf';
 
 import { InputValues } from '@/types/common';
 

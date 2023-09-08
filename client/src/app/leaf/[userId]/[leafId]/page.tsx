@@ -13,7 +13,7 @@ import Modal from '@/components/common/Modal';
 
 import useLeafStore from '@/stores/leafStore';
 
-import { getLeaf } from '@/api/LeafAPI';
+import { getLeaf } from '@/api/leaf';
 
 import { LeafDataInfo } from '@/types/data';
 
