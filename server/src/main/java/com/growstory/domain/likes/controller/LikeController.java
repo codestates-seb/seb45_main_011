@@ -26,12 +26,12 @@ public class LikeController {
         return ResponseEntity.noContent().build();
     }
 
-//    @PostMapping("/comments/{comment-id}") // 좋아요를 받을 댓글
-//    public ResponseEntity<HttpStatus> postCommentLike(@PathVariable("comment-id") @Positive Long commentId) {
-//        likeService.pressCommentLike(commentId);
-//
-//        return ResponseEntity.noContent().build();
-//    }
+    @PostMapping("/comments/{comment-id}") // 좋아요를 받을 댓글
+    public ResponseEntity<HttpStatus> postCommentLike(@PathVariable("comment-id") @Positive Long commentId) {
+        likeService.pressCommentLike(commentId);
+
+        return ResponseEntity.noContent().build();
+    }
 
     @PostMapping("/gardens/{account-id}") // 좋아요를 받을 계정
     public ResponseEntity<HttpStatus> postAccountLike(@PathVariable("account-id") @Positive Long ownerAccountId) {
