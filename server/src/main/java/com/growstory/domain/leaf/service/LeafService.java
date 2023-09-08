@@ -1,6 +1,7 @@
 package com.growstory.domain.leaf.service;
 
 import com.growstory.domain.account.entity.Account;
+import com.growstory.domain.account.service.AccountService;
 import com.growstory.domain.images.service.JournalImageService;
 import com.growstory.domain.leaf.dto.LeafDto;
 import com.growstory.domain.leaf.entity.Leaf;
@@ -27,6 +28,7 @@ public class LeafService {
     private static final String JOURNAL_IMAGE_PROCESS_TYPE = "journal_image";
 
     private final LeafRepository leafRepository;
+    private final AccountService accountService;
     private final S3Uploader s3Uploader;
     private final AuthUserUtils authUserUtils;
     private final JournalImageService journalImageService;
@@ -74,8 +76,8 @@ public class LeafService {
                 .build());
     }
 
-    public List<LeafDto.Response> findLeaves() {
-        Account findAccount = authUserUtils.getAuthUser();
+    public List<LeafDto.Response> findLeaves(Long accountId) {
+        Account findAccount = accountService.findVerifiedAccount(accountId);
 
         return leafRepository.findByAccount(findAccount).stream()
                 .map(this::getLeafResponseDto)
@@ -115,7 +117,7 @@ public class LeafService {
         findLeaf.getJournals().clear();
 
         // plantobj 연결 해제
-        findLeaf.removePlantObj();
+        findLeaf.getPlantObj().updateLeaf(null);
 
         findAccount.getLeaves().remove(findLeaf);
     }
