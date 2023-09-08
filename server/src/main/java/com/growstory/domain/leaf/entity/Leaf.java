@@ -49,4 +49,8 @@ public class Leaf extends BaseTimeEntity {
             plantObj.updateLeaf(this);
         }
     }
+
+    public void removePlantObj() {
+        this.plantObj = null;
+    }
 }

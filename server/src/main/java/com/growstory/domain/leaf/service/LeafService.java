@@ -1,6 +1,7 @@
 package com.growstory.domain.leaf.service;
 
 import com.growstory.domain.account.entity.Account;
+import com.growstory.domain.images.service.JournalImageService;
 import com.growstory.domain.leaf.dto.LeafDto;
 import com.growstory.domain.leaf.entity.Leaf;
 import com.growstory.domain.leaf.repository.LeafRepository;
@@ -23,10 +24,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class LeafService {
     private static final String LEAF_IMAGE_PROCESS_TYPE = "leaves";
+    private static final String JOURNAL_IMAGE_PROCESS_TYPE = "journal_image";
 
     private final LeafRepository leafRepository;
     private final S3Uploader s3Uploader;
     private final AuthUserUtils authUserUtils;
+    private final JournalImageService journalImageService;
 
     public LeafDto.Response createLeaf(LeafDto.Post leafPostDto, MultipartFile leafImage) {
         Account findAccount = authUserUtils.getAuthUser();
@@ -103,9 +106,16 @@ public class LeafService {
         Optional.ofNullable(findLeaf.getLeafImageUrl()).ifPresent(leafImageUrl ->
                 s3Uploader.deleteImageFromS3(leafImageUrl, LEAF_IMAGE_PROCESS_TYPE));
 
-        findAccount.getLeaves().remove(findLeaf);
-        // plantobj 연결 해제
         // 저널 삭제
+        findLeaf.getJournals().stream()
+                .filter(journal -> journal.getJournalImage() != null)
+                .forEach(journal -> journalImageService.deleteJournalImageWithS3(journal.getJournalImage(), JOURNAL_IMAGE_PROCESS_TYPE));
+        findLeaf.getJournals().clear();
+
+        // plantobj 연결 해제
+        findLeaf.removePlantObj();
+
+        findAccount.getLeaves().remove(findLeaf);
     }
 
     private Leaf findVerifiedLeaf(Long accountId, Long leafId) {

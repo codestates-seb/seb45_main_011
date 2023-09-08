@@ -61,7 +61,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
             pointRepository.save(point);
         }
 
-        redirect(request, response, savedAccount, authorities);
+        redirect(request, response, optionalAccount.orElse(savedAccount), authorities);
     }
 
     private void redirect(HttpServletRequest request, HttpServletResponse response,
