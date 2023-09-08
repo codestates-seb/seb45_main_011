@@ -46,16 +46,16 @@ public class LeafController {
     }
 
     // 사용자의 식물카드 전체 조회
-//    @GetMapping("/account/{account-id}")
-//    public ResponseEntity<SingleResponseDto<List<LeafDto.Response>>> getLeaves(@Positive @PathVariable("account-id") Long accountId) {
-//        List<LeafDto.Response> leafResponseDtos = leafService.findLeaves();
-//
-//        return ResponseEntity.ok(SingleResponseDto.<List<LeafDto.Response>>builder()
-//                .status(HttpStatusCode.OK.getStatusCode())
-//                .message(HttpStatusCode.OK.getMessage())
-//                .data(leafResponseDtos)
-//                .build());
-//    }
+    @GetMapping("/account/{account-id}")
+    public ResponseEntity<SingleResponseDto<List<LeafDto.Response>>> getLeaves(@Positive @PathVariable("account-id") Long accountId) {
+        List<LeafDto.Response> leafResponseDtos = leafService.findLeaves(accountId);
+
+        return ResponseEntity.ok(SingleResponseDto.<List<LeafDto.Response>>builder()
+                .status(HttpStatusCode.OK.getStatusCode())
+                .message(HttpStatusCode.OK.getMessage())
+                .data(leafResponseDtos)
+                .build());
+    }
 
 
     // 식물카드 단일 조회
