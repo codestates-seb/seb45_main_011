@@ -5,7 +5,7 @@ export const commonAxios = axios.create({
   baseURL: 'http://13.209.96.203/v1',
   headers: {
     Authorization:
-      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhY2NvdW50SWQiOjEsImRpc3BsYXlOYW1lIjoi6rSA66as7J6QIiwicm9sZXMiOlsiVVNFUiIsIkFETUlOIl0sInVzZXJuYW1lIjoiYWRtaW5AZ21haWwuY29tIiwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNjk0MTM1MjgzLCJleHAiOjE2OTQxMzcwODN9.XaiIYrr-p_qnOK5W99elxZIYQEfhPnGm3NvuSmuRPOM',
+      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhY2NvdW50SWQiOjEsImRpc3BsYXlOYW1lIjoi6rSA66as7J6QIiwicm9sZXMiOlsiVVNFUiIsIkFETUlOIl0sInVzZXJuYW1lIjoiYWRtaW5AZ21haWwuY29tIiwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNjk0MTM5Nzc3LCJleHAiOjE2OTQxNDE1Nzd9.fAUbG-1Ib3MkR_GBQY0EOdtN9WlKCWPl6s7CtgK_EvM',
     // Refresh:
     //   'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTQwMDk3NzIsImV4cCI6MTY5NDAzNDk3Mn0.TN0Of3xvz5vY-QI7xRkBiCVU3dMqrvCJfnfjFK_7jLQ',
   },
@@ -93,6 +93,14 @@ export async function editLeaf({
     .then((res) => res.data);
 }
 
+/** leafId에 해당하는 다이어리 전체 조회 */
+export async function getDiaries(leafId: number, userId: number) {
+  const { data } = await commonAxios
+    .get(`/leaves/${leafId}/journals`, { params: { accountId: userId } })
+    .then((res) => res.data);
+  return data;
+}
+
 /** leafId를 통해 해당하는 식물 카드에 일지 등록 */
 export async function addDiary({
   leafId,
@@ -133,14 +141,6 @@ export async function addDiary({
       },
     })
     .then((res) => res.data);
-}
-
-/** leafId에 해당하는 다이어리 전체 조회 */
-export async function getDiaries(leafId: number, userId: number) {
-  const { data } = await commonAxios
-    .get(`/leaves/${leafId}/journals`, { params: { accountId: userId } })
-    .then((res) => res.data);
-  return data;
 }
 
 /** diary를 입력받아 journalId에 해당하는 journal(diary) 수정 */
