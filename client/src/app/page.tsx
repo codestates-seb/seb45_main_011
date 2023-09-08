@@ -1,4 +1,4 @@
-import Header from "@/components/common/Header/Header";
+import Header from '@/components/common/Header/Header';
 
 export default function Home() {
   return (
@@ -6,5 +6,5 @@ export default function Home() {
       <Header />
       <main>Grow Stroy</main>
     </>
-    );
+  );
 }

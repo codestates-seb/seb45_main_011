@@ -10,6 +10,7 @@ interface CommonButtonProps
   type: 'button' | 'submit';
   size: 'sm' | 'md' | 'lg' | 'fix';
   children: string;
+  disabled?: boolean;
 }
 
 export default function CommonButton({
@@ -17,6 +18,7 @@ export default function CommonButton({
   size,
   children,
   className,
+  disabled,
   ...props
 }: CommonButtonProps) {
   const handleClick = Object.values(props)[0];
@@ -28,7 +30,8 @@ export default function CommonButton({
       className={twMerge(
         `font-bold border-brown-70 rounded-lg text-brown-10 bg-contain bg-center bg-repeat bg-[url('/assets/img/bg_wood_dark.png')] shadow-outer/down ${BUTTON_STYLE[size]}`,
         className,
-      )}>
+      )}
+      disabled={disabled}>
       {children}
     </button>
   );

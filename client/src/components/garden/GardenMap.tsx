@@ -1,78 +1,30 @@
 'use client';
 
-import useGardenStore, { Reference } from '@/stores/gardenStore';
-import useGardenModalStore from '@/stores/gardenModalStore';
+import useGardenStore from '@/stores/gardenStore';
+
+import useGardenMap from '@/hooks/useGardenMap';
 
 import CommonButton from '@/components/common/CommonButton';
-import EditModeInfo from './EditModeInfo';
-import MapController from './MapController';
-import GardenSquares from './GardenSquares';
-import InstalledPlants from './InstalledPlants';
-import TrackedPlant from './TrackedPlant';
-
-import useMouseTrack from '@/hooks/useMouseTrack';
-import usePlants from '@/hooks/usePlants';
-import useSquares from '@/hooks/useSquares';
-
-import { getInitialMapInfo } from '@/utils/getInitialMapInfo';
+import {
+  EditModeInfo,
+  MapController,
+  GardenSquares,
+  InstalledPlants,
+  TrackedPlant,
+} from '@/components/garden';
 
 export default function GardenMap() {
-  const gardenStore = useGardenStore();
+  const { isEditMode, moveTarget } = useGardenStore();
   const {
-    isEditMode,
-    plants,
-    moveTarget,
-    reference,
-    changeEditMode,
-    changeSidebarState,
-    setInventory,
-    setPlants,
-    unobserve,
-  } = useGardenStore();
-  const gardenModalStore = useGardenModalStore();
-
-  const { targetX, targetY, setMousePosition } = useMouseTrack();
-
-  const { uninstallableLocations, installedPlants } = getInitialMapInfo(plants);
-
-  const handleGarden = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (
-      !(
-        event.target instanceof HTMLImageElement ||
-        event.target instanceof HTMLDivElement
-      )
-    )
-      return;
-
-    if (event.target instanceof HTMLImageElement)
-      usePlants(event, gardenStore, gardenModalStore);
-
-    if (event.target instanceof HTMLDivElement)
-      useSquares(event, uninstallableLocations, gardenStore);
-  };
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!moveTarget) return;
-
-    setMousePosition({ x: e.clientX, y: e.clientY });
-  };
-
-  const handleSave = () => {
-    // fetch 가능성
-    // 바뀐 전체 정보 응답으로!
-    setPlants(plants);
-
-    changeEditMode(false);
-  };
-
-  const handleCancel = () => {
-    setInventory((reference as Reference).inventory);
-    setPlants((reference as Reference).plants);
-
-    changeSidebarState('inventory');
-    changeEditMode(false);
-    unobserve();
-  };
+    uninstallableLocations,
+    installedPlants,
+    targetX,
+    targetY,
+    handleGarden,
+    handleMouseMove,
+    handleSave,
+    handleCancel,
+  } = useGardenMap();
 
   return (
     <main className="min-w-[320px] border-garden rounded-lg rounded-tl-none bg-scroll shadow-outer/down box-content overflow-auto scrollbar-hidden">

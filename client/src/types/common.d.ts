@@ -10,6 +10,7 @@ export type addPrefixToHandler<T, P extends string> = {
 
 export type PlantInfo = {
   productId: number;
+  plantObjId?: number;
   name: string;
   korName: string;
   imageUrlTable: {
@@ -17,6 +18,7 @@ export type PlantInfo = {
     lg: string;
   };
   price: number;
+  isPurchasable?: boolean;
 };
 
 export type InputValues = {
@@ -34,24 +36,22 @@ export type InputValues = {
   isBoard: boolean;
 };
 
-export type SigninFormValue = {
-  email?: string;
-  password?: string;
-};
-
-export type SignupFormValue = {
+export type SignFormValue = {
   email: string;
   nickname: string;
   password: string;
-  password_check: string;
-  code?: string;
+  passwordCheck: string;
+  code: string;
+  onLogin: () => void;
 };
+
+export type SignModal = 'email' | 'password' | null;
 
 export type cookieOption = {
   domain: string;
   path: string;
-  expires?: Date;
-  secure?: boolean;
-  httpOnly: boolean;
-  samSite?: string;
+  expires: Date;
+  // secure: boolean;
+  // httpOnly: boolean;
+  // samSite: string;
 };

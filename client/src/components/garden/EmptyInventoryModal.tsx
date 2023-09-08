@@ -9,7 +9,7 @@ import CommonButton from '@/components/common/CommonButton';
 export default function EmptyInventoryModal() {
   const { close } = useGardenModalStore();
 
-  const handleClose = () => close;
+  const handleClose = () => close();
 
   return (
     <ModalPortal>
