@@ -109,7 +109,9 @@ public class LeafService {
         // 저널 삭제
         findLeaf.getJournals().stream()
                 .filter(journal -> journal.getJournalImage() != null)
-                .forEach(journal -> journalImageService.deleteJournalImageWithS3(journal.getJournalImage(), JOURNAL_IMAGE_PROCESS_TYPE));
+                .forEach(journal -> {
+                    journalImageService.deleteJournalImageWithS3(journal.getJournalImage(), JOURNAL_IMAGE_PROCESS_TYPE);
+                });
         findLeaf.getJournals().clear();
 
         // plantobj 연결 해제
