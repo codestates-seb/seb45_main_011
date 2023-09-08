@@ -87,14 +87,9 @@ export default function Leaf({
           />
         </div>
       )}
-
-      <Image
-        src={imageUrl || ''}
-        alt={name}
-        width={200}
-        height={160}
-        className="object-cover w-[200px] h-[160px] rounded-xl border-2 border-brown-50 shadow-outer/down"
-      />
+      <div className="relative w-[200px] h-[160px] rounded-xl border-2 border-brown-50 shadow-outer/down overflow-hidden">
+        <Image src={imageUrl || ''} alt={name} fill className="object-cover" />
+      </div>
 
       <LeafName name={name} />
     </div>

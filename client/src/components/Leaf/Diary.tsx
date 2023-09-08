@@ -74,13 +74,15 @@ export default function Diary({
           <p className="text-[0.875rem] font-bold text-brown-80 ">{title}</p>
           <div className="flex gap-3">
             {imageUrl ? (
-              <Image
-                className="rounded-lg w-[106px] h-[81px]"
-                src={imageUrl || ''}
-                alt=""
-                width={106}
-                height={81}
-              />
+              <div className="relative rounded-lg w-[106px] h-[81px] overflow-hidden">
+                {' '}
+                <Image
+                  src={imageUrl || ''}
+                  alt=""
+                  fill
+                  className="object-cover"
+                />
+              </div>
             ) : (
               <NoImage location="diary" />
             )}
