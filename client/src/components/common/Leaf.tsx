@@ -7,10 +7,11 @@ import ControlButton from './ControlButton';
 import LeafName from '../LeafName';
 
 import useLeafsStore from '@/stores/leafsStore';
+import useTestUserStore from '@/stores/testUserStore';
 
 interface LeafProps {
   location: 'garden' | 'leaf';
-  userId?: number;
+  pathUserId?: number;
   imageUrl: string;
   name: string;
   leafId: number;
@@ -22,13 +23,14 @@ export default function Leaf({
   location,
   name,
   imageUrl,
-  userId,
+  pathUserId,
   leafId,
   selectedLeafId,
   onClick,
 }: LeafProps) {
   const router = useRouter();
 
+  const userId = useTestUserStore((state) => state.userId);
   const modalOpen = useLeafsStore((state) => state.modalOpen);
   const setDeleteTargetId = useLeafsStore((state) => state.setDeleteTargetId);
 
@@ -39,14 +41,14 @@ export default function Leaf({
     }
 
     if (location === 'leaf') {
-      router.push(`/leaf/${userId}/${leafId}`);
+      router.push(`/leaf/${pathUserId}/${leafId}`);
       return null;
     }
   };
 
   const handleEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    router.push(`/leaf/edit/${userId}/${leafId}`);
+    router.push(`/leaf/edit/${pathUserId}/${leafId}`);
   };
 
   const handleDelete = (
@@ -78,8 +80,8 @@ export default function Leaf({
         </div>
       ) : null}
 
-      {location === 'leaf' && (
-        <div className="flex h-full gap-2 absolute right-2.5 top-2.5">
+      {location === 'leaf' && pathUserId === userId && (
+        <div className="flex h-full gap-2 absolute right-2.5 top-2.5 z-10">
           <ControlButton usage="edit" handleEdit={handleEdit} />
           <ControlButton
             usage="delete"

@@ -12,6 +12,7 @@ import Screws from '@/components/common/Screws';
 import ModalPortal from '@/components/common/ModalPortal';
 
 import useLeafsStore from '@/stores/leafsStore';
+import useTestUserStore from '@/stores/testUserStore';
 
 import { getLeafs } from '@/api/LeafAPI';
 
@@ -28,25 +29,35 @@ export default function Leafs({ params }: LeafsProps) {
     isError,
   } = useQuery<LeafsDataInfo[] | null>({
     queryKey: ['leafs'],
-    queryFn: () => getLeafs(userId),
+    queryFn: () => getLeafs(pathUserId),
   });
 
   // URL path userId
-  const userId = Number(params.id);
+  const pathUserId = Number(params.id);
+
+  const userId = useTestUserStore((state) => state.userId);
+  const userName = useTestUserStore((state) => state.userName);
 
   const isModalOpen = useLeafsStore((state) => state.isModalOpen);
 
   if (isLoading) return <div>loading</div>;
   if (isError) return <div>error</div>;
 
+  // TODO 클릭한 유저 정보 받아와야 한다. (클릭한 유저이름을 상태로 저장? 아니면 서버로 요청?)
   return (
     <div className="flex justify-center items-center">
       <div className="relative w-full max-w-[720px] h-[528px] border-gradient">
         <Screws />
         <div className="pt-5 pb-4 pl-6 pr-5 flex flex-col gap-5">
-          <PageTitle text="내 식물 카드" />
+          <PageTitle
+            text={
+              pathUserId === userId
+                ? '내 식물 카드'
+                : `${userName}님의 식물 카드`
+            }
+          />
           <div className="pr-3 w-full h-[404px] flex flex-wrap  gap-4 overflow-y-scroll scrollbar">
-            <AddLeafButton userId={userId} />
+            {userId === pathUserId && <AddLeafButton userId={userId} />}
             {leafs?.map((leaf) => (
               <Leaf
                 key={leaf.leafId}
@@ -54,7 +65,7 @@ export default function Leafs({ params }: LeafsProps) {
                 name={leaf.leafName}
                 imageUrl={leaf.leafImageUrl}
                 leafId={leaf.leafId}
-                userId={userId}
+                pathUserId={pathUserId}
               />
             ))}
           </div>
