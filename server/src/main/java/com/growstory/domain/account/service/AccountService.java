@@ -105,6 +105,10 @@ public class AccountService {
                 .build();
     }
 
+//    public AccountDto.Response getAccounts() {
+//
+//    }
+
     public void deleteAccount() {
         Account findAccount = authUserUtils.getAuthUser();
 

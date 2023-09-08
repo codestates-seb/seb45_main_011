@@ -70,6 +70,18 @@ public class AccountController {
         );
     }
 
+    // 유저 전체 조회
+//    @GetMapping("/all")
+//    public ResponseEntity getAccounts() {
+//        AccountDto.Response responseDto = accountService.getAccounts();
+
+//        return ResponseEntity.ok(SingleResponseDto.builder()
+//                .status(HttpStatusCode.OK.getStatusCode())
+//                .message(HttpStatusCode.OK.getMessage())
+//                .data(responseDto)
+//                .build()
+//        );
+
     // 회원 탈퇴
     @DeleteMapping
     public ResponseEntity<HttpStatus> deleteAccount() {
