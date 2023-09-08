@@ -44,14 +44,3 @@ export type SignFormValue = {
   code: string;
   onLogin: () => void;
 };
-
-export type SignModal = 'email' | 'password' | null;
-
-export type cookieOption = {
-  domain: string;
-  path: string;
-  expires: Date;
-  // secure: boolean;
-  // httpOnly: boolean;
-  // samSite: string;
-};

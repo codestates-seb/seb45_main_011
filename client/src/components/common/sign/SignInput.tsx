@@ -3,6 +3,7 @@
 import { UseFormRegister, FieldErrors } from 'react-hook-form';
 
 import { SIGNIN_REQUIRE, SIGNIN_VAILDATION } from '@/constants/contents';
+
 import { SignFormValue } from '@/types/common';
 
 interface SignInputProps {
@@ -61,9 +62,9 @@ export default function SignInput({
         autoComplete="off"
         className={`min-w-[300px] pl-9 py-[10px] font-normal text-[12px] border-2 border-brown-70 rounded-lg bg-[center_left_12px] bg-no-repeat ${SIGN_INPUT_BG[type]} leading-[12px] outline-none shadow-outer/down`}
         placeholder={SIGNIN_REQUIRE[type]}
-        {...register(type, registerFormat?.validation)}
         disabled={disabled}
         required
+        {...register(type, registerFormat?.validation)}
       />
       {errors[type] && (
         <div className="text-[10px] text-red-50 leading-3 ml-10 mt-2">

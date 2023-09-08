@@ -3,7 +3,6 @@ import localFont from 'next/font/local';
 import Link from 'next/link';
 
 import '@/styles/globals.css';
-
 import ReactQueryProvider from '@/components/common/ReactQueryProvider';
 
 const galmuri = localFont({

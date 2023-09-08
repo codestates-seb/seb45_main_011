@@ -1,13 +1,9 @@
 'use client';
 
-import {
-  UseFormRegister,
-  FieldErrors,
-  UseFormWatch,
-  RegisterOptions,
-} from 'react-hook-form';
+import { UseFormRegister, FieldErrors, UseFormWatch } from 'react-hook-form';
 
 import { SIGNIN_REQUIRE, SIGNIN_VAILDATION } from '@/constants/contents';
+
 import { SignFormValue } from '@/types/common';
 
 interface SignPasswordInputProps {
@@ -64,10 +60,9 @@ export default function SignPasswordInput({
         type="password"
         className={`min-w-[300px] pl-9 py-[10px] font-normal text-[12px] border-2 border-brown-70 rounded-lg bg-[center_left_12px] bg-no-repeat ${SIGN_INPUT_BG[tag]} leading-[12px] outline-none shadow-outer/down`}
         placeholder={SIGNIN_REQUIRE[tag]}
-        // html required 사용 권장!
+        disabled={disabled}
         required
         {...register(tag, registerFormat?.validation)}
-        disabled={disabled}
       />
       {errors[tag] && (
         <div className="text-[10px] text-red-50 leading-3 ml-10 my-2">

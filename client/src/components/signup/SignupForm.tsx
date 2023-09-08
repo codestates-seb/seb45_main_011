@@ -1,9 +1,8 @@
 'use client';
 
-import { SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { SignFormValue } from '@/types/common';
 import useSignModalStore from '@/stores/signModalStore';
 import useSignStore from '@/stores/signStore';
 
@@ -11,14 +10,11 @@ import SignInput from '../common/sign/SignInput';
 import CommonButton from '../common/CommonButton';
 import SignPasswordInput from '../common/sign/SignPasswordInput';
 
+import { SignFormValue } from '@/types/common';
+
 import { postCodeByEmail, postCreateUser } from '@/api/user';
 
 export default function SignupForm() {
-  const { changeState, currentState } = useSignModalStore();
-  const { setCode, code, getSigninForm, getSignupForm } = useSignStore();
-  const successedCode = currentState === 'Successed';
-
-  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -26,6 +22,12 @@ export default function SignupForm() {
     watch,
     reset,
   } = useForm<SignFormValue>();
+  const router = useRouter();
+
+  const { changeState, currentState } = useSignModalStore();
+  const { setCode, code, getSigninForm, getSignupForm } = useSignStore();
+
+  const successedCode = currentState === 'Successed';
 
   const handleValiateEmail = () => {
     changeState('AuthEmailModal');
