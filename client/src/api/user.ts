@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-// const url = process.env.NEXT_APP_API_URL;
+const url = process.env.NEXT_PUBLIC_API_URL;
+const googleOauth = process.env.NEXT_PUBLIC_GOOGLE_OAUTH_URL;
 
 export const postUserInfo = async (email: string, password: string) => {
   const response = await axios.post(`${url}/v1/accounts/authentication`, {
@@ -41,8 +42,16 @@ export const postPasswordByEmail = async (email: string) => {
   return response;
 };
 
-export const getUserInfoByGoogle = async () => {
-  const response = await axios.post(`${url}/oauth2/authorization/google`);
+export const getUsersEmail = async () => {
+  try {
+    const response = await axios.get(`${url}/v1/accounts/all`);
 
-  return response;
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const fetchLoginToGoogle = () => {
+  window.location.href = `${googleOauth}`;
 };

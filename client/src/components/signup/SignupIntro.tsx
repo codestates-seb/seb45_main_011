@@ -1,9 +1,10 @@
+import useSignStore from '@/stores/signStore';
+
 import Logo from '@/components/common/Logo';
 import Screws from '@/components/common/Screws';
+import SignupForm from './SignupForm';
 
 import SignLink from '../common/sign/SignLink';
-import SignupForm from './SignupForm';
-import useSignStore from '@/stores/signStore';
 import CommonButton from '../common/CommonButton';
 
 export default function SignupIntro() {

@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
+
 import { HEADER_LINK_CONTENT } from '@/constants/contents';
+
 interface HeaderLinkProps {
-  // constants 폴더에 url 추가하면 변경할 것
   location: string;
   content: 'activity' | 'auth';
   title: 'garden' | 'community' | 'leafCard' | 'signin' | 'logout';
