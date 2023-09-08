@@ -1,20 +1,17 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import PageTitle from './common/PageTitle';
-import CommonButton from './common/CommonButton';
+import PageTitle from '../common/PageTitle';
+import CommonButton from '../common/CommonButton';
 
 import useLeafStore from '@/stores/leafStore';
 
-import { DiaryDataInfo } from '@/types/data';
-
 interface LeafInfoProps {
   userId: number;
-  leafName?: string;
-  imageUrl?: string;
-  content?: string;
-  createdAt?: string;
-  diaries?: DiaryDataInfo[] | null;
+  leafName: string;
+  imageUrl: string;
+  content: string;
+  createdAt: string;
 }
 
 /** 현재 날짜(now)와 비교할 날짜(day) 사이의 일수를 계산하는 함수 */
@@ -23,37 +20,35 @@ const getDayElapsed = (now: Date, day: Date) => {
   return Math.floor(timeDifference / (24 * 60 * 60 * 1000));
 };
 
-// 추후 식물 정보와 날짜 부분 나누는 것 고려 -> 날짜 부분이 LeafDiary 컴포넌트로 가야할듯
 export default function LeafInfo({
   leafName,
   imageUrl,
   content,
   createdAt,
-  diaries,
   userId,
 }: LeafInfoProps) {
   const router = useRouter();
 
   const setModalCategory = useLeafStore((state) => state.setModalCategory);
   const modalOpen = useLeafStore((state) => state.modalOpen);
+  const lastDiaryDay = useLeafStore((state) => state.lastDiaryDay);
 
-  const startDay = new Date(createdAt as string);
+  const startDay = new Date(createdAt);
   const now = new Date();
 
   /** 식물 카드를 등록한 날로부터 경과한 일수 */
   const daysSinceStart = getDayElapsed(now, startDay);
 
-  /** 최근 일지를 작성한 날로부터 경과한 일수 (다이어리가 없다면 0)*/
-  const recentManaged = diaries
-    ? getDayElapsed(now, new Date(diaries[diaries.length - 1].createdAt)) +
-      '일 전'
-    : '0일 전';
+  /** 최근 일지를 작성한 날로부터 경과한 일수 */
+  const recentManaged = lastDiaryDay
+    ? getDayElapsed(now, new Date(lastDiaryDay)) + '일 전'
+    : '-';
 
   const navigateToGarden = () => router.push(`/garden/${userId}`);
 
   const AddDiary = () => {
-    modalOpen();
     setModalCategory('add');
+    modalOpen();
   };
   return (
     <div className="flex flex-col items-center">
@@ -69,13 +64,10 @@ export default function LeafInfo({
         {content}
       </p>
       <div className="flex gap-2 mb-3">
-        <CommonButton
-          usage="button"
-          size="sm"
-          handleGardenClick={navigateToGarden}>
+        <CommonButton type="button" size="sm" onClick={navigateToGarden}>
           정원에 설치하기
         </CommonButton>
-        <CommonButton usage="button" size="sm" handleAddDiary={AddDiary}>
+        <CommonButton type="button" size="sm" onClick={AddDiary}>
           일지 작성
         </CommonButton>
       </div>

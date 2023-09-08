@@ -1,7 +1,9 @@
 export default function fileListToFormData(fileList: FileList) {
   const formData = new FormData();
-  const file = fileList[0];
-  formData.append('file', file);
+
+  for (let i = 0; i < fileList.length; i += 1) {
+    formData.append(`images`, fileList[i]);
+  }
 
   return formData;
 }

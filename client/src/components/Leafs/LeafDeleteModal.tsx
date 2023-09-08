@@ -1,43 +1,34 @@
-import { useRouter } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import CommonButton from './common/CommonButton';
+import CommonButton from '../common/CommonButton';
 
-import useUserStore from '@/stores/userStore';
 import useLeafsStore from '@/stores/leafsStore';
 
 import { deleteLeaf } from '@/api/LeafAPI';
 
 export function LeafDeleteModal() {
-  const router = useRouter();
   const queryClient = useQueryClient();
 
-  const userId = useUserStore((state) => state.userId);
-
-  const { mutate, isLoading, isError } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: deleteLeaf,
-    // mutate가 성공하면 리다이렉트
     onSuccess: () => {
-      router.push(`/leafs/${userId}`);
-      // 성공 후 새로운 쿼리를 다시 가져올 수 있도록 캐시 무효화
-      queryClient.invalidateQueries(['leafs']);
-    },
-    onError(error, variables, context) {
-      console.log('fetch error');
+      queryClient.invalidateQueries({ queryKey: ['leafs'] });
     },
   });
 
-  const modalClose = useLeafsStore((state) => state.modalClose);
   const deleteTargetLeafsId = useLeafsStore(
     (state) => state.deleteTargetLeafsId,
   );
+  const modalClose = useLeafsStore((state) => state.modalClose);
 
-  const handleCancel = () => {
+  const handleLeafDelete = () => {
+    if (!deleteTargetLeafsId) return;
+
+    mutate(deleteTargetLeafsId);
     modalClose();
   };
 
-  const handleDelete = () => {
-    mutate(deleteTargetLeafsId);
+  const handleCancel = () => {
     modalClose();
   };
 
@@ -51,10 +42,10 @@ export function LeafDeleteModal() {
         그래도 삭제하시겠습니까?
       </p>
       <div className="flex gap-2 justify-center">
-        <CommonButton usage="button" size="lg" handleDeleteClick={handleDelete}>
+        <CommonButton type="button" size="lg" onClick={handleLeafDelete}>
           삭제
         </CommonButton>
-        <CommonButton usage="button" size="lg" handleCancel={handleCancel}>
+        <CommonButton type="button" size="lg" onClick={handleCancel}>
           취소
         </CommonButton>
       </div>
