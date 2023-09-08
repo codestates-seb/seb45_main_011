@@ -5,6 +5,7 @@ import com.growstory.domain.images.service.JournalImageService;
 import com.growstory.domain.leaf.dto.LeafDto;
 import com.growstory.domain.leaf.entity.Leaf;
 import com.growstory.domain.leaf.repository.LeafRepository;
+import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.aws.service.S3Uploader;
 import com.growstory.global.exception.BusinessLogicException;
@@ -109,13 +110,19 @@ public class LeafService {
         // 저널 삭제
         findLeaf.getJournals().stream()
                 .filter(journal -> journal.getJournalImage() != null)
-                .forEach(journal -> journalImageService.deleteJournalImageWithS3(journal.getJournalImage(), JOURNAL_IMAGE_PROCESS_TYPE));
+                .forEach(journal -> {
+                    journalImageService.deleteJournalImageWithS3(journal.getJournalImage(), JOURNAL_IMAGE_PROCESS_TYPE);
+                    journal.updateLeaf(null);
+                });
         findLeaf.getJournals().clear();
 
         // plantobj 연결 해제
+        PlantObj findPlantObj = findLeaf.getPlantObj();
         findLeaf.removePlantObj();
+        findPlantObj.updateLeaf(null);
 
         findAccount.getLeaves().remove(findLeaf);
+        leafRepository.delete(findLeaf);
     }
 
     private Leaf findVerifiedLeaf(Long accountId, Long leafId) {
