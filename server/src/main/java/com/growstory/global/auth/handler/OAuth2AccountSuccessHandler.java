@@ -2,6 +2,8 @@ package com.growstory.global.auth.handler;
 
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.account.repository.AccountRepository;
+import com.growstory.domain.point.entity.Point;
+import com.growstory.domain.point.repository.PointRepository;
 import com.growstory.domain.point.service.PointService;
 import com.growstory.global.auth.jwt.JwtTokenizer;
 import com.growstory.global.auth.utils.CustomAuthorityUtils;
@@ -30,6 +32,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
     private final CustomAuthorityUtils authorityUtils;
     private final AccountRepository accountRepository;
     private final PointService pointService;
+    private final PointRepository pointRepository;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -41,16 +44,22 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
         String profileImageUrl = (String) oAuth2User.getAttributes().get("picture");
         List<String> authorities = authorityUtils.createRoles(email);
 
-        Account savedAccount = accountRepository.findByEmail(email)
-                .orElseGet(() -> accountRepository.save(Account.builder()
-                        .email(email)
-                        .displayName(name)
-                        .password("")
-                        .profileImageUrl(profileImageUrl)
-                        .point(pointService.createPoint(email))
-                        .roles(authorities)
-                        .build())
-                );
+        Optional<Account> optionalAccount = accountRepository.findByEmail(email);
+        Account savedAccount = null;
+        if (optionalAccount.isEmpty()) {
+            Point point = pointService.createPoint(email);
+            savedAccount = accountRepository.save(Account.builder()
+                    .email(email)
+                    .displayName(name)
+                    .password("")
+                    .profileImageUrl(profileImageUrl)
+                    .point(point)
+                    .roles(authorities)
+                    .build());
+
+            point.updateAccount(savedAccount);
+            pointRepository.save(point);
+        }
 
         redirect(request, response, savedAccount, authorities);
     }

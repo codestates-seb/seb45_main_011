@@ -7,7 +7,6 @@ import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.point.entity.Point;
 import com.growstory.domain.point.service.PointService;
 import com.growstory.domain.product.entity.Product;
-import com.growstory.global.auth.config.SecurityConfiguration;
 import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.auth.utils.CustomAuthorityUtils;
 import com.growstory.global.aws.service.S3Uploader;
@@ -100,6 +99,7 @@ public class AccountService {
 
         return AccountDto.Response.builder()
                 .accountId(findAccount.getAccountId())
+                .email(findAccount.getEmail())
                 .displayName(findAccount.getDisplayName())
                 .profileImageUrl(findAccount.getProfileImageUrl())
                 .point(findAccount.getPoint())
@@ -113,6 +113,7 @@ public class AccountService {
         return accounts.stream()
                 .map(account -> AccountDto.Response.builder()
                         .accountId(account.getAccountId())
+                        .email(account.getEmail())
                         .displayName(account.getDisplayName())
                         .profileImageUrl(account.getProfileImageUrl())
                         .point(account.getPoint())
