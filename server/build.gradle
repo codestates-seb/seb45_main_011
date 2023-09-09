@@ -49,6 +49,9 @@ dependencies {
 	//mapstruct
 	implementation 'org.mapstruct:mapstruct:1.5.2.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
+
+	// spring-security-test 모듈 추가
+	testImplementation 'org.springframework.security:spring-security-test'
 }
 
 test {
