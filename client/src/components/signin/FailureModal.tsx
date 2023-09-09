@@ -1,13 +1,14 @@
 import useSignModalStore from '@/stores/signModalStore';
+
 import CommonButton from '../common/CommonButton';
 import Modal from '../common/Modal';
 import ModalPortal from '../common/ModalPortal';
 
 export default function FailureModal() {
-  const { failure } = useSignModalStore();
+  const { changeState } = useSignModalStore();
 
   const handleEmailFailure = () => {
-    return failure('FindPasswordModal');
+    return changeState('FindPasswordModal');
   };
 
   return (

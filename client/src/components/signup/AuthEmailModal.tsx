@@ -2,28 +2,29 @@
 
 import { useForm } from 'react-hook-form';
 
-import { SignFormValue } from '@/types/common';
+import useSignModalStore from '@/stores/signModalStore';
+import useSignStore from '@/stores/signStore';
 
 import Modal from '../common/Modal';
 import ModalPortal from '../common/ModalPortal';
 import SignModalInput from '../common/sign/SignModalInput';
 import CommonButton from '../common/CommonButton';
 
-import useSignModalStore from '@/stores/signModalStore';
-import useSignStore from '@/stores/signStore';
+import { SignFormValue } from '@/types/common';
 
 export default function AuthEmailModal() {
   const { register, watch } = useForm<SignFormValue>();
 
-  const { close, changeState, toggle } = useSignModalStore();
+  const { close, changeState } = useSignModalStore();
   const { code } = useSignStore();
+
   const userCode = watch('code');
 
   const handleCodeCheck = () => {
     if (!userCode) return;
 
     if (userCode === code) {
-      return close(), changeState('Successed');
+      return changeState('Successed');
     }
 
     return changeState('Not Code');
@@ -56,7 +57,7 @@ export default function AuthEmailModal() {
             size="md"
             children="취소"
             className="w-[96px] h-[52px] text-[24px]"
-            onClose={toggle}
+            onClose={close}
           />
         </div>
       </Modal>

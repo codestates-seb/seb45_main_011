@@ -101,6 +101,10 @@
   }
 }
 
+input:disabled {
+  background-color: #ffffff;
+}
+
 html {
   line-height: 1;
 }

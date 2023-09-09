@@ -5,6 +5,7 @@ import Link from 'next/link';
 import ReactQueryProvider from './ReactQueryProvider';
 
 import '@/styles/globals.css';
+import ReactQueryProvider from '@/components/common/ReactQueryProvider';
 
 const galmuri = localFont({
   src: [

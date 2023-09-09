@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { SIGN_LINK_TO } from '@/constants/contents';
 import { DefaultProps } from '@/types/common';
 
-interface SignLinkProps extends DefaultProps {
+interface SignLinkProps {
   type: 'signin' | 'signup';
   route: '/signin' | '/signup';
   text: 'signinText' | 'signupText';

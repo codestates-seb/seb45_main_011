@@ -2,25 +2,22 @@
 
 import { useForm } from 'react-hook-form';
 
-import { SignFormValue } from '@/types/common';
+import { getUsersEmail, postPasswordByEmail } from '@/api/user';
 
-import { postPasswordByEmail } from '@/api/user';
+import useSignModalStore from '@/stores/signModalStore';
 
 import Modal from '../common/Modal';
 import ModalPortal from '../common/ModalPortal';
 import SignModalInput from '../common/sign/SignModalInput';
 import CommonButton from '../common/CommonButton';
 
-import useSignModalStore from '@/stores/signModalStore';
+import { SignFormValue } from '@/types/common';
 
 export default function FindPasswordModal() {
-  const { register, watch, handleSubmit } = useForm<SignFormValue>();
-  const { close, changeState, toggle } = useSignModalStore();
+  const { register, watch } = useForm<SignFormValue>();
+  const { close, changeState } = useSignModalStore();
 
   const userEmail = watch('email');
-
-  //TODO: 서버에서 받아온 데이터로 회원 email 조회하기
-  const developerEmail = 'shimdokite@gmail.com';
 
   const postNewPassword = async (email: string) => {
     if (!email) return;
@@ -32,12 +29,17 @@ export default function FindPasswordModal() {
     }
   };
 
-  const handleEmailCheck = (email: string) => {
+  const handleEmailCheck = async (email: string) => {
     if (!userEmail) return;
 
-    if (userEmail === developerEmail) {
+    const response = await getUsersEmail();
+    const existEmail = response?.data.data.find(
+      (current: any) => current.email === userEmail,
+    );
+
+    if (userEmail === existEmail.email) {
       postNewPassword(email);
-      return close(), changeState('SuccessedModal');
+      return changeState('SuccessedModal');
     }
 
     return changeState('FailureModal');
@@ -73,7 +75,7 @@ export default function FindPasswordModal() {
             size="md"
             children="취소"
             className="w-[96px] h-[52px] text-[24px]"
-            onClose={toggle}
+            onClose={close}
           />
         </div>
       </Modal>

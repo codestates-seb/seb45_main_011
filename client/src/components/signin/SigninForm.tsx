@@ -1,23 +1,21 @@
 'use client';
 
-import { SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { setCookie } from 'cookies-next';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { postUserInfo } from '@/api/user';
+
+import useSignModalStore from '@/stores/signModalStore';
+import useSignStore from '@/stores/signStore';
+import usePesistStore from '@/stores/persistStore';
 
 import CommonButton from '../common/CommonButton';
 import SignPasswordInput from '../common/sign/SignPasswordInput';
 import SignInput from '../common/sign/SignInput';
 
-import { SignFormValue, cookieOption } from '@/types/common';
-import useSignModalStore from '@/stores/signModalStore';
-import useSignStore from '@/stores/signStore';
+import { SignFormValue } from '@/types/common';
 
 export default function SigninForm() {
-  const { setIsLogin, getSigninForm, getSignupForm } = useSignStore();
-  const router = useRouter();
-
   const {
     register,
     handleSubmit,
@@ -25,7 +23,18 @@ export default function SigninForm() {
     watch,
     reset,
   } = useForm<SignFormValue>();
+
+  const router = useRouter();
+
   const { changeState } = useSignModalStore();
+  const { getSigninForm, getSignupForm } = useSignStore();
+  const {
+    setIsLogin,
+    setAccessToken,
+    setRefershToken,
+    setDisplayName,
+    setProfileImageUrl,
+  } = usePesistStore();
 
   const email = watch('email');
   const password = watch('password');
@@ -37,26 +46,21 @@ export default function SigninForm() {
     try {
       const response = await postUserInfo(email, password);
 
-      const cookieOption: cookieOption = {
-        //! 서버와 연동 시 domain, path는 변경해야함
-        domain: 'localhost',
-        path: '/',
-        expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-        //! httpOnly: true,
-      };
-
       const accessToken = response.headers.authorization;
       const refreshToken = response.headers.refresh;
+      const username = response.data.displayName;
+      const userProfileImage = response.data.profileImageUrl;
 
-      setCookie('accessToken', accessToken, cookieOption);
-      setCookie('refreshToken', refreshToken, cookieOption);
-
-      reset();
+      setAccessToken(accessToken);
+      setRefershToken(refreshToken);
+      setDisplayName(username);
+      setProfileImageUrl(userProfileImage);
 
       setIsLogin(true);
       getSigninForm(false);
       getSignupForm(false);
 
+      reset();
       router.push('/');
     } catch (error) {
       console.error(error);
