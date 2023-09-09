@@ -5,7 +5,6 @@ import useTestUserStore from '@/stores/testUserStore';
 
 import ControlButton from '../common/ControlButton';
 import NoImage from '../common/NoImage';
-import FormatContent from './FormatContent';
 
 import { DiaryDataInfo } from '@/types/data';
 
@@ -32,9 +31,6 @@ export default function Diary({
   const userId = useTestUserStore((state) => state.userId);
 
   const { modalOpen, setModalCategory, setTargetDiary } = useLeafStore();
-
-  // 서버로부터 받은 줄바꿈(\n)을 <br/> 태그로 변환
-  const replaceContent = content?.replace(/\n/g, '<br/>');
 
   const startDay = new Date(createdAt);
   const [month, day] = [startDay.getMonth() + 1, startDay.getDate()];
@@ -83,10 +79,11 @@ export default function Diary({
             ) : (
               <NoImage location="diary" />
             )}
-
-            <FormatContent
-              className="max-w-[131px] font-normal text-xs"
-              content={replaceContent}></FormatContent>
+            <textarea
+              readOnly
+              className="max-w-[131px] w-full h-[81px] font-normal text-xs bg-transparent resize-none overflow-y-scroll scrollbar focus:outline-none"
+              value={content}
+            />
           </div>
         </div>
       </div>

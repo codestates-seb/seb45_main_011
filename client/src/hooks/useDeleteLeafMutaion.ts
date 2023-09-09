@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { deleteLeaf } from '@/api/leaf';
 
-const useDeleteLeaf = () => {
+const useDeleteLeafMutation = () => {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
@@ -15,4 +15,4 @@ const useDeleteLeaf = () => {
   return { mutate };
 };
 
-export default useDeleteLeaf;
+export default useDeleteLeafMutation;

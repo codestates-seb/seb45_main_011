@@ -36,7 +36,7 @@ export default function EditLeaf({ params }: EditLeafProps) {
     data: leaf,
     isLoading,
     isError,
-  } = userId
+  } = userId === pathUserId
     ? useQuery<LeafDataInfo>({
         queryKey: ['leaf', leafId],
         queryFn: () => getLeafByLeafId(leafId),

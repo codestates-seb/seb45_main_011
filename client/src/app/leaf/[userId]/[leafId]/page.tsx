@@ -70,10 +70,12 @@ export default function Leaf({ params }: LeafProps) {
 
   useEffect(() => {
     if (leaf?.createdAt) setStartDay(new Date(leaf.createdAt));
+  }, [leaf]);
 
+  useEffect(() => {
     if (diaries && diaries.length !== 0)
       setLastDiaryDay(new Date(diaries[0].createdAt));
-  }, [leaf, diaries]);
+  }, [diaries]);
 
   const { modalCategory, isModalOpen, setStartDay, setLastDiaryDay } =
     useLeafStore();

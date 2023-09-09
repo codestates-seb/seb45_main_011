@@ -34,6 +34,7 @@ export default function Leafs({ params }: LeafsProps) {
 
   const router = useRouter();
 
+  // 로그인 상태가 아니라면 로그인 페이지로 이동
   useEffectOnce(() => {
     if (!userId) {
       router.push('/signin');
@@ -88,7 +89,7 @@ export default function Leafs({ params }: LeafsProps) {
       {isModalOpen && (
         <ModalPortal>
           <Modal>
-            <LeafDeleteModal />
+            <LeafDeleteModal pathUserId={pathUserId} userId={userId} />
           </Modal>
         </ModalPortal>
       )}

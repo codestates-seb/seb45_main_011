@@ -1,22 +1,29 @@
 import useLeafsStore from '@/stores/leafsStore';
 
-import useDeleteLeaf from '@/hooks/useDeleteLeaf';
+import useDeleteLeafMutation from '@/hooks/useDeleteLeafMutaion';
 
 import CommonButton from '../common/CommonButton';
 
-export function LeafDeleteModal() {
-  const { mutate } = useDeleteLeaf();
+interface LeafDeleteModalProps {
+  pathUserId: number;
+  userId: number | null;
+}
+
+export function LeafDeleteModal({ userId, pathUserId }: LeafDeleteModalProps) {
+  if (userId !== pathUserId) return null;
+
+  const { mutate } = useDeleteLeafMutation();
 
   const { deleteTargetLeafsId, modalClose } = useLeafsStore();
 
-  const handleDelete = () => {
+  const handleLeafDelete = () => {
     if (!deleteTargetLeafsId) return;
 
     mutate(deleteTargetLeafsId);
     modalClose();
   };
 
-  const handleCancel = () => {
+  const handleModalCancel = () => {
     modalClose();
   };
 
@@ -30,10 +37,10 @@ export function LeafDeleteModal() {
         그래도 삭제하시겠습니까?
       </p>
       <div className="flex gap-2 justify-center">
-        <CommonButton type="button" size="lg" onClick={handleDelete}>
+        <CommonButton type="button" size="lg" onClick={handleLeafDelete}>
           삭제
         </CommonButton>
-        <CommonButton type="button" size="lg" onClick={handleCancel}>
+        <CommonButton type="button" size="lg" onClick={handleModalCancel}>
           취소
         </CommonButton>
       </div>

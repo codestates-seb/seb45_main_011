@@ -6,8 +6,7 @@ interface EmptyDiaryProps {
 }
 
 export default function EmptyDiary({ pathUserId, userId }: EmptyDiaryProps) {
-  const modalOpen = useLeafStore((state) => state.modalOpen);
-  const setModalCategory = useLeafStore((state) => state.setModalCategory);
+  const { modalOpen, setModalCategory } = useLeafStore();
 
   const addDiary = () => {
     modalOpen();
@@ -35,17 +34,6 @@ export default function EmptyDiary({ pathUserId, userId }: EmptyDiaryProps) {
           </button>
         )}
       </div>
-      {/* 질문:
-        1. 아래 코드가 동작 안하는 이유
-        2. background-repeat 속성을 이용하고 싶은데 Image태그로 가능한지? 
-      */}
-      {/* <button className="px-3 py-2 relative bg-transparent">
-        <img
-          src="/assets/img/bg_wood_dark.png"
-          alt=""
-          className="absolute right-0 top-0 w-full h-full object-cover"></img>
-        <span className="z-10">일지 작성</span>
-      </button> */}
     </div>
   );
 }

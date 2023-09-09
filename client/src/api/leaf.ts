@@ -7,7 +7,7 @@ export const commonAxios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
     Authorization:
-      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhY2NvdW50SWQiOjEsImRpc3BsYXlOYW1lIjoi6rSA66as7J6QIiwicm9sZXMiOlsiQURNSU4iLCJVU0VSIl0sInVzZXJuYW1lIjoiYWRtaW5AZ21haWwuY29tIiwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNjk0MjYxMjY3LCJleHAiOjE2OTQyNjMwNjd9.kpCPl9RvKIZAvgpqC_Y5pKzEW0x3os8U7teZED-N5Ac',
+      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhY2NvdW50SWQiOjEsImRpc3BsYXlOYW1lIjoi6rSA66as7J6QIiwicm9sZXMiOlsiQURNSU4iLCJVU0VSIl0sInVzZXJuYW1lIjoiYWRtaW5AZ21haWwuY29tIiwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNjk0MjY1ODgzLCJleHAiOjE2OTQyNjc2ODN9.81I7DJH3dcPn2GWmvADbJAe9DXHGFTo3UO5yJixKqp8',
 
     // Refresh:
   },
