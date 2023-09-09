@@ -29,8 +29,7 @@ export default function Leafs({ params }: LeafsProps) {
   // URL path userId
   const pathUserId = Number(params.id);
 
-  const userId = useTestUserStore((state) => state.userId);
-  const userName = useTestUserStore((state) => state.userName);
+  const { userId, userName } = useTestUserStore();
   const isModalOpen = useLeafsStore((state) => state.isModalOpen);
 
   const router = useRouter();
@@ -41,6 +40,7 @@ export default function Leafs({ params }: LeafsProps) {
     }
   });
 
+  // 라우팅 될때 비동기 처리가 되어 경고 메세지가 출력됨 -> userId를 이용하여 조건부로 처리한다.
   const {
     data: leafs,
     isLoading,
@@ -69,6 +69,7 @@ export default function Leafs({ params }: LeafsProps) {
             }
           />
           <div className="pr-3 w-full h-[404px] flex flex-wrap  gap-4 overflow-y-scroll scrollbar">
+            {/** userId와 pathUserId가 일치하면 식물 카드 추가 버튼 렌더링 */}
             {userId === pathUserId && <AddLeafButton userId={userId} />}
             {leafs?.map((leaf) => (
               <Leaf

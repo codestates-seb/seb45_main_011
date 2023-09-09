@@ -1,7 +1,11 @@
 import useLeafStore from '@/stores/leafStore';
-import useModalStore from '@/stores/modalStore';
 
-export default function EmptyDiary() {
+interface EmptyDiaryProps {
+  pathUserId: number;
+  userId: number | null;
+}
+
+export default function EmptyDiary({ pathUserId, userId }: EmptyDiaryProps) {
   const modalOpen = useLeafStore((state) => state.modalOpen);
   const setModalCategory = useLeafStore((state) => state.setModalCategory);
 
@@ -9,6 +13,8 @@ export default function EmptyDiary() {
     modalOpen();
     setModalCategory('add');
   };
+
+  if (pathUserId !== userId) return null;
 
   return (
     <div className="w-full flex flex-col items-center">

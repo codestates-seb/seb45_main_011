@@ -17,8 +17,9 @@ import ModalPortal from '@/components/common/ModalPortal';
 import Modal from '@/components/common/Modal';
 import LeafInfo from '@/components/Leaf/LeafInfo';
 import LeafDiary from '@/components/Leaf/LeafDiary';
-import DiaryForm from '@/components/Leaf/DiaryForm';
-import { DiaryDeleteModal } from '@/components/Leaf/DiaryDeleteModal';
+import LeafDateInfo from '@/components/Leaf/LeafDateInfo';
+import EmptyDiary from '@/components/Leaf/EmptyDiary';
+import LeafModal from '@/components/Leaf/LeafModa';
 
 import { DiaryDataInfo, LeafDataInfo } from '@/types/data';
 
@@ -26,9 +27,9 @@ interface LeafProps {
   params: { leafId: string; userId: string };
 }
 
-// TODO: Leaf 날짜 부분 컴포넌트 분리 / 각 페이지 리팩토링
+// TODO: Leaf 날짜 부분 컴포넌트 분리 / leaf 리팩토링
 export default function Leaf({ params }: LeafProps) {
-  const leafId = Number(params.leafId);
+  const pathLeafId = Number(params.leafId);
   const pathUserId = Number(params.userId);
 
   const router = useRouter();
@@ -47,32 +48,39 @@ export default function Leaf({ params }: LeafProps) {
   const results = useQueries({
     queries: [
       {
-        queryKey: ['leaf', leafId],
-        queryFn: () => getLeafByLeafId(leafId),
+        queryKey: ['leaf', pathLeafId],
+        queryFn: () => getLeafByLeafId(pathLeafId),
       },
       {
-        queryKey: ['diaries', leafId],
-        queryFn: () => getDiariesByLeafAndUserId(leafId, pathUserId),
+        queryKey: ['diaries', pathLeafId],
+        queryFn: () => getDiariesByLeafAndUserId(pathLeafId, pathUserId),
       },
     ],
   });
 
-  useEffect(() => {
-    setLeaf(results[0].data);
-    setDiaries(results[1].data);
-  }, [results]);
-
   const isLoading = results.some((result) => result.isLoading);
   const isError = results.some((result) => result.isError);
 
-  const modalCategory = useLeafStore((state) => state.modalCategory);
-  const isModalOpen = useLeafStore((state) => state.isModalOpen);
-  const targetDiary = useLeafStore((state) => state.targetDiary);
+  useEffect(() => {
+    if (results) {
+      setLeaf(results[0].data);
+      setDiaries(results[1].data);
+    }
+  }, [results]);
+
+  useEffect(() => {
+    if (leaf?.createdAt) setStartDay(new Date(leaf.createdAt));
+
+    if (diaries && diaries.length !== 0)
+      setLastDiaryDay(new Date(diaries[0].createdAt));
+  }, [leaf, diaries]);
+
+  const { modalCategory, isModalOpen, setStartDay, setLastDiaryDay } =
+    useLeafStore();
 
   if (isLoading) return <div>loading</div>;
   if (isError) return <div>error</div>;
-
-  if (!leaf || !diaries) return;
+  if (!leaf) return <div>error</div>;
 
   return (
     <div className="w-full flex justify-center items-center">
@@ -83,43 +91,28 @@ export default function Leaf({ params }: LeafProps) {
             <LeafInfo
               userId={userId}
               pathUserId={pathUserId}
-              leafName={leaf.leafName}
-              imageUrl={leaf.leafImageUrl}
-              content={leaf.content}
-              createdAt={leaf.createdAt}
+              leafName={leaf?.leafName}
+              imageUrl={leaf?.leafImageUrl}
+              content={leaf?.content}
+              createdAt={leaf?.createdAt}
             />
-            <LeafDiary pathUserId={pathUserId} diaries={diaries} />
+            <LeafDateInfo />
+            {diaries && diaries?.length !== 0 ? (
+              <LeafDiary pathUserId={pathUserId} diaries={diaries} />
+            ) : (
+              <EmptyDiary pathUserId={pathUserId} userId={userId} />
+            )}
           </div>
         </div>
       </div>
-      {isModalOpen && (
+      {isModalOpen && pathUserId === userId && (
         <ModalPortal>
           <Modal>
-            {modalCategory === 'add' && (
-              <DiaryForm
-                leafId={leafId}
-                userId={pathUserId}
-                mode={modalCategory}
-              />
-            )}
-            {modalCategory === 'edit' && (
-              <DiaryForm
-                leafId={leafId}
-                userId={pathUserId}
-                diaryId={targetDiary?.journalId}
-                title={targetDiary?.title}
-                content={targetDiary?.content}
-                imageUrl={targetDiary?.imageUrl}
-                mode={modalCategory}
-              />
-            )}
-            {modalCategory === 'delete' && (
-              <DiaryDeleteModal
-                leafId={leafId}
-                userId={pathUserId}
-                deleteTargetId={targetDiary?.journalId}
-              />
-            )}
+            <LeafModal
+              modalCategory={modalCategory}
+              leafId={pathLeafId}
+              userId={userId}
+            />
           </Modal>
         </ModalPortal>
       )}

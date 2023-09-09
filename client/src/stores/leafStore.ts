@@ -5,14 +5,16 @@ interface LeafState {
   isModalOpen: boolean;
   modalCategory: 'add' | 'delete' | 'edit' | null;
   targetDiary: DiaryDataInfo | null;
-  lastDiaryDay: string | null;
+  lastDiaryDay: Date | null;
+  startDay: Date | null;
 
   modalOpen: () => void;
   modalClose: () => void;
 
   setModalCategory: (modalCategory: 'add' | 'delete' | 'edit') => void;
   setTargetDiary: (diary: DiaryDataInfo) => void;
-  setLastDiaryDay: (day: string) => void;
+  setLastDiaryDay: (day: Date) => void;
+  setStartDay: (day: Date) => void;
 }
 
 const useLeafStore = create<LeafState>((set) => ({
@@ -20,14 +22,15 @@ const useLeafStore = create<LeafState>((set) => ({
   modalCategory: null,
   targetDiary: null,
   lastDiaryDay: null,
+  startDay: null,
 
-  modalOpen: () => set((state) => ({ ...state, isModalOpen: true })),
-  modalClose: () => set((state) => ({ ...state, isModalOpen: false })),
+  modalOpen: () => set(() => ({ isModalOpen: true })),
+  modalClose: () => set(() => ({ isModalOpen: false })),
 
-  setModalCategory: (modalCategory) =>
-    set((state) => ({ ...state, modalCategory })),
-  setTargetDiary: (diary) => set((state) => ({ ...state, targetDiary: diary })),
-  setLastDiaryDay: (day) => set((state) => ({ ...state, lastDiaryDay: day })),
+  setModalCategory: (modalCategory) => set(() => ({ modalCategory })),
+  setTargetDiary: (diary) => set(() => ({ targetDiary: diary })),
+  setLastDiaryDay: (day) => set(() => ({ lastDiaryDay: day })),
+  setStartDay: (day) => set(() => ({ startDay: day })),
 }));
 
 export default useLeafStore;

@@ -1,9 +1,10 @@
 import { useRouter } from 'next/navigation';
-
 import { useEffect, useState } from 'react';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
+
+import { addLeaf, editLeaf } from '@/api/leaf';
 
 import TextInput from './TextInput';
 import ImageUpload from './ImageUpload';
@@ -13,13 +14,11 @@ import TextArea from './TextArea';
 import { InputValues } from '@/types/common';
 import { LeafDataInfo } from '@/types/data';
 
-import { addLeaf, editLeaf } from '@/api/leaf';
-
 interface LeafFormProps {
   leaf?: LeafDataInfo | null;
   leafId?: number;
   mode: 'add' | 'edit';
-  userId: number | null;
+  userId: number;
 }
 
 export default function LeafForm({
@@ -39,6 +38,8 @@ export default function LeafForm({
     }
   }, [leaf]);
 
+  const [isImageUpdated, setIsImageUpdated] = useState(false);
+
   const { mutate } = useMutation({
     mutationFn:
       mode === 'add'
@@ -50,7 +51,7 @@ export default function LeafForm({
       queryClient.invalidateQueries(['leafs']);
     },
   });
-  const [isImageUpdated, setIsImageUpdated] = useState(false);
+
   const {
     register,
     formState: { errors },
@@ -62,7 +63,7 @@ export default function LeafForm({
     mutate(inputs);
   };
 
-  const cancelEdit = () => router.push(`/leafs/{userId}`);
+  const cancelEdit = () => router.push(`/leafs/${userId}`);
 
   return (
     <form onSubmit={handleSubmit(submitEditLeaf)} className="w-full">

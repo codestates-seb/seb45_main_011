@@ -1,27 +1,18 @@
 import Image from 'next/image';
 
-import ControlButton from '../common/ControlButton';
-
 import useLeafStore from '@/stores/leafStore';
-
-import { DiaryDataInfo } from '@/types/data';
-import NoImage from '../common/NoImage';
 import useTestUserStore from '@/stores/testUserStore';
 
-interface FormatContentProps {
-  content: string;
-  className: string;
-}
+import ControlButton from '../common/ControlButton';
+import NoImage from '../common/NoImage';
+import FormatContent from './FormatContent';
+
+import { DiaryDataInfo } from '@/types/data';
 
 interface DiaryProps extends DiaryDataInfo {
   pathUserId: number;
 }
 
-function FormatContent({ content, className }: FormatContentProps) {
-  return (
-    <p className={className} dangerouslySetInnerHTML={{ __html: content }}></p>
-  );
-}
 export default function Diary({
   journalId,
   createdAt,
@@ -39,9 +30,8 @@ export default function Diary({
   };
 
   const userId = useTestUserStore((state) => state.userId);
-  const modalOpen = useLeafStore((state) => state.modalOpen);
-  const setModalCategory = useLeafStore((state) => state.setModalCategory);
-  const setTargetDiary = useLeafStore((state) => state.setTargetDiary);
+
+  const { modalOpen, setModalCategory, setTargetDiary } = useLeafStore();
 
   // 서버로부터 받은 줄바꿈(\n)을 <br/> 태그로 변환
   const replaceContent = content?.replace(/\n/g, '<br/>');
@@ -59,7 +49,6 @@ export default function Diary({
     modalOpen();
     setTargetDiary(diary);
     setModalCategory('delete');
-    // fetch(item~~)
   };
 
   return (

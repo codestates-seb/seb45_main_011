@@ -1,27 +1,15 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-
-import { deleteLeaf } from '@/api/leaf';
-
 import useLeafsStore from '@/stores/leafsStore';
+
+import useDeleteLeaf from '@/hooks/useDeleteLeaf';
 
 import CommonButton from '../common/CommonButton';
 
 export function LeafDeleteModal() {
-  const queryClient = useQueryClient();
+  const { mutate } = useDeleteLeaf();
 
-  const { mutate } = useMutation({
-    mutationFn: deleteLeaf,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['leafs'] });
-    },
-  });
+  const { deleteTargetLeafsId, modalClose } = useLeafsStore();
 
-  const deleteTargetLeafsId = useLeafsStore(
-    (state) => state.deleteTargetLeafsId,
-  );
-  const modalClose = useLeafsStore((state) => state.modalClose);
-
-  const handleLeafDelete = () => {
+  const handleDelete = () => {
     if (!deleteTargetLeafsId) return;
 
     mutate(deleteTargetLeafsId);
@@ -42,7 +30,7 @@ export function LeafDeleteModal() {
         그래도 삭제하시겠습니까?
       </p>
       <div className="flex gap-2 justify-center">
-        <CommonButton type="button" size="lg" onClick={handleLeafDelete}>
+        <CommonButton type="button" size="lg" onClick={handleDelete}>
           삭제
         </CommonButton>
         <CommonButton type="button" size="lg" onClick={handleCancel}>

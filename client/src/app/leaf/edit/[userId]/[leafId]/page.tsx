@@ -29,9 +29,7 @@ export default function EditLeaf({ params }: EditLeafProps) {
   const userId = useTestUserStore((state) => state.userId);
 
   useEffectOnce(() => {
-    if (pathUserId !== userId) {
-      router.back();
-    }
+    if (pathUserId !== userId) router.back();
   });
 
   const {
@@ -55,7 +53,12 @@ export default function EditLeaf({ params }: EditLeafProps) {
         <div className="p-5 h-full">
           <div className="w-full h-full flex flex-col items-center overflow-y-scroll scrollbar">
             <PageTitle text="식물 카드 수정" className="mb-5" />
-            <LeafForm leaf={leaf} leafId={leafId} userId={userId} mode="edit" />
+            <LeafForm
+              leaf={leaf}
+              leafId={leafId}
+              userId={pathUserId}
+              mode="edit"
+            />
           </div>
         </div>
       </div>

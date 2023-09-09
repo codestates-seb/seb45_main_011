@@ -3,11 +3,11 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import ControlButton from './ControlButton';
-import LeafName from '../LeafName';
-
 import useLeafsStore from '@/stores/leafsStore';
 import useTestUserStore from '@/stores/testUserStore';
+
+import ControlButton from './ControlButton';
+import LeafName from '../LeafName';
 
 interface LeafProps {
   location: 'garden' | 'leaf';
@@ -30,9 +30,9 @@ export default function Leaf({
 }: LeafProps) {
   const router = useRouter();
 
+  const { modalOpen, setDeleteTargetId } = useLeafsStore();
+
   const userId = useTestUserStore((state) => state.userId);
-  const modalOpen = useLeafsStore((state) => state.modalOpen);
-  const setDeleteTargetId = useLeafsStore((state) => state.setDeleteTargetId);
 
   const handleLeafClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (onClick) {
@@ -46,12 +46,12 @@ export default function Leaf({
     }
   };
 
-  const handleEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const navigateToLeafEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     router.push(`/leaf/edit/${pathUserId}/${leafId}`);
   };
 
-  const handleDelete = (
+  const openLeafDeleteModal = (
     e: React.MouseEvent<HTMLButtonElement>,
     leafId: number,
   ) => {
@@ -82,10 +82,10 @@ export default function Leaf({
 
       {location === 'leaf' && pathUserId === userId && (
         <div className="flex h-full gap-2 absolute right-2.5 top-2.5 z-10">
-          <ControlButton usage="edit" handleEdit={handleEdit} />
+          <ControlButton usage="edit" handleEdit={navigateToLeafEdit} />
           <ControlButton
             usage="delete"
-            handleDelete={(event) => handleDelete(event, leafId)}
+            handleDelete={(event) => openLeafDeleteModal(event, leafId)}
           />
         </div>
       )}
