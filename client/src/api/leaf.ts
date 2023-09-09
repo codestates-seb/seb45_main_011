@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { InputValues } from '@/types/common';
 
-import convertToFormData from '@/utils/\bconvertToFormData';
+import convertToFormData from '@/utils/convertToFormData';
 
 export const commonAxios = axios.create({
   baseURL: '',
