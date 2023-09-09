@@ -1,13 +1,13 @@
 import axios from 'axios';
 
 import { InputValues } from '@/types/common';
+
 import convertToFormData from '@/utils/\bconvertToFormData';
 
 export const commonAxios = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: '',
   headers: {
-    Authorization:
-      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhY2NvdW50SWQiOjEsImRpc3BsYXlOYW1lIjoi6rSA66as7J6QIiwicm9sZXMiOlsiQURNSU4iLCJVU0VSIl0sInVzZXJuYW1lIjoiYWRtaW5AZ21haWwuY29tIiwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNjk0MjY1ODgzLCJleHAiOjE2OTQyNjc2ODN9.81I7DJH3dcPn2GWmvADbJAe9DXHGFTo3UO5yJixKqp8',
+    Authorization: '',
 
     // Refresh:
   },
