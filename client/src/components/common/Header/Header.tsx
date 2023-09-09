@@ -1,33 +1,51 @@
 'use client';
 
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { deleteCookie, hasCookie } from 'cookies-next';
+
+import useSignStore from '@/stores/signStore';
+import usePesistStore from '@/stores/persistStore';
 
 import Logo from '../Logo';
 import HeaderLink from './HeaderLink';
-import { cookieOption } from '@/types/common';
-
-import useSignStore from '@/stores/signStore';
 
 export default function Header() {
-  const { isLogin, setIsLogin, getSigninForm, getSignupForm } = useSignStore();
   const router = useRouter();
+  const { getSigninForm, getSignupForm } = useSignStore();
+  const {
+    isLogin,
+    isGoogleLogin,
+    setIsLogin,
+    setIsGoogleLogin,
+    setAccessToken,
+    setRefershToken,
+    setDisplayName,
+    setProfileImageUrl,
+    profileImageUrl,
+  } = usePesistStore();
 
-  const cookieOption: cookieOption = {
-    //! 서버와 연동 시 domain, path는 변경해야함
-    domain: 'localhost',
-    path: '/',
-    expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-    //! httpOnly: true,
+  const profileImage = () => {
+    if (!profileImageUrl) {
+      return '/assets/img/profile_avocado.png';
+    }
+
+    if (isGoogleLogin || isLogin) {
+      return `${profileImageUrl}`;
+    }
   };
 
   const logout = () => {
-    deleteCookie('accessToken', cookieOption);
-    deleteCookie('refreshToken', cookieOption);
+    setAccessToken('');
+    setRefershToken('');
+    setDisplayName('');
+    setProfileImageUrl('');
 
     setIsLogin(false);
+    setIsGoogleLogin(false);
+
     getSigninForm(false);
     getSignupForm(false);
+
     router.push('/');
   };
 
@@ -56,12 +74,12 @@ export default function Header() {
         <li>
           <HeaderLink location="/leafs/1" content="activity" title="leafCard" />
         </li>
-        {isLogin ? (
+        {isLogin || isGoogleLogin ? (
           <li>
             <img
-              src="/assets/img/profile_avocado.png"
+              src={profileImage()}
               alt="profile_img"
-              className="rounded-[50%] border-brown-50 border-[3px] w-[44px] h-[44px] cursor-pointer"
+              className="rounded-[50%] border-brown-50 border-[3px] w-11 h-11 cursor-pointer"
               onClick={logout}
             />
           </li>

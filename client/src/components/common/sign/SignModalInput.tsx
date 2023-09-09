@@ -1,6 +1,7 @@
 import { UseFormRegister } from 'react-hook-form';
 
 import { SIGNIN_REQUIRE, SIGNIN_VAILDATION } from '@/constants/contents';
+
 import { SignFormValue } from '@/types/common';
 
 interface SignModalInputProps {
@@ -49,6 +50,7 @@ export default function SignModalInput({
         autoComplete="off"
         className={`min-w-[300px] pl-4 py-[10px] font-normal text-[12px] border-2 border-brown-70 rounded-[50px] bg-[center_left_12px] bg-no-repeat leading-[12px] outline-none shadow-outer/down`}
         placeholder={SIGNIN_REQUIRE[type]}
+        required
         {...register(type, registerFormat?.validation)}
       />
     </>
