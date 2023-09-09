@@ -48,6 +48,11 @@ public class Board extends BaseTimeEntity {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Board_HashTag> boardHashTags = new ArrayList<>();
 
+    // Mockito Test를 위한 setter
+    public void setBoardId(Long boardId) {
+        this.boardId = boardId;
+    }
+
     public void addBoardLike(BoardLike boardLike) {
         boardLikes.add(boardLike);
     }

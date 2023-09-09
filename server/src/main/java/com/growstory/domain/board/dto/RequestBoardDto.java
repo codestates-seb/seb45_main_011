@@ -15,7 +15,13 @@ public class RequestBoardDto {
 
         @NotBlank
         private String content;
-//
+
+        public Post(String title, String content) {
+            this.title = title;
+            this.content = content;
+        }
+
+        //
 //        @Nullable
 //        private String imageUrl;
     }

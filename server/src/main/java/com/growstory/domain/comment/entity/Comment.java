@@ -35,6 +35,7 @@ public class Comment extends BaseTimeEntity {
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentLike> commentLikes = new ArrayList<>();
 
+
     @Builder
     public Comment(Long commentId, String content, Account account, Board board) {
         this.commentId = commentId;
