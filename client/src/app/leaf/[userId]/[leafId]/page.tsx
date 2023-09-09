@@ -1,46 +1,88 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-import LeafInfo from '@/components/Leaf/LeafInfo';
-import LeafDiary from '@/components/Leaf/LeafDiary';
-import DiaryForm from '@/components/Leaf/DiaryForm';
-import { DiaryDeleteModal } from '@/components/Leaf/DiaryDeleteModal';
+import { useQueries } from '@tanstack/react-query';
+
+import { getDiariesByLeafAndUserId, getLeafByLeafId } from '@/api/leaf';
+
+import useLeafStore from '@/stores/leafStore';
+import useTestUserStore from '@/stores/testUserStore';
+
+import useEffectOnce from '@/hooks/useEffectOnce';
 
 import Screws from '@/components/common/Screws';
 import ModalPortal from '@/components/common/ModalPortal';
 import Modal from '@/components/common/Modal';
+import LeafInfo from '@/components/Leaf/LeafInfo';
+import LeafDiary from '@/components/Leaf/LeafDiary';
+import LeafDateInfo from '@/components/Leaf/LeafDateInfo';
+import EmptyDiary from '@/components/Leaf/EmptyDiary';
+import LeafModal from '@/components/Leaf/LeafModa';
 
-import useLeafStore from '@/stores/leafStore';
-
-import { getLeaf } from '@/api/LeafAPI';
-
-import { LeafDataInfo } from '@/types/data';
+import { DiaryDataInfo, LeafDataInfo } from '@/types/data';
 
 interface LeafProps {
   params: { leafId: string; userId: string };
 }
 
+// TODO: Leaf 날짜 부분 컴포넌트 분리 / leaf 리팩토링
 export default function Leaf({ params }: LeafProps) {
-  const leafId = Number(params.leafId);
-  const userId = Number(params.userId);
+  const pathLeafId = Number(params.leafId);
+  const pathUserId = Number(params.userId);
 
-  const {
-    data: leaf,
-    isLoading,
-    isError,
-  } = useQuery<LeafDataInfo>({
-    queryKey: ['leaf', leafId],
-    queryFn: () => getLeaf(leafId),
+  const router = useRouter();
+
+  const userId = useTestUserStore((state) => state.userId);
+
+  useEffectOnce(() => {
+    if (!userId) {
+      router.push('/signin');
+    }
   });
 
-  const modalCategory = useLeafStore((state) => state.modalCategory);
-  const isModalOpen = useLeafStore((state) => state.isModalOpen);
-  const targetDiary = useLeafStore((state) => state.targetDiary);
+  const [leaf, setLeaf] = useState<LeafDataInfo>();
+  const [diaries, setDiaries] = useState<DiaryDataInfo[]>();
+
+  const results = useQueries({
+    queries: [
+      {
+        queryKey: ['leaf', pathLeafId],
+        queryFn: () => getLeafByLeafId(pathLeafId),
+      },
+      {
+        queryKey: ['diaries', pathLeafId],
+        queryFn: () => getDiariesByLeafAndUserId(pathLeafId, pathUserId),
+      },
+    ],
+  });
+
+  const isLoading = results.some((result) => result.isLoading);
+  const isError = results.some((result) => result.isError);
+
+  useEffect(() => {
+    if (results) {
+      setLeaf(results[0].data);
+      setDiaries(results[1].data);
+    }
+  }, [results]);
+
+  useEffect(() => {
+    if (leaf?.createdAt) setStartDay(new Date(leaf.createdAt));
+  }, [leaf]);
+
+  useEffect(() => {
+    if (diaries && diaries.length !== 0)
+      setLastDiaryDay(new Date(diaries[0].createdAt));
+  }, [diaries]);
+
+  const { modalCategory, isModalOpen, setStartDay, setLastDiaryDay } =
+    useLeafStore();
 
   if (isLoading) return <div>loading</div>;
   if (isError) return <div>error</div>;
-  if (!leaf) return;
+  if (!leaf) return <div>error</div>;
 
   return (
     <div className="w-full flex justify-center items-center">
@@ -50,39 +92,29 @@ export default function Leaf({ params }: LeafProps) {
             <Screws />
             <LeafInfo
               userId={userId}
-              leafName={leaf.leafName}
-              imageUrl={leaf.leafImageUrl}
-              content={leaf.content}
-              createdAt={leaf.createdAt}
+              pathUserId={pathUserId}
+              leafName={leaf?.leafName}
+              imageUrl={leaf?.leafImageUrl}
+              content={leaf?.content}
+              createdAt={leaf?.createdAt}
             />
-            <LeafDiary userId={userId} leafId={leafId} />
+            <LeafDateInfo />
+            {diaries && diaries?.length !== 0 ? (
+              <LeafDiary pathUserId={pathUserId} diaries={diaries} />
+            ) : (
+              <EmptyDiary pathUserId={pathUserId} userId={userId} />
+            )}
           </div>
         </div>
       </div>
-      {isModalOpen && (
+      {isModalOpen && pathUserId === userId && (
         <ModalPortal>
           <Modal>
-            {modalCategory === 'add' && (
-              <DiaryForm leafId={leafId} userId={userId} mode={modalCategory} />
-            )}
-            {modalCategory === 'edit' && (
-              <DiaryForm
-                leafId={leafId}
-                userId={userId}
-                diaryId={targetDiary?.journalId}
-                title={targetDiary?.title}
-                content={targetDiary?.content}
-                imageUrl={targetDiary?.imageUrl}
-                mode={modalCategory}
-              />
-            )}
-            {modalCategory === 'delete' && (
-              <DiaryDeleteModal
-                leafId={leafId}
-                userId={userId}
-                deleteTargetId={targetDiary?.journalId}
-              />
-            )}
+            <LeafModal
+              modalCategory={modalCategory}
+              leafId={pathLeafId}
+              userId={userId}
+            />
           </Modal>
         </ModalPortal>
       )}

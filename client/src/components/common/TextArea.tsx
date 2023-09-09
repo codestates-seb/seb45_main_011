@@ -5,46 +5,23 @@ import { ErrorMessage } from '@hookform/error-message';
 
 import { DefaultProps, InputValues } from '@/types/common';
 
-type InputName = 'leafContent' | 'diaryContent';
+import getTextAreaTypeFormat from '@/utils/getTextAreaTypeFormat';
 
 interface TextAreaProps extends DefaultProps {
-  name: InputName;
+  name: 'leafContent' | 'diaryContent';
   register: UseFormRegister<InputValues>;
   errors: FieldErrors<InputValues>;
   required?: boolean;
 }
-const getTypeFormat = (name: string) => {
-  if (name === 'leafContent') {
-    return {
-      validationSchema: {
-        minLength: {
-          value: 2,
-          message: '2글자 이상의 영문 또는 한글을 입력해야 합니다.',
-        },
-      },
-      placeholder: '간단한 설명을 입력해주세요.',
-    };
-  }
-  if (name === 'diaryContent') {
-    return {
-      validationSchema: {
-        minLength: {
-          value: 2,
-          message: '2글자 이상의 영문 또는 한글을 입력해야 합니다.',
-        },
-      },
-      placeholder: '내용을 입력해주세요.',
-    };
-  }
-  return null;
-};
+
 export default function TextArea({
   name,
   register,
   errors,
   required,
 }: TextAreaProps) {
-  const TypeFormat = getTypeFormat(name);
+  const TypeFormat = getTextAreaTypeFormat(name);
+
   return (
     <div className={`flex flex-col w-full ${TEXTAREA_CONTAINER_SIZE[name]}`}>
       <textarea

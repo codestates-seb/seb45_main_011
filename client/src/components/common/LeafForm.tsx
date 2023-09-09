@@ -1,9 +1,10 @@
 import { useRouter } from 'next/navigation';
-
 import { useEffect, useState } from 'react';
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
+
+import useAddLeafMutaion from '@/hooks/useAddLeafMutaion';
+import useEditLeafMutaion from '@/hooks/useEditLeafMutation';
 
 import TextInput from './TextInput';
 import ImageUpload from './ImageUpload';
@@ -13,10 +14,8 @@ import TextArea from './TextArea';
 import { InputValues } from '@/types/common';
 import { LeafDataInfo } from '@/types/data';
 
-import { addLeaf, editLeaf } from '@/api/LeafAPI';
-
 interface LeafFormProps {
-  leaf?: LeafDataInfo;
+  leaf?: LeafDataInfo | null;
   leafId?: number;
   mode: 'add' | 'edit';
   userId: number;
@@ -28,8 +27,6 @@ export default function LeafForm({
   mode,
   userId,
 }: LeafFormProps) {
-  const queryClient = useQueryClient();
-
   const router = useRouter();
 
   useEffect(() => {
@@ -39,17 +36,13 @@ export default function LeafForm({
     }
   }, [leaf]);
 
-  const { mutate } = useMutation({
-    mutationFn:
-      mode === 'add'
-        ? (inputs: InputValues) => addLeaf(inputs)
-        : (inputs: InputValues) => editLeaf({ inputs, leafId, isImageUpdated }),
-    onSuccess: () => {
-      router.push(`/leafs/${userId}`);
-      queryClient.invalidateQueries(['leafs']);
-    },
-  });
   const [isImageUpdated, setIsImageUpdated] = useState(false);
+
+  const { mutate } =
+    mode === 'add'
+      ? useAddLeafMutaion()
+      : useEditLeafMutaion({ leafId: leafId as number, isImageUpdated });
+
   const {
     register,
     formState: { errors },
@@ -57,16 +50,18 @@ export default function LeafForm({
     clearErrors,
     setValue,
   } = useForm<InputValues>();
-  const submitEditLeaf = (inputs: InputValues) => {
+
+  const submitLeaf = (inputs: InputValues) => {
     mutate(inputs);
   };
 
-  const cancelEdit = () => router.push(`/leafs/{userId}`);
+  const cancelEdit = () => router.push(`/leafs/${userId}`);
+
   return (
-    <form onSubmit={handleSubmit(submitEditLeaf)} className="w-full">
+    <form onSubmit={handleSubmit(submitLeaf)} className="w-full">
       <div className="w-full flex flex-col items-center gap-2 mb-1">
         <ImageUpload
-          required={true}
+          required={mode === 'add'}
           register={register}
           errors={errors}
           clearErrors={clearErrors}
