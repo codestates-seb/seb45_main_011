@@ -1,5 +1,6 @@
 package com.growstory.domain.plant_object.location.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -28,6 +29,6 @@ public class LocationDto {
         private Long locationId;
         private int x;
         private int y;
-        boolean isInstalled;
+        Boolean isInstalled;
     }
 }

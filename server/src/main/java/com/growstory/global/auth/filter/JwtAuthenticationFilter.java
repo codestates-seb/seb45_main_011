@@ -37,19 +37,19 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     //인증을 위임하기 위한 메서드
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
         ObjectMapper objectMapper = new ObjectMapper(); //역직렬화 위한 ObjectMapper 인스턴스
-        LoginDto loginDto;
+        LoginDto.Post loginPostDto;
 
         try {
-            loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class);
+            loginPostDto = objectMapper.readValue(request.getInputStream(), LoginDto.Post.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        log.info("# attemptAuthentication : Account Email={}, Account Password={}",loginDto.getEmail(),loginDto.getPassword());
+        log.info("# attemptAuthentication : Account Email={}, Account Password={}", loginPostDto.getEmail(), loginPostDto.getPassword());
 
         // Username과 Password 정보를 포함한 미인증 토큰 발행
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
+                new UsernamePasswordAuthenticationToken(loginPostDto.getEmail(), loginPostDto.getPassword());
 
         // AuthenticationManager에 인증 처리를 위임
         return authenticationManager.authenticate(authenticationToken);
@@ -67,9 +67,19 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         response.setHeader("Authorization", "Bearer " + accessToken); //응답헤더(Authorization)에 AccessToken을 추가
         response.setHeader("Refresh", refreshToken);
-        response.setHeader("DisplayName", URLEncoder.encode(account.getDisplayName(), "UTF-8"));
-        response.setHeader("AccountId", account.getAccountId().toString());
-        response.setHeader("ProfileImageUrl", account.getProfileImageUrl());
+
+        response.setContentType("application/json");
+        LoginDto.Response loginResponseDto = LoginDto.Response.builder()
+                .accountId(account.getAccountId())
+                .email(account.getEmail())
+                .displayName(URLEncoder.encode(account.getDisplayName(), "UTF-8"))
+                .profileImageUrl(account.getProfileImageUrl())
+                .build();
+
+        // response body에 유저 정보 저장
+        ObjectMapper objectMapper = new ObjectMapper();
+        String userInfo = objectMapper.writeValueAsString(loginResponseDto);
+        response.getWriter().write(userInfo);
 
         //AuthenticationSuccessHandler의 onAuthenticationSuccess() 메서드를 호출 -> AccountAuthenticationSuccessHandler의 onAuthenticationSuccess 호출
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);

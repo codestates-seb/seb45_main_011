@@ -48,6 +48,7 @@ public class AccountDto {
     @Builder
     public static class Response {
         private Long accountId;
+        private String email;
         private String displayName;
         private String profileImageUrl;
         private Point point;
