@@ -2,8 +2,8 @@
 
 import useArchive from '@/hooks/useArchive';
 
+import LeafTag from './LeafTag';
 import Plant from './Plant';
-import LeafTag from '@/components/LeafTag';
 
 import { PlantObj } from '@/types/data';
 
