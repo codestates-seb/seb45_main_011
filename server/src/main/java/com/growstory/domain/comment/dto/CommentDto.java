@@ -24,11 +24,20 @@ public class CommentDto {
                     .board(board)
                     .build();
         }
+
+        public Post(String content) {
+            this.content = content;
+        }
     }
 
     @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Patch {
         @NotBlank
         private String content;
+
+        public Patch(String content) {
+            this.content = content;
+        }
     }
 }

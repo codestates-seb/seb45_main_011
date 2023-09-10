@@ -51,7 +51,7 @@ public class CommentService {
 
     public void deleteComment(Long commentId) {
         findCommentsMatchCommentId(commentId);
-        Comment comment = commentRepository.findById(commentId).get();
+        Comment comment = verifiedComment(commentId);
         commentRepository.deleteById(commentId);
 
         comment.getAccount().getComments().remove(comment);
