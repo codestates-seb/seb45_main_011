@@ -24,8 +24,8 @@ export default function Board() {
     <div className="flex flex-col gap-5 justify-center items-center">
       <RankBoard />
       <BoardBanner />
-      <div className="relative w-full max-w-[720px] h-[487px] border-gradient">
-        <div className="p-4 flex flex-col gap-6">
+      <div className="w-full max-w-[720px] h-[487px] border-gradient">
+        <div className="p-4 h-full flex flex-col gap-6">
           <div className="flex justify-between">
             <BoardSearchForm />
             <CommonButton type="button" size="sm" onClick={navigateToAddPost}>
