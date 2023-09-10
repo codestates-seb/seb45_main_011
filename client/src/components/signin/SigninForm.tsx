@@ -10,8 +10,8 @@ import useSignStore from '@/stores/signStore';
 import usePesistStore from '@/stores/persistStore';
 
 import CommonButton from '../common/CommonButton';
-import SignPasswordInput from '../common/sign/SignPasswordInput';
-import SignInput from '../common/sign/SignInput';
+import SignPasswordInput from '../sign/SignPasswordInput';
+import SignInput from '../sign/SignInput';
 
 import { SignFormValue } from '@/types/common';
 
@@ -63,6 +63,7 @@ export default function SigninForm() {
       reset();
       router.push('/');
     } catch (error) {
+      alert('로그인에 실패했습니다. 다시 시도해 주세요.');
       console.error(error);
     }
   };

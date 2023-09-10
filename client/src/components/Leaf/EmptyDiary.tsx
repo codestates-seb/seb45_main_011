@@ -1,5 +1,8 @@
 import useLeafStore from '@/stores/leafStore';
 
+import useModalStore from '@/stores/modalStore';
+
+
 interface EmptyDiaryProps {
   pathUserId: number;
   userId: number | null;

@@ -31,7 +31,7 @@ export default function TextInput({
         placeholder={TypeFormat?.placeholder}
         {...register(name, TypeFormat?.validationSchema)}
       />
-      <div className="h-[12px] mt-[8px] pl-3 w-full text-[0.6rem] leading-3 text-red-50">
+      <div className="h-[12px] mt-[8px] mb-2 pl-3 w-full text-[0.6rem] leading-3 text-red-50">
         <ErrorMessage
           errors={errors}
           name={name}

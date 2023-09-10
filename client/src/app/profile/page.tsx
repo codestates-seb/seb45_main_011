@@ -1,3 +1,9 @@
+import ProfileForm from '@/components/profile/ProfileForm';
+
 export default function Profile() {
-  return <div>사용자 정보 수정 페이지입니다!</div>;
+  return (
+    <div className="flex flex-col justify-center items-center bg-[url('/assets/img/bg_default.png')] bg-contain">
+      <ProfileForm />
+    </div>
+  );
 }

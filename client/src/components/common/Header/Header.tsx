@@ -24,16 +24,6 @@ export default function Header() {
     profileImageUrl,
   } = usePesistStore();
 
-  const profileImage = () => {
-    if (!profileImageUrl) {
-      return '/assets/img/profile_avocado.png';
-    }
-
-    if (isGoogleLogin || isLogin) {
-      return `${profileImageUrl}`;
-    }
-  };
-
   const logout = () => {
     setAccessToken('');
     setRefershToken('');
@@ -47,6 +37,16 @@ export default function Header() {
     getSignupForm(false);
 
     router.push('/');
+  };
+
+  const profileImage = () => {
+    if (!profileImageUrl) return '/assets/img/profile_avocado.png';
+
+    if (isLogin || isGoogleLogin) {
+      return profileImageUrl as string;
+    }
+
+    return '/assets/img/profile_avocado.png';
   };
 
   return (
@@ -76,12 +76,20 @@ export default function Header() {
         </li>
         {isLogin || isGoogleLogin ? (
           <li>
-            <img
+            <Image
               src={profileImage()}
               alt="profile_img"
-              className="rounded-[50%] border-brown-50 border-[3px] w-11 h-11 cursor-pointer"
+              className={`rounded-[50%] border-brown-50 border-[3px] w-11 h-11 cursor-pointer `}
               onClick={logout}
+              width={44}
+              height={44}
             />
+            {/* <img
+              src={profileImage()}
+              alt="profile_img"
+              className="w-11 h-11 rounded-[50%] border-brown-50 border-[3px] cursor-pointer"
+              onClick={logout}
+            /> */}
           </li>
         ) : (
           <li>
