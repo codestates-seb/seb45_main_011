@@ -5,13 +5,12 @@ import { InputValues } from '@/types/common';
 import convertToFormData from '@/utils/convertToFormData';
 
 export const commonAxios = axios.create({
-  // baseURL: process.env.NEXT_PUBLIC_API_URL,
-  // headers: {
-  //   Authorization:
-  //     'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhY2NvdW50SWQiOjEsImRpc3BsYXlOYW1lIjoi6rSA66as7J6QIiwicm9sZXMiOlsiQURNSU4iLCJVU0VSIl0sInVzZXJuYW1lIjoiYWRtaW5AZ21haWwuY29tIiwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNjk0MjY4Nzg4LCJleHAiOjE2OTQyNzA1ODh9.6KiQEQIpAZJc_uafnYL0tlXsEhdY8-HX_YzOOwDKWq0',
-  //   // Refresh:
-  // },
-  // withCredentials: true,
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  headers: {
+    Authorization: '',
+    // Refresh:
+  },
+  withCredentials: true,
 });
 
 /** 토큰을 통해 유저의 식물 카드 전체 조회 */
