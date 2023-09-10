@@ -1,7 +1,13 @@
+import { useRouter, useParams } from 'next/navigation';
+
 import useGardenStore from '@/stores/gardenStore';
 import useGardenModalStore from '@/stores/gardenModalStore';
+import useUserStore from '@/stores/userStore';
 
 const usePlants = () => {
+  const router = useRouter();
+  const { id } = useParams();
+
   const {
     isEditMode,
     plants,
@@ -11,6 +17,7 @@ const usePlants = () => {
     observeInfoTarget,
   } = useGardenStore();
   const { changeType, open } = useGardenModalStore();
+  const { userId } = useUserStore();
 
   const handlePlants = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target instanceof HTMLImageElement) {
@@ -23,13 +30,21 @@ const usePlants = () => {
           (plant) => Number(targetId) === plant.plantObjId,
         );
 
-        selectedPlant && observeInfoTarget(selectedPlant);
+        if (userId === id) {
+          selectedPlant && observeInfoTarget(selectedPlant);
 
-        selectedPlant?.leafDto
-          ? changeType('leafExist')
-          : changeType('noLeafExist');
+          selectedPlant?.leafDto
+            ? changeType('leafExist')
+            : changeType('noLeafExist');
 
-        open();
+          open();
+        }
+
+        if (userId !== id) {
+          const leafId = selectedPlant?.leafDto?.id;
+
+          leafId && router.push(`/leaf/${id}/${leafId}`);
+        }
       }
 
       if (isEditMode) {
