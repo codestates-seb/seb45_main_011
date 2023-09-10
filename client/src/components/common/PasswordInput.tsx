@@ -30,12 +30,16 @@ const getTypeFormat = (
   watch?: UseFormWatch<InputValues>,
   password?: string,
 ) => {
-  if (name === 'password') {
+  if (name === 'password' && watch) {
     return {
       validationSchema: {
-        required: '이 필드는 필수 입력 사항입니다. 반드시 값을 입력해주세요.',
+        required: '이 필드는 필수 입력 사항입니다.',
         validate: (value: string) =>
-          value === password || '비밀번호가 일치하지 않습니다.',
+          /**
+           * 다른 컴포넌트에서 watch로 잡은 password를 넘기면
+           * 이슈가 발생해서 해당 validate에서 watch를 잡았습니다...
+           */
+          value === watch('password') || '비밀번호가 일치하지 않습니다.',
       },
       placeholder: '기존 비밀번호를 입력해주세요.',
     };
@@ -43,7 +47,7 @@ const getTypeFormat = (
   if (name === 'newPassword') {
     return {
       validationSchema: {
-        required: '이 필드는 필수 입력 사항입니다. 반드시 값을 입력해주세요.',
+        required: '이 필드는 필수 입력 사항입니다.',
         pattern: {
           value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,12}$/,
           message: '6-12글자의 영문과 숫자를 함께 사용해야 합니다.',
@@ -55,7 +59,7 @@ const getTypeFormat = (
   if (name === 'newPasswordCheck' && watch) {
     return {
       validationSchema: {
-        required: '이 필드는 필수 입력 사항입니다. 반드시 값을 입력해주세요.',
+        required: '이 필드는 필수 입력 사항입니다.',
         validate: (value: string) =>
           value === watch('newPassword') || '비밀번호가 일치하지 않습니다.',
       },
@@ -86,7 +90,7 @@ export default function PasswordInput({
         placeholder={TypeFormat?.placeholder}
         {...register(name, TypeFormat?.validationSchema)}
       />
-      <div className="h-[12px] mt-[8px] pl-3 w-full text-[0.6rem] leading-3 text-red-50">
+      <div className="h-[12px] mt-[8px] mb-2 pl-3 w-full text-[0.6rem] leading-3 text-red-50">
         <ErrorMessage
           errors={errors}
           name={name}
@@ -99,6 +103,6 @@ export default function PasswordInput({
 
 const INPUT_SIZE = {
   password: 'max-w-[248px] ',
-  newPassword: 'max-w-[248px ]',
+  newPassword: 'max-w-[248px]',
   newPasswordCheck: 'max-w-[248px]',
 };

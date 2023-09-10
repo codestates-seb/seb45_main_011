@@ -1,4 +1,4 @@
-import Header from "@/components/common/Header/Header";
+import Header from '@/components/common/header/Header';
 
 export default function LeafsLayout({
   children,
@@ -10,5 +10,5 @@ export default function LeafsLayout({
       <Header />
       <main>{children}</main>
     </>
-  )
+  );
 }

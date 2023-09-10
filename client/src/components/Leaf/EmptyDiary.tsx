@@ -1,5 +1,5 @@
 import useLeafStore from '@/stores/leafStore';
-import useModalStore from '@/stores/modalStore';
+// import useModalStore from '@/stores/modalStore';
 
 export default function EmptyDiary() {
   const modalOpen = useLeafStore((state) => state.modalOpen);

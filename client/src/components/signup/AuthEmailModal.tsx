@@ -7,7 +7,7 @@ import useSignStore from '@/stores/signStore';
 
 import Modal from '../common/Modal';
 import ModalPortal from '../common/ModalPortal';
-import SignModalInput from '../common/sign/SignModalInput';
+import SignModalInput from '../sign/SignModalInput';
 import CommonButton from '../common/CommonButton';
 
 import { SignFormValue } from '@/types/common';

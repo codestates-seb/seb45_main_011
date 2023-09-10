@@ -73,6 +73,10 @@ export default function RootLayout({
             <li>
               <Link href="/post/edit/1">게시글 편집</Link>
             </li>
+            {/* 테스트 용도로 잠시 추가해놓겠습니다! */}
+            <li>
+              <Link href="/profile">프로필 수정</Link>
+            </li>
           </ul>
           <div id="modal-root"></div>
         </ReactQueryProvider>

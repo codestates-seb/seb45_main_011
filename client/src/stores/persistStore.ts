@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 const StorageKey = 'user-key';
 
@@ -58,6 +58,7 @@ const usePesistStore = create(
     }),
     {
       name: StorageKey,
+      storage: createJSONStorage(() => sessionStorage),
     },
   ),
 );

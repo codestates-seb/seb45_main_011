@@ -1,4 +1,4 @@
-import Header from "@/components/common/Header/Header";
+import Header from '@/components/common/header/Header';
 
 export default function PostLayout({
   children,
@@ -10,5 +10,5 @@ export default function PostLayout({
       <Header />
       <main>{children}</main>
     </>
-  )
+  );
 }
