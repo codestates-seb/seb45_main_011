@@ -9,7 +9,10 @@ export default function Board() {
       <RankBoard />
       <BoardBanner />
       <div className="relative w-full max-w-[720px] h-[487px] border-gradient">
-        <div className="pt-5 pb-4 pl-6 pr-5 flex flex-col gap-5"></div>
+        <div className="p-4 flex flex-col gap-5">
+          <div>asd</div>
+          <div className="pr-3 w-full h-[404px] flex flex-wrap  gap-4 overflow-y-scroll scrollbar"></div>
+        </div>
       </div>
     </div>
   );
