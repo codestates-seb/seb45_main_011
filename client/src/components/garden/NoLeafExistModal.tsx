@@ -3,11 +3,11 @@
 import { useRouter } from 'next/navigation';
 
 import useGardenModalStore from '@/stores/gardenModalStore';
+import useUserStore from '@/stores/userStore';
 
 import ModalPortal from '@/components/common/ModalPortal';
 import Modal from '@/components/common/Modal';
 import CommonButton from '@/components/common/CommonButton';
-import useUserStore from '@/stores/userStore';
 
 export default function NoLeafExistModal() {
   const router = useRouter();

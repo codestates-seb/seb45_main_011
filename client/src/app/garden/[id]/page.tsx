@@ -28,7 +28,7 @@ interface GardenProps {
 
 export default function Garden({ params }: GardenProps) {
   const { isOpen, type } = useGardenModalStore();
-  const { saveUserId } = useUserStore();
+  const { userId, saveUserId } = useUserStore();
 
   const { isLoading, isError, point } = useSyncGarden(params.id);
 
@@ -50,19 +50,25 @@ export default function Garden({ params }: GardenProps) {
     <div className="mt-[52px] mx-auto">
       <section className="flex gap-2">
         <p className="flex items-center gap-[6px] min-w-max h-fit px-4 py-2 text-xl text-brown-70 font-bold border-8 border-b-0 border-border-30 rounded-t-xl bg-contain bg-repeat bg-[url('/assets/img/bg_wood_yellow.png')] leading-6">
-          <Image
-            src="/assets/img/point.svg"
-            width={24}
-            height={24}
-            alt="포인트"
-          />
-          {point.toLocaleString('ko-KR')}
+          {userId === params.id ? (
+            <>
+              <Image
+                src="/assets/img/point.svg"
+                width={24}
+                height={24}
+                alt="포인트"
+              />
+              {point.toLocaleString('ko-KR')}
+            </>
+          ) : (
+            <>{`${params.id} 님의 정원`}</>
+          )}
         </p>
-        <EditModeButton />
+        {userId === params.id && <EditModeButton />}
       </section>
       <div className="flex gap-4">
         <GardenMap />
-        <GardenSidebar />
+        {userId === params.id && <GardenSidebar />}
       </div>
       {isOpen && renderModal(type)}
     </div>

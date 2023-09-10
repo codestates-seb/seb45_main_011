@@ -3,14 +3,15 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
+import useLeafsStore from '@/stores/leafsStore';
+import useTestUserStore from '@/stores/testUserStore';
+
 import ControlButton from './ControlButton';
 import LeafName from '../LeafName';
 
-import useLeafsStore from '@/stores/leafsStore';
-
 interface LeafProps {
   location: 'garden' | 'leaf';
-  userId?: number;
+  pathUserId?: number;
   imageUrl: string;
   name: string;
   leafId: number;
@@ -22,15 +23,16 @@ export default function Leaf({
   location,
   name,
   imageUrl,
-  userId,
+  pathUserId,
   leafId,
   selectedLeafId,
   onClick,
 }: LeafProps) {
   const router = useRouter();
 
-  const modalOpen = useLeafsStore((state) => state.modalOpen);
-  const setDeleteTargetId = useLeafsStore((state) => state.setDeleteTargetId);
+  const { modalOpen, setDeleteTargetId } = useLeafsStore();
+
+  const userId = useTestUserStore((state) => state.userId);
 
   const handleLeafClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (onClick) {
@@ -39,17 +41,17 @@ export default function Leaf({
     }
 
     if (location === 'leaf') {
-      router.push(`/leaf/${userId}/${leafId}`);
+      router.push(`/leaf/${pathUserId}/${leafId}`);
       return null;
     }
   };
 
-  const handleEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const navigateToLeafEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    router.push(`/leaf/edit/${userId}/${leafId}`);
+    router.push(`/leaf/edit/${pathUserId}/${leafId}`);
   };
 
-  const handleDelete = (
+  const openLeafDeleteModal = (
     e: React.MouseEvent<HTMLButtonElement>,
     leafId: number,
   ) => {
@@ -78,23 +80,24 @@ export default function Leaf({
         </div>
       ) : null}
 
-      {location === 'leaf' && (
-        <div className="flex h-full gap-2 absolute right-2.5 top-2.5">
-          <ControlButton usage="edit" handleEdit={handleEdit} />
+      {location === 'leaf' && pathUserId === userId && (
+        <div className="flex h-full gap-2 absolute right-2.5 top-2.5 z-10">
+          <ControlButton usage="edit" handleEdit={navigateToLeafEdit} />
           <ControlButton
             usage="delete"
-            handleDelete={(event) => handleDelete(event, leafId)}
+            handleDelete={(event) => openLeafDeleteModal(event, leafId)}
           />
         </div>
       )}
-
-      <Image
-        src={imageUrl || ''}
-        alt={name}
-        width={200}
-        height={160}
-        className="object-cover w-[200px] h-[160px] rounded-xl border-2 border-brown-50 shadow-outer/down"
-      />
+      <div className="w-[200px] h-[160px] rounded-xl border-2 border-brown-50 shadow-outer/down overflow-hidden">
+        <Image
+          src={imageUrl || ''}
+          alt={name}
+          width={210}
+          height={170}
+          className=" object-cover w-[200px] h-[160px]"
+        />
+      </div>
 
       <LeafName name={name} />
     </div>

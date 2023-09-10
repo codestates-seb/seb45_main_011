@@ -1,5 +1,4 @@
 import { DefaultProps } from '@/types/common';
-import { twMerge } from 'tailwind-merge';
 
 interface NoImageProps extends DefaultProps {
   location: 'diary' | 'imageUpload';

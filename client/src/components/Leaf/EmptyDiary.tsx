@@ -1,9 +1,15 @@
 import useLeafStore from '@/stores/leafStore';
-// import useModalStore from '@/stores/modalStore';
 
-export default function EmptyDiary() {
-  const modalOpen = useLeafStore((state) => state.modalOpen);
-  const setModalCategory = useLeafStore((state) => state.setModalCategory);
+import useModalStore from '@/stores/modalStore';
+
+
+interface EmptyDiaryProps {
+  pathUserId: number;
+  userId: number | null;
+}
+
+export default function EmptyDiary({ pathUserId, userId }: EmptyDiaryProps) {
+  const { modalOpen, setModalCategory } = useLeafStore();
 
   const addDiary = () => {
     modalOpen();
@@ -17,27 +23,20 @@ export default function EmptyDiary() {
           <p className="font-bold text-[1.25rem] text-brown-70">
             등록된 일지가 없어요 : (
           </p>
-          <p className=" font-bold text-[1rem] text-brown-50">
-            일지를 작성해보세요!
-          </p>
+          {pathUserId === userId && (
+            <p className=" font-bold text-[1rem] text-brown-50">
+              일지를 작성해보세요!
+            </p>
+          )}
         </div>
-        <button
-          className="px-3 py-2 bg-[url('/assets/img/bg_wood_dark.png')] bg-contain border-2 border-brown-70 rounded-lg shadow-outer/down text-sm font-bold text-brown-10"
-          onClick={addDiary}>
-          일지 작성
-        </button>
+        {pathUserId === userId && (
+          <button
+            className="px-3 py-2 bg-[url('/assets/img/bg_wood_dark.png')] bg-contain border-2 border-brown-70 rounded-lg shadow-outer/down text-sm font-bold text-brown-10"
+            onClick={addDiary}>
+            일지 작성
+          </button>
+        )}
       </div>
-      {/* 질문:
-        1. 아래 코드가 동작 안하는 이유
-        2. background-repeat 속성을 이용하고 싶은데 Image태그로 가능한지? 
-      */}
-      {/* <button className="px-3 py-2 relative bg-transparent">
-        <img
-          src="/assets/img/bg_wood_dark.png"
-          alt=""
-          className="absolute right-0 top-0 w-full h-full object-cover"></img>
-        <span className="z-10">일지 작성</span>
-      </button> */}
     </div>
   );
 }

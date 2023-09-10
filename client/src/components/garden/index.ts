@@ -6,6 +6,7 @@ import GardenSquares from './GardenSquares';
 import InstalledPlants from './InstalledPlants';
 import EmptyInventoryModal from './EmptyInventoryModal';
 import LeafExistModal from './LeafExistModal';
+import LeafTag from './LeafTag';
 import MapController from './MapController';
 import NoLeafExistModal from './NoLeafExistModal';
 import Plant from './Plant';
@@ -24,6 +25,7 @@ export {
   GardenSquares,
   InstalledPlants,
   LeafExistModal,
+  LeafTag,
   MapController,
   NoLeafExistModal,
   Plant,
