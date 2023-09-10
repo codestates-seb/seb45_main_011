@@ -7,7 +7,7 @@ interface BoardSearchInputProps {
 }
 export default function BoardSearchInput({ register }: BoardSearchInputProps) {
   return (
-    <div className="max-w-[220px] w-full px-[.75rem] py-[.5rem] pr-[.375rem] flex gap-2 bg-white-10 border-2 border-brown-70 rounded-[50px]">
+    <div className="max-w-[220px] w-full h-[32px] px-[.75rem] py-[.5rem] pr-[.375rem] flex gap-2 items-center bg-white-10 border-2 border-brown-70 rounded-[50px]">
       <input
         required
         {...register('search')}
