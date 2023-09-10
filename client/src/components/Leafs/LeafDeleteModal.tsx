@@ -1,25 +1,20 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import useLeafsStore from '@/stores/leafsStore';
+
+import useDeleteLeafMutation from '@/hooks/useDeleteLeafMutaion';
 
 import CommonButton from '../common/CommonButton';
 
-import useLeafsStore from '@/stores/leafsStore';
+interface LeafDeleteModalProps {
+  pathUserId: number;
+  userId: number | null;
+}
 
-import { deleteLeaf } from '@/api/leaf';
+export function LeafDeleteModal({ userId, pathUserId }: LeafDeleteModalProps) {
+  if (userId !== pathUserId) return null;
 
-export function LeafDeleteModal() {
-  const queryClient = useQueryClient();
+  const { mutate } = useDeleteLeafMutation();
 
-  const { mutate } = useMutation({
-    mutationFn: deleteLeaf,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['leafs'] });
-    },
-  });
-
-  const deleteTargetLeafsId = useLeafsStore(
-    (state) => state.deleteTargetLeafsId,
-  );
-  const modalClose = useLeafsStore((state) => state.modalClose);
+  const { deleteTargetLeafsId, modalClose } = useLeafsStore();
 
   const handleLeafDelete = () => {
     if (!deleteTargetLeafsId) return;
@@ -28,7 +23,7 @@ export function LeafDeleteModal() {
     modalClose();
   };
 
-  const handleCancel = () => {
+  const handleModalCancel = () => {
     modalClose();
   };
 
@@ -45,7 +40,7 @@ export function LeafDeleteModal() {
         <CommonButton type="button" size="lg" onClick={handleLeafDelete}>
           삭제
         </CommonButton>
-        <CommonButton type="button" size="lg" onClick={handleCancel}>
+        <CommonButton type="button" size="lg" onClick={handleModalCancel}>
           취소
         </CommonButton>
       </div>
