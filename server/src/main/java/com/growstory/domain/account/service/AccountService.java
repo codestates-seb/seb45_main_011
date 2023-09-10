@@ -85,8 +85,11 @@ public class AccountService {
 
         String encryptedChangedPassword = passwordEncoder.encode(passwordPatchDto.getChangedPassword());
 
-        if (!passwordEncoder.matches(passwordPatchDto.getPresentPassword(), findAccount.getPassword())) throw new BadCredentialsException("현재 비밀번호가 일치하지 않습니다.");
-        if (findAccount.getPassword().equals(encryptedChangedPassword)) throw new BadCredentialsException("새로운 비밀번호와 현재 비밀번호가 일치합니다.");
+        if (!passwordEncoder.matches(passwordPatchDto.getPresentPassword(), findAccount.getPassword()))
+            throw new BadCredentialsException("현재 비밀번호가 일치하지 않습니다.");
+
+        if (findAccount.getPassword().equals(encryptedChangedPassword))
+            throw new BadCredentialsException("새로운 비밀번호와 현재 비밀번호가 일치합니다.");
 
         accountRepository.save(findAccount.toBuilder()
                 .password(encryptedChangedPassword)
@@ -137,6 +140,13 @@ public class AccountService {
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_ALREADY_EXISTS);
     }
 
+
+    public Boolean verifyPassword(AccountDto.PasswordVerify passwordVerifyDto) {
+        Account findAccount = authUserUtils.getAuthUser();
+
+        return passwordEncoder.matches(passwordVerifyDto.getPassword(), findAccount.getPassword());
+    }
+
     @Transactional(readOnly = true)
     public Account findVerifiedAccount(Long accountId) {
         return accountRepository.findById(accountId).orElseThrow(() ->
@@ -178,6 +188,4 @@ public class AccountService {
         // 부모 객체에서 해당 PlantObj를 제거하여 고아 객체 -> 해당 인스턴스 삭제
         account.removePlantObj(plantObj);
     }
-
-
 }
