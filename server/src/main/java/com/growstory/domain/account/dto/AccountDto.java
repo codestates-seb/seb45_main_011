@@ -13,6 +13,7 @@ import java.util.List;
 
 public class AccountDto {
     @Getter
+    @Builder
     public static class Post {
         @NotBlank
         private String displayName;
