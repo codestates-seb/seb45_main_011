@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const url = process.env.NEXT_PUBLIC_API_URL;
-const googleOauth = process.env.NEXT_PUBLIC_GOOGLE_OAUTH_URL;
+// const googleOauth = process.env.NEXT_PUBLIC_GOOGLE_OAUTH_URL;
 
 export const postUserInfo = async (email: string, password: string) => {
   const response = await axios.post(`${url}/v1/accounts/authentication`, {
@@ -52,6 +52,6 @@ export const getUsersEmail = async () => {
   }
 };
 
-export const fetchLoginToGoogle = () => {
-  window.location.href = `${googleOauth}`;
-};
+// export const fetchLoginToGoogle = () => {
+// window.location.href = googleOauth;
+// };

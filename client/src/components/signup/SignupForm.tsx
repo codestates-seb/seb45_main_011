@@ -6,9 +6,9 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import useSignModalStore from '@/stores/signModalStore';
 import useSignStore from '@/stores/signStore';
 
-import SignInput from '../common/sign/SignInput';
+import SignInput from '../sign/SignInput';
 import CommonButton from '../common/CommonButton';
-import SignPasswordInput from '../common/sign/SignPasswordInput';
+import SignPasswordInput from '../sign/SignPasswordInput';
 
 import { SignFormValue } from '@/types/common';
 

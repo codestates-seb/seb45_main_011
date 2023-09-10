@@ -3,19 +3,18 @@
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-import { fetchLoginToGoogle } from '@/api/user';
-
 import useSignStore from '@/stores/signStore';
 import usePesistStore from '@/stores/persistStore';
 
+import SignLink from '../sign/SignLink';
 import SigninForm from './SigninForm';
 
 import Logo from '@/components/common/Logo';
 import Screws from '@/components/common/Screws';
 import CommonButton from '@/components/common/CommonButton';
-import SignLink from '../common/sign/SignLink';
 
 export default function SigninIntro() {
+  const googleOauth = process.env.NEXT_PUBLIC_GOOGLE_OAUTH_URL;
   const router = useRouter();
   const { isEmailSignin, getSigninForm, getSignupForm } = useSignStore();
   const {
@@ -28,8 +27,10 @@ export default function SigninIntro() {
   } = usePesistStore();
 
   const onGoogleLogin = async () => {
+    console.log('go');
+
     try {
-      await fetchLoginToGoogle();
+      await router.push(`${googleOauth}`);
       setIsGoogleLogin(true);
     } catch (error) {
       console.error(error);
