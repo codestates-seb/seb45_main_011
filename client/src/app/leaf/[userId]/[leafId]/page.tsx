@@ -15,11 +15,11 @@ import useEffectOnce from '@/hooks/useEffectOnce';
 import Screws from '@/components/common/Screws';
 import ModalPortal from '@/components/common/ModalPortal';
 import Modal from '@/components/common/Modal';
-import LeafInfo from '@/components/Leaf/LeafInfo';
-import LeafDiary from '@/components/Leaf/LeafDiary';
-import LeafDateInfo from '@/components/Leaf/LeafDateInfo';
-import EmptyDiary from '@/components/Leaf/EmptyDiary';
-import LeafModal from '@/components/Leaf/LeafModa';
+import LeafInfo from '@/components/leaf/LeafInfo';
+import LeafDiary from '@/components/leaf/LeafDiary';
+import LeafDateInfo from '@/components/leaf/LeafDateInfo';
+import EmptyDiary from '@/components/leaf/EmptyDiary';
+import LeafModal from '@/components/leaf/LeafModal';
 
 import { DiaryDataInfo, LeafDataInfo } from '@/types/data';
 
