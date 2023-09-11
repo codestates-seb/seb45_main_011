@@ -2,8 +2,10 @@ package com.growstory.domain.comment.service;
 
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.board.entity.Board;
+import com.growstory.domain.board.repository.BoardRepository;
 import com.growstory.domain.board.service.BoardService;
 import com.growstory.domain.comment.dto.CommentDto;
+import com.growstory.domain.comment.dto.ResponseCommentDto;
 import com.growstory.domain.comment.entity.Comment;
 import com.growstory.domain.comment.repository.CommentRepository;
 import com.growstory.global.auth.utils.AuthUserUtils;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -23,15 +26,14 @@ import java.util.Objects;
 public class CommentService {
 
     private final CommentRepository commentRepository;
-    private final BoardService boardService;
+    private final BoardRepository boardRepository;
     private final AuthUserUtils authUserUtils;
 
     public Long saveComment(Long boardId, CommentDto.Post commentDto) {
         Account account = authUserUtils.getAuthUser();
-        Board board = boardService.findVerifiedBoard(boardId);
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
         Comment comment = commentRepository.save(commentDto.toEntity(account, board));
-//        System.out.println("accountcomment" + account.getComments().size());
-//        System.out.println("boardcomment" + account.getComments().size());
 
         return comment.getCommentId();
     }
@@ -40,6 +42,23 @@ public class CommentService {
         return commentRepository.findCommentsByBoard_BoardId(boardId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
     }
+
+    public List<ResponseCommentDto> getCommentList(Long boardId) {
+        List<Comment> comments = commentRepository.findCommentsByBoard_BoardId(boardId)
+                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
+
+        List<ResponseCommentDto> responseCommentDtoList = comments.stream().map(comment -> ResponseCommentDto.builder()
+                .commentId(comment.getCommentId())
+                .content(comment.getContent())
+                .accountId(comment.getAccount().getAccountId())
+                .displayName(comment.getAccount().getDisplayName())
+                .profileUrl(comment.getAccount().getProfileImageUrl())
+                .commentLikeNum(comment.getCommentLikes().size())
+                .createdAt(comment.getCreatedAt()).modifiedAt(comment.getModifiedAt()).build()).collect(Collectors.toList());
+
+        return responseCommentDtoList;
+    }
+
 
     public void editComment(Long commentId, CommentDto.Patch commentDto) {
         findCommentsMatchCommentId(commentId);
@@ -56,7 +75,6 @@ public class CommentService {
 
         comment.getAccount().getComments().remove(comment);
         comment.getBoard().getBoardComments().remove(comment);
-//        System.out.println("accountcomment"+comment.getAccount().getComments().size());
     }
 
     // Account의 Comments의 입력받은 CommentId와 일치하는 댓글을 찾는 메서드

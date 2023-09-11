@@ -1,6 +1,7 @@
 package com.growstory.domain.account.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.comment.entity.Comment;
 import com.growstory.domain.leaf.entity.Leaf;
@@ -38,6 +39,7 @@ public class Account extends BaseTimeEntity {
     private String profileImageUrl;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Board> boards = new ArrayList<>();
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)

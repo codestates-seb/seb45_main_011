@@ -1,5 +1,8 @@
 package com.growstory.domain.board.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.comment.entity.Comment;
 import com.growstory.domain.images.entity.BoardImage;
@@ -33,10 +36,12 @@ public class Board extends BaseTimeEntity {
     private String content;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Comment> boardComments = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)

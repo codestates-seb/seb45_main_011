@@ -6,10 +6,12 @@ import com.growstory.domain.board.dto.ResponseBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardPageDto;
 import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.board.entity.Board_HashTag;
-import com.growstory.domain.board.repository.BoardHashTagResitory;
+import com.growstory.domain.board.repository.BoardHashTagRepository;
 import com.growstory.domain.board.repository.BoardRepository;
+import com.growstory.domain.comment.dto.ResponseCommentDto;
+import com.growstory.domain.comment.repository.CommentRepository;
 import com.growstory.domain.comment.service.CommentService;
-import com.growstory.domain.hashTag.dto.RequestHashTagDto;
+import com.growstory.domain.hashTag.dto.ResponseHashTagDto;
 import com.growstory.domain.hashTag.entity.HashTag;
 import com.growstory.domain.hashTag.repository.HashTagRepository;
 import com.growstory.domain.hashTag.service.HashTagService;
@@ -26,24 +28,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional
 @Service
 public class BoardService {
 
-    private static final String BOARD_IMAGE_PROCESS_TYPE = "boards";
-
     private final BoardRepository boardRepository;
     private final HashTagService hashTagService;
     private final BoardImageService boardImageService;
     private final AuthUserUtils authUserUtils;
     private final HashTagRepository hashTagRepository;
-    private final BoardHashTagResitory boardHashtagRepository;
-//    private final CommentService commentService;
+    private final BoardHashTagRepository boardHashtagRepository;
+    private final CommentService commentService;
+    private final CommentRepository commentRepository;
 
 
     public Long createBoard(RequestBoardDto.Post requestBoardDto, MultipartFile image) {
@@ -81,23 +80,18 @@ public class BoardService {
         }
 
 
-
         return saveBoard.getBoardId();
     }
 //
     public ResponseBoardDto getBoard(Long boardId) {
-        Account findAccount = authUserUtils.getAuthUser();
-
         Board findBoard = findVerifiedBoard(boardId);
-
         BoardImage findBoardImage = boardImageService.verifyExistBoardImage(boardId);
-
-        List<HashTag> findHashTag = hashTagService.getHashTags(boardId);
-
+        List<ResponseHashTagDto> findHashTag = hashTagService.getHashTagList(boardId);
 //        List<Comment> findComment = commentService.getComments(boardId);
+        List<ResponseCommentDto> findComment = commentService.getCommentList(boardId);
 
-        return getResponseBoardDto(findBoard, findBoardImage, findAccount, findHashTag);
-//        return getResponseBoardDto(findBoard, findBoardImage, findAccount, findHashTag, findComment);
+//        return getResponseBoardDto(findBoard, findBoardImage, findAccount, findHashTag);
+        return getResponseBoardDto(findBoard, findBoardImage, findHashTag, findComment);
     }
 
     public Page<ResponseBoardPageDto> findBoards(int page, int size) {
@@ -144,7 +138,7 @@ public class BoardService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
     }
 
-    private static ResponseBoardDto getResponseBoardDto(Board findBoard, BoardImage findBoardImage, Account findAccount, List<HashTag> findHashTag) {
+    private static ResponseBoardDto getResponseBoardDto(Board findBoard, BoardImage findBoardImage, List<ResponseHashTagDto> findHashTag, List<ResponseCommentDto> findComment) {
         return ResponseBoardDto.builder()
                 .boardId(findBoard.getBoardId())
                 .title(findBoard.getTitle())
@@ -153,11 +147,11 @@ public class BoardService {
                 .likeNum(findBoard.getBoardLikes().size())
                 .createAt(findBoard.getCreatedAt())
                 .modifiedAt(findBoard.getModifiedAt())
-                .accountId(findAccount.getAccountId())
-                .displayName(findAccount.getDisplayName())
-                .profileImageUrl(findAccount.getProfileImageUrl())
+                .accountId(findBoard.getAccount().getAccountId())
+                .displayName(findBoard.getAccount().getDisplayName())
+                .profileImageUrl(findBoard.getAccount().getProfileImageUrl())
                 .hashTags(findHashTag)
-//                .comments(findComment)
+                .comments(findComment)
                 .build();
     }
 }
