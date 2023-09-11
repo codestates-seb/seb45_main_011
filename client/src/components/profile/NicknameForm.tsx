@@ -16,14 +16,18 @@ type Token = {
 };
 
 export default function NicknameForm({ token }: Token) {
-  const setDisplayName = useUserStore((state) => state.setDisplayName);
+  const { setDisplayName, displayName } = useUserStore();
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
     reset,
-  } = useForm<InputValues>();
+  } = useForm<InputValues>({
+    defaultValues: {
+      nickname: displayName,
+    },
+  });
 
   const nickname = watch('nickname');
 
