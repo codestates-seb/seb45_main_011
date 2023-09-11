@@ -5,10 +5,13 @@ import com.growstory.domain.board.dto.RequestBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardPageDto;
 import com.growstory.domain.board.entity.Board;
+import com.growstory.domain.board.entity.Board_HashTag;
+import com.growstory.domain.board.repository.BoardHashTagResitory;
 import com.growstory.domain.board.repository.BoardRepository;
 import com.growstory.domain.comment.service.CommentService;
 import com.growstory.domain.hashTag.dto.RequestHashTagDto;
 import com.growstory.domain.hashTag.entity.HashTag;
+import com.growstory.domain.hashTag.repository.HashTagRepository;
 import com.growstory.domain.hashTag.service.HashTagService;
 import com.growstory.domain.images.entity.BoardImage;
 import com.growstory.domain.images.service.BoardImageService;
@@ -20,11 +23,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class BoardService {
 
@@ -34,32 +41,46 @@ public class BoardService {
     private final HashTagService hashTagService;
     private final BoardImageService boardImageService;
     private final AuthUserUtils authUserUtils;
+    private final HashTagRepository hashTagRepository;
+    private final BoardHashTagResitory boardHashtagRepository;
 //    private final CommentService commentService;
 
 
     public Long createBoard(RequestBoardDto.Post requestBoardDto, MultipartFile image) {
         Account findAccount = authUserUtils.getAuthUser();
 
-        // TODO: image가 null일 경우 아에 saveBoardImage 실행이 되지 않도록 수정 해야 됨
-        // S3 Upload && save image in Board_Image
-        boardImageService.saveBoardImage(image);
-
-        // TODO: 해시 태그 - 현재 입력 안됨. null로 비워두고 요청 보낼 것, 추후 해시 태그 부분 리팩토링
-        // Save HashTags
-//        if (hashTagsDto != null) {
-//            for (String tag : hashTagsDto.getTags()) {
-//                hashTagService.createHashTag(tag);
-//            }
-//        }
-
+        // 입력 받은 이미지가 있을 경우 saveBoardImage 메서드 호출
+        if (!image.isEmpty()) {
+            // Upload image in S3 && save image in Board_Image
+            boardImageService.saveBoardImage(image);
+        }
 
         Board board = Board.builder()
                 .title(requestBoardDto.getTitle())
                 .content(requestBoardDto.getContent())
                 .account(findAccount)
                 .build();
-
         Board saveBoard = boardRepository.save(board);
+
+        // Save HashTags
+        if (requestBoardDto.getHashTags() != null) {
+            for (String tag : requestBoardDto.getHashTags()) {
+                HashTag hashTag = hashTagRepository.findByTag(tag);
+                if (hashTag == null) {
+                    hashTag = new HashTag();
+                    hashTag.setTag(tag);
+                    hashTagRepository.save(hashTag);
+                }
+
+                Board_HashTag boardHashtag = new Board_HashTag();
+                boardHashtag.addBoard(board);
+                boardHashtag.addHashTag(hashTag);
+
+                boardHashtagRepository.save(boardHashtag);
+            }
+        }
+
+
 
         return saveBoard.getBoardId();
     }

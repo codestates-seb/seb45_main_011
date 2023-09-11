@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface HashTagRepository extends JpaRepository<HashTag, Long> {
     Optional<List<HashTag>> findByBoardHashTags_BoardHashTagId(Long boardId);
+    HashTag findByTag(String tag);
 }
