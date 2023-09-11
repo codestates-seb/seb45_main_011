@@ -1,17 +1,26 @@
 'use client';
 
-import { BoardUserDataInfo } from '@/types/data';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-export default function BoardProfile({
+interface PostProfileProps {
+  userId: number;
+  displayName: string;
+  profileImageUrl: string;
+  grade: string;
+  usage: 'post' | 'comment';
+}
+
+export default function PostProfile({
   userId,
   displayName,
   profileImageUrl,
   grade,
-}: BoardUserDataInfo) {
+  usage,
+}: PostProfileProps) {
   const router = useRouter();
   const navigateToHistory = () => router.push(`/history/${userId}`);
+
   return (
     <div
       className="flex gap-3 items-center"
@@ -26,13 +35,24 @@ export default function BoardProfile({
         />
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-xl leading-5 font-bold text-brown-80">
+        <span className={`${TEXT_SIZE[usage].displayName} text-brown-80`}>
           {displayName}
         </span>
-        <span className="text-[1rem] leading-4 font-normal text-brown-80">
+        <span className={`${TEXT_SIZE[usage].grade} text-brown-80`}>
           {grade}
         </span>
       </div>
     </div>
   );
 }
+
+const TEXT_SIZE = {
+  post: {
+    displayName: 'text-xl leading-5 font-bold',
+    grade: 'text-[1rem] leading-4 font-normal',
+  },
+  comment: {
+    displayName: 'text-[1rem] leading-[1rem] font-bold',
+    grade: 'text-[0.75rem] leading-[0.75rem] font-normal',
+  },
+};

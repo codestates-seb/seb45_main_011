@@ -5,13 +5,13 @@ import { useRouter } from 'next/navigation';
 
 interface ContolMenuProps {
   usage: 'post' | 'comment';
-  boardId: number;
+  targetId: number;
 }
-export default function ControlMenu({ usage, boardId }: ContolMenuProps) {
+export default function ControlMenu({ usage, targetId }: ContolMenuProps) {
   const router = useRouter();
 
   const handleEdit = () => {
-    if (usage === 'post') return router.push(`/post/edit/${boardId}`);
+    if (usage === 'post') return router.push(`/post/edit/${targetId}`);
   };
 
   const handleDelete = () => {

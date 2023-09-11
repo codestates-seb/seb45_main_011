@@ -1,10 +1,10 @@
 import Image from 'next/image';
 
 interface CommentProfileImage {
-  location: 'add' | 'list';
+  src: string;
 }
 
-export default function CommentProfileImage({ location }: CommentProfileImage) {
+export default function CommentProfileImage({ src }: CommentProfileImage) {
   return (
     <div className="w-[44px] h-[44px] rounded-[50%] border-brown-10 border-[3px] overflow-hidden">
       <Image
