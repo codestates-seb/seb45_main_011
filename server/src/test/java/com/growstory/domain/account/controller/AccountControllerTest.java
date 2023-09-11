@@ -8,6 +8,7 @@ import com.growstory.global.customUser.annotation.WithMockCustomUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -85,6 +86,7 @@ public class AccountControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", is(("/v1/accounts/" + responseDto.getAccountId().toString()))));
     }
+//    @NullAndEmptySource
 
     @Test
 //    @WithMockUser(username = "testuser", roles = "USER")

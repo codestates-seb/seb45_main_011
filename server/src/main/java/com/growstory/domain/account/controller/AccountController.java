@@ -5,8 +5,11 @@ import com.growstory.domain.account.service.AccountService;
 import com.growstory.global.constants.HttpStatusCode;
 import com.growstory.global.response.SingleResponseDto;
 import com.growstory.global.utils.UriCreator;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +22,7 @@ import java.util.List;
 @RestController
 @Validated
 @RequiredArgsConstructor
+//@Tag(name = "Sample", description = "Test Controller")
 @RequestMapping("/v1/accounts")
 public class AccountController {
     private static final String ACCOUNT_DEFAULT_URL = "/v1/accounts";
@@ -35,8 +39,10 @@ public class AccountController {
     }
 
     // 나의 정보 수정(프로필 사진)
-    @PatchMapping("/profileimage")
-    public ResponseEntity<HttpStatus> patchProfileImage(@RequestPart MultipartFile profileImage) {
+    @Operation(summary = "Request Post test", description = "Response name, email, phone")
+    @PatchMapping(value = "/profileimage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<HttpStatus> patchProfileImage(@Parameter(description = "multipart/form-data 형식의 이미지 리스트를 input으로 받습니다. 이때 key 값은 multipartFile 입니다.")
+                                                        @RequestPart MultipartFile profileImage) {
         accountService.updateProfileImage(profileImage);
 
         return ResponseEntity.noContent().build();
