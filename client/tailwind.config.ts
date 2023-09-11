@@ -11,9 +11,9 @@ const config: Config = {
   ],
   theme: {
     colors,
-    extend: { boxShadow }
+    extend: { boxShadow },
   },
-  plugins: [],
+  plugins: [require('tailwind-scrollbar-hide')],
 };
 
 export default config;
