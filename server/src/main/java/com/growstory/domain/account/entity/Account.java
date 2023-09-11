@@ -6,6 +6,7 @@ import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.comment.entity.Comment;
 import com.growstory.domain.leaf.entity.Leaf;
 import com.growstory.domain.likes.entity.AccountLike;
+import com.growstory.domain.likes.entity.BoardLike;
 import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.point.entity.Point;
 import com.growstory.global.audit.BaseTimeEntity;
@@ -53,6 +54,10 @@ public class Account extends BaseTimeEntity {
     @OneToMany(mappedBy = "receivingAccount", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AccountLike> receivingAccountLikes;
 
+    // 자신이 좋아요 누른 게시글 리스트
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BoardLike> boardLikes;
+
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
@@ -92,6 +97,10 @@ public class Account extends BaseTimeEntity {
         this.point = point;
         if (point.getAccount() != this)
             point.updateAccount(this);
+    }
+
+    public void addBoardLike(BoardLike boardLike) {
+        boardLikes.add(boardLike);
     }
 
     public void addPlantObj(PlantObj plantObj) {

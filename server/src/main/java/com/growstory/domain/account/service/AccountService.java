@@ -3,10 +3,10 @@ package com.growstory.domain.account.service;
 import com.growstory.domain.account.dto.AccountDto;
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.account.repository.AccountRepository;
-import com.growstory.domain.plant_object.entity.PlantObj;
+import com.growstory.domain.board.entity.Board;
+import com.growstory.domain.images.entity.BoardImage;
 import com.growstory.domain.point.entity.Point;
 import com.growstory.domain.point.service.PointService;
-import com.growstory.domain.product.entity.Product;
 import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.auth.utils.CustomAuthorityUtils;
 import com.growstory.global.aws.service.S3Uploader;
@@ -100,13 +100,7 @@ public class AccountService {
     public AccountDto.Response getAccount() {
         Account findAccount = authUserUtils.getAuthUser();
 
-        return AccountDto.Response.builder()
-                .accountId(findAccount.getAccountId())
-                .email(findAccount.getEmail())
-                .displayName(findAccount.getDisplayName())
-                .profileImageUrl(findAccount.getProfileImageUrl())
-                .point(findAccount.getPoint())
-                .build();
+        return getAccountResponse(findAccount);
     }
 
     @Transactional(readOnly = true)
@@ -114,13 +108,7 @@ public class AccountService {
         List<Account> accounts = accountRepository.findAll();
 
         return accounts.stream()
-                .map(account -> AccountDto.Response.builder()
-                        .accountId(account.getAccountId())
-                        .email(account.getEmail())
-                        .displayName(account.getDisplayName())
-                        .profileImageUrl(account.getProfileImageUrl())
-                        .point(account.getPoint())
-                        .build())
+                .map(AccountService::getAccountResponse)
                 .collect(Collectors.toList());
     }
 
@@ -139,7 +127,6 @@ public class AccountService {
         if(findAccount.isPresent())
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_ALREADY_EXISTS);
     }
-
 
     public Boolean verifyPassword(AccountDto.PasswordVerify passwordVerifyDto) {
         Account findAccount = authUserUtils.getAuthUser();
@@ -167,25 +154,37 @@ public class AccountService {
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
     }
 
-    public void buy(Account account, Product product) {
-        Point accountPoint = account.getPoint();
-        int price = product.getPrice();
-        int userPointScore = account.getPoint().getScore();
-        if(price > userPointScore) {
-            throw new BusinessLogicException(ExceptionCode.NOT_ENOUGH_POINTS);
-        } else { // price <= this.point.getScore()
-            int updatedScore = accountPoint.getScore()-price;
-            accountPoint.updateScore(updatedScore);
-        }
+    private static AccountDto.Response getAccountResponse(Account findAccount) {
+        return AccountDto.Response.builder()
+                .accountId(findAccount.getAccountId())
+                .email(findAccount.getEmail())
+                .displayName(findAccount.getDisplayName())
+                .profileImageUrl(findAccount.getProfileImageUrl())
+                .point(findAccount.getPoint())
+                .boardWritten(findAccount.getBoards().stream()
+                        .map(AccountService::getBoardResponse)
+                        .collect(Collectors.toList()))
+                .boardLiked(findAccount.getBoardLikes().stream()
+                        .map(boardLike -> getBoardResponse(boardLike.getBoard()))
+                        .collect(Collectors.toList()))
+                .commentWritten(findAccount.getComments().stream()
+                        .map(comment -> getBoardResponse(comment.getBoard()))
+                        .distinct()
+                        .collect(Collectors.toList()))
+                .build();
     }
 
-    public void resell(Account account, PlantObj plantObj) {
-        Point accountPoint = account.getPoint();
-        int userPointScore = account.getPoint().getScore();
-
-        int updatedScore = userPointScore + plantObj.getProduct().getPrice();
-        accountPoint.updateScore(updatedScore);
-        // 부모 객체에서 해당 PlantObj를 제거하여 고아 객체 -> 해당 인스턴스 삭제
-        account.removePlantObj(plantObj);
+    private static AccountDto.BoardResponse getBoardResponse(Board board) {
+        return AccountDto.BoardResponse.builder()
+                .boardId(board.getBoardId())
+                .title(board.getTitle())
+                .imageUrls(board.getBoardImages().stream()
+                        .map(BoardImage::getStoredImagePath)
+                        .collect(Collectors.toList()))
+                .likes(board.getBoardLikes().stream()
+                        .map(boardLike -> boardLike.getAccount().getAccountId())
+                        .collect(Collectors.toList()))
+                .commentNums(board.getBoardComments().size())
+                .build();
     }
 }
