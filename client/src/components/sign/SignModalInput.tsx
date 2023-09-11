@@ -5,7 +5,7 @@ import { SIGNIN_REQUIRE, SIGNIN_VAILDATION } from '@/constants/contents';
 import { SignFormValue } from '@/types/common';
 
 interface SignModalInputProps {
-  type: 'code' | 'email';
+  type: 'code' | 'email' | 'password';
   register: UseFormRegister<SignFormValue>;
 }
 
@@ -14,7 +14,7 @@ export default function SignModalInput({
   register,
 }: SignModalInputProps) {
   const getRegisterByType = (type: string) => {
-    if (type === 'email') {
+    if (type === 'code') {
       return {
         validation: {
           required: '올바른 인증번호를 입력해주세요.',
@@ -26,12 +26,24 @@ export default function SignModalInput({
       };
     }
 
-    if (type === 'password') {
+    if (type === 'email') {
       return {
         validation: {
           required: '올바른 이메일을 입력해주세요.',
           pattern: {
             value: /\S+@\S+\.\S+/,
+            message: SIGNIN_VAILDATION[type],
+          },
+        },
+      };
+    }
+
+    if (type === 'password') {
+      return {
+        validation: {
+          required: true,
+          pattern: {
+            value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,12}$/,
             message: SIGNIN_VAILDATION[type],
           },
         },
@@ -46,7 +58,7 @@ export default function SignModalInput({
   return (
     <>
       <input
-        type="text"
+        type={type}
         autoComplete="off"
         className={`min-w-[300px] pl-4 py-[10px] font-normal text-[12px] border-2 border-brown-70 rounded-[50px] bg-[center_left_12px] bg-no-repeat leading-[12px] outline-none shadow-outer/down`}
         placeholder={SIGNIN_REQUIRE[type]}

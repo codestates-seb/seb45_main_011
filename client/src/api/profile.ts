@@ -40,17 +40,7 @@ export const updateUserProfileImage = async (file: File, token: string) => {
   if (!file) return;
 
   const formData = new FormData();
-  // const patchImageBlob = new Blob([file], {
-  //   type: 'application/json',
-  //   // type: 'image/*',
-  // });
-
-  // formData.append('profileImage', patchImageBlob);
   formData.append('profileImage', file);
-
-  // for (let value of formData.values()) {
-  //   console.log(value);
-  // }
 
   try {
     const response = await axios.patch(
