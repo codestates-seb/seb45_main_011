@@ -61,6 +61,7 @@ export interface LeafsDataInfo {
   leafName: string;
   createAt: string;
   leafImageUrl: string;
+  displayName: string;
 }
 
 export interface DiaryDataInfo {

@@ -7,7 +7,7 @@ import { postUserInfo } from '@/api/user';
 
 import useSignModalStore from '@/stores/signModalStore';
 import useSignStore from '@/stores/signStore';
-import usePesistStore from '@/stores/persistStore';
+import useUserStore from '@/stores/userStore';
 
 import CommonButton from '../common/CommonButton';
 import SignPasswordInput from '../sign/SignPasswordInput';
@@ -34,7 +34,7 @@ export default function SigninForm() {
     setRefershToken,
     setDisplayName,
     setProfileImageUrl,
-  } = usePesistStore();
+  } = useUserStore();
 
   const email = watch('email');
   const password = watch('password');
@@ -53,7 +53,7 @@ export default function SigninForm() {
 
       setAccessToken(accessToken);
       setRefershToken(refreshToken);
-      setDisplayName(username);
+      setDisplayName(decodeURIComponent(username));
       setProfileImageUrl(userProfileImage);
 
       setIsLogin(true);
