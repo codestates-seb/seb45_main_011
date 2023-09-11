@@ -44,3 +44,7 @@ export type SignFormValue = {
   code: string;
   onLogin: () => void;
 };
+
+export type SearchValues = {
+  search: string;
+};

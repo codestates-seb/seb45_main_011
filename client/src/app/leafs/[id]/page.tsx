@@ -16,8 +16,8 @@ import Leaf from '@/components/common/Leaf';
 import PageTitle from '@/components/common/PageTitle';
 import Screws from '@/components/common/Screws';
 import ModalPortal from '@/components/common/ModalPortal';
-import AddLeafButton from '@/components/Leafs/AddLeafButton';
-import { LeafDeleteModal } from '@/components/Leafs/LeafDeleteModal';
+import AddLeafButton from '@/components/leafs/AddLeafButton';
+import { LeafDeleteModal } from '@/components/leafs/LeafDeleteModal';
 
 import { LeafsDataInfo } from '@/types/data';
 

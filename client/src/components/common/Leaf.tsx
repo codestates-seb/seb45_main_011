@@ -7,7 +7,7 @@ import useLeafsStore from '@/stores/leafsStore';
 import useTestUserStore from '@/stores/testUserStore';
 
 import ControlButton from './ControlButton';
-import LeafName from '../LeafName';
+import LeafName from './LeafName';
 
 interface LeafProps {
   location: 'garden' | 'leaf';
