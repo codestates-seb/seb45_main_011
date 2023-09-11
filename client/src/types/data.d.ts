@@ -78,3 +78,33 @@ export interface LeafDataInfo {
   content: string;
   createdAt: string;
 }
+
+export interface PostFormValues {
+  title: string;
+  diaryContent: string;
+  image: FileList;
+  hashTag: string;
+}
+
+export interface RawPostInfo {
+  title: string;
+  content: string;
+  imageUrl: string;
+  createdAt: string;
+  modifiedAt: string;
+  leaves: { leafId: number; title: string; imageUrl: string }[];
+  likes: { accountId: number }[];
+  hashTag: { tag: string }[];
+  board_account: { accountId: number; displayName: string; imageUrl: string }[];
+  comments: {
+    commentId: number;
+    content: string;
+    createdAt: StringMappingType;
+    modifiedAt: string;
+    comment_account: {
+      accountId: number;
+      displayName: string;
+      imageUrl: string;
+    }[];
+  }[];
+}
