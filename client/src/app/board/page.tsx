@@ -8,7 +8,7 @@ import BoardBanner from '@/components/board/BoardBanner';
 import BoardSearchForm from '@/components/board/BoardSearchForm';
 import RankBoard from '@/components/board/RankBoard';
 import CommonButton from '@/components/common/CommonButton';
-import PostCard from '@/components/board/PostCard';
+import PostList from '@/components/board/PostList';
 
 export default function Board() {
   const router = useRouter();
@@ -32,16 +32,7 @@ export default function Board() {
               글 쓰기
             </CommonButton>
           </div>
-          <div className="pr-3 w-full h-[404px] flex flex-wrap  gap-4 overflow-y-scroll scrollbar">
-            <div className="flex flex-wrap gap-4">
-              <PostCard
-                title={'첫 바질!!'}
-                imageSrc={'/assets/img/profile_avocado.png'}
-                likesNum={200}
-                commentsNum={21}
-              />
-            </div>
-          </div>
+          <PostList />
         </div>
       </div>
     </div>

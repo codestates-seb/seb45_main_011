@@ -78,3 +78,11 @@ export interface LeafDataInfo {
   content: string;
   createdAt: string;
 }
+
+export interface BoardDataInfo {
+  title: string;
+  imageUrl: string;
+  likesNum: number;
+  commentsNum: number;
+  boardId: number;
+}
