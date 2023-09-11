@@ -1,9 +1,7 @@
 package com.growstory.domain.account.dto;
 
-import com.growstory.domain.board.entity.Board;
-import com.growstory.domain.comment.entity.Comment;
-import com.growstory.domain.likes.entity.AccountLike;
 import com.growstory.domain.point.entity.Point;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +15,7 @@ import java.util.List;
 public class AccountDto {
     @Getter
     @Builder
+    @Schema(name = "AccountPostDto")
     public static class Post {
         @NotBlank
         private String displayName;
@@ -60,6 +59,7 @@ public class AccountDto {
 
     @Getter
     @Builder
+    @Schema(name = "AccountResponseDto")
     public static class Response {
         private Long accountId;
         private String email;
@@ -77,6 +77,7 @@ public class AccountDto {
 
     @Getter
     @Builder
+    @Schema(name = "AccountBoardResponseDto")
     public static class BoardResponse {
         private Long boardId;
         private String title;
