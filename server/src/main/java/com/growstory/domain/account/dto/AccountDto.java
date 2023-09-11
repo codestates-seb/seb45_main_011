@@ -2,6 +2,7 @@ package com.growstory.domain.account.dto;
 
 import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.comment.entity.Comment;
+import com.growstory.domain.likes.entity.AccountLike;
 import com.growstory.domain.point.entity.Point;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -65,12 +66,22 @@ public class AccountDto {
         private String displayName;
         private String profileImageUrl;
         private Point point;
-        private List<Board> boardWritten;
+        private List<BoardResponse> boardWritten;
         private List<Board> boardLiked;
         private List<Comment> commentWritten;
 
         public int getPoint() {
             return point.getScore();
         }
+    }
+
+    @Getter
+    @Builder
+    public static class BoardResponse {
+        private Long boardId;
+        private String title;
+        private List<String> imageUrls;
+        private List<Long> likes; // 게시글을 좋아요 누른 계정 id
+        private int commentNums;
     }
 }

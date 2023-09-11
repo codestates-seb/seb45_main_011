@@ -92,6 +92,10 @@ public class Account extends BaseTimeEntity {
             point.updateAccount(this);
     }
 
+    public void addBoard(Board board) {
+        boards.add(board);
+    }
+
     public void addPlantObj(PlantObj plantObj) {
         this.plantObjs.add(plantObj);
         if(plantObj.getAccount()!= this) {
