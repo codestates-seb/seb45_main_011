@@ -20,6 +20,11 @@ public class WithMockCustomUserSecurityContextFactory implements WithSecurityCon
     private static CustomAuthorityUtils authorityUtils;
     private static PasswordEncoder passwordEncoder;
 
+    public WithMockCustomUserSecurityContextFactory(CustomAuthorityUtils authorityUtils, PasswordEncoder passwordEncoder) {
+        this.authorityUtils = authorityUtils;
+        this.passwordEncoder = passwordEncoder;
+    }
+
     @Override
     public SecurityContext createSecurityContext(WithMockCustomUser customUser) {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
@@ -29,9 +34,9 @@ public class WithMockCustomUserSecurityContextFactory implements WithSecurityCon
         claims.put("username", customUser.email());
         claims.put("displayName", customUser.displayName());
         claims.put("profileImageUrl", customUser.profileImageUrl());
-        claims.put("roles", Arrays.stream(customUser.roles()).collect(Collectors.toList()));
-
-        List<GrantedAuthority> authorities = authorityUtils.createAuthorities((List)claims.get("roles"));
+        claims.put("roles", customUser.roles());
+        System.out.println(Arrays.asList((String[]) claims.get("roles")));
+        List<GrantedAuthority> authorities = authorityUtils.createAuthorities(Arrays.asList((String[]) claims.get("roles")));
         // 인증 토큰을 만들어 authentication으로 어퍼 캐스팅하여 SecurityContextHolder에 저장한다.
         Authentication authentication = new UsernamePasswordAuthenticationToken(claims, passwordEncoder.encode(customUser.password()), authorities);
         context.setAuthentication(authentication);

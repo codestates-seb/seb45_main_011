@@ -12,8 +12,8 @@ public @interface WithMockCustomUser {
     long accountId() default 1L;
     String email() default "admin@gmail.com";
     String displayName() default "관리자";
-    String password();
-    String profileImageUrl();
+    String password() default "admin1234";
+    String profileImageUrl() default "";
     String[] roles() default {"USER", "ADMIN"};
 
 }
