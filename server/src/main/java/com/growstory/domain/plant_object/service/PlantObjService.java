@@ -52,7 +52,6 @@ public class PlantObjService {
     // GET : 정원 페이지의 모든 관련 정보 조회
     @Transactional(readOnly = true)
     public PlantObjDto.GardenInfoResponse findAllGardenInfo(Long accountId) {
-//        accountService.isAuthIdMatching(accountId);
         Account findAccount = accountService.findVerifiedAccount(accountId);
         //point (Response)
         Point userPoint = findAccount.getPoint();

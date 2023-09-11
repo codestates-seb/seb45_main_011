@@ -37,7 +37,6 @@ public class JournalService {
 
     @Transactional(readOnly = true)
     public List<JournalDto.Response> findAllJournals(Long accountId, Long leafId) {
-        accountService.isAuthIdMatching(accountId);
         Leaf leaf = leafService.findLeafEntityWithNoAuth(leafId);
         return leaf.getJournals().stream()
                 .map(journalMapper::toResponseFrom)
