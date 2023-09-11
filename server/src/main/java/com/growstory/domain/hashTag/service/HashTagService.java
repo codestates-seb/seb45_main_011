@@ -14,11 +14,11 @@ public class HashTagService {
 
     private final HashTagRepository hashTagRepository;
 
-    public void createHashTag(String hashTag) {
-        HashTag hashTag1 = HashTag.builder()
-                .tag(hashTag)
+    public void createHashTag(String requestTag) {
+        HashTag hashTag = HashTag.builder()
+                .tag(requestTag)
                 .build();
-        hashTagRepository.save(hashTag1);
+        hashTagRepository.save(hashTag);
     }
 
     public List<HashTag> getHashTags(Long boardId) {
