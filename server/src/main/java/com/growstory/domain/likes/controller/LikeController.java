@@ -2,6 +2,7 @@ package com.growstory.domain.likes.controller;
 
 import com.growstory.domain.likes.service.LikeService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import javax.validation.constraints.Positive;
 @RestController
 @Validated
 @RequiredArgsConstructor
+@Tag(name = "Like", description = "Like Controller")
 @RequestMapping("/v1/likes")
 public class LikeController {
     private final LikeService likeService;
