@@ -1,6 +1,10 @@
+'use client';
+
 import Image from 'next/image';
 
-interface PostCountInfoProps {
+import { DefaultProps } from '@/types/common';
+
+interface PostCountInfoProps extends DefaultProps {
   likesNum: number;
   commentNum: number;
   isLike?: boolean;
@@ -12,11 +16,17 @@ export default function PostCountInfo({
   commentNum,
   isLike,
   usage,
+  className,
 }: PostCountInfoProps) {
   return (
-    <div className="flex gap-3">
+    <div className={`flex gap-3 ${className}`}>
       {usage === 'post' ? (
-        <span className="flex gap-[0.375rem]" role="button" onClick={() => {}}>
+        <span
+          className="flex gap-[0.375rem]"
+          role="button"
+          onClick={() => {
+            console.log(1);
+          }}>
           {isLike ? (
             <Image
               src="/assets/img/like.svg"

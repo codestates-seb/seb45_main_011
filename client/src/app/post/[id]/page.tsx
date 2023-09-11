@@ -1,6 +1,7 @@
 import PageTitle from '@/components/common/PageTitle';
 import PostCountInfo from '@/components/common/PostCountInfo';
 import Screws from '@/components/common/Screws';
+import CommentForm from '@/components/post/CommentForm';
 import PostContent from '@/components/post/PostContent';
 import DateAndControl from '@/components/post/PostDateAndControl';
 import PostImage from '@/components/post/PostImage';
@@ -32,7 +33,7 @@ export default function Post({ params }: PostProps) {
                 boardId={boardId}
               />
             </div>
-            <div className="px-[1.875rem] py-[1.625rem] w-full bg-brown-10 border-2 border-brown-50 rounded-lg mb-8">
+            <div className="px-[1.875rem] py-[1.625rem] w-full bg-brown-10 border-2 border-brown-50 rounded-lg mb-8 common-drop-shadow ">
               <PostImage src={'/assets/img/profile_hitmontop.png'} />
               <PostContent content={`asda`} />
             </div>
@@ -41,7 +42,9 @@ export default function Post({ params }: PostProps) {
               commentNum={11}
               isLike={false}
               usage="post"
+              className="mb-3"
             />
+            <CommentForm />
           </div>
         </div>
       </div>
