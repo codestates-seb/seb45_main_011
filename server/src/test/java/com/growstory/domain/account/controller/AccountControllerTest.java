@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -85,29 +86,28 @@ public class AccountControllerTest {
                 .andExpect(header().string("Location", is(("/v1/accounts/" + responseDto.getAccountId().toString()))));
     }
 
-//    @Test
-////    @WithMockUser(username = "testuser", roles = "USER")
-////    @WithMockCustomUser()
-//    @DisplayName("프로필 사진 변경")
-//    void patchAccountProfileImageTest() throws Exception {
-//        // given
-//        MockMultipartFile testImage = new MockMultipartFile("profileImage",
-//                "testImage.jpg",
-//                "image/jpg",
-//                new FileInputStream("src/test/resources/images/testImage.jpg"));
-//
-//        willDoNothing().given(accountService).updateProfileImage(Mockito.any(MultipartFile.class));
-//
-//        // when
-//        ResultActions actions = mockMvc.perform(
-//                multipart("/v1/accounts/profileimage")
-//                        .file(testImage)
-//                        .header(HttpHeaders.AUTHORIZATION, "a"));
-//
-//        // then
-//        actions
-//                .andExpect(status().isNoContent());
-//    }
+    @Test
+//    @WithMockUser(username = "testuser", roles = "USER")
+//    @WithMockCustomUser
+    @DisplayName("프로필 사진 변경")
+    void patchAccountProfileImageTest() throws Exception {
+        // given
+        MockMultipartFile testImage = new MockMultipartFile("profileImage",
+                "testImage.jpg",
+                "jpg",
+                new FileInputStream("src/test/resources/images/testImage.jpg"));
+
+        willDoNothing().given(accountService).updateProfileImage(Mockito.any(MultipartFile.class));
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                multipart(HttpMethod.PATCH, "/v1/accounts/profileimage")
+                        .file(testImage));
+
+        // then
+        actions
+                .andExpect(status().isNoContent());
+    }
 
 
 }
