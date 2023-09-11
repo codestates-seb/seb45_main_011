@@ -52,7 +52,7 @@ public class PlantObjService {
     // GET : 정원 페이지의 모든 관련 정보 조회
     @Transactional(readOnly = true)
     public PlantObjDto.GardenInfoResponse findAllGardenInfo(Long accountId) {
-        accountService.isAuthIdMatching(accountId);
+//        accountService.isAuthIdMatching(accountId);
         Account findAccount = accountService.findVerifiedAccount(accountId);
         //point (Response)
         Point userPoint = findAccount.getPoint();
@@ -82,7 +82,7 @@ public class PlantObjService {
         Product findProduct = productService.findVerifiedProduct(productId);
 
         // 조회한 계정, 포인트, 상품정보를 바탕으로 구입 메서드 실행
-        accountService.buy(findAccount,findProduct);
+        buy(findAccount,findProduct);
 
         // 구입한 오브젝트 객체 생성
         PlantObj boughtPlantObj = PlantObj.builder()
@@ -112,7 +112,7 @@ public class PlantObjService {
 
         if(findAccount.getPlantObjs().stream()
                 .anyMatch(objid -> objid == plantObj)) {
-             accountService.resell(findAccount,plantObj);
+             resell(findAccount,plantObj);
         } else { // 사용자가 보유하고 있는 plantObj 중 해당 품목이 없다면 예외 던지기
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
         }
@@ -159,6 +159,28 @@ public class PlantObjService {
         return plantObjRepository.findById(plantObjId).orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.PLANT_OBJ_NOT_FOUND));
 
+    }
+
+    private void buy(Account account, Product product) {
+        Point accountPoint = account.getPoint();
+        int price = product.getPrice();
+        int userPointScore = account.getPoint().getScore();
+        if(price > userPointScore) {
+            throw new BusinessLogicException(ExceptionCode.NOT_ENOUGH_POINTS);
+        } else { // price <= this.point.getScore()
+            int updatedScore = accountPoint.getScore()-price;
+            accountPoint.updateScore(updatedScore);
+        }
+    }
+
+    private void resell(Account account, PlantObj plantObj) {
+        Point accountPoint = account.getPoint();
+        int userPointScore = account.getPoint().getScore();
+
+        int updatedScore = userPointScore + plantObj.getProduct().getPrice();
+        accountPoint.updateScore(updatedScore);
+        // 부모 객체에서 해당 PlantObj를 제거하여 고아 객체 -> 해당 인스턴스 삭제
+        account.removePlantObj(plantObj);
     }
 
 }
