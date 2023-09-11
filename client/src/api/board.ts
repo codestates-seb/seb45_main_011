@@ -21,6 +21,16 @@ export async function getBoardsByPageNum({ pageParam = 1 }) {
   };
 }
 
+/** 검색어를 query로 보내 검색어를 포함하는 게시글 조회 */
+export async function getBoardsBySearch(search: string) {
+  const res = await commonAxios
+    .get(`/boards?page=${search}`)
+    .then((res) => res.data);
+
+  return res.boards;
+}
+
+// 제거 예정
 export async function fetchTodos({ pageParam = 2 }) {
   const resp = await axios(
     `https://api.instantwebtools.net/v1/passenger?page=${pageParam}&size=10`,
