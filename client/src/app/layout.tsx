@@ -77,6 +77,9 @@ export default function RootLayout({
             <li>
               <Link href="/profile">프로필 수정</Link>
             </li>
+            <li>
+              <Link href="/history/1">히스토리</Link>
+            </li>
           </ul>
           <div id="modal-root"></div>
         </ReactQueryProvider>
