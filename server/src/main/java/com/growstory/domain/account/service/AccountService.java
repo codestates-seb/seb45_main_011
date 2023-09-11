@@ -3,11 +3,10 @@ package com.growstory.domain.account.service;
 import com.growstory.domain.account.dto.AccountDto;
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.account.repository.AccountRepository;
+import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.images.entity.BoardImage;
-import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.point.entity.Point;
 import com.growstory.domain.point.service.PointService;
-import com.growstory.domain.product.entity.Product;
 import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.auth.utils.CustomAuthorityUtils;
 import com.growstory.global.aws.service.S3Uploader;
@@ -22,11 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -164,25 +161,30 @@ public class AccountService {
                 .displayName(findAccount.getDisplayName())
                 .profileImageUrl(findAccount.getProfileImageUrl())
                 .point(findAccount.getPoint())
-                .boardWritten(getBoardResponses(findAccount))
-                .boardLiked(null)
-                .commentWritten(null)
+                .boardWritten(findAccount.getBoards().stream()
+                        .map(AccountService::getBoardResponse)
+                        .collect(Collectors.toList()))
+                .boardLiked(findAccount.getBoardLikes().stream()
+                        .map(boardLike -> getBoardResponse(boardLike.getBoard()))
+                        .collect(Collectors.toList()))
+                .commentWritten(findAccount.getComments().stream()
+                        .map(comment -> getBoardResponse(comment.getBoard()))
+                        .distinct()
+                        .collect(Collectors.toList()))
                 .build();
     }
 
-    private static List<AccountDto.BoardResponse> getBoardResponses(Account findAccount) {
-        return findAccount.getBoards().stream()
-                .map(board -> AccountDto.BoardResponse.builder()
-                        .boardId(board.getBoardId())
-                        .title(board.getTitle())
-                        .imageUrls(board.getBoardImages().stream()
-                                .map(BoardImage::getStoredImagePath)
-                                .collect(Collectors.toList()))
-                        .likes(board.getBoardLikes().stream()
-                                .map(boardLike -> boardLike.getAccount().getAccountId())
-                                .collect(Collectors.toList()))
-                        .commentNums(board.getBoardComments().size())
-                        .build())
-                .collect(Collectors.toList());
+    private static AccountDto.BoardResponse getBoardResponse(Board board) {
+        return AccountDto.BoardResponse.builder()
+                .boardId(board.getBoardId())
+                .title(board.getTitle())
+                .imageUrls(board.getBoardImages().stream()
+                        .map(BoardImage::getStoredImagePath)
+                        .collect(Collectors.toList()))
+                .likes(board.getBoardLikes().stream()
+                        .map(boardLike -> boardLike.getAccount().getAccountId())
+                        .collect(Collectors.toList()))
+                .commentNums(board.getBoardComments().size())
+                .build();
     }
 }
