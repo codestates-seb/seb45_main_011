@@ -24,6 +24,7 @@ export default function SigninIntro() {
     setRefershToken,
     setDisplayName,
     setProfileImageUrl,
+    saveUserId,
   } = useUserStore();
 
   const onGoogleLogin = async () => {
@@ -41,17 +42,20 @@ export default function SigninIntro() {
     const queryString = window?.location?.search;
     const urlParams = new URLSearchParams(queryString);
 
+    const googleAccoutId = urlParams.get('accountId');
     const googleAccessToken = urlParams.get('access_token');
     const googleRefreshToken = urlParams.get('refresh_token');
     const googleDisplayName = urlParams.get('displayName');
     const googleProfileImageUrl = urlParams.get('profileImageUrl');
 
     if (
+      googleAccoutId &&
       googleAccessToken &&
       googleRefreshToken &&
       googleDisplayName &&
       googleProfileImageUrl
     ) {
+      saveUserId(googleAccoutId);
       setAccessToken(googleAccessToken as string);
       setRefershToken(googleRefreshToken as string);
       setDisplayName(googleDisplayName as string);
