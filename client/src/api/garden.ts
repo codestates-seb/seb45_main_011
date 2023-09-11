@@ -5,8 +5,7 @@ import { PlantLocation } from '@/types/data';
 export const gardenAxios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
-    Authorization:
-      '',
+    Authorization: '',
   },
   withCredentials: true,
 });

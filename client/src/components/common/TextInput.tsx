@@ -8,6 +8,7 @@ import { DefaultProps, InputValues } from '@/types/common';
 import getTextInputTypeFormat from '@/utils/getTextInputTypeFormat';
 
 interface TextInputProps extends DefaultProps {
+  id?: string;
   name: 'plantName' | 'title' | 'nickname';
   register: UseFormRegister<InputValues>;
   errors: FieldErrors<InputValues>;
@@ -15,6 +16,7 @@ interface TextInputProps extends DefaultProps {
 }
 
 export default function TextInput({
+  id,
   name,
   register,
   errors,
@@ -25,6 +27,7 @@ export default function TextInput({
   return (
     <div className={`w-full flex flex-col ', ${INPUT_SIZE[name]}`}>
       <input
+        id={id}
         required={required}
         className="w-full h-[36px] bg-white-10 border-2 border-brown-70 p-[10px] rounded-lg shadow-outer/down text-xs leading-3 placeholder:text-gray-50 focus:outline-0"
         type="text"
