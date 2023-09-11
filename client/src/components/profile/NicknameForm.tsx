@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 
 import { updateUserNickname } from '@/api/profile';
 
-import usePesistStore from '@/stores/persistStore';
+import useUserStore from '@/stores/userStore';
 
 import TextInput from '../common/TextInput';
 import CommonButton from '../common/CommonButton';
@@ -16,6 +16,7 @@ type Token = {
 };
 
 export default function NicknameForm({ token }: Token) {
+  const setDisplayName = useUserStore((state) => state.setDisplayName);
   const {
     register,
     handleSubmit,
@@ -31,7 +32,9 @@ export default function NicknameForm({ token }: Token) {
 
     try {
       updateUserNickname(nickname, token);
+      setDisplayName(nickname);
       reset();
+      alert('닉네임이 성공적으로 변경되었습니다.');
     } catch (error) {
       console.log(error);
     }
