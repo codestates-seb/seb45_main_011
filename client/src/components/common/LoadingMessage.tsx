@@ -6,7 +6,7 @@ import useTyping from '@/hooks/useTyping';
 
 import { LOADING_CONTENTS } from '@/constants/contents';
 
-export default function Loading() {
+export default function LoadingMessage() {
   const contents = LOADING_CONTENTS;
 
   const { paragraphRef } = useTyping(contents);
@@ -17,7 +17,7 @@ export default function Loading() {
       className="flex flex-col items-center gap-4 w-fit">
       <Image
         src="/assets/img/loading.png"
-        alt=""
+        alt="로딩 중"
         width={70}
         height={70}
         className="drop-shadow-lg sizeUpAndDown"
