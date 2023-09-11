@@ -167,7 +167,7 @@ public class PlantObjService {
         int userPointScore = account.getPoint().getScore();
         if(price > userPointScore) {
             throw new BusinessLogicException(ExceptionCode.NOT_ENOUGH_POINTS);
-        } else { // price <= this.point.getScore()
+        } else { // price <= userPointScore
             int updatedScore = accountPoint.getScore()-price;
             accountPoint.updateScore(updatedScore);
         }
