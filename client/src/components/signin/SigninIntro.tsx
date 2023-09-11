@@ -55,7 +55,7 @@ export default function SigninIntro() {
       googleDisplayName &&
       googleProfileImageUrl
     ) {
-      saveUserId(googleAccoutId);
+      saveUserId(Number(googleAccoutId));
       setAccessToken(googleAccessToken as string);
       setRefershToken(googleRefreshToken as string);
       setDisplayName(googleDisplayName as string);
