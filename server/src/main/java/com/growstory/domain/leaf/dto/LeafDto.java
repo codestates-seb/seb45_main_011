@@ -34,6 +34,7 @@ public class LeafDto {
     @Getter
     @Builder
     public static class Response {
+        private String displayName;
         private Long leafId;
         private String leafName;
         private String leafImageUrl;

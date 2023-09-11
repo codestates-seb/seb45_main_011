@@ -134,6 +134,7 @@ public class LeafService {
 
     private LeafDto.Response getLeafResponseDto(Leaf findLeaf) {
         return LeafDto.Response.builder()
+                .displayName(findLeaf.getAccount().getDisplayName())
                 .leafId(findLeaf.getLeafId())
                 .leafName(findLeaf.getLeafName())
                 .leafImageUrl(findLeaf.getLeafImageUrl())
