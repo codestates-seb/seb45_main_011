@@ -36,6 +36,7 @@ export default function PasswordForm({ token }: Token) {
     try {
       updateUserPassword(presentPassword, changedPassword, token);
       reset();
+      alert('비밀번호가 성공적으로 변경되었습니다.');
     } catch (error) {
       console.log(error);
     }

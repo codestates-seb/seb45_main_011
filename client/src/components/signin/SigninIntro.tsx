@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 import useSignStore from '@/stores/signStore';
-import usePesistStore from '@/stores/persistStore';
+import useUserStore from '@/stores/userStore';
 
 import SignLink from '../sign/SignLink';
 import SigninForm from './SigninForm';
@@ -24,7 +24,7 @@ export default function SigninIntro() {
     setRefershToken,
     setDisplayName,
     setProfileImageUrl,
-  } = usePesistStore();
+  } = useUserStore();
 
   const onGoogleLogin = async () => {
     console.log('go');

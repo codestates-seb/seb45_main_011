@@ -4,19 +4,20 @@ import { useRef, useState } from 'react';
 
 import { updateUserProfileImage } from '@/api/profile';
 
-import usePesistStore from '@/stores/persistStore';
+import useUserStore from '@/stores/userStore';
 
-import CommonButton from './CommonButton';
+import CommonButton from '../common/CommonButton';
 
 type Token = {
   token: string;
 };
 
-export default function ImageInput({ token }: Token) {
-  const { isGoogleLogin, isLogin, profileImageUrl, setProfileImageUrl } =
-    usePesistStore();
+export default function ImageForm({ token }: Token) {
+  const { profileImageUrl, setProfileImageUrl } = useUserStore();
 
   const [image, setImage] = useState<FileList>();
+  const [imageUrl, setImageUrl] = useState(profileImageUrl);
+
   const imageUploadRef = useRef<HTMLInputElement | null>(null);
 
   const checkFileSize = (file: File) => {
@@ -30,14 +31,6 @@ export default function ImageInput({ token }: Token) {
     return false;
   };
 
-  const profileImage = () => {
-    if (!profileImageUrl) return '/assets/img/profile_avocado.png';
-
-    if (isLogin || isGoogleLogin) {
-      return profileImageUrl;
-    }
-  };
-
   const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files;
 
@@ -45,16 +38,16 @@ export default function ImageInput({ token }: Token) {
 
     if (file[0] && checkFileSize(file[0])) {
       setImage(file);
-      console.log(file[0]);
 
       const newFileURL = URL.createObjectURL(file[0]);
-      setProfileImageUrl(newFileURL);
+      setImageUrl(newFileURL);
     }
   };
 
   const onImageSubmit = () => {
     if (image && token) {
       updateUserProfileImage(image[0], token);
+      setProfileImageUrl(imageUrl);
     }
   };
 
@@ -62,8 +55,8 @@ export default function ImageInput({ token }: Token) {
     <form>
       <div className="flex flex-col items-center justify-center">
         <img
-          src={profileImage()}
-          className="w-[100px] h-[100px] rounded-[50%] border-brown-50 border-[3px] cursor-pointer mb-4"
+          src={imageUrl || profileImageUrl}
+          className="w-[100px] h-[100px] rounded-[50%] border-brown-50 border-[3px] cursor-pointer mb-4 shadow-outer/down"
           alt="profile_img"
           onClick={() => imageUploadRef.current?.click()}
         />
