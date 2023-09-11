@@ -55,7 +55,7 @@ export default function ImageForm({ token }: Token) {
   // 단순히 profileImageUrl를 src에 넣으면 이미지가 제대로 뜨지 않음
   useEffect(() => {
     if (!profileImageUrl) {
-      setProfileImageUrl('/assets/img/profile_hitmontop.png');
+      setProfileImageUrl('/assets/img/bg_default_profile.png');
     }
   }, []);
 

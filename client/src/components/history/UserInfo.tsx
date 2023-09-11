@@ -32,7 +32,7 @@ export default function UserInfo({ token }: Token) {
     useUserStore();
 
   const profileImage = () => {
-    if (!profileImageUrl) return '/assets/img/profile_hitmontop.png';
+    if (!profileImageUrl) return '/assets/img/bg_default_profile.png';
 
     if (isLogin || isGoogleLogin) {
       return profileImageUrl;
