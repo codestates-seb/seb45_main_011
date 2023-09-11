@@ -59,7 +59,7 @@ public class LeafService {
 
     public void updateLeaf(LeafDto.Patch leafPatchDto, MultipartFile leafImage) {
         Account findAccount = authUserUtils.getAuthUser();
-        Leaf findLeaf = findVerifiedLeaf(findAccount.getAccountId(), leafPatchDto.getLeafId());
+        Leaf findLeaf = findVerifiedLeafByAccount(findAccount.getAccountId(), leafPatchDto.getLeafId());
         String leafImageUrl = findLeaf.getLeafImageUrl();
 
         if (leafPatchDto.getIsImageUpdated()) {
@@ -85,9 +85,7 @@ public class LeafService {
     }
 
     public LeafDto.Response findLeaf(Long leafId) {
-        Account findAccount = authUserUtils.getAuthUser();
-
-        return getLeafResponseDto(findVerifiedLeaf(findAccount.getAccountId(), leafId));
+        return getLeafResponseDto(findVerifiedLeaf(leafId));
     }
 
     public Leaf findLeafEntityWithNoAuth(Long leafId) {
@@ -97,13 +95,13 @@ public class LeafService {
 
     public Leaf findLeafEntityBy(Long leafId) {
         Account findAccount = authUserUtils.getAuthUser();
-        Leaf findLeaf = findVerifiedLeaf(findAccount.getAccountId(), leafId);
+        Leaf findLeaf = findVerifiedLeafByAccount(findAccount.getAccountId(), leafId);
         return findLeaf;
     }
 
     public void deleteLeaf(Long leafId) {
         Account findAccount = authUserUtils.getAuthUser();
-        Leaf findLeaf = findVerifiedLeaf(findAccount.getAccountId(), leafId);
+        Leaf findLeaf = findVerifiedLeafByAccount(findAccount.getAccountId(), leafId);
 
         Optional.ofNullable(findLeaf.getLeafImageUrl()).ifPresent(leafImageUrl ->
                 s3Uploader.deleteImageFromS3(leafImageUrl, LEAF_IMAGE_PROCESS_TYPE));
@@ -123,13 +121,18 @@ public class LeafService {
         findAccount.getLeaves().remove(findLeaf);
     }
 
-    private Leaf findVerifiedLeaf(Long accountId, Long leafId) {
-        Leaf findLeaf = leafRepository.findById(leafId).orElseThrow(() ->
-                new BusinessLogicException(ExceptionCode.LEAF_NOT_FOUND));
+    private Leaf findVerifiedLeafByAccount(Long accountId, Long leafId) {
+        Leaf findLeaf = findVerifiedLeaf(leafId);
 
         if (!Objects.equals(accountId, findLeaf.getAccount().getAccountId()))
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
         else return findLeaf;
+    }
+
+    private Leaf findVerifiedLeaf(Long leafId) {
+        Leaf findLeaf = leafRepository.findById(leafId).orElseThrow(() ->
+                new BusinessLogicException(ExceptionCode.LEAF_NOT_FOUND));
+        return findLeaf;
     }
 
     private LeafDto.Response getLeafResponseDto(Leaf findLeaf) {
