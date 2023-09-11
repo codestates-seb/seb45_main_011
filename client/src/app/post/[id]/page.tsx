@@ -1,4 +1,5 @@
 import PageTitle from '@/components/common/PageTitle';
+import PostCountInfo from '@/components/common/PostCountInfo';
 import Screws from '@/components/common/Screws';
 import PostContent from '@/components/post/PostContent';
 import DateAndControl from '@/components/post/PostDateAndControl';
@@ -16,7 +17,7 @@ export default function Post({ params }: PostProps) {
       <div className="relative w-full max-w-[720px] h-[864px] border-gradient rounded-xl">
         <div className="h-full px-5 py-5">
           <Screws />
-          <div className="relative h-full pr-5 pl-7 flex flex-col items-center overflow-y-scroll scrollbar ">
+          <div className="relative h-full pr-5 pl-7 flex flex-col  overflow-y-scroll scrollbar ">
             <PageTitle text="첫 바질!!!" />
             <div className="w-full flex justify-between items-center mb-4">
               <BoardProfile
@@ -35,6 +36,12 @@ export default function Post({ params }: PostProps) {
               <PostImage src={'/assets/img/profile_hitmontop.png'} />
               <PostContent content={`asda`} />
             </div>
+            <PostCountInfo
+              likesNum={200}
+              commentNum={11}
+              isLike={false}
+              usage="post"
+            />
           </div>
         </div>
       </div>
