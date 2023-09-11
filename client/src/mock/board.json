@@ -1,0 +1,102 @@
+{
+  "board": [
+    {
+      "boardId": 1,
+      "title": "제목",
+      "imageUrl": "/assets/img/profile_avocado.png",
+      "commentsNum": 142,
+      "likesNum": 142
+    },
+    {
+      "boardId": 2,
+      "title": "제목",
+      "imageUrl": "/assets/img/profile_avocado.png",
+      "commentsNum": 142,
+      "likesNum": 142
+    },
+    {
+      "boardId": 3,
+      "title": "제목",
+      "imageUrl": "/assets/img/profile_avocado.png",
+      "commentsNum": 142,
+      "likesNum": 142
+    },
+    {
+      "boardId": 4,
+      "title": "제목",
+      "imageUrl": "/assets/img/profile_avocado.png",
+      "commentsNum": 142,
+      "likesNum": 142
+    },
+    {
+      "boardId": 5,
+      "title": "제목",
+      "imageUrl": "/assets/img/profile_avocado.png",
+      "commentsNum": 142,
+      "likesNum": 142
+    },
+    {
+      "boardId": 6,
+      "title": "제목",
+      "imageUrl": "/assets/img/profile_avocado.png",
+      "commentsNum": 142,
+      "likesNum": 142
+    },
+    {
+      "boardId": 7,
+      "title": "제목",
+      "imageUrl": "/assets/img/profile_avocado.png",
+      "commentsNum": 142,
+      "likesNum": 142
+    },
+    {
+      "boardId": 8,
+      "title": "제목",
+      "imageUrl": "/assets/img/profile_avocado.png",
+      "commentsNum": 142,
+      "likesNum": 142
+    },
+    {
+      "boardId": 9,
+      "title": "제목",
+      "imageUrl": "/assets/img/profile_avocado.png",
+      "commentsNum": 142,
+      "likesNum": 142
+    },
+    {
+      "boardId": 10,
+      "title": "제목",
+      "imageUrl": "/assets/img/profile_avocado.png",
+      "commentsNum": 142,
+      "likesNum": 142
+    },
+    {
+      "boardId": 11,
+      "title": "제목",
+      "imageUrl": "/assets/img/profile_avocado.png",
+      "commentsNum": 142,
+      "likesNum": 142
+    },
+    {
+      "boardId": 12,
+      "title": "제목",
+      "imageUrl": "/assets/img/profile_avocado.png",
+      "commentsNum": 142,
+      "likesNum": 142
+    },
+    {
+      "boardId": 13,
+      "title": "제목",
+      "imageUrl": "/assets/img/profile_avocado.png",
+      "commentsNum": 142,
+      "likesNum": 142
+    },
+    {
+      "boardId": 14,
+      "title": "제목",
+      "imageUrl": "/assets/img/profile_avocado.png",
+      "commentsNum": 142,
+      "likesNum": 142
+    }
+  ]
+}
