@@ -1,3 +1,8 @@
+'use client';
+
+import usePostModalStore from '@/stores/postModalStore';
+
+import PostDeleteModal from '@/components/post/PostDeleteModal';
 import PageTitle from '@/components/common/PageTitle';
 import PostCountInfo from '@/components/common/PostCountInfo';
 import Screws from '@/components/common/Screws';
@@ -14,6 +19,7 @@ interface PostProps {
 
 export default function Post({ params }: PostProps) {
   const boardId = Number(params.id);
+  const { isOpen } = usePostModalStore();
   return (
     <main className="flex justify-center items-center">
       <div className="relative w-full max-w-[720px] h-[864px] border-gradient rounded-xl">
@@ -56,6 +62,7 @@ export default function Post({ params }: PostProps) {
           </div>
         </div>
       </div>
+      {isOpen && <PostDeleteModal postId={params.id} />}
     </main>
   );
 }

@@ -8,6 +8,7 @@ import { DefaultProps, InputValues } from '@/types/common';
 import getTextAreaTypeFormat from '@/utils/getTextAreaTypeFormat';
 
 interface TextAreaProps extends DefaultProps {
+  id?: string;
   name: 'leafContent' | 'diaryContent';
   register: UseFormRegister<InputValues>;
   errors: FieldErrors<InputValues>;
@@ -15,6 +16,7 @@ interface TextAreaProps extends DefaultProps {
 }
 
 export default function TextArea({
+  id,
   name,
   register,
   errors,
@@ -25,6 +27,7 @@ export default function TextArea({
   return (
     <div className={`flex flex-col w-full ${TEXTAREA_CONTAINER_SIZE[name]}`}>
       <textarea
+        id={id}
         required={required}
         className={`border-2 bg-white-10 border-brown-70 p-3 rounded-lg shadow-outer/down text-xs leading-3 placeholder:text-gray-50 focus:outline-0 resize-none ${TEXTAREA_SIZE[name]}`}
         placeholder={TypeFormat?.placeholder}

@@ -95,3 +95,5 @@ export const PLANT_CARD_BUTTON_CONTENTS = {
   shop: '구매',
   inventory: '설치',
 } as const;
+
+export const LOADING_CONTENTS = '로딩 중...';
