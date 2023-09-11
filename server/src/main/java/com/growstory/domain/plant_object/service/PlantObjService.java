@@ -63,6 +63,7 @@ public class PlantObjService {
         List<ProductDto.Response> products = productService.findAllProducts();
 
         return PlantObjDto.GardenInfoResponse.builder()
+                .displayName(findAccount.getDisplayName())
                 .plantObjs(plantObjects)
                 .point(point)
                 .products(products)

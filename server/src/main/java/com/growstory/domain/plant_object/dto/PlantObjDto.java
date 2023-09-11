@@ -64,9 +64,10 @@ public class PlantObjDto {
     @Getter
     @Builder
     public static class GardenInfoResponse {
-        private List<ProductDto.Response> products;
+        private String displayName;
         private PointDto.Response point;
         private List<PlantObjDto.Response> plantObjs;
+        private List<ProductDto.Response> products;
 
     }
 }
