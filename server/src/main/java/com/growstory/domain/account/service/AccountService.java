@@ -140,28 +140,4 @@ public class AccountService {
         if (Long.valueOf((Integer) claims.get("accountId")) != accountId)
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
     }
-
-    public void buy(Account account, Product product) {
-        Point accountPoint = account.getPoint();
-        int price = product.getPrice();
-        int userPointScore = account.getPoint().getScore();
-        if(price > userPointScore) {
-            throw new BusinessLogicException(ExceptionCode.NOT_ENOUGH_POINTS);
-        } else { // price <= this.point.getScore()
-            int updatedScore = accountPoint.getScore()-price;
-            accountPoint.updateScore(updatedScore);
-        }
-    }
-
-    public void resell(Account account, PlantObj plantObj) {
-        Point accountPoint = account.getPoint();
-        int userPointScore = account.getPoint().getScore();
-
-        int updatedScore = userPointScore + plantObj.getProduct().getPrice();
-        accountPoint.updateScore(updatedScore);
-        // 부모 객체에서 해당 PlantObj를 제거하여 고아 객체 -> 해당 인스턴스 삭제
-        account.removePlantObj(plantObj);
-    }
-
-
 }
