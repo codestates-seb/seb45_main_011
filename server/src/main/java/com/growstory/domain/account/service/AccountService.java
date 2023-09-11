@@ -7,7 +7,6 @@ import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.point.entity.Point;
 import com.growstory.domain.point.service.PointService;
 import com.growstory.domain.product.entity.Product;
-import com.growstory.global.auth.config.SecurityConfiguration;
 import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.auth.utils.CustomAuthorityUtils;
 import com.growstory.global.aws.service.S3Uploader;
@@ -25,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -85,8 +85,11 @@ public class AccountService {
 
         String encryptedChangedPassword = passwordEncoder.encode(passwordPatchDto.getChangedPassword());
 
-        if (!passwordEncoder.matches(passwordPatchDto.getPresentPassword(), findAccount.getPassword())) throw new BadCredentialsException("현재 비밀번호가 일치하지 않습니다.");
-        if (findAccount.getPassword().equals(encryptedChangedPassword)) throw new BadCredentialsException("새로운 비밀번호와 현재 비밀번호가 일치합니다.");
+        if (!passwordEncoder.matches(passwordPatchDto.getPresentPassword(), findAccount.getPassword()))
+            throw new BadCredentialsException("현재 비밀번호가 일치하지 않습니다.");
+
+        if (findAccount.getPassword().equals(encryptedChangedPassword))
+            throw new BadCredentialsException("새로운 비밀번호와 현재 비밀번호가 일치합니다.");
 
         accountRepository.save(findAccount.toBuilder()
                 .password(encryptedChangedPassword)
@@ -99,10 +102,26 @@ public class AccountService {
 
         return AccountDto.Response.builder()
                 .accountId(findAccount.getAccountId())
+                .email(findAccount.getEmail())
                 .displayName(findAccount.getDisplayName())
                 .profileImageUrl(findAccount.getProfileImageUrl())
                 .point(findAccount.getPoint())
                 .build();
+    }
+
+    @Transactional(readOnly = true)
+    public List<AccountDto.Response> getAccounts() {
+        List<Account> accounts = accountRepository.findAll();
+
+        return accounts.stream()
+                .map(account -> AccountDto.Response.builder()
+                        .accountId(account.getAccountId())
+                        .email(account.getEmail())
+                        .displayName(account.getDisplayName())
+                        .profileImageUrl(account.getProfileImageUrl())
+                        .point(account.getPoint())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     public void deleteAccount() {
@@ -119,6 +138,13 @@ public class AccountService {
 
         if(findAccount.isPresent())
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_ALREADY_EXISTS);
+    }
+
+
+    public Boolean verifyPassword(AccountDto.PasswordVerify passwordVerifyDto) {
+        Account findAccount = authUserUtils.getAuthUser();
+
+        return passwordEncoder.matches(passwordVerifyDto.getPassword(), findAccount.getPassword());
     }
 
     @Transactional(readOnly = true)
@@ -139,5 +165,27 @@ public class AccountService {
         // 사용자가 일치하지 않으면 405 예외 던지기
         if (Long.valueOf((Integer) claims.get("accountId")) != accountId)
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
+    }
+
+    public void buy(Account account, Product product) {
+        Point accountPoint = account.getPoint();
+        int price = product.getPrice();
+        int userPointScore = account.getPoint().getScore();
+        if(price > userPointScore) {
+            throw new BusinessLogicException(ExceptionCode.NOT_ENOUGH_POINTS);
+        } else { // price <= this.point.getScore()
+            int updatedScore = accountPoint.getScore()-price;
+            accountPoint.updateScore(updatedScore);
+        }
+    }
+
+    public void resell(Account account, PlantObj plantObj) {
+        Point accountPoint = account.getPoint();
+        int userPointScore = account.getPoint().getScore();
+
+        int updatedScore = userPointScore + plantObj.getProduct().getPrice();
+        accountPoint.updateScore(updatedScore);
+        // 부모 객체에서 해당 PlantObj를 제거하여 고아 객체 -> 해당 인스턴스 삭제
+        account.removePlantObj(plantObj);
     }
 }

@@ -2,6 +2,7 @@ package com.growstory.domain.account.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.growstory.domain.board.entity.Board;
+import com.growstory.domain.comment.entity.Comment;
 import com.growstory.domain.leaf.entity.Leaf;
 import com.growstory.domain.likes.entity.AccountLike;
 import com.growstory.domain.plant_object.entity.PlantObj;
@@ -49,6 +50,9 @@ public class Account extends BaseTimeEntity {
     // 자신이 좋아요 받은 계정 리스트
     @OneToMany(mappedBy = "receivingAccount", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AccountLike> receivingAccountLikes;
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
     @JsonIgnore
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)

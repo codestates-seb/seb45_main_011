@@ -13,6 +13,10 @@ public enum ExceptionCode {
     BOARD_NOT_ALLOW(405, "That Board doesn't have authority"),
     BOARD_ALREADY_EXISTS(409, "Board already exists"),
 
+    COMMENT_NOT_FOUND(404, "Comment not found"),
+    COMMENT_NOT_ALLOW(405, "That Comment doesn't have authority"),
+    COMMENT_ALREADY_EXISTS(409, "Comment already exists"),
+
     PLANT_OBJECT_NOT_FOUND(404, "Plant Object not found"),
     PLANT_OBJECT_NOT_ALLOW(405, "That Plant Object doesn't have authority"),
     PLANT_OBJECT_ALREADY_EXISTS(409, "Plant Object already exists"),

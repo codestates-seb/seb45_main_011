@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @Validated
@@ -59,15 +60,40 @@ public class AccountController {
 
     // 마이페이지 조회
     @GetMapping
-    public ResponseEntity getAccount() {
+    public ResponseEntity<SingleResponseDto<AccountDto.Response>> getAccount() {
         AccountDto.Response responseDto = accountService.getAccount();
 
-        return ResponseEntity.ok(SingleResponseDto.builder()
+        return ResponseEntity.ok(SingleResponseDto.<AccountDto.Response>builder()
                 .status(HttpStatusCode.OK.getStatusCode())
                 .message(HttpStatusCode.OK.getMessage())
                 .data(responseDto)
                 .build()
         );
+    }
+
+//     유저 전체 조회
+    @GetMapping("/all")
+    public ResponseEntity<SingleResponseDto<List<AccountDto.Response>>> getAccounts() {
+        List<AccountDto.Response> responseDtos = accountService.getAccounts();
+
+        return ResponseEntity.ok(SingleResponseDto.<List<AccountDto.Response>>builder()
+                .status(HttpStatusCode.OK.getStatusCode())
+                .message(HttpStatusCode.OK.getMessage())
+                .data(responseDtos)
+                .build()
+        );
+    }
+
+    // 회원 탈퇴 전 비밀번호 검증
+    @PostMapping("/password/verification")
+    public ResponseEntity<SingleResponseDto<Boolean>> verifyPassword(@Valid @RequestBody AccountDto.PasswordVerify passwordVerifyDto) {
+        Boolean isMatched = accountService.verifyPassword(passwordVerifyDto);
+
+        return ResponseEntity.ok(SingleResponseDto.<Boolean>builder()
+                .status(HttpStatusCode.OK.getStatusCode())
+                .message(HttpStatusCode.OK.getMessage())
+                .data(isMatched)
+                .build());
     }
 
     // 회원 탈퇴

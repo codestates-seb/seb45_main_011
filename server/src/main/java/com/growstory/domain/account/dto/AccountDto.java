@@ -3,8 +3,10 @@ package com.growstory.domain.account.dto;
 import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.comment.entity.Comment;
 import com.growstory.domain.point.entity.Point;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -13,6 +15,7 @@ import java.util.List;
 
 public class AccountDto {
     @Getter
+    @Builder
     public static class Post {
         @NotBlank
         private String displayName;
@@ -46,8 +49,19 @@ public class AccountDto {
 
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PasswordVerify {
+        @NotBlank
+        @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d).{6,}$" , message = "영문, 숫자 포함 6글자 이상의 패스워드만 허용합니다.")
+        private String password;
+    }
+
+    @Getter
+    @Builder
     public static class Response {
         private Long accountId;
+        private String email;
         private String displayName;
         private String profileImageUrl;
         private Point point;

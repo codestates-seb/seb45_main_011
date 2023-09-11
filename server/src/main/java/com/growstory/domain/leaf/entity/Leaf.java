@@ -34,22 +34,19 @@ public class Leaf extends BaseTimeEntity {
     private Account account;
 
     @OneToOne(mappedBy = "leaf")
-    private Board board;
-
-    @OneToOne(mappedBy = "leaf")
     private PlantObj plantObj;
 
-    @OneToMany(mappedBy = "leaf")
+    @OneToMany(mappedBy = "leaf", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Journal> journals;
-
-    public void updateAccount(Account account) {
-        this.account = account;
-    }
 
     public void updatePlantObj(PlantObj plantObj) {
         this.plantObj = plantObj;
         if(plantObj.getLeaf()!=this) {
             plantObj.updateLeaf(this);
         }
+    }
+
+    public void removePlantObj() {
+        this.plantObj = null;
     }
 }

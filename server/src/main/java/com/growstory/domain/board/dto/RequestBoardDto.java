@@ -4,27 +4,26 @@ import lombok.Getter;
 import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 public class RequestBoardDto {
 
     @Getter
     public static class Post {
-
         @NotBlank
         private String title;
 
         @NotBlank
         private String content;
 
-        @Nullable
-        private String imageUrl;
+        public Post(String title, String content) {
+            this.title = title;
+            this.content = content;
+        }
 
-        @Nullable
-        private String hashTag;
-
-        private Long leafId;
-
-        private Boolean isConnection;
+        //
+//        @Nullable
+//        private String imageUrl;
     }
 
     @Getter
@@ -43,8 +42,5 @@ public class RequestBoardDto {
 
         @Nullable
         private String hashTag;
-
-
-        private Long leafId;
     }
 }

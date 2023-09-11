@@ -46,9 +46,9 @@ public class LeafController {
     }
 
     // 사용자의 식물카드 전체 조회
-    @GetMapping
-    public ResponseEntity<SingleResponseDto<List<LeafDto.Response>>> getLeaves() {
-        List<LeafDto.Response> leafResponseDtos = leafService.findLeaves();
+    @GetMapping("/account/{account-id}")
+    public ResponseEntity<SingleResponseDto<List<LeafDto.Response>>> getLeaves(@Positive @PathVariable("account-id") Long accountId) {
+        List<LeafDto.Response> leafResponseDtos = leafService.findLeaves(accountId);
 
         return ResponseEntity.ok(SingleResponseDto.<List<LeafDto.Response>>builder()
                 .status(HttpStatusCode.OK.getStatusCode())

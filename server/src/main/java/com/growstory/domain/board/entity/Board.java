@@ -32,29 +32,26 @@ public class Board extends BaseTimeEntity {
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
-    private Boolean isConnection;
-
-
     @ManyToOne
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
 
-    @OneToOne
-    @JoinColumn(name = "LEAF_ID")
-    private Leaf leaf;
-
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> boardComments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BoardImage> boardImages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BoardLike> boardLikes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "board")
-    private List<Board_HashTag> boardHashTags;
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Board_HashTag> boardHashTags = new ArrayList<>();
+
+    // Mockito Test를 위한 setter
+    public void setBoardId(Long boardId) {
+        this.boardId = boardId;
+    }
 
     public void addBoardLike(BoardLike boardLike) {
         boardLikes.add(boardLike);
