@@ -9,6 +9,7 @@ import com.growstory.domain.journal.mapper.JournalMapper;
 import com.growstory.domain.journal.repository.JournalRepository;
 import com.growstory.domain.leaf.entity.Leaf;
 import com.growstory.domain.leaf.service.LeafService;
+import com.growstory.domain.point.service.PointService;
 import com.growstory.global.aws.service.S3Uploader;
 import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
@@ -30,8 +31,8 @@ public class JournalService {
     private final JournalImageService journalImageService;
     private final LeafService leafService;
     private final JournalMapper journalMapper;
-    private final S3Uploader s3Uploader;
     private final AccountService accountService;
+    private final PointService pointService;
 
     private static final String JOURNAL_IMAGE_PROCESS_TYPE = "journal_image";
 
@@ -60,6 +61,7 @@ public class JournalService {
     }
 
     private Journal createJournalWithNoImg(Leaf findLeaf, JournalDto.Post postDto) {
+        pointService.updatePoint(findLeaf.getAccount().getPoint(), "journal");
         return journalRepository.save(Journal.builder()
                 .title(postDto.getTitle())
                 .content(postDto.getContent())
