@@ -61,6 +61,7 @@ export interface LeafsDataInfo {
   leafName: string;
   createAt: string;
   leafImageUrl: string;
+  displayName: string;
 }
 
 export interface DiaryDataInfo {
@@ -77,6 +78,14 @@ export interface LeafDataInfo {
   leafImageUrl: string;
   content: string;
   createdAt: string;
+}
+
+export interface BoardDataInfo {
+  title: string;
+  imageUrl: string;
+  likesNum: number;
+  commentsNum: number;
+  boardId: number;
 }
 
 export interface PostFormValues {

@@ -16,8 +16,8 @@ import Leaf from '@/components/common/Leaf';
 import PageTitle from '@/components/common/PageTitle';
 import Screws from '@/components/common/Screws';
 import ModalPortal from '@/components/common/ModalPortal';
-import AddLeafButton from '@/components/Leafs/AddLeafButton';
-import { LeafDeleteModal } from '@/components/Leafs/LeafDeleteModal';
+import AddLeafButton from '@/components/leafs/AddLeafButton';
+import { LeafDeleteModal } from '@/components/leafs/LeafDeleteModal';
 
 import { LeafsDataInfo } from '@/types/data';
 
@@ -53,7 +53,7 @@ export default function Leafs({ params }: LeafsProps) {
       })
     : { data: null, isLoading: false, isError: false };
 
-  if (isLoading) return <div>loading</div>;
+  if (isLoading || leafs === null) return <div>loading</div>;
   if (isError) return <div>error</div>;
 
   // TODO 클릭한 유저 정보 받아와야 한다. (클릭한 유저이름을 상태로 저장? 아니면 서버로 요청?)
@@ -66,7 +66,7 @@ export default function Leafs({ params }: LeafsProps) {
             text={
               pathUserId === userId
                 ? '내 식물 카드'
-                : `${userName}님의 식물 카드`
+                : `${leafs[0].displayName}님의 식물 카드`
             }
           />
           <div className="pr-3 w-full h-[404px] flex flex-wrap  gap-4 overflow-y-scroll scrollbar">

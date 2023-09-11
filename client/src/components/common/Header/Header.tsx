@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import useSignStore from '@/stores/signStore';
-import usePesistStore from '@/stores/persistStore';
+import useUserStore from '@/stores/userStore';
 
 import Logo from '../Logo';
 import HeaderLink from './HeaderLink';
@@ -12,26 +12,11 @@ import HeaderLink from './HeaderLink';
 export default function Header() {
   const router = useRouter();
   const { getSigninForm, getSignupForm } = useSignStore();
-  const {
-    isLogin,
-    isGoogleLogin,
-    setIsLogin,
-    setIsGoogleLogin,
-    setAccessToken,
-    setRefershToken,
-    setDisplayName,
-    setProfileImageUrl,
-    profileImageUrl,
-  } = usePesistStore();
+  const { isLogin, isGoogleLogin, profileImageUrl, setClear } = useUserStore();
 
   const logout = () => {
-    setAccessToken('');
-    setRefershToken('');
-    setDisplayName('');
-    setProfileImageUrl('');
-
-    setIsLogin(false);
-    setIsGoogleLogin(false);
+    sessionStorage.clear();
+    setClear();
 
     getSigninForm(false);
     getSignupForm(false);
@@ -40,7 +25,7 @@ export default function Header() {
   };
 
   const profileImage = () => {
-    if (!profileImageUrl) return '/assets/img/profile_avocado.png';
+    if (!profileImageUrl) return '/assets/img/profile_hitmontop.png';
 
     if (isLogin || isGoogleLogin) {
       return profileImageUrl as string;
