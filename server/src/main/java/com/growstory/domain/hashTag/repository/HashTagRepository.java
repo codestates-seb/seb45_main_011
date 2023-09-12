@@ -9,11 +9,13 @@ import java.util.Optional;
 
 public interface HashTagRepository extends JpaRepository<HashTag, Long> {
 //    Optional<List<HashTag>> findByHashTags_BoardId(Long boardId);
-    HashTag findByTag(String tag);
+    Optional<HashTag> findByTag(String tag);
 
-//    @Query("SELECT ht FROM HashTag ht " +
-//            "JOIN ht.boardHashTags bht " +
-//            "JOIN bht.board b " +
-//            "WHERE b.boardId = :boardId")
-//    List<HashTag> findHashtagsByBoardId(Long boardId);
+    @Query("SELECT ht FROM HashTag ht " +
+            "JOIN ht.boardHashTags bht " +
+            "JOIN bht.board b " +
+            "WHERE b.boardId = :boardId")
+    List<HashTag> findHashtagsByBoardId(Long boardId);
+
+
 }

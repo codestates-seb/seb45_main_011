@@ -34,8 +34,8 @@ public class BoardController {
     @Operation(summary = "Create Board API", description = "게시판 추가 기능")
     @PostMapping
     public ResponseEntity<HttpStatus> postBoard(
-                                                @Valid @RequestPart RequestBoardDto.Post requestBoardDto,
-                                                @RequestPart(value = "image", required = false) MultipartFile image) {
+            @Valid @RequestPart RequestBoardDto.Post requestBoardDto,
+            @RequestPart(value = "image", required = false) MultipartFile image) {
         Long boardId = boardService.createBoard(requestBoardDto, image);
 
         // https://localhost:8888/v1/boards/{boardId}
@@ -68,11 +68,12 @@ public class BoardController {
                 .data(responseBoardDtos.getContent()).page(responseBoardDtos).build());
     }
 
-//    @Operation(summary = "Get Boards API", description = "전체 게시판 조회 기능")
+//    @Operation(summary = "Get Boards by keyword API", description = "키워드를 기준으로 전체 게시판 조회")
 //    @GetMapping
 //    public ResponseEntity<MultiResponseDto<ResponseBoardPageDto>> getBoardsByKeyword(@Positive @RequestParam(defaultValue = "1") int page,
-//                                                                            @Positive @RequestParam(defaultValue = "12") int size) {
-//        Page<ResponseBoardPageDto> responseBoardDtos = boardService.findBoards(page - 1, size);
+//                                                                                     @Positive @RequestParam(defaultValue = "12") int size,
+//                                                                                     @RequestParam("keyword") String keyword) {
+//        Page<ResponseBoardPageDto> responseBoardDtos = boardService.findBoardsByKeyword(page - 1, size, keyword);
 //
 //        return ResponseEntity.ok(MultiResponseDto.<ResponseBoardPageDto>builder()
 //                .status(HttpStatusCode.OK.getStatusCode())

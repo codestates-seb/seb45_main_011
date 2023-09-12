@@ -58,7 +58,7 @@ public class BoardService {
 
         Board saveBoard = boardRepository.save(board);
         // 입력 받은 이미지가 있을 경우 saveBoardImage 메서드 호출
-        if (!image.isEmpty()) {
+        if (image != null) {
             // Upload image in S3 && save image in Board_Image
             boardImageService.saveBoardImage(image, saveBoard);
         }
@@ -66,12 +66,7 @@ public class BoardService {
         // Save HashTags
         if (requestBoardDto.getHashTags() != null) {
             for (String tag : requestBoardDto.getHashTags()) {
-                HashTag hashTag = hashTagRepository.findByTag(tag);
-                if (hashTag == null) {
-                    hashTag = new HashTag();
-                    hashTag.setTag(tag);
-                    hashTagRepository.save(hashTag);
-                }
+                HashTag hashTag = hashTagService.createHashTagIfNotExist(tag);
 
                 Board_HashTag boardHashtag = new Board_HashTag();
                 boardHashtag.addBoard(board);
@@ -107,10 +102,29 @@ public class BoardService {
                         .likeNum(board.getBoardLikes().size())
                         .commentNum(board.getBoardComments().size())
                         .build());
+
                 // boardImage 여러 개일 경우 ResponseBoardPageDto 에서 imageUrl 타입을 List로 변경 후
 //                .boardImageUrl(board.getBoardImages().stream().map(boardImage -> boardImage.getStoredImagePath()).collect(Collectors.toList()))
+        return boards;
+    }
 
+    public Page<ResponseBoardPageDto> findBoardsByKeyword(int page, int size, String keyword) {
+        Page<ResponseBoardPageDto> boards = boardRepository.findAll(PageRequest.of(page, size, Sort.by("createdAt")))
+                .map(board -> ResponseBoardPageDto.builder()
+                        .boardId(board.getBoardId())
+                        .title(board.getTitle())
+                        .content(board.getContent())
+                        .boardImageUrl(board.getBoardImages()
+                                .stream()
+                                .findFirst()
+                                .map(BoardImage::getStoredImagePath)
+                                .orElse(null))
+                        .likeNum(board.getBoardLikes().size())
+                        .commentNum(board.getBoardComments().size())
+                        .build());
 
+        // boardImage 여러 개일 경우 ResponseBoardPageDto 에서 imageUrl 타입을 List로 변경 후
+//                .boardImageUrl(board.getBoardImages().stream().map(boardImage -> boardImage.getStoredImagePath()).collect(Collectors.toList()))
         return boards;
     }
 
@@ -124,9 +138,18 @@ public class BoardService {
         }
 
         // image가 있을 경우 S3에 저장된 image Object 삭제 + Board_Image(DB) 저장
-        if (!image.isEmpty()) {
-            boardImageService.deleteBoardImage(boardId);
-            boardImageService.saveBoardImage(image, findBoard);
+        if (image != null) {
+            BoardImage boardImage = findBoard.getBoardImages()
+                    .stream()
+                    .findFirst()
+                    .orElse(null);
+            if (boardImage != null) {
+                boardImageService.deleteBoardImage(boardId);
+                boardImageService.saveBoardImage(image, findBoard);
+            }
+            else {
+                boardImageService.saveBoardImage(image, findBoard);
+            }
         }
         // image가 없을 경우 S3에 저장된 image Object 삭제 + Board_Image(DB) 삭제
         else {
@@ -137,14 +160,16 @@ public class BoardService {
         findBoard.update(requestBoardDto);
 
         // 해시 태그
+        // 입력된 해시 태그 리스트가 있을 경우
         if (requestBoardDto.getHashTags() != null) {
+            // 입력된 해시 태그가 같을 경우
+            // 기존의 해시태그 리스트를 삭제 하고 새로운 해시 태그 리스트 저장
+
+            List<HashTag> findHashTags = hashTagRepository.findHashtagsByBoardId(boardId);
+            hashTagRepository.deleteAll(findHashTags);
+
             for (String tag : requestBoardDto.getHashTags()) {
-                HashTag hashTag = hashTagRepository.findByTag(tag);
-                if (hashTag == null) {
-                    hashTag = new HashTag();
-                    hashTag.setTag(tag);
-                    hashTagRepository.save(hashTag);
-                }
+                HashTag hashTag = hashTagService.createHashTagIfNotExist(tag);
 
                 Board_HashTag boardHashtag = new Board_HashTag();
                 boardHashtag.addBoard(findBoard);
@@ -152,6 +177,12 @@ public class BoardService {
 
                 boardHashtagRepository.save(boardHashtag);
             }
+        }
+        // 입력된 해시 태그 리스트가 없을 경우
+        else {
+            // 저장된 해시태그 삭제 + board 테이블 업데이트
+            List<HashTag> findHashTag = hashTagRepository.findHashtagsByBoardId(boardId);
+            hashTagRepository.deleteAll(findHashTag);
         }
     }
 
@@ -161,6 +192,9 @@ public class BoardService {
 
         // delete Board Image in S3
         boardImageService.deleteBoardImage(findBoard.getBoardId());
+
+        List<HashTag> findHashTag = hashTagRepository.findHashtagsByBoardId(boardId);
+        hashTagRepository.deleteAll(findHashTag);
 
         boardRepository.delete(findBoard);
     }
