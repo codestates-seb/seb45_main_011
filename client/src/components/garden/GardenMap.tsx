@@ -27,7 +27,7 @@ export default function GardenMap() {
   } = useGardenMap();
 
   return (
-    <main className="min-w-[320px] border-garden rounded-lg rounded-tl-none bg-scroll shadow-outer/down box-content overflow-auto scrollbar-hidden">
+    <main className="min-w-[296px] border-garden rounded-lg rounded-tl-none bg-scroll shadow-outer/down box-content overflow-auto scrollbar-hidden max-[984px]:max-w-[720px]">
       <div
         onClick={handleGarden}
         onMouseMove={handleMouseMove}
