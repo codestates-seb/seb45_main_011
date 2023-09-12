@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
+import PostCountInfo from '../common/PostCountInfo';
+
 interface PostCardProps {
   title: string;
   imageSrc: string;
@@ -38,26 +40,11 @@ export default function PostCard({
       <h2 className="text-center text-sm leading-[0.875rem] text-brown-80 font-bold mb-[17px]">
         {title}
       </h2>
-      <div className="flex gap-3">
-        <span className="flex gap-[0.375rem]">
-          <Image
-            src="/assets/img/like.svg"
-            alt="좋아요 개수"
-            width={19}
-            height={16}
-          />
-          {likesNum}
-        </span>
-        <span className="flex gap-[0.375rem] text-base leading-4 text-brown-70">
-          <Image
-            src="/assets/img/comment.svg"
-            alt="좋아요 개수"
-            width={19}
-            height={16}
-          />
-          {commentsNum}
-        </span>
-      </div>
+      <PostCountInfo
+        likesNum={likesNum}
+        commentNum={commentsNum}
+        usage="board"
+      />
     </div>
   );
 }

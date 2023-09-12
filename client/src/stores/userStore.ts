@@ -10,10 +10,11 @@ interface User {
   accessToken: string;
   refershToken: string;
 
-  userId: string | null;
+  userId: number;
   displayName: string;
   profileImageUrl: string;
   point: number;
+  leafCard: number;
 
   setIsLogin: (isLogin: boolean) => void;
   setIsGoogleLogin: (isGoogleLogin: boolean) => void;
@@ -24,7 +25,9 @@ interface User {
   setDisplayName: (displayName: string) => void;
   setProfileImageUrl: (profileImageUrl: string) => void;
   setPoint: (point: number) => void;
-  saveUserId: (userId: string) => void;
+  saveUserId: (userId: number) => void;
+
+  getLeafCard: (leafCard: number) => void;
 
   setClear: () => void;
 }
@@ -38,10 +41,11 @@ const useUserStore = create(
       accessToken: '',
       refershToken: '',
 
-      userId: null,
+      userId: 0,
       displayName: '',
-      profileImageUrl: '/assets/img/profile_hitmontop.png',
+      profileImageUrl: '',
       point: 0,
+      leafCard: 0,
 
       setIsLogin: (isLogin) => {
         set({ isLogin: isLogin });
@@ -69,6 +73,9 @@ const useUserStore = create(
       saveUserId: (userId) => {
         set({ userId });
       },
+      getLeafCard: (leafCard) => {
+        set({ leafCard });
+      },
       setClear: () =>
         set({
           isLogin: false,
@@ -77,9 +84,11 @@ const useUserStore = create(
           accessToken: '',
           refershToken: '',
 
+          userId: 0,
           displayName: '',
           profileImageUrl: '',
           point: 0,
+          leafCard: 0,
         }),
     }),
     {

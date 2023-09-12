@@ -87,6 +87,12 @@ export interface BoardDataInfo {
   commentsNum: number;
   boardId: number;
 }
+export interface BoardUserDataInfo {
+  userId: number;
+  displayName: string;
+  profileImageUrl?: string;
+  grade: string;
+}
 
 export interface PostFormValues {
   title: string;

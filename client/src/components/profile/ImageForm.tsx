@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { updateUserProfileImage } from '@/api/profile';
 
@@ -50,6 +50,14 @@ export default function ImageForm({ token }: Token) {
       setProfileImageUrl(imageUrl);
     }
   };
+
+  // 기존에 있던 프로필 이미지 받아오기
+  // 단순히 profileImageUrl를 src에 넣으면 이미지가 제대로 뜨지 않음
+  useEffect(() => {
+    if (!profileImageUrl) {
+      setProfileImageUrl('/assets/img/bg_default_profile.png');
+    }
+  }, []);
 
   return (
     <form>
