@@ -1,9 +1,9 @@
 import InfiniteScroll from 'react-infinite-scroller';
 
+import useBoardStore from '@/stores/boardStore';
+
 import useBoardInfinityQuery from '@/hooks/useBoardInfinityQuery';
 import useGetSearchBoardQuery from '@/hooks/useGetBoardSearchQuery';
-
-import useBoardStore from '@/stores/boardStore';
 
 import PostCard from './PostCard';
 
@@ -15,7 +15,7 @@ export default function PostList() {
   } = useBoardInfinityQuery();
   const searchKey = useBoardStore((state) => state.searchKey);
   const data = useGetSearchBoardQuery(searchKey);
-
+  console.log(allBoards);
   return (
     <div className="pr-3 w-full h-[404px] flex flex-wrap  gap-4 overflow-y-scroll scrollbar">
       <InfiniteScroll
@@ -39,13 +39,21 @@ export default function PostList() {
               )} */}
 
           {/* <PostCard
-          key={ele.boardId}
-          title={ele.title}
-          imageSrc={ele.imageUrl}
-          likesNum={ele.likesNum}
-          commentsNum={ele.commentsNum}
-          postId={ele.boardId}
-        /> */}
+            key={ele.boardId}
+            title={ele.title}
+            imageSrc={ele.imageUrl}
+            likesNum={ele.likesNum}
+            commentsNum={ele.commentsNum}
+            postId={ele.boardId}
+          /> */}
+          <PostCard
+            key={1}
+            title={'ㅁ'}
+            imageSrc={'/assets/img/bg_default_post.png'}
+            likesNum={1}
+            commentsNum={2}
+            postId={2}
+          />
         </div>
       </InfiniteScroll>
     </div>

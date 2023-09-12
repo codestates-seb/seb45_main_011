@@ -3,7 +3,7 @@ import PostProfile from './PostProfile';
 
 export default function Comment() {
   return (
-    <div className="pl-[1.375rem] mb-6">
+    <div className="pl-[1.375rem] mb-8">
       <div className="flex justify-between mb-2">
         <PostProfile
           userId={1}
