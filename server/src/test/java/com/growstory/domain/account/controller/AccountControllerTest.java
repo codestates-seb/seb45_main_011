@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
@@ -18,14 +21,15 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -48,13 +52,7 @@ public class AccountControllerTest {
                 .password("user1234")
                 .build();
 
-        AccountDto.Response responseDto = AccountDto.Response.builder()
-                .accountId(1L)
-                .email("user1@gmail.com")
-                .displayName("user1")
-                .profileImageUrl(null)
-                .point(Point.builder().score(500).build())
-                .build();
+        AccountDto.Response responseDto = getResponseDto(1L, "user1@gmail.com", "user1");
 
         given(accountService.createAccount(Mockito.any(AccountDto.Post.class)))
                 .willReturn(responseDto);
@@ -68,7 +66,8 @@ public class AccountControllerTest {
         // then
         actions
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", is(("/v1/accounts/" + responseDto.getAccountId().toString()))));
+                .andExpect(header().string("Location", is("/v1/accounts/" + responseDto.getAccountId().toString())))
+                .andDo(print());
     }
 
     @Test
@@ -88,7 +87,8 @@ public class AccountControllerTest {
 
         // then
         actions
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent())
+                .andDo(print());
     }
 
     @Test
@@ -108,7 +108,8 @@ public class AccountControllerTest {
 
         // then
         actions
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent())
+                .andDo(print());
     }
 
     @Test
@@ -129,32 +130,209 @@ public class AccountControllerTest {
 
         // then
         actions
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent())
+                .andDo(print());
     }
 
-//    @Test
-//    void 나의_계정_조회() throws Exception {
-//        // given
-//        AccountDto.Response responseDto = AccountDto.Response.builder()
-//                .accountId(1L)
-//                .email("user1@gmail.com")
-//                .displayName("user1")
-//                .profileImageUrl(null)
-//                .point(Point.builder().score(500).build())
-//                .build();
-//
-////        given(accountService.getAccount())
-////                .willReturn(responseDto);
-//
-//        // when
-//        ResultActions actions = mockMvc.perform(
-//                get("/v1/accounts"));
-//
-//        // then
-//        actions
-//                .andExpect(status().isOk());
-////                .andExpect()
-//    }
+    @Test
+    void 나의_계정_조회() throws Exception {
+        // given
+        Long accountId = 1L;
 
+        AccountDto.Response responseDto = getResponseDto(accountId, "user1@gmail.com", "user1");
 
+        given(accountService.getAccount(Mockito.anyLong()))
+                .willReturn(responseDto);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                get("/v1/accounts/" + accountId));
+
+        // then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.email", is("user1@gmail.com")))
+                .andDo(print());
+    }
+
+    @Test
+    void 전체_계정_조회() throws Exception {
+        // given
+        List<AccountDto.Response> responseDtos = getResponseDtos();
+
+        given(accountService.getAccounts())
+                .willReturn(responseDtos);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                get("/v1/accounts/all"));
+
+        // then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data[0].email", is("user1@gmail.com")))
+                .andExpect(jsonPath("$.data[1].email", is("user2@gmail.com")))
+                .andDo(print());
+    }
+
+    @Test
+    void 계정이_작성한_게시글_조회() throws Exception {
+        // given
+        Long accountId = 1L;
+        int page = 1;
+
+        List<AccountDto.BoardResponse> responseDtos = getBoardResponseDtos();
+
+        Page<AccountDto.BoardResponse> responsePage = new PageImpl<>(responseDtos, PageRequest.of(page - 1,12), responseDtos.size());
+
+        given(accountService.getAccountBoardWritten(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyLong()))
+                .willReturn(responsePage);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                get("/v1/accounts/boardWritten/" + accountId));
+
+        // then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data[0].title", is("제목1")))
+                .andExpect(jsonPath("$.data[1].title", is("제목2")))
+                .andExpect(jsonPath("$.pageInfo.page", is(page)))
+                .andExpect(jsonPath("$.pageInfo.totalElements", is(responseDtos.size())))
+                .andDo(print());
+    }
+
+    @Test
+    void 계정이_좋아요_누른_게시글_조회() throws Exception {
+        // given
+        Long accountId = 1L;
+        int page = 1;
+
+        List<AccountDto.BoardResponse> responseDtos = getBoardResponseDtos();
+
+        Page<AccountDto.BoardResponse> responsePage = new PageImpl<>(responseDtos, PageRequest.of(page - 1,12), responseDtos.size());
+
+        given(accountService.getAccountBoardLiked(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyLong()))
+                .willReturn(responsePage);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                get("/v1/accounts/boardLiked/" + accountId));
+
+        // then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data[*]..likes[?(1 == @)]").exists())
+                .andExpect(jsonPath("$.pageInfo.page", is(page)))
+                .andExpect(jsonPath("$.pageInfo.totalElements", is(responseDtos.size())))
+                .andDo(print());
+    }
+
+    @Test
+    void 계정이_댓글_작성한_게시글_조회() throws Exception {
+        // given
+        Long accountId = 1L;
+        int page = 1;
+
+        List<AccountDto.BoardResponse> responseDtos = getBoardResponseDtos();
+
+        Page<AccountDto.BoardResponse> responsePage = new PageImpl<>(responseDtos, PageRequest.of(page - 1,12), responseDtos.size());
+
+        given(accountService.getAccountCommentWrittenBoard(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyLong()))
+                .willReturn(responsePage);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                get("/v1/accounts/commentWritten/" + accountId));
+
+        // then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data[*].commentNums", is(not(0))))
+                .andExpect(jsonPath("$.pageInfo.page", is(page)))
+                .andExpect(jsonPath("$.pageInfo.totalElements", is(responseDtos.size())))
+                .andDo(print());
+    }
+
+    @Test
+    void 비밀번호_검증() throws Exception {
+        // given
+        AccountDto.PasswordVerify requestDto = AccountDto.PasswordVerify.builder()
+                .password("user1234")
+                .build();
+
+        Boolean isMatched = true;
+
+        given(accountService.verifyPassword(Mockito.any(AccountDto.PasswordVerify.class)))
+                .willReturn(isMatched);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                post("/v1/accounts/password/verification")
+                        .contentType("application/json")
+                        .content(gson.toJson(requestDto)));
+
+        // then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data", is(isMatched)))
+                .andDo(print());
+    }
+
+    @Test
+    void 회원탈퇴() throws Exception {
+        // given
+        willDoNothing().given(accountService).deleteAccount();
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                delete("/v1/accounts"));
+
+        // then
+        actions
+                .andExpect(status().isNoContent())
+                .andDo(print());
+    }
+
+    private static AccountDto.Response getResponseDto(Long accountId, String email, String displayName) {
+        return AccountDto.Response.builder()
+                .accountId(accountId)
+                .email(email)
+                .displayName(displayName)
+                .point(Point.builder().score(500).build())
+                .build();
+    }
+
+    private static List<AccountDto.Response> getResponseDtos() {
+        List<AccountDto.Response> responseDtos = new ArrayList<>();
+
+        AccountDto.Response responseDto1 = getResponseDto(1L, "user1@gmail.com", "user1");
+        AccountDto.Response responseDto2 = getResponseDto(2L, "user2@gmail.com", "user2");
+
+        responseDtos.add(responseDto1);
+        responseDtos.add(responseDto2);
+
+        return responseDtos;
+    }
+
+    private static AccountDto.BoardResponse getBoardResponseDto(Long boardId, String title, List<Long> likes, int commentNums) {
+        return AccountDto.BoardResponse.builder()
+                .boardId(boardId)
+                .title(title)
+                .likes(likes)
+                .commentNums(commentNums)
+                .build();
+    }
+
+    private static List<AccountDto.BoardResponse> getBoardResponseDtos() {
+        List<AccountDto.BoardResponse> responseDtos = new ArrayList<>();
+
+        AccountDto.BoardResponse responseDto1 = getBoardResponseDto(1L, "제목1", List.of(1L), 1);
+        AccountDto.BoardResponse responseDto2 = getBoardResponseDto(2L, "제목2", List.of(1L, 2L), 2);
+
+        responseDtos.add(responseDto1);
+        responseDtos.add(responseDto2);
+
+        return responseDtos;
+    }
 }

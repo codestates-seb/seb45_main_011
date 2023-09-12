@@ -22,6 +22,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -71,7 +72,8 @@ class CommentControllerTest {
 
         actions
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", is(startsWith("/v1/comments/"))));
+                .andExpect(header().string("Location", is(startsWith("/v1/comments/"))))
+                .andDo(print());
     }
 
     @Test
@@ -101,7 +103,8 @@ class CommentControllerTest {
         );
 
         actions
-                .andExpect(MockMvcResultMatchers.status().isNoContent());
+                .andExpect(MockMvcResultMatchers.status().isNoContent())
+                .andDo(print());
     }
 
     @Test
@@ -118,6 +121,7 @@ class CommentControllerTest {
                         MockMvcRequestBuilders.delete("/v1/comments/{commentId}", commentId)
                 );
         actions
-                .andExpect(MockMvcResultMatchers.status().isNoContent());
+                .andExpect(MockMvcResultMatchers.status().isNoContent())
+                .andDo(print());
     }
 }
