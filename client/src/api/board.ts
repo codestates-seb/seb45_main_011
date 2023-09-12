@@ -38,16 +38,8 @@ export async function getPostByBoardId(boardId: string) {
   return res.data;
 }
 
-// 제거 예정
-export async function fetchTodos({ pageParam = 2 }) {
-  const resp = await axios(
-    `https://api.instantwebtools.net/v1/passenger?page=${pageParam}&size=10`,
-  ).then((resp) => resp.data);
-
-  return {
-    totalPassengers: resp.totalPassengers,
-    totalPages: resp.totalPages,
-    passengers: resp.data,
-    cursor: pageParam,
-  };
+export async function addComment(content: string) {
+  return commonAxios.post('/comments', {
+    content,
+  });
 }

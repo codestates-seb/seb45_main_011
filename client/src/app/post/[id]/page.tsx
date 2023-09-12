@@ -1,6 +1,11 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
+
+import { getPostByBoardId } from '@/api/board';
+
 import usePostModalStore from '@/stores/postModalStore';
+import useTestUserStore from '@/stores/testUserStore';
 
 import PostDeleteModal from '@/components/post/PostDeleteModal';
 import PageTitle from '@/components/common/PageTitle';
@@ -12,9 +17,6 @@ import PostContent from '@/components/post/PostContent';
 import DateAndControl from '@/components/post/PostDateAndControl';
 import PostImage from '@/components/post/PostImage';
 import PostProfile from '@/components/post/PostProfile';
-import useTestUserStore from '@/stores/testUserStore';
-import { getPostByBoardId } from '@/api/board';
-import { useQuery } from '@tanstack/react-query';
 import HashTags from '@/components/post/HashTags';
 
 interface PostProps {
@@ -34,8 +36,6 @@ export default function Post({ params }: PostProps) {
   } = useQuery(['post', boardId], () => getPostByBoardId(boardId), {
     enabled: !!userId,
   });
-
-  console.log(post);
 
   if (isError) return <div>error</div>;
   if (isLoading) return <div>isLoading</div>;
@@ -58,7 +58,7 @@ export default function Post({ params }: PostProps) {
               <DateAndControl
                 date={new Date()}
                 usage="post"
-                targetId={boardId}
+                targetId={post.boardId}
               />
             </div>
             <div className="relative pr-5 flex flex-col overflow-y-scroll scrollbar">
@@ -74,7 +74,7 @@ export default function Post({ params }: PostProps) {
                 usage="post"
                 className="mb-3"
               />
-              <CommentForm />
+              <CommentForm boardId={post.boardId} />
               {post.comments.map((comment: any) => (
                 <Comment key={comment.id} />
               ))}

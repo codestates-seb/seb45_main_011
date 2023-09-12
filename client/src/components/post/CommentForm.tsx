@@ -4,11 +4,20 @@ import { useForm } from 'react-hook-form';
 
 import CommentProfileImage from './CommentProfileImage';
 
-export default function CommentForm() {
-  const { register, handleSubmit } = useForm();
+import useAddCommentMutation from '@/hooks/useAddCommentMutation';
+
+import { CommentInputValue } from '@/types/common';
+
+interface CommentFormProps {
+  boardId: number;
+}
+
+export default function CommentForm({ boardId }: CommentFormProps) {
+  const { register, handleSubmit } = useForm<CommentInputValue>();
+  const { mutate: addComment } = useAddCommentMutation({ boardId });
   return (
     <form
-      onSubmit={handleSubmit((data) => console.log(data))}
+      onSubmit={handleSubmit((data) => addComment(data))}
       className="p-5 w-full flex justify-between items-center gap-3 bg-contain bg-center bg-[url('/assets/img/bg_wood_dark.png')] border-[3px] border-brown-70 rounded-lg common-drop-shadow mb-6">
       <CommentProfileImage src="" />
       <input

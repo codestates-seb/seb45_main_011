@@ -3,6 +3,8 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
+import usePostModalStore from '@/stores/postModalStore';
+
 interface ContolMenuProps {
   usage: 'post' | 'comment';
   targetId: string;
@@ -10,13 +12,15 @@ interface ContolMenuProps {
 export default function ControlMenu({ usage, targetId }: ContolMenuProps) {
   const router = useRouter();
 
+  const open = usePostModalStore((state) => state.open);
+
   const handleEdit = () => {
     if (usage === 'post') return router.push(`/post/edit/${targetId}`);
   };
 
   const handleDelete = () => {
     // 삭제 모달
-    if (usage === 'post') return null;
+    if (usage === 'post') return open();
   };
 
   return (

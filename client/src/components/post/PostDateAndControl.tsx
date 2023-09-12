@@ -12,8 +12,8 @@ export default function DateAndControl({
   usage,
   targetId,
 }: DateAndControlProps) {
-  console.log(date);
   if (!date) return null;
+
   const formattedDay = getDateFormat(date);
 
   return (
