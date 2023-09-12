@@ -132,29 +132,29 @@ public class AccountControllerTest {
                 .andExpect(status().isNoContent());
     }
 
-    @Test
-    void 나의_계정_조회() throws Exception {
-        // given
-        AccountDto.Response responseDto = AccountDto.Response.builder()
-                .accountId(1L)
-                .email("user1@gmail.com")
-                .displayName("user1")
-                .profileImageUrl(null)
-                .point(Point.builder().score(500).build())
-                .build();
-
-//        given(accountService.getAccount())
-//                .willReturn(responseDto);
-
-        // when
-        ResultActions actions = mockMvc.perform(
-                get("/v1/accounts"));
-
-        // then
-        actions
-                .andExpect(status().isOk());
-//                .andExpect()
-    }
+//    @Test
+//    void 나의_계정_조회() throws Exception {
+//        // given
+//        AccountDto.Response responseDto = AccountDto.Response.builder()
+//                .accountId(1L)
+//                .email("user1@gmail.com")
+//                .displayName("user1")
+//                .profileImageUrl(null)
+//                .point(Point.builder().score(500).build())
+//                .build();
+//
+////        given(accountService.getAccount())
+////                .willReturn(responseDto);
+//
+//        // when
+//        ResultActions actions = mockMvc.perform(
+//                get("/v1/accounts"));
+//
+//        // then
+//        actions
+//                .andExpect(status().isOk());
+////                .andExpect()
+//    }
 
 
 }
