@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.15'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'jacoco'
 }
 
 group = 'com'
@@ -9,6 +10,15 @@ version = '0.0.1-SNAPSHOT'
 
 java {
 	sourceCompatibility = '11'
+}
+
+jacoco {
+	// JaCoCo 버전
+	toolVersion = '0.8.10'
+
+//  테스트결과 리포트를 저장할 경로 변경
+//  default는 "$/jacoco"
+//  reportsDir = file("$buildDir/customJacocoReportDir")
 }
 
 configurations {
@@ -55,5 +65,36 @@ dependencies {
 }
 
 test {
+	finalizedBy 'jacocoTestReport'
 	useJUnitPlatform()
+
+	jacoco {
+		excludes += [
+				"com/growstory/domain/**/dto/**",
+				"com/growstory/domain/**/entity/**",
+				"com/growstory/domain/**/repository/**",
+				"com/growstory/domain/**/mapper/**",
+				"com/growstory/global/**",
+				"com/growstory/*Application*",
+				"com/growstory/*Hello*"
+		]
+	}
+}
+
+jacocoTestReport {
+	dependsOn test
+
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: [
+					"com/growstory/domain/**/dto/**",
+					"com/growstory/domain/**/entity/**",
+					"com/growstory/domain/**/repository/**",
+					"com/growstory/domain/**/mapper/**",
+					"com/growstory/global/**",
+					"com/growstory/*Application*",
+					"com/growstory/*Hello*"
+			])
+		}))
+	}
 }
