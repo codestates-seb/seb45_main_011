@@ -9,9 +9,6 @@ import com.growstory.domain.plant_object.location.mapper.LocationMapper;
 import com.growstory.domain.point.dto.PointDto;
 import com.growstory.domain.point.entity.Point;
 import com.growstory.domain.product.dto.ProductDto;
-import com.growstory.domain.product.entity.Product;
-import lombok.Builder;
-import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -57,12 +54,12 @@ public class PlantObjMapper {
                 .build();
     }
 
-    public PlantObjDto.Trade toTradeResponse(PlantObj boughtPlantObj, Point afterPoint) {
+    public PlantObjDto.TradeResponse toTradeResponse(PlantObj boughtPlantObj, Point afterPoint) {
         PlantObjDto.Response plantObj = toPlantObjResponse(boughtPlantObj);
         PointDto.Response point =
                 PointDto.Response.builder().score(afterPoint.getScore()).build();
 
-        return PlantObjDto.Trade.builder()
+        return PlantObjDto.TradeResponse.builder()
                 .plantObj(plantObj)
                 .point(point)
                 .build();
