@@ -6,7 +6,7 @@ import { DefaultProps } from '@/types/common';
 
 interface PostCountInfoProps extends DefaultProps {
   likesNum: number;
-  commentNum: number;
+  commentNum: number | null;
   isLike?: boolean;
   usage: 'board' | 'post';
 }

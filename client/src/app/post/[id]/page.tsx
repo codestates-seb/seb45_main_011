@@ -1,5 +1,7 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import { useQuery } from '@tanstack/react-query';
 
 import { getPostByBoardId } from '@/api/board';
@@ -14,28 +16,40 @@ import Screws from '@/components/common/Screws';
 import Comment from '@/components/post/Comment';
 import CommentForm from '@/components/post/CommentForm';
 import PostContent from '@/components/post/PostContent';
-import DateAndControl from '@/components/post/PostDateAndControl';
+import DateAndControl from '@/components/post/DateAndControlSection';
 import PostImage from '@/components/post/PostImage';
 import PostProfile from '@/components/post/PostProfile';
 import HashTags from '@/components/post/HashTags';
+
+import { CommentDataInfo, PostDataInfo } from '@/types/data';
 
 interface PostProps {
   params: { id: string };
 }
 
 export default function Post({ params }: PostProps) {
+  const router = useRouter();
+
   const boardId = params.id;
 
   const { userId } = useTestUserStore();
   const { isOpen } = usePostModalStore();
 
+  if (!userId) return router.push('/signin');
+
   const {
     data: post,
     isLoading,
     isError,
-  } = useQuery(['post', boardId], () => getPostByBoardId(boardId), {
-    enabled: !!userId,
-  });
+  } = useQuery<PostDataInfo>(
+    ['post', boardId],
+    () => getPostByBoardId(boardId),
+    {
+      enabled: !!userId,
+    },
+  );
+
+  console.log(post);
 
   if (isError) return <div>error</div>;
   if (isLoading) return <div>isLoading</div>;
@@ -58,6 +72,7 @@ export default function Post({ params }: PostProps) {
               <DateAndControl
                 date={new Date()}
                 usage="post"
+                ownerId={post.accountId}
                 targetId={post.boardId}
               />
             </div>
@@ -69,15 +84,17 @@ export default function Post({ params }: PostProps) {
               </div>
               <PostCountInfo
                 likesNum={post.likeNum}
-                commentNum={post.commentLikeNum}
+                commentNum={post.comments?.length || 0}
                 isLike={false}
                 usage="post"
                 className="mb-3"
               />
               <CommentForm boardId={post.boardId} />
-              {post.comments.map((comment: any) => (
-                <Comment key={comment.id} />
-              ))}
+              <ul>
+                {post.comments?.map((comment: CommentDataInfo) => (
+                  <Comment key={comment.commentId} comment={comment} />
+                ))}
+              </ul>
             </div>
           </div>
         </div>

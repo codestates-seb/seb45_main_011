@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 interface PostImageProps {
-  src?: string;
+  src?: string | null;
 }
 
 export default function PostImage({ src }: PostImageProps) {

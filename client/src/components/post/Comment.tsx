@@ -1,24 +1,78 @@
-import DateAndControl from './PostDateAndControl';
-import PostProfile from './PostProfile';
+import { useForm } from 'react-hook-form';
 
-export default function Comment() {
+import usePostStore from '@/stores/postStore';
+
+import PostProfile from './PostProfile';
+import DateAndControlSection from './DateAndControlSection';
+import CommonButton from '../common/CommonButton';
+
+import { CommentDataInfo } from '@/types/data';
+import { CommentInputValue } from '@/types/common';
+
+interface CommentProps {
+  comment: CommentDataInfo | null;
+}
+
+export default function Comment({ comment }: CommentProps) {
+  if (!comment) return null;
+
+  const { register, handleSubmit } = useForm<CommentInputValue>({
+    defaultValues: {
+      comment: comment.content,
+    },
+  });
+
+  const { editMode, targetId, setEditMode } = usePostStore();
+
+  const isEdit = editMode && comment.commentId === targetId;
+
   return (
-    <div className="pl-[1.375rem] mb-8">
+    <li className="pl-[1.375rem] mb-8">
       <div className="flex justify-between mb-2">
         <PostProfile
           userId={1}
-          displayName="관리자"
+          displayName={comment.displayName}
           grade="브론즈 가드너"
-          profileImageUrl=""
+          profileImageUrl={comment.profileUrl}
           usage="comment"
         />
-        <DateAndControl date="2023/09/04" usage="comment" targetId={1} />
+        {isEdit || (
+          <DateAndControlSection
+            date={new Date(comment?.createdAt)}
+            usage="comment"
+            ownerId={comment.accountId}
+            targetId={comment.commentId}
+          />
+        )}
       </div>
       <div className="pl-11">
-        <p className="w-full px-[0.875rem] py-[0.75rem] bg-brown-10 border-2 border-brown-50 rounded-xl text-black-50 text-xs left-3 common-drop-shadow">
-          첫 식물 축하축하 ^^
-        </p>
+        {isEdit ? (
+          <form onSubmit={handleSubmit((data) => console.log(data))}>
+            <input
+              autoFocus={true}
+              className="w-full px-[0.875rem] py-[0.75rem] bg-brown-10 border-2 border-brown-50 rounded-xl text-black-50 text-xs left-3 common-drop-shadow outline-none"
+              {...register('comment')}
+            />
+            {isEdit && (
+              <div className="flex p-2 justify-end gap-2">
+                <CommonButton size="sm" type="submit">
+                  수정
+                </CommonButton>
+                <CommonButton
+                  size="sm"
+                  type="button"
+                  onClick={() => setEditMode(false)}>
+                  취소
+                </CommonButton>
+              </div>
+            )}
+          </form>
+        ) : (
+          <p className="w-full px-[0.875rem] py-[0.75rem] bg-brown-10 border-2 border-brown-50 rounded-xl text-black-50 text-xs left-3 common-drop-shadow">
+            {comment.content}
+          </p>
+        )}
       </div>
-    </div>
+    </li>
   );
 }

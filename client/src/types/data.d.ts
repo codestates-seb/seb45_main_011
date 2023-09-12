@@ -128,3 +128,29 @@ export interface HashTagInfo {
   hashTagId: number;
   tag: string;
 }
+
+export interface CommentDataInfo {
+  commentId: number;
+  content: string;
+  accountId: number;
+  displayName: string;
+  profileUrl: string | null;
+  createdAt: string;
+  modifiedAt: string | null;
+  commentLikeNum: number;
+}
+
+export interface PostDataInfo {
+  boardId: number;
+  title: string;
+  content: string;
+  boardImageUrl: string | null;
+  likeNum: number;
+  createdAt: string;
+  modifiedAt: string | null;
+  accountId: number;
+  displayName: string;
+  profileImageUrl: string | null;
+  hashTags: HashTagInfo[] | null;
+  comments: CommentDataInfo[] | null;
+}

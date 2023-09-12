@@ -4,18 +4,33 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import usePostModalStore from '@/stores/postModalStore';
+import useTestUserStore from '@/stores/testUserStore';
+import usePostStore from '@/stores/postStore';
 
 interface ContolMenuProps {
   usage: 'post' | 'comment';
-  targetId: string;
+  targetId: number;
+  ownerId: number;
 }
-export default function ControlMenu({ usage, targetId }: ContolMenuProps) {
+export default function ControlMenu({
+  usage,
+  targetId,
+  ownerId,
+}: ContolMenuProps) {
   const router = useRouter();
+
+  const userId = useTestUserStore((state) => state.userId);
+  const { setEditMode, setTargetId } = usePostStore();
+
+  if (userId !== ownerId) return null;
 
   const open = usePostModalStore((state) => state.open);
 
   const handleEdit = () => {
     if (usage === 'post') return router.push(`/post/edit/${targetId}`);
+    setTargetId(targetId);
+    setEditMode(true);
+    return null;
   };
 
   const handleDelete = () => {

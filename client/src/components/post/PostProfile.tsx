@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 interface PostProfileProps {
   userId: number;
   displayName: string;
-  profileImageUrl: string;
+  profileImageUrl: string | null;
   grade: string;
   usage: 'post' | 'comment';
 }
