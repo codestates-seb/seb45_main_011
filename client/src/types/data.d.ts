@@ -123,3 +123,8 @@ export interface RawPostInfo {
     }[];
   }[];
 }
+
+export interface HashTagInfo {
+  hashTagId: number;
+  tag: string;
+}

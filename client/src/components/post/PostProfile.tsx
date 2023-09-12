@@ -19,6 +19,7 @@ export default function PostProfile({
   usage,
 }: PostProfileProps) {
   const router = useRouter();
+
   const navigateToHistory = () => router.push(`/history/${userId}`);
 
   return (
@@ -26,9 +27,10 @@ export default function PostProfile({
       className="flex gap-3 items-center"
       role="button"
       onClick={navigateToHistory}>
-      <div className="w-[44px] h-[44px] border-[3px] rounded-[50%] border-brown-50 common-drop-shadow overflow-hidden">
+      <div className="w-[44px] h-[44px] flex justify-center items-center border-[3px] rounded-[50%] border-brown-50 common-drop-shadow overflow-hidden">
         <Image
-          src={profileImageUrl || '/assets/img/profile_hitmontop.png'}
+          className=" object-cover"
+          src={profileImageUrl || '/assets/img/bg_default_profile.png'}
           alt={`${displayName}의 프로필 사진`}
           width={50}
           height={50}

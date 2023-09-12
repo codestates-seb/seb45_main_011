@@ -18,7 +18,7 @@ export default function PostContent({ content }: PostContentProps) {
 
   return (
     <textarea
-      className="w-full bg-transparent resize-none active:outline-none focus:outline-none"
+      className="w-full bg-transparent resize-none active:outline-none focus:outline-none mb-7"
       value={content}
       readOnly
       rows={1}

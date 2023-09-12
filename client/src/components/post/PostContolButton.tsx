@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 interface ContolMenuProps {
   usage: 'post' | 'comment';
-  targetId: number;
+  targetId: string;
 }
 export default function ControlMenu({ usage, targetId }: ContolMenuProps) {
   const router = useRouter();
