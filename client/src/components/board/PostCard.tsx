@@ -5,7 +5,7 @@ import PostCountInfo from '../common/PostCountInfo';
 
 interface PostCardProps {
   title: string;
-  imageSrc: string;
+  imageSrc?: string;
   likesNum: number;
   commentsNum: number;
   postId: number;
@@ -31,7 +31,7 @@ export default function PostCard({
       <div className="w-[121px] h-[92px] rounded-lg overflow-hidden mb-2 mx-auto">
         <Image
           className="object-cover w-full h-full"
-          src={imageSrc}
+          src={imageSrc || '/assets/img/bg_default_post.png'}
           alt=""
           width={131}
           height={102}

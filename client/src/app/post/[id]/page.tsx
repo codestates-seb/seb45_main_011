@@ -21,11 +21,11 @@ export default function Post({ params }: PostProps) {
   const boardId = Number(params.id);
   const { isOpen } = usePostModalStore();
   return (
-    <main className="flex justify-center items-center">
+    <main className="mt-[60px] pt-[52px] flex justify-center items-center">
       <div className="relative w-full max-w-[720px] h-[864px] border-gradient rounded-xl">
         <div className="h-full px-5 py-5">
           <Screws />
-          <div className="relative h-full pr-5 pl-7 flex flex-col   ">
+          <div className="relative h-full pl-7 flex flex-col   ">
             <PageTitle text="첫 바질!!!" />
             <div className="w-full flex justify-between items-center mb-4">
               <PostProfile
@@ -41,7 +41,7 @@ export default function Post({ params }: PostProps) {
                 targetId={boardId}
               />
             </div>
-            <div className="flex flex-col overflow-y-scroll scrollbar">
+            <div className="relative pr-5 flex flex-col overflow-y-scroll scrollbar">
               <div className="px-[1.875rem] py-[1.625rem] w-full bg-brown-10 border-2 border-brown-50 rounded-lg mb-8 common-drop-shadow ">
                 <PostImage src={'/assets/img/profile_hitmontop.png'} />
                 <PostContent content={`asda`} />

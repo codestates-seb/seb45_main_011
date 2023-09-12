@@ -13,11 +13,13 @@ export default function PostList() {
     fetchNextPage,
     hasNextPage,
   } = useBoardInfinityQuery();
+
   const searchKey = useBoardStore((state) => state.searchKey);
   const searchResult = useGetSearchBoardQuery(searchKey);
 
   return (
     <div className="pr-3 w-full h-[404px] flex flex-wrap  gap-4 overflow-y-scroll scrollbar">
+      {/* 무한 스크롤 직접 구현해보기 / 데이터가 많아지면 어떻게 처리할지 생각 -> 윈도잉 방식 */}
       <InfiniteScroll
         hasMore={hasNextPage}
         loadMore={() => fetchNextPage()}
