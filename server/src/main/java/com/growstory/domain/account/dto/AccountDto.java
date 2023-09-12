@@ -30,9 +30,15 @@ public class AccountDto {
     }
 
     @Getter
+    @NoArgsConstructor
     public static class DisplayNamePatch {
         @NotBlank
         private String displayName;
+
+        @Builder
+        public DisplayNamePatch(String displayName) {
+            this.displayName = displayName;
+        }
     }
 
     @Getter
@@ -65,10 +71,11 @@ public class AccountDto {
         private String email;
         private String displayName;
         private String profileImageUrl;
+        private String grade;
         private Point point;
-        private List<BoardResponse> boardWritten; // 자신이 쓴 게시글
-        private List<BoardResponse> boardLiked; // 좋아요 누른 게시글
-        private List<BoardResponse> commentWritten; // 댓글을 쓴 게시글
+//        private List<List<BoardResponse>> boardWritten; // 자신이 쓴 게시글
+//        private List<List<BoardResponse>> boardLiked; // 좋아요 누른 게시글
+//        private List<List<BoardResponse>> commentWritten; // 댓글을 쓴 게시글
 
         public int getPoint() {
             return point.getScore();
