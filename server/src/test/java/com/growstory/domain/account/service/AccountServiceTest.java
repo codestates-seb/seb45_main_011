@@ -1,14 +1,18 @@
 package com.growstory.domain.account.service;
 
 import com.growstory.domain.account.dto.AccountDto;
+import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.account.repository.AccountRepository;
+import com.growstory.domain.point.entity.Point;
 import com.growstory.domain.point.service.PointService;
-import com.growstory.domain.stubdata.TestStubData;
 import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.auth.utils.CustomAuthorityUtils;
 import com.growstory.global.aws.service.S3Uploader;
 import com.growstory.global.exception.BusinessLogicException;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -21,11 +25,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.*;
 
@@ -67,21 +71,39 @@ public class AccountServiceTest {
         autoCloseable.close();
     }
 
-    @Test
-    @DisplayName("회원가입")
-    public void createAccountTest() {
-        // given
-        AccountDto.Post requestDto = AccountDto.Post.builder()
-                .email("user@gmail.com")
-                .displayName("user1")
-                .password("user1234")
-                .build();
-
-        // when
-
-
-        // then
-    }
+//    @Test
+//    @DisplayName("회원가입")
+//    public void createAccountTest() {
+//        // given
+//        AccountDto.Post requestDto = AccountDto.Post.builder()
+//                .email("user@gmail.com")
+//                .displayName("user1")
+//                .password("user1234")
+//                .build();
+//
+//        List<String> roles = List.of("USER");
+//        Point point = Point.builder().score(500).build();
+//
+//        given(passwordEncoder.encode(Mockito.anyString()))
+//                .willReturn(requestDto.getPassword());
+//
+//        given(authorityUtils.createRoles(Mockito.anyString()))
+//                .willReturn(roles);
+//
+//        given(pointService.createPoint(Mockito.anyString()))
+//                .willReturn(point);
+//
+//        Account savedAccount = getAccount(1L, requestDto.getEmail(), requestDto.getDisplayName(),
+//                requestDto.getPassword(), point, roles, Account.AccountGrade.GRADE_BRONZE);
+//
+//        given(accountRepository.save(Mockito.any(Account.class)))
+//                .willReturn(savedAccount);
+//
+//        // when
+//        AccountDto.Response responseDto = accountService.createAccount(requestDto);
+//
+//        // then
+//    }
 
     @DisplayName("isAuthIdMatching 테스트 : 인증되지 않은 사용자")
     @Test
@@ -133,5 +155,19 @@ public class AccountServiceTest {
         //then
         assertThat(exception.getClass(), is(BusinessLogicException.class));
         assertThat(httpStatusCode, is(405));
+//        assertThat(re);
+
+    }
+
+    private static Account getAccount(Long accountId, String email, String displayName, String password, Point point, List<String> roles, Account.AccountGrade accountGrade) {
+        return Account.builder()
+                .accountId(accountId)
+                .email(email)
+                .displayName(displayName)
+                .password(password)
+                .point(point)
+                .roles(roles)
+                .accountGrade(accountGrade)
+                .build();
     }
 }
