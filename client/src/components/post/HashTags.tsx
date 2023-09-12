@@ -11,7 +11,7 @@ export default function HashTags({ hashTags }: HashTagsProps) {
         return (
           <span
             key={hashTag.hashTagId}
-            className="italic text-xs text-brown-70">{`#${hashTag.tag}`}</span>
+            className="italic text-xs text-brown-70 max-[500px]:text-[0.5rem]">{`#${hashTag.tag}`}</span>
         );
       })}
     </div>

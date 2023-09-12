@@ -56,13 +56,13 @@ export default function Post({ params }: PostProps) {
   if (isLoading) return <div>isLoading</div>;
 
   return (
-    <main className="mt-[60px] pt-[52px] flex justify-center items-center">
-      <div className="relative w-full max-w-[720px] h-[864px] border-gradient rounded-xl">
+    <main className="mt-[60px] pt-[52px] px-4 flex justify-center items-center">
+      <div className="relative w-full max-w-[720px] min-w-[328px] h-[864px] border-gradient rounded-xl">
         <div className="h-full px-5 py-5">
           <Screws />
-          <div className="relative h-full pl-7 flex flex-col   ">
-            <PageTitle text={post.title} />
-            <div className="w-full flex justify-between items-center mb-4">
+          <div className="relative h-full pl-7 flex flex-col max-[450px]:pl-2">
+            <PageTitle text={post.title} className=" mb-7" />
+            <div className="relative w-full flex justify-between items-center mb-4">
               <PostProfile
                 displayName={post.displayName}
                 userId={post.accountId}

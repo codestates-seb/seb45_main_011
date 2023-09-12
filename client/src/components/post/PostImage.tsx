@@ -6,9 +6,9 @@ interface PostImageProps {
 
 export default function PostImage({ src }: PostImageProps) {
   return (
-    <div className="w-[360px] h-[240px] rounded-lg overflow-hidden mx-auto mb-[24px]">
+    <div className="w-full max-w-[360px] rounded-lg overflow-hidden mx-auto mb-[24px]">
       <Image
-        className="object-cover w-[360px] h-[240px] object-center"
+        className="object-cover w-full h-[240px] object-center  max-[500px]:h-[160px]"
         src={src || '/assets/img/bg_default_post.png'}
         alt=""
         width={370}

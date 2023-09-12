@@ -27,8 +27,8 @@ export default function Comment({ comment }: CommentProps) {
   const isEdit = editMode && comment.commentId === targetId;
 
   return (
-    <li className="pl-[1.375rem] mb-8">
-      <div className="flex justify-between mb-2">
+    <li className="pl-[1.375rem] mb-8 max-[500px]:pl-0">
+      <div className="flex justify-between mb-2 relative">
         <PostProfile
           userId={1}
           displayName={comment.displayName}
@@ -45,12 +45,12 @@ export default function Comment({ comment }: CommentProps) {
           />
         )}
       </div>
-      <div className="pl-11">
+      <div className="pl-11 max-[550px]:pl-0">
         {isEdit ? (
           <form onSubmit={handleSubmit((data) => console.log(data))}>
             <input
               autoFocus={true}
-              className="w-full px-[0.875rem] py-[0.75rem] bg-brown-10 border-2 border-brown-50 rounded-xl text-black-50 text-xs left-3 common-drop-shadow outline-none"
+              className="w-full px-[0.875rem] py-[0.75rem] bg-brown-10 border-2 border-brown-50 rounded-xl text-black-50 text-xs left-3 common-drop-shadow outline-none max-[500px]:py-[0.5rem]  max-[500px]:text-[0.5rem]"
               {...register('comment')}
             />
             {isEdit && (
@@ -68,7 +68,7 @@ export default function Comment({ comment }: CommentProps) {
             )}
           </form>
         ) : (
-          <p className="w-full px-[0.875rem] py-[0.75rem] bg-brown-10 border-2 border-brown-50 rounded-xl text-black-50 text-xs left-3 common-drop-shadow">
+          <p className="w-full px-[0.875rem] py-[0.75rem] bg-brown-10 border-2 border-brown-50 rounded-xl text-black-50 text-xs left-3 common-drop-shadow max-[500px]:px-[0.6rem] max-[500px]:py-[0.5rem]  max-[500px]:text-[0.5rem]">
             {comment.content}
           </p>
         )}
