@@ -47,8 +47,8 @@ export default function Garden({ params }: GardenProps) {
   if (isError) return <div>에러 발생!</div>;
 
   return (
-    <div className="mt-[52px] mx-auto">
-      <section className="flex gap-2">
+    <div className="mx-auto pb-10">
+      <section className="flex justify-start gap-2 min-w-[320px] max-w-[934px] pt-[120px] mx-auto">
         <p className="flex items-center gap-[6px] min-w-max h-fit px-4 py-2 text-xl text-brown-70 font-bold border-8 border-b-0 border-border-30 rounded-t-xl bg-contain bg-repeat bg-[url('/assets/img/bg_wood_yellow.png')] leading-6">
           {userId === params.id ? (
             <>
@@ -66,7 +66,7 @@ export default function Garden({ params }: GardenProps) {
         </p>
         {userId === params.id && <EditModeButton />}
       </section>
-      <div className="flex gap-4">
+      <div className="flex justify-center gap-4 mx-4 max-[984px]:flex-col max-[984px]:items-center max-[786px]:items-stretch">
         <GardenMap />
         {userId === params.id && <GardenSidebar />}
       </div>

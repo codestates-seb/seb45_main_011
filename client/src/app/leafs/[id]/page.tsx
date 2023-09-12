@@ -58,8 +58,8 @@ export default function Leafs({ params }: LeafsProps) {
 
   // TODO 클릭한 유저 정보 받아와야 한다. (클릭한 유저이름을 상태로 저장? 아니면 서버로 요청?)
   return (
-    <div className="flex justify-center items-center">
-      <div className="relative w-full max-w-[720px] h-[528px] border-gradient">
+    <div className="flex justify-center items-center pt-[120px]">
+      <div className="relative w-full max-w-[720px] h-[528px] border-gradient rounded-xl shadow-container">
         <Screws />
         <div className="pt-5 pb-4 pl-6 pr-5 flex flex-col gap-5">
           <PageTitle

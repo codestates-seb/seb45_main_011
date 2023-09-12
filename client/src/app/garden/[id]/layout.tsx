@@ -1,6 +1,6 @@
 'use client';
 
-import Header from '@/components/common/header/Header';
+import Header from '@/components/common/Header';
 
 export default function GardenLayout({
   children,
@@ -10,7 +10,7 @@ export default function GardenLayout({
   return (
     <>
       <Header />
-      <div className="flex flex-col items-center h-full bg-cover bg-center bg-no-repeat bg-[url('/assets/img/bg_default.png')]">
+      <div className="h-full bg-cover bg-center bg-no-repeat bg-[url('/assets/img/bg_default.png')]">
         {children}
       </div>
     </>

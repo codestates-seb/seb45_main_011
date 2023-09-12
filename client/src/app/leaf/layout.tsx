@@ -1,4 +1,4 @@
-import Header from '@/components/common/header/Header';
+import Header from '@/components/common/Header';
 
 export default function LeafLayout({
   children,
@@ -8,7 +8,9 @@ export default function LeafLayout({
   return (
     <>
       <Header />
-      <main>{children}</main>
+      <main className="h-full bg-cover bg-center bg-no-repeat bg-[url('/assets/img/bg_default.png')]">
+        {children}
+      </main>
     </>
   );
 }
