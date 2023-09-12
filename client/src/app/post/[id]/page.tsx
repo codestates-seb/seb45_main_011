@@ -22,6 +22,7 @@ import PostProfile from '@/components/post/PostProfile';
 import HashTags from '@/components/post/HashTags';
 
 import { CommentDataInfo, PostDataInfo } from '@/types/data';
+import CommentDeleteModal from '@/components/post/CommentDeleteModal';
 
 interface PostProps {
   params: { id: string };
@@ -33,7 +34,7 @@ export default function Post({ params }: PostProps) {
   const boardId = params.id;
 
   const { userId } = useTestUserStore();
-  const { isOpen } = usePostModalStore();
+  const { isOpen, usage } = usePostModalStore();
 
   if (!userId) return router.push('/signin');
 
@@ -99,7 +100,12 @@ export default function Post({ params }: PostProps) {
           </div>
         </div>
       </div>
-      {isOpen && <PostDeleteModal postId={params.id} />}
+      {isOpen &&
+        (usage === 'post' ? (
+          <PostDeleteModal postId={params.id} />
+        ) : (
+          <CommentDeleteModal />
+        ))}
     </main>
   );
 }
