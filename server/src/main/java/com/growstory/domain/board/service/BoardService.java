@@ -29,6 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional
@@ -42,24 +44,24 @@ public class BoardService {
     private final HashTagRepository hashTagRepository;
     private final BoardHashTagRepository boardHashtagRepository;
     private final CommentService commentService;
-    private final CommentRepository commentRepository;
 
 
     public Long createBoard(RequestBoardDto.Post requestBoardDto, MultipartFile image) {
         Account findAccount = authUserUtils.getAuthUser();
 
-        // 입력 받은 이미지가 있을 경우 saveBoardImage 메서드 호출
-        if (!image.isEmpty()) {
-            // Upload image in S3 && save image in Board_Image
-            boardImageService.saveBoardImage(image);
-        }
 
         Board board = Board.builder()
                 .title(requestBoardDto.getTitle())
                 .content(requestBoardDto.getContent())
                 .account(findAccount)
                 .build();
+
         Board saveBoard = boardRepository.save(board);
+        // 입력 받은 이미지가 있을 경우 saveBoardImage 메서드 호출
+        if (!image.isEmpty()) {
+            // Upload image in S3 && save image in Board_Image
+            boardImageService.saveBoardImage(image, saveBoard);
+        }
 
         // Save HashTags
         if (requestBoardDto.getHashTags() != null) {
@@ -78,8 +80,6 @@ public class BoardService {
                 boardHashtagRepository.save(boardHashtag);
             }
         }
-
-
         return saveBoard.getBoardId();
     }
 //
@@ -87,10 +87,8 @@ public class BoardService {
         Board findBoard = findVerifiedBoard(boardId);
         BoardImage findBoardImage = boardImageService.verifyExistBoardImage(boardId);
         List<ResponseHashTagDto> findHashTag = hashTagService.getHashTagList(boardId);
-//        List<Comment> findComment = commentService.getComments(boardId);
         List<ResponseCommentDto> findComment = commentService.getCommentList(boardId);
 
-//        return getResponseBoardDto(findBoard, findBoardImage, findAccount, findHashTag);
         return getResponseBoardDto(findBoard, findBoardImage, findHashTag, findComment);
     }
 
@@ -100,29 +98,64 @@ public class BoardService {
                         .boardId(board.getBoardId())
                         .title(board.getTitle())
                         .content(board.getContent())
-                        .boardImageUrl(board.getBoardImages().get(0).getStoredImagePath())
+//                        .boardImageUrl(board.getBoardImages()==null? null : board.getBoardImages().get(0).getStoredImagePath())
+                        .boardImageUrl(board.getBoardImages()
+                                .stream()
+                                .findFirst()
+                                .map(BoardImage::getStoredImagePath)
+                                .orElse(null))
                         .likeNum(board.getBoardLikes().size())
                         .commentNum(board.getBoardComments().size())
                         .build());
                 // boardImage 여러 개일 경우 ResponseBoardPageDto 에서 imageUrl 타입을 List로 변경 후
 //                .boardImageUrl(board.getBoardImages().stream().map(boardImage -> boardImage.getStoredImagePath()).collect(Collectors.toList()))
 
+
         return boards;
     }
-//
-//    public void modifyBoard(Long boardId, RequestBoardDto.Patch requestBoardDto, MultipartFile image) {
-//        Account findBoard = authUserUtils.getAuthUser();
-//
-////        Leaf findLeaf = leafRepository.findById(leafId)
-////                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.LEAF_NOT_FOUND));
-//
-//        // image가 null일 경우 S3에 저장된 image Object 삭제 + Board_Image(DB) 삭제
-//
-//        // image가 있을 경우 S3에 저장된 image Object 삭제 + Board_Image(DB) 저장
-//
-//    }
-//
-//
+
+    public void modifyBoard(Long boardId, RequestBoardDto.Patch requestBoardDto, MultipartFile image) {
+        Account findAccount = authUserUtils.getAuthUser();
+        Board findBoard = findVerifiedBoard(boardId);
+
+        // 로그인한 사용자의 accountId와 찾아온 board의 accountId를 비교
+        if (!Objects.equals(findBoard.getAccount().getAccountId(), findAccount.getAccountId())) {
+            throw new BusinessLogicException(ExceptionCode.ACCOUNT_UNAUTHORIZED);
+        }
+
+        // image가 있을 경우 S3에 저장된 image Object 삭제 + Board_Image(DB) 저장
+        if (!image.isEmpty()) {
+            boardImageService.deleteBoardImage(boardId);
+            boardImageService.saveBoardImage(image, findBoard);
+        }
+        // image가 없을 경우 S3에 저장된 image Object 삭제 + Board_Image(DB) 삭제
+        else {
+            boardImageService.deleteBoardImage(boardId);
+        }
+
+        // title, content 더티 체킹
+        findBoard.update(requestBoardDto);
+
+        // 해시 태그
+        if (requestBoardDto.getHashTags() != null) {
+            for (String tag : requestBoardDto.getHashTags()) {
+                HashTag hashTag = hashTagRepository.findByTag(tag);
+                if (hashTag == null) {
+                    hashTag = new HashTag();
+                    hashTag.setTag(tag);
+                    hashTagRepository.save(hashTag);
+                }
+
+                Board_HashTag boardHashtag = new Board_HashTag();
+                boardHashtag.addBoard(findBoard);
+                boardHashtag.addHashTag(hashTag);
+
+                boardHashtagRepository.save(boardHashtag);
+            }
+        }
+    }
+
+
     public void removeBoard(Long boardId) {
         Board findBoard = findVerifiedBoard(boardId);
 
