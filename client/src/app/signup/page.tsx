@@ -10,7 +10,7 @@ export default function Signup() {
   const { currentState } = useSignModalStore();
 
   return (
-    <div className="flex flex-col justify-center items-center bg-[url('/assets/img/bg_default.png')] bg-contain">
+    <div className="flex flex-col justify-center items-center h-full">
       <SignupIntro />
 
       {currentState === 'AuthEmailModal' && <AuthEmailModal />}

@@ -36,21 +36,21 @@ export default function Logo({ size }: LogoProps) {
 
 const LOGO_SIZE: Logo = {
   small: {
-    width: 76,
-    height: 44,
+    width: 60,
+    height: 36,
   },
   medium: {
     width: 138,
     height: 80,
   },
   large: {
-    width: 297,
-    height: 180,
+    width: 260,
+    height: 158,
   },
 };
 
 const LOGO_STYLE = {
-  small: 'w-full max-w-[75px]',
-  medium: 'w-full max-w-[137px]',
-  large: 'w-full max-w-[296px]',
+  small: 'min-w-[60px]',
+  medium: 'min-w-[137px]',
+  large: 'min-w-[260px]',
 };

@@ -41,5 +41,5 @@ const BUTTON_STYLE = {
   sm: 'px-[10px] py-[6px] text-sm border-2 leading-[14px]',
   md: 'px-[13px] py-[9px] text-xl border-[3px] leading-5',
   lg: 'px-[21px] py-[11px] text-2xl border-[3px] leading-6',
-  fix: 'w-[227px] h-[52px] text-2xl border-[3px]',
+  fix: 'w-[240px] h-[52px] text-2xl border-[3px]',
 } as const;

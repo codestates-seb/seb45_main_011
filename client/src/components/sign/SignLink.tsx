@@ -1,8 +1,12 @@
 import Link from 'next/link';
-import { SIGN_LINK_TO } from '@/constants/contents';
+
+import { twMerge } from 'tailwind-merge';
+
 import { DefaultProps } from '@/types/common';
 
-interface SignLinkProps {
+import { SIGN_LINK_TO } from '@/constants/contents';
+
+interface SignLinkProps extends DefaultProps {
   type: 'signin' | 'signup';
   route: '/signin' | '/signup';
   text: 'signinText' | 'signupText';
@@ -15,9 +19,10 @@ export default function SignLink({
   route,
   text,
   onLinkTo,
+  className,
 }: SignLinkProps) {
   return (
-    <div className="text-brown-90" onClick={onLinkTo}>
+    <div className={twMerge('text-brown-80', className)} onClick={onLinkTo}>
       <Link href={route}>
         {SIGN_LINK_TO[text]}
         <span className="font-bold">&nbsp;{SIGN_LINK_TO[type]}</span>

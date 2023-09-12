@@ -1,51 +1,25 @@
-import { DefaultProps } from '@/types/common';
+import { twMerge } from 'tailwind-merge';
+
 import Logo from './Logo';
-import Image from 'next/image';
+import Screws from './Screws';
+
+import { DefaultProps } from '@/types/common';
 
 interface IntroProps extends DefaultProps {
   children: React.ReactNode;
 }
 
-export default function Intro({ children }: IntroProps) {
+export default function Intro({ className, children }: IntroProps) {
   return (
-    <div className="relative flex flex-col gap-[28px] justify-center items-center max-w-[626px] h-[392px] rounded-md border-gradient ">
-      <Image
-        className="absolute top-2 left-2"
-        src="assets/img/screw.svg"
-        alt=""
-        width={16}
-        height={16}
-      />
-      <Image
-        className="absolute top-2 right-2"
-        src="assets/img/screw.svg"
-        alt=""
-        width={16}
-        height={16}
-      />
-      <Image
-        className="absolute bottom-2 left-2"
-        src="assets/img/screw.svg"
-        alt=""
-        width={16}
-        height={16}
-      />
-      <Image
-        className="absolute bottom-2 right-2"
-        src="assets/img/screw.svg"
-        alt=""
-        width={16}
-        height={16}
-      />
+    <div
+      className={twMerge(
+        'relative flex flex-col gap-6 justify-center items-center min-w-[540px] h-[380px] rounded-xl border-gradient shadow-container',
+        className,
+      )}>
       <Logo size="large" />
-      <div className="flex flex-col gap-[12px] text-center">
+      <div className="flex flex-col gap-1 text-center">
         {children}
-        {/* children:
-        <p className="text-[#A54426] text-2xl font-bold">{INTRO_DESC.first}</p>
-        <p className="text-[#A54426] text-2xl font-bold">
-          <b className="text-[#4D2113] text-[2rem]">{INTRO_DESC.bold}</b>
-          {INTRO_DESC.second}
-        </p> */}
+        <Screws />
       </div>
     </div>
   );

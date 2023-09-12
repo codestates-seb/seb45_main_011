@@ -66,14 +66,12 @@ export default function SigninIntro() {
 
   return (
     <div className="relative flex flex-col items-center justify-center bg-[url('/assets/img/bg_wood_yellow.png')] w-[480px] h-[420px] rounded-[12px] border-8 border-border-30 shadow-outer/down shadow-container border-gradient">
-      <Screws />
-      <div className="absolute top-8 flex flex-col items-center gap-5">
+      <div className="flex flex-col items-center gap-5">
         <Logo size="medium" />
-
         {isEmailSignin ? (
           <SigninForm />
         ) : (
-          <div className="flex flex-col gap-5 mt-8">
+          <div className="flex flex-col gap-4 my-4">
             {/* 소셜 로그인 버튼 */}
             <CommonButton
               type="submit"
@@ -96,8 +94,10 @@ export default function SigninIntro() {
           route="/signup"
           text="signupText"
           onLinkTo={() => getSignupForm(false)}
+          className="mt-2"
         />
       </div>
+      <Screws />
     </div>
   );
 }

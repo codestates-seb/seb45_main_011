@@ -2,14 +2,14 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 import useSignStore from '@/stores/signStore';
 import useUserStore from '@/stores/userStore';
-
-import Logo from '../Logo';
-import HeaderLink from './HeaderLink';
-import { useEffect, useState } from 'react';
 import useHistoryStore from '@/stores/historyStore';
+
+import Logo from './Logo';
+import HeaderLink from './HeaderLink';
 
 export default function Header() {
   const router = useRouter();
@@ -44,19 +44,25 @@ export default function Header() {
   return (
     <header
       className="
+        fixed
+        top-0
         flex
         justify-between
         items-center
         bg-[url('/assets/img/bg_wood_yellow.png')] 
-        bg-contain
-        h-[64px] 
+        bg-contain 
+        min-w-[480px] 
+        w-full 
+        h-[60px] 
+        px-3
+        pt-[1px]
         border-b-[8px] 
         border-border-10
         shadow-outer/down 
-        px-[15px]
+        z-10
         ">
       <Logo size="small" />
-      <ul className="flex gap-[10px]">
+      <ul className="flex gap-2">
         <li>
           <HeaderLink location="/garden/1" content="activity" title="garden" />
         </li>
@@ -71,10 +77,10 @@ export default function Header() {
             <Image
               src={profileImage()}
               alt="profile_img"
-              className={`rounded-[50%] border-brown-50 border-[3px] w-11 h-11 cursor-pointer `}
+              className={`rounded-[50%] border-brown-50 border-[3px] w-11 h-11 cursor-pointer`}
               onClick={logout}
-              width={44}
-              height={44}
+              width={38}
+              height={38}
             />
             {/* <img
               src={profileImage()}
