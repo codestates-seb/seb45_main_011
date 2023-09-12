@@ -39,6 +39,7 @@ public enum ExceptionCode {
     PRODUCT_NOT_FOUND(404, "Product not found"),
     PLANT_OBJ_NOT_FOUND(404, "PlantObj not found"),
 
+    INVALID_LOCATION(400, "Location is invalid"),
     LOCATION_NOT_FOUND(404, "Location not found"),
     LOCATION_NOT_ALLOW(405, "Location change not allowed"),
 
