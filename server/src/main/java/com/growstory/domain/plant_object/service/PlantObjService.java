@@ -71,7 +71,7 @@ public class PlantObjService {
     }
 
     // POST : 유저 포인트로 오브젝트 구입
-    public PlantObjDto.Trade buyProduct(Long accountId, Long productId) {
+    public PlantObjDto.TradeResponse buyProduct(Long accountId, Long productId) {
         // 시큐리티 컨텍스트 인증정보 확인
         accountService.isAuthIdMatching(accountId);
 
@@ -111,7 +111,7 @@ public class PlantObjService {
         PlantObj plantObj = findVerifiedPlantObj(plantObjId);
 
         if(findAccount.getPlantObjs().stream()
-                .anyMatch(objid -> objid == plantObj)) {
+                .anyMatch(obj -> obj.getPlantObjId() == plantObjId)) {
              resell(findAccount,plantObj);
         } else { // 사용자가 보유하고 있는 plantObj 중 해당 품목이 없다면 예외 던지기
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
@@ -132,6 +132,10 @@ public class PlantObjService {
                     //프로덕트 id와 로케이션 id가 일치하지 않으면 예외 발생
                     if(patchLocationDto.getPlantObjId()!=locationPatchDto.getLocationId()) {
                         throw new BusinessLogicException(ExceptionCode.LOCATION_NOT_ALLOW);
+                    }
+                    if(locationPatchDto.getX()<0 || locationPatchDto.getX()>11 ||
+                        locationPatchDto.getY()<0 || locationPatchDto.getY()>7) {
+                        throw new BusinessLogicException(ExceptionCode.INVALID_LOCATION);
                     }
                     // locationPatchDto와 기존 DB의 Location 정보가 일치하는지를 비교하여 다르다면 그 변화를 저장
                     locationService.updateLocation(locationPatchDto);
