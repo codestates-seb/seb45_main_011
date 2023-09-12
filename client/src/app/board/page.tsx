@@ -21,7 +21,7 @@ export default function Board() {
   };
 
   return (
-    <div className="flex flex-col gap-5 justify-center items-center">
+    <div className="mt-[60px] pt-[52px] px-4 flex flex-col gap-5 justify-center items-center max-[415px]:gap-3 max-[415px]:pt-2 ">
       <RankBoard />
       <BoardBanner />
       <div className="w-full max-w-[720px] h-[487px] border-gradient">
@@ -32,7 +32,7 @@ export default function Board() {
               글 쓰기
             </CommonButton>
           </div>
-          <PostList />
+          {/* <PostList /> */}
         </div>
       </div>
     </div>
