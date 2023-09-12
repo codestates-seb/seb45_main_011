@@ -57,6 +57,8 @@ public class BoardImageService {
                 .orElseThrow(() -> new EntityNotFoundException("Not found BoardImage"));
     }
 
-
-
+//    @Transactional(readOnly = true)
+//    public BoardImage verifyExistBoardImageByBoardId(Long boardId) {
+//        return boardImageRepository
+//    }
 }
