@@ -1,5 +1,6 @@
 'use client';
 
+import { twMerge } from 'tailwind-merge';
 import uuid from 'react-uuid';
 
 import useGardenStore from '@/stores/gardenStore';
@@ -22,9 +23,9 @@ export default function GardenSidebar() {
   const listBlank = plantList.length > 2 ? 'px-3 mr-[10px]' : 'px-5';
 
   return (
-    <section className="w-[182px] h-[496px] border-gradient rounded-xl shadow-outer/down">
+    <section className="w-[182px] h-[496px] border-gradient rounded-xl shadow-outer/down max-[984px]:w-full max-[984px]:min-w-[312px] max-[984px]:max-w-[736px] max-[984px]:h-[296px]">
       {!isEditMode && (
-        <div className="flex gap-2 w-fit mx-auto my-3">
+        <div className="flex gap-2 w-fit mx-auto my-3 max-[984px]:ml-4">
           <CommonButton
             onShop={handleShop}
             type="button"
@@ -42,7 +43,9 @@ export default function GardenSidebar() {
         </div>
       )}
       <ul
-        className={`flex flex-col gap-3 w-fit overflow-x-hidden overflow-y-scroll scrollbar ${listHeight} ${listBlank}`}>
+        className={twMerge(
+          `flex flex-col gap-3 w-fit overflow-x-hidden overflow-y-scroll scrollbar ${listHeight} ${listBlank} max-[984px]:flex-row max-[984px]:w-auto max-[984px]:h-[212px] max-[984px]:px-0 max-[984px]:mx-4 max-[984px]:overflow-x-scroll max-[984px]:overflow-y-hidden`,
+        )}>
         {plantList.map((plant) => (
           <PlantCard key={uuid()} usage={sidebarState} plantInfo={plant} />
         ))}

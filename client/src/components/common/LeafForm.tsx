@@ -69,8 +69,8 @@ export default function LeafForm({
           imageUrl={leaf?.leafImageUrl}
           setIsImageUpdated={setIsImageUpdated}
         />
-        <div className="w-full flex justify-center gap-2 mb-3">
-          <label className="pt-2 text-xl leading-5 text-brown-80 font-bold">
+        <div className="w-full flex justify-center gap-2">
+          <label className="pt-2 text-xl leading-5 text-brown-80 font-bold whitespace-nowrap">
             이름 :
           </label>
           <TextInput
@@ -81,7 +81,7 @@ export default function LeafForm({
           />
         </div>
         <div className="w-full flex justify-center gap-2 mb-3">
-          <label className="pt-2 text-xl leading-5 text-brown-80 font-bold">
+          <label className="pt-2 text-xl leading-5 text-brown-80 font-bold whitespace-nowrap">
             설명 :
           </label>
           <TextArea

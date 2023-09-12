@@ -32,8 +32,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko">
-      <body className={`relative ${galmuri.className}`}>
+    <html lang="ko" className="h-full">
+      <body className={`h-full relative bg-[#63A44A] ${galmuri.className}`}>
         <ReactQueryProvider>
           {children}
           <ul className="flex flex-col gap-5 p-5 mt-9 border-4 border-gray-30">
@@ -73,7 +73,6 @@ export default function RootLayout({
             <li>
               <Link href="/post/edit/1">게시글 편집</Link>
             </li>
-            {/* 테스트 용도로 잠시 추가해놓겠습니다! */}
             <li>
               <Link href="/profile">프로필 수정</Link>
             </li>

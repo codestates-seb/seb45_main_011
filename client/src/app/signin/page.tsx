@@ -12,7 +12,7 @@ export default function Signin() {
   const { currentState } = useSignModalStore();
 
   return (
-    <div className="flex flex-col justify-center items-center bg-[url('/assets/img/bg_default.png')] bg-contain">
+    <div className="flex flex-col justify-center items-center h-full">
       <SigninIntro />
 
       {currentState === 'FindPasswordModal' && <FindPasswordModal />}

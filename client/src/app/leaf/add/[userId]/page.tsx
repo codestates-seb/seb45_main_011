@@ -27,8 +27,8 @@ export default function AddLeaf({ params }: AddLeafProps) {
   });
 
   return (
-    <div className="flex justify-center items-center">
-      <div className="relative w-full max-w-[720px] h-[600px] border-gradient">
+    <div className="flex justify-center items-center pt-[120px]">
+      <div className="relative w-full min-w-[312px] max-w-[720px] h-full mx-4 border-gradient rounded-xl shadow-container">
         <Screws />
         <div className="p-5 h-full">
           <div className="w-full h-full flex flex-col overflow-y-scroll scrollbar">
