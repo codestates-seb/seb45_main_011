@@ -1,7 +1,10 @@
 package com.growstory.domain.board.dto;
 
 
+import com.growstory.domain.comment.dto.CommentDto;
+import com.growstory.domain.comment.dto.ResponseCommentDto;
 import com.growstory.domain.comment.entity.Comment;
+import com.growstory.domain.hashTag.dto.ResponseHashTagDto;
 import com.growstory.domain.hashTag.entity.HashTag;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,7 +27,8 @@ public class ResponseBoardDto {
     private String displayName;
     private String profileImageUrl;
 
-    private List<HashTag> hashTags;
+    private List<ResponseHashTagDto> hashTags;
 
-    private List<Comment> comments;
+    private List<ResponseCommentDto> comments;
+    private int commentLikeNum;
 }

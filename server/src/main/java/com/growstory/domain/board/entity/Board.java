@@ -1,6 +1,10 @@
 package com.growstory.domain.board.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.growstory.domain.account.entity.Account;
+import com.growstory.domain.board.dto.RequestBoardDto;
 import com.growstory.domain.comment.entity.Comment;
 import com.growstory.domain.images.entity.BoardImage;
 import com.growstory.domain.leaf.entity.Leaf;
@@ -33,10 +37,12 @@ public class Board extends BaseTimeEntity {
     private String content;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Comment> boardComments = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -55,5 +61,10 @@ public class Board extends BaseTimeEntity {
 
     public void addBoardLike(BoardLike boardLike) {
         boardLikes.add(boardLike);
+    }
+
+    public void update(RequestBoardDto.Patch requestPatchDto) {
+        this.title = requestPatchDto.getTitle();
+        this.content = requestPatchDto.getContent();
     }
 }

@@ -18,7 +18,6 @@ public class ResponseBoardPageDto {
 
     private String boardImageUrl;
 
-//    private List<String> boardImageUrlList;
 
     private int likeNum;
 

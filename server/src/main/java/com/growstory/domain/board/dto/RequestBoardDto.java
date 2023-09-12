@@ -26,12 +26,6 @@ public class RequestBoardDto {
 
 
         @Builder
-        public Post(String title, String content) {
-            this.title = title;
-            this.content = content;
-        }
-
-        @Builder
         public Post(String title, String content, @Nullable List<String> hashTags) {
             this.title = title;
             this.content = content;
@@ -39,10 +33,11 @@ public class RequestBoardDto {
         }
     }
 
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @Getter
     public static class Patch {
 
-        private Long boardId;
+//        private Long boardId;
 
         @Nullable
         private String title;
@@ -51,9 +46,13 @@ public class RequestBoardDto {
         private String content;
 
         @Nullable
-        private String imageUrl;
+        private List<String> hashTags;
 
-        @Nullable
-        private String hashTag;
+        @Builder
+        public Patch(@Nullable String title, @Nullable String content, @Nullable List<String> hashTags) {
+            this.title = title;
+            this.content = content;
+            this.hashTags = hashTags;
+        }
     }
 }
