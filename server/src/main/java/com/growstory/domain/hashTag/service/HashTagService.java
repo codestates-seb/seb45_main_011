@@ -20,17 +20,15 @@ public class HashTagService {
     private final BoardHashTagRepository boardHashTagRepository;
 
     // TODO: BoardService에 게시판 추가 기능에 있는 해시태그 추가 부분 메서드로 추출하기
-    public void createHashTag(String requestTag) {
-        HashTag hashTag = HashTag.builder()
-                .tag(requestTag)
-                .build();
-        hashTagRepository.save(hashTag);
+    public HashTag createHashTagIfNotExist(String tag) {
+        return hashTagRepository.findByTag(tag)
+                .orElseGet(() -> {
+                    HashTag newHashTag = new HashTag();
+                    newHashTag.setTag(tag);
+                    return hashTagRepository.save(newHashTag);
+                });
     }
 
-//    public List<HashTag> getHashTags(Long boardId) {
-//        return hashTagRepository.findByHashTags_BoardId(boardId)
-//                .orElseThrow(() -> new EntityNotFoundException("Not found HashTag"));
-//    }
 
     public List<ResponseHashTagDto> getHashTagList(Long boardId) {
 
