@@ -51,6 +51,7 @@ public class LeafService {
                         .build());
 
         findAccount.addLeaf(savedLeaf);
+        updateAccountGrade(findAccount);
 
         return LeafDto.Response.builder()
                 .leafId(savedLeaf.getLeafId())
@@ -133,6 +134,17 @@ public class LeafService {
         Leaf findLeaf = leafRepository.findById(leafId).orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.LEAF_NOT_FOUND));
         return findLeaf;
+    }
+
+    private static void updateAccountGrade(Account findAccount) {
+        int leavesNum = findAccount.getLeaves().size();
+        if (leavesNum < 50) {
+            findAccount.updateGrade(Account.AccountGrade.GRADE_BRONZE);
+        } else if (leavesNum < 100) {
+            findAccount.updateGrade(Account.AccountGrade.GRADE_SILVER);
+        } else {
+            findAccount.updateGrade(Account.AccountGrade.GRADE_GOLD);
+        }
     }
 
     private LeafDto.Response getLeafResponseDto(Leaf findLeaf) {

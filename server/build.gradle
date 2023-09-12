@@ -74,7 +74,9 @@ test {
 				"com/growstory/domain/**/entity/**",
 				"com/growstory/domain/**/repository/**",
 				"com/growstory/domain/**/mapper/**",
-				"com/growstory/global/**"
+				"com/growstory/global/**",
+				"com/growstory/*Application*",
+				"com/growstory/*Hello*"
 		]
 	}
 }
@@ -89,7 +91,9 @@ jacocoTestReport {
 					"com/growstory/domain/**/entity/**",
 					"com/growstory/domain/**/repository/**",
 					"com/growstory/domain/**/mapper/**",
-					"com/growstory/global/**"
+					"com/growstory/global/**",
+					"com/growstory/*Application*",
+					"com/growstory/*Hello*"
 			])
 		}))
 	}

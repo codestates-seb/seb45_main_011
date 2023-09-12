@@ -13,6 +13,9 @@ import com.growstory.global.aws.service.S3Uploader;
 import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -52,6 +55,7 @@ public class AccountService {
                 .password(encryptedPassword)
                 .point(point)
                 .roles(roles)
+                .accountGrade(Account.AccountGrade.GRADE_BRONZE)
                 .build());
 
         point.updateAccount(savedAccount);
@@ -61,6 +65,7 @@ public class AccountService {
                 .build();
     }
 
+    // 구글 이미지 수정 고치기
     public void updateProfileImage(MultipartFile profileImage) {
         Account findAccount = authUserUtils.getAuthUser();
 
@@ -97,8 +102,8 @@ public class AccountService {
     }
 
     @Transactional(readOnly = true)
-    public AccountDto.Response getAccount() {
-        Account findAccount = authUserUtils.getAuthUser();
+    public AccountDto.Response getAccount(Long accountId) {
+        Account findAccount = findVerifiedAccount(accountId);
 
         return getAccountResponse(findAccount);
     }
@@ -110,6 +115,42 @@ public class AccountService {
         return accounts.stream()
                 .map(AccountService::getAccountResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AccountDto.BoardResponse> getAccountBoardWritten(int page, int size, Long accountId) {
+        Account findAccount = findVerifiedAccount(accountId);
+        List<AccountDto.BoardResponse> boardWrittenList = findAccount.getBoards().stream()
+                                                .map(AccountService::getBoardResponse)
+                                                .collect(Collectors.toList());
+        int startIdx = page * size;
+        int endIdx = Math.min(boardWrittenList.size(), (page + 1) * size);
+        return new PageImpl<>(boardWrittenList.subList(startIdx, endIdx), PageRequest.of(page, size), boardWrittenList.size());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AccountDto.BoardResponse> getAccountBoardLiked(int page, int size, Long accountId) {
+        Account findAccount = findVerifiedAccount(accountId);
+        List<AccountDto.BoardResponse> boardLikedList = findAccount.getBoardLikes().stream()
+                .map(boardLike -> getBoardResponse(boardLike.getBoard()))
+                .collect(Collectors.toList());
+
+        int startIdx = page * size;
+        int endIdx = Math.min(boardLikedList.size(), (page + 1) * size);
+        return new PageImpl<>(boardLikedList.subList(startIdx, endIdx), PageRequest.of(page, size), boardLikedList.size());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AccountDto.BoardResponse> getAccountCommentWrittenBoard(int page, int size, Long accountId) {
+        Account findAccount = findVerifiedAccount(accountId);
+        List<AccountDto.BoardResponse> commentWrittenBoardList = findAccount.getComments().stream()
+                .map(comment -> getBoardResponse(comment.getBoard()))
+                .distinct()
+                .collect(Collectors.toList());
+
+        int startIdx = page * size;
+        int endIdx = Math.min(commentWrittenBoardList.size(), (page + 1) * size);
+        return new PageImpl<>(commentWrittenBoardList.subList(startIdx, endIdx), PageRequest.of(page, size), commentWrittenBoardList.size());
     }
 
     public void deleteAccount() {
@@ -160,17 +201,8 @@ public class AccountService {
                 .email(findAccount.getEmail())
                 .displayName(findAccount.getDisplayName())
                 .profileImageUrl(findAccount.getProfileImageUrl())
+                .grade(findAccount.getAccountGrade().getStepDescription())
                 .point(findAccount.getPoint())
-                .boardWritten(findAccount.getBoards().stream()
-                        .map(AccountService::getBoardResponse)
-                        .collect(Collectors.toList()))
-                .boardLiked(findAccount.getBoardLikes().stream()
-                        .map(boardLike -> getBoardResponse(boardLike.getBoard()))
-                        .collect(Collectors.toList()))
-                .commentWritten(findAccount.getComments().stream()
-                        .map(comment -> getBoardResponse(comment.getBoard()))
-                        .distinct()
-                        .collect(Collectors.toList()))
                 .build();
     }
 
