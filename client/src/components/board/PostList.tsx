@@ -14,15 +14,28 @@ export default function PostList() {
     hasNextPage,
   } = useBoardInfinityQuery();
   const searchKey = useBoardStore((state) => state.searchKey);
-  const data = useGetSearchBoardQuery(searchKey);
-  console.log(allBoards);
+  const searchResult = useGetSearchBoardQuery(searchKey);
+
   return (
     <div className="pr-3 w-full h-[404px] flex flex-wrap  gap-4 overflow-y-scroll scrollbar">
       <InfiniteScroll
         hasMore={hasNextPage}
         loadMore={() => fetchNextPage()}
-        useWindow={false}>
-        <div className="flex flex-wrap gap-4">
+        useWindow={false}
+        loader={<div>loading...</div>}>
+        <ul className="flex flex-wrap gap-4">
+          {allBoards?.map((ele) => {
+            return ele.boards.map((e: any) => (
+              <PostCard
+                key={e.boardId}
+                title={e.title}
+                imageSrc={e.boardImageUrl}
+                likesNum={e.likeNum}
+                commentsNum={e.commentNum}
+                postId={e.boardId}
+              />
+            ));
+          })}
           {/* {searchKey
             ? data?.searchBoards
             : allBoards?.map((ele) =>
@@ -37,24 +50,7 @@ export default function PostList() {
                   />
                 )),
               )} */}
-
-          {/* <PostCard
-            key={ele.boardId}
-            title={ele.title}
-            imageSrc={ele.imageUrl}
-            likesNum={ele.likesNum}
-            commentsNum={ele.commentsNum}
-            postId={ele.boardId}
-          /> */}
-          <PostCard
-            key={1}
-            title={'ㅁ'}
-            imageSrc={'/assets/img/bg_default_post.png'}
-            likesNum={1}
-            commentsNum={2}
-            postId={2}
-          />
-        </div>
+        </ul>
       </InfiniteScroll>
     </div>
   );

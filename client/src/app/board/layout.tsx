@@ -7,8 +7,11 @@ export default function BoardLayout({
 }) {
   return (
     <>
-      <Header />
-      <main>{children}</main>
+      {/* <Header /> */}
+      <main
+        className={`bg-cover bg-center bg-no-repeat bg-[url('/assets/img/bg_default.png')]`}>
+        {children}
+      </main>
     </>
   );
 }
