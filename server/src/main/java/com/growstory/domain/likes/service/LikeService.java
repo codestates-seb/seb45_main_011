@@ -39,10 +39,12 @@ public class LikeService {
         optionalBoardLike.ifPresentOrElse(boardLike -> {
             findBoard.getBoardLikes().remove(boardLike);
         }, () -> {
-            findBoard.addBoardLike(BoardLike.builder()
+            BoardLike boardLike = BoardLike.builder()
                     .account(findAccount)
                     .board(findBoard)
-                    .build());
+                    .build();
+            findBoard.addBoardLike(boardLike);
+            findAccount.addBoardLike(boardLike);
         });
     }
 

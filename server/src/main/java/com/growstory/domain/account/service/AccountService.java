@@ -3,16 +3,19 @@ package com.growstory.domain.account.service;
 import com.growstory.domain.account.dto.AccountDto;
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.account.repository.AccountRepository;
-import com.growstory.domain.plant_object.entity.PlantObj;
+import com.growstory.domain.board.entity.Board;
+import com.growstory.domain.images.entity.BoardImage;
 import com.growstory.domain.point.entity.Point;
 import com.growstory.domain.point.service.PointService;
-import com.growstory.domain.product.entity.Product;
 import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.auth.utils.CustomAuthorityUtils;
 import com.growstory.global.aws.service.S3Uploader;
 import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -52,6 +55,7 @@ public class AccountService {
                 .password(encryptedPassword)
                 .point(point)
                 .roles(roles)
+                .accountGrade(Account.AccountGrade.GRADE_BRONZE)
                 .build());
 
         point.updateAccount(savedAccount);
@@ -61,6 +65,7 @@ public class AccountService {
                 .build();
     }
 
+    // 구글 이미지 수정 고치기
     public void updateProfileImage(MultipartFile profileImage) {
         Account findAccount = authUserUtils.getAuthUser();
 
@@ -97,16 +102,10 @@ public class AccountService {
     }
 
     @Transactional(readOnly = true)
-    public AccountDto.Response getAccount() {
-        Account findAccount = authUserUtils.getAuthUser();
+    public AccountDto.Response getAccount(Long accountId) {
+        Account findAccount = findVerifiedAccount(accountId);
 
-        return AccountDto.Response.builder()
-                .accountId(findAccount.getAccountId())
-                .email(findAccount.getEmail())
-                .displayName(findAccount.getDisplayName())
-                .profileImageUrl(findAccount.getProfileImageUrl())
-                .point(findAccount.getPoint())
-                .build();
+        return getAccountResponse(findAccount);
     }
 
     @Transactional(readOnly = true)
@@ -114,14 +113,44 @@ public class AccountService {
         List<Account> accounts = accountRepository.findAll();
 
         return accounts.stream()
-                .map(account -> AccountDto.Response.builder()
-                        .accountId(account.getAccountId())
-                        .email(account.getEmail())
-                        .displayName(account.getDisplayName())
-                        .profileImageUrl(account.getProfileImageUrl())
-                        .point(account.getPoint())
-                        .build())
+                .map(AccountService::getAccountResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AccountDto.BoardResponse> getAccountBoardWritten(int page, int size, Long accountId) {
+        Account findAccount = findVerifiedAccount(accountId);
+        List<AccountDto.BoardResponse> boardWrittenList = findAccount.getBoards().stream()
+                                                .map(AccountService::getBoardResponse)
+                                                .collect(Collectors.toList());
+        int startIdx = page * size;
+        int endIdx = Math.min(boardWrittenList.size(), (page + 1) * size);
+        return new PageImpl<>(boardWrittenList.subList(startIdx, endIdx), PageRequest.of(page, size), boardWrittenList.size());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AccountDto.BoardResponse> getAccountBoardLiked(int page, int size, Long accountId) {
+        Account findAccount = findVerifiedAccount(accountId);
+        List<AccountDto.BoardResponse> boardLikedList = findAccount.getBoardLikes().stream()
+                .map(boardLike -> getBoardResponse(boardLike.getBoard()))
+                .collect(Collectors.toList());
+
+        int startIdx = page * size;
+        int endIdx = Math.min(boardLikedList.size(), (page + 1) * size);
+        return new PageImpl<>(boardLikedList.subList(startIdx, endIdx), PageRequest.of(page, size), boardLikedList.size());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AccountDto.BoardResponse> getAccountCommentWrittenBoard(int page, int size, Long accountId) {
+        Account findAccount = findVerifiedAccount(accountId);
+        List<AccountDto.BoardResponse> commentWrittenBoardList = findAccount.getComments().stream()
+                .map(comment -> getBoardResponse(comment.getBoard()))
+                .distinct()
+                .collect(Collectors.toList());
+
+        int startIdx = page * size;
+        int endIdx = Math.min(commentWrittenBoardList.size(), (page + 1) * size);
+        return new PageImpl<>(commentWrittenBoardList.subList(startIdx, endIdx), PageRequest.of(page, size), commentWrittenBoardList.size());
     }
 
     public void deleteAccount() {
@@ -139,7 +168,6 @@ public class AccountService {
         if(findAccount.isPresent())
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_ALREADY_EXISTS);
     }
-
 
     public Boolean verifyPassword(AccountDto.PasswordVerify passwordVerifyDto) {
         Account findAccount = authUserUtils.getAuthUser();
@@ -167,25 +195,28 @@ public class AccountService {
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
     }
 
-    public void buy(Account account, Product product) {
-        Point accountPoint = account.getPoint();
-        int price = product.getPrice();
-        int userPointScore = account.getPoint().getScore();
-        if(price > userPointScore) {
-            throw new BusinessLogicException(ExceptionCode.NOT_ENOUGH_POINTS);
-        } else { // price <= this.point.getScore()
-            int updatedScore = accountPoint.getScore()-price;
-            accountPoint.updateScore(updatedScore);
-        }
+    private static AccountDto.Response getAccountResponse(Account findAccount) {
+        return AccountDto.Response.builder()
+                .accountId(findAccount.getAccountId())
+                .email(findAccount.getEmail())
+                .displayName(findAccount.getDisplayName())
+                .profileImageUrl(findAccount.getProfileImageUrl())
+                .grade(findAccount.getAccountGrade().getStepDescription())
+                .point(findAccount.getPoint())
+                .build();
     }
 
-    public void resell(Account account, PlantObj plantObj) {
-        Point accountPoint = account.getPoint();
-        int userPointScore = account.getPoint().getScore();
-
-        int updatedScore = userPointScore + plantObj.getProduct().getPrice();
-        accountPoint.updateScore(updatedScore);
-        // 부모 객체에서 해당 PlantObj를 제거하여 고아 객체 -> 해당 인스턴스 삭제
-        account.removePlantObj(plantObj);
+    private static AccountDto.BoardResponse getBoardResponse(Board board) {
+        return AccountDto.BoardResponse.builder()
+                .boardId(board.getBoardId())
+                .title(board.getTitle())
+                .imageUrls(board.getBoardImages().stream()
+                        .map(BoardImage::getStoredImagePath)
+                        .collect(Collectors.toList()))
+                .likes(board.getBoardLikes().stream()
+                        .map(boardLike -> boardLike.getAccount().getAccountId())
+                        .collect(Collectors.toList()))
+                .commentNums(board.getBoardComments().size())
+                .build();
     }
 }

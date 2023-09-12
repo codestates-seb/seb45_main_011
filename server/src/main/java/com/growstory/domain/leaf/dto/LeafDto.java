@@ -1,5 +1,6 @@
 package com.growstory.domain.leaf.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 
 public class LeafDto {
     @Getter
+    @Schema(name = "LeafPostDto")
     public static class Post {
         @NotBlank
         private String leafName;
@@ -18,6 +20,7 @@ public class LeafDto {
     }
 
     @Getter
+    @Schema(name = "LeafPatchDto")
     public static class Patch {
         @Positive
         private Long leafId;
@@ -33,7 +36,9 @@ public class LeafDto {
 
     @Getter
     @Builder
+    @Schema(name = "LeafResponseDto")
     public static class Response {
+        private String displayName;
         private Long leafId;
         private String leafName;
         private String leafImageUrl;

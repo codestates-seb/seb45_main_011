@@ -1,5 +1,7 @@
 package com.growstory.domain.comment.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.likes.entity.CommentLike;
@@ -25,10 +27,12 @@ public class Comment extends BaseTimeEntity {
     private String content;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "BOARD_ID")
     private Board board;
 

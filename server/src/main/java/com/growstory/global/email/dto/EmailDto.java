@@ -1,6 +1,7 @@
 package com.growstory.global.email.dto;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 
 public class EmailDto {
     @Getter
+    @Schema(name = "EmailPostDto")
     public static class Post {
         @NotBlank
         @Email
