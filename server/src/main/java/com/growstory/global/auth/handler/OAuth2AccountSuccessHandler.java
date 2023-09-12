@@ -55,6 +55,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
                     .profileImageUrl(profileImageUrl)
                     .point(point)
                     .roles(authorities)
+                    .accountGrade(Account.AccountGrade.GRADE_BRONZE)
                     .build());
 
             point.updateAccount(savedAccount);
