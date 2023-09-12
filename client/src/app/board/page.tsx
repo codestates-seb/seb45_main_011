@@ -32,7 +32,7 @@ export default function Board() {
               글 쓰기
             </CommonButton>
           </div>
-          {/* <PostList /> */}
+          <PostList />
         </div>
       </div>
     </div>

@@ -24,7 +24,7 @@ export default function PostCard({
   };
 
   return (
-    <div
+    <li
       className="w-[200px] h-[175px] pt-[0.875rem] px-[0.625rem] pb-[0.625rem] flex flex-col bg-brown-10 border-2 border-brown-50 rounded-lg"
       role="button"
       onClick={() => navigateToPost(postId)}>
@@ -45,6 +45,6 @@ export default function PostCard({
         commentNum={commentsNum}
         usage="board"
       />
-    </div>
+    </li>
   );
 }
