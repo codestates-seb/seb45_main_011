@@ -54,8 +54,8 @@ public class BoardController {
                 .message(HttpStatusCode.OK.getMessage())
                 .data(responseBoardDto).build());
     }
-//
-//
+
+
     @Operation(summary = "Get Boards API", description = "전체 게시판 조회 기능")
     @GetMapping
     public ResponseEntity<MultiResponseDto<ResponseBoardPageDto>> getBoards(@Positive @RequestParam(defaultValue = "1") int page,
@@ -68,17 +68,29 @@ public class BoardController {
                 .data(responseBoardDtos.getContent()).page(responseBoardDtos).build());
     }
 
-
-//    @Operation(summary = "Update Board API", description = "게시판 수정 기능")
-//    @PatchMapping("/{boardId}")
-//    public ResponseEntity<HttpStatus> patchBoard(@Positive @PathVariable("boardId") Long boardId,
-//                                                 @Valid @RequestPart RequestBoardDto.Patch requestBoardDto,
-//                                                 @RequestPart(value = "image", required = false) MultipartFile image) {
+//    @Operation(summary = "Get Boards API", description = "전체 게시판 조회 기능")
+//    @GetMapping
+//    public ResponseEntity<MultiResponseDto<ResponseBoardPageDto>> getBoardsByKeyword(@Positive @RequestParam(defaultValue = "1") int page,
+//                                                                            @Positive @RequestParam(defaultValue = "12") int size) {
+//        Page<ResponseBoardPageDto> responseBoardDtos = boardService.findBoards(page - 1, size);
 //
-//        boardService.modifyBoard(boardId, requestBoardDto, image);
-//
-//        return ResponseEntity.noContent().build();
+//        return ResponseEntity.ok(MultiResponseDto.<ResponseBoardPageDto>builder()
+//                .status(HttpStatusCode.OK.getStatusCode())
+//                .message(HttpStatusCode.OK.getMessage())
+//                .data(responseBoardDtos.getContent()).page(responseBoardDtos).build());
 //    }
+
+
+    @Operation(summary = "Update Board API", description = "게시판 수정 기능")
+    @PatchMapping("/{boardId}")
+    public ResponseEntity<HttpStatus> patchBoard(@Positive @PathVariable("boardId") Long boardId,
+                                                 @Valid @RequestPart RequestBoardDto.Patch requestBoardDto,
+                                                 @RequestPart(value = "image", required = false) MultipartFile image) {
+
+        boardService.modifyBoard(boardId, requestBoardDto, image);
+
+        return ResponseEntity.noContent().build();
+    }
 
 
     @Operation(summary = "Delete Board API", description = "게시판 삭제 기능")
