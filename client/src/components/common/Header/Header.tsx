@@ -8,15 +8,20 @@ import useUserStore from '@/stores/userStore';
 
 import Logo from '../Logo';
 import HeaderLink from './HeaderLink';
+import { useEffect, useState } from 'react';
+import useHistoryStore from '@/stores/historyStore';
 
 export default function Header() {
   const router = useRouter();
+  const setBoards = useHistoryStore((state) => state.setBoards);
   const { getSigninForm, getSignupForm } = useSignStore();
   const { isLogin, isGoogleLogin, profileImageUrl, setClear } = useUserStore();
+  const isClient = useClient();
 
   const logout = () => {
     sessionStorage.clear();
     setClear();
+    setBoards({ boardWritten: [], boardLiked: [], commentWritten: [] });
 
     getSigninForm(false);
     getSignupForm(false);
@@ -25,7 +30,7 @@ export default function Header() {
   };
 
   const profileImage = () => {
-    if (!profileImageUrl) return '/assets/img/profile_hitmontop.png';
+    if (!profileImageUrl) return '/assets/img/bg_default_profile.png';
 
     if (isLogin || isGoogleLogin) {
       return profileImageUrl as string;
@@ -33,6 +38,8 @@ export default function Header() {
 
     return '/assets/img/profile_avocado.png';
   };
+
+  // 1. 문제인식을 나는 어떻게 했는가? 2.문제를 해결하기 위한 삽질과정 3.결과 4. 느낀점
 
   return (
     <header
@@ -59,7 +66,7 @@ export default function Header() {
         <li>
           <HeaderLink location="/leafs/1" content="activity" title="leafCard" />
         </li>
-        {isLogin || isGoogleLogin ? (
+        {isClient && (isLogin || isGoogleLogin) ? ( // 서버에 있을때 다르게 동작
           <li>
             <Image
               src={profileImage()}
@@ -85,3 +92,13 @@ export default function Header() {
     </header>
   );
 }
+
+const useClient = () => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  return isClient;
+};

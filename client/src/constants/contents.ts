@@ -97,3 +97,22 @@ export const PLANT_CARD_BUTTON_CONTENTS = {
 } as const;
 
 export const LOADING_CONTENTS = '로딩 중...';
+
+export const DROPDOWN_OPTIONS = [
+  {
+    title: 'all',
+    selected: '게시글 보기',
+  },
+  {
+    title: 'boardWritten',
+    selected: '작성한 게시글',
+  },
+  {
+    title: 'boardLiked',
+    selected: '좋아요를 누른 게시글',
+  },
+  {
+    title: 'commentWritten',
+    selected: '댓글을 작성한 게시글',
+  },
+] as const;
