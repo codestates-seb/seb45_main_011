@@ -125,7 +125,7 @@ export default function DiaryForm({
               {isChecked ? (
                 <img
                   className="w-[16px]"
-                  src="/assets/img/checked.svg"
+                  src="/assets/icon/checked.svg"
                   alt=""></img>
               ) : null}
             </div>
