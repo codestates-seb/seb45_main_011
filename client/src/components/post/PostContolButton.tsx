@@ -28,6 +28,7 @@ export default function ControlMenu({
 
   const handleEdit = () => {
     if (usage === 'post') return router.push(`/post/edit/${targetId}`);
+
     setTargetId(targetId);
     setEditMode(true);
     return null;
@@ -35,7 +36,6 @@ export default function ControlMenu({
 
   const handleDelete = () => {
     // 삭제 모달
-
     open();
     setType(usage);
     setTargetId(targetId);

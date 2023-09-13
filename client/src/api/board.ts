@@ -3,9 +3,9 @@ import axios from 'axios';
 export const commonAxios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
-    Authorization: '',
+    Authorization:
+      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhY2NvdW50SWQiOjEsImRpc3BsYXlOYW1lIjoi6rSA66as7J6QIiwicm9sZXMiOlsiQURNSU4iLCJVU0VSIl0sInVzZXJuYW1lIjoiYWRtaW5AZ21haWwuY29tIiwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNjk0NjA4ODM1LCJleHAiOjE2OTQ2MTA2MzV9.WES0RX-cNgK_8agBd2hoQ3TSFS7XF58Ekc9ZnNDQOm0',
     // Refresh:
-    'Content-Type': 'application/json;charset=UTF-8',
   },
   withCredentials: true,
 });
@@ -30,7 +30,11 @@ export async function getBoardsBySearch({
   search: string;
 }) {
   const res = await commonAxios
-    .get(`boards/keyword?page=${pageParam}&keyword=${encodeURI(search)}`)
+    .get(`boards/keyword?page=${pageParam}&keyword=${encodeURI(search)}`, {
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+    })
     .then((res) => res.data);
 
   console.log(res);
@@ -56,5 +60,6 @@ export async function addComment(content: string, boardId: number) {
 }
 /** commentId에 해당하는 댓글 삭제 */
 export async function deleteComment(commentId: number) {
-  return commonAxios.delete(`comments/${commentId}}`);
+  console.log(commentId);
+  return commonAxios.delete(`comments/${commentId}`);
 }

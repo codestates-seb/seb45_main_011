@@ -3,15 +3,35 @@
 import usePostStore from '@/stores/postStore';
 import usePostModalStore from '@/stores/postModalStore';
 
+import useDeleteCommentMutation from '@/hooks/useDeleteCommentMutation';
+
 import Modal from '@/components/common/Modal';
 import ModalPortal from '@/components/common/ModalPortal';
 import CommonButton from '@/components/common/CommonButton';
 
-export default function CommentDeleteModal() {
+interface CommentDeleteModalProps {
+  boardId: number | null;
+}
+
+export default function CommentDeleteModal({
+  boardId,
+}: CommentDeleteModalProps) {
   const { targetId } = usePostStore();
   const { close } = usePostModalStore();
+
+  if (!targetId || !boardId) return null;
+
+  const { mutate: deleteComment } = useDeleteCommentMutation({
+    targetId,
+    boardId,
+  });
+
   // brwon-40 border
-  const handleDelete = () => {};
+  const handleDelete = () => {
+    deleteComment();
+    close();
+  };
+
   const handleCancel = () => close();
 
   return (

@@ -1,21 +1,21 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { addComment } from '@/api/board';
-import { CommentInputValue } from '@/types/common';
+import { deleteComment } from '@/api/board';
 
 interface useDeleteCommentMutaionParameters {
-  commentId: number;
+  targetId: number;
+  boardId: number;
 }
 const useDeleteCommentMutation = ({
-  commentId,
+  targetId,
+  boardId,
 }: useDeleteCommentMutaionParameters) => {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
-    mutationFn: ({ comment }: CommentInputValue) =>
-      addComment(comment, commentId),
+    mutationFn: () => deleteComment(targetId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['post', Number(commentId)] });
+      queryClient.invalidateQueries({ queryKey: ['post', Number(boardId)] });
     },
   });
 
