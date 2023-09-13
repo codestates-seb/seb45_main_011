@@ -22,17 +22,17 @@ export default function FindPasswordModal() {
   const postNewPassword = async (email: string) => {
     if (!email) return;
 
-    try {
-      await postPasswordByEmail(email);
-    } catch (error) {
-      console.error(error);
-    }
+    // try, catch 필요없다, sendTemporaryPassword로 변경해주기
+    // 이름 작성이 힘들다면 혹은 애초에 사용할 때 한글로 이름 짓기 -> 확정이 되면 영어로 변경하기
+    await postPasswordByEmail(email);
   };
 
   const handleEmailCheck = async (email: string) => {
     if (!userEmail) return;
 
     const response = await getUsersEmail();
+
+    // response를 보고 타입 고쳐놓기
     const existEmail = response?.data.data.find(
       (current: any) => current.email === userEmail,
     );

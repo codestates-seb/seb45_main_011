@@ -52,3 +52,7 @@ export type SearchValues = {
 export type CommentInputValue = {
   comment: string;
 };
+
+export interface HistoryBoradProps {
+  paramsId: string;
+}

@@ -16,7 +16,7 @@ export default function ComfirmModal() {
   const hanldeDeleteUser = async () => {
     try {
       const response = await deleteUser(token);
-      console.log(response);
+
       if (response.status === 204) {
         return changeState('SuccessedModal');
       }

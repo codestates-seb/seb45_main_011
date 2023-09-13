@@ -1,31 +1,39 @@
 import { create } from 'zustand';
 
-interface HistoryState {
+interface UserInfo {
+  profileImageUrl: string;
+  displayName: string;
+  grade: string;
+  point: number;
+}
+
+interface HistoryState extends UserInfo {
   selectOption: string;
-  boards: {
-    boardWritten: any[];
-    boardLiked: any[];
-    commentWritten: any[];
-  };
 
   setSelectOption: (selectOption: string) => void;
-  setBoards: (boards: {
-    boardWritten: any[];
-    boardLiked: any[];
-    commentWritten: any[];
-  }) => void;
+
+  setHistoryUser: (userInfo: UserInfo) => void;
 }
 
 const useHistoryStore = create<HistoryState>((set) => ({
   selectOption: 'boardWritten',
-  boards: {
-    boardWritten: [],
-    boardLiked: [],
-    commentWritten: [],
-  },
+
+  profileImageUrl: '',
+  displayName: '',
+  grade: '',
+  point: 0,
 
   setSelectOption: (selectOption) => set({ selectOption }),
-  setBoards: (boards) => set({ boards }),
+
+  setHistoryUser: (userInfo: UserInfo) => {
+    const { profileImageUrl, displayName, grade, point } = userInfo;
+    set({
+      profileImageUrl,
+      displayName,
+      grade,
+      point,
+    });
+  },
 }));
 
 export default useHistoryStore;

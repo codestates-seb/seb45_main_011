@@ -3,29 +3,27 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 
 const StorageKey = 'user-key';
 
-interface User {
-  isLogin: boolean;
-  isGoogleLogin: boolean;
-
+interface UserInfo {
   accessToken: string;
-  refershToken: string;
-
+  refreshToken: string;
   userId: string;
   displayName: string;
   profileImageUrl: string;
-  point: number;
+}
+
+interface User extends UserInfo {
+  isLogin: boolean;
+  isGoogleLogin: boolean;
+
   leafCard: number;
+
+  setUser: (userInfo: UserInfo) => void;
 
   setIsLogin: (isLogin: boolean) => void;
   setIsGoogleLogin: (isGoogleLogin: boolean) => void;
 
-  setAccessToken: (accessToken: string) => void;
-  setRefershToken: (refershToken: string) => void;
-
-  setDisplayName: (displayName: string) => void;
   setProfileImageUrl: (profileImageUrl: string) => void;
-  setPoint: (point: number) => void;
-  saveUserId: (userId: string) => void;
+  setDisplayName: (displayName: string) => void;
 
   getLeafCard: (leafCard: number) => void;
 
@@ -39,12 +37,12 @@ const useUserStore = create(
       isGoogleLogin: false,
 
       accessToken: '',
-      refershToken: '',
+      refreshToken: '',
 
       userId: '',
       displayName: '',
       profileImageUrl: '',
-      point: 0,
+
       leafCard: 0,
 
       setIsLogin: (isLogin) => {
@@ -54,40 +52,45 @@ const useUserStore = create(
         set({ isGoogleLogin: isGoogleLogin });
       },
 
-      setAccessToken: (accessToken) => {
-        set({ accessToken: accessToken });
-      },
-      setRefershToken: (refershToken) => {
-        set({ refershToken: refershToken });
+      setUser: (userInfo: UserInfo) => {
+        const {
+          accessToken,
+          refreshToken,
+          userId,
+          displayName,
+          profileImageUrl,
+        } = userInfo;
+        set({
+          accessToken,
+          refreshToken,
+          userId,
+          displayName,
+          profileImageUrl,
+        });
       },
 
-      setDisplayName: (displayName) => {
-        set({ displayName: displayName });
-      },
-      setProfileImageUrl: (profileImageUrl) => {
-        set({ profileImageUrl: profileImageUrl });
-      },
-      setPoint: (point) => {
-        set({ point: point });
-      },
-      saveUserId: (userId) => {
-        set({ userId });
-      },
       getLeafCard: (leafCard) => {
         set({ leafCard });
       },
+
+      setProfileImageUrl: (profileImageUrl) => {
+        set({ profileImageUrl });
+      },
+      setDisplayName: (displayName) => {
+        set({ displayName });
+      },
+
       setClear: () =>
         set({
           isLogin: false,
           isGoogleLogin: false,
 
           accessToken: '',
-          refershToken: '',
+          refreshToken: '',
 
           userId: '',
           displayName: '',
           profileImageUrl: '',
-          point: 0,
           leafCard: 0,
         }),
     }),

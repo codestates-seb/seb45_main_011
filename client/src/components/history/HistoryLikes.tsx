@@ -3,25 +3,26 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import InfiniteScroll from 'react-infinite-scroller';
 
-import { getBoardWrittenByPage } from '@/api/history';
+import { getBoardLikedByPage } from '@/api/history';
 
 import HistoryPostCard from './HistoryPostCard';
 
 import { HistoryBoradProps } from '@/types/common';
 import { useRouter } from 'next/navigation';
 
-export default function HistoryBoard({ paramsId }: HistoryBoradProps) {
+export default function HistoryLikes({ paramsId }: HistoryBoradProps) {
   const router = useRouter();
   const { data, fetchNextPage, hasNextPage, isLoading, isError } =
     useInfiniteQuery(
-      ['boardWritten'],
-      ({ pageParam = 1 }) => getBoardWrittenByPage({ pageParam }, paramsId),
-
+      ['boardLiked'],
+      ({ pageParam = 1 }) => getBoardLikedByPage({ pageParam }, paramsId),
       {
         getNextPageParam: (lastPage, allPosts) => {
-          return lastPage.pageInfo.page !== lastPage.pageInfo.totalPages
-            ? lastPage.pageInfo.page + 1
-            : undefined;
+          if (lastPage.pageInfo.totalElement === 0) return;
+
+          if (lastPage.pageInfo.page !== lastPage.pageInfo.totalPages) {
+            return lastPage.pageInfo.page + 1;
+          }
         },
       },
     );
@@ -36,7 +37,7 @@ export default function HistoryBoard({ paramsId }: HistoryBoradProps) {
     <>
       {data?.pages.map((page, index) => (
         <div key={index}>
-          {page.boardWritten?.length === 0 ? (
+          {page?.boardLiked?.length === 0 ? (
             <div className="flex justify-center items-center overflow-hidden">
               <div className="flex justify-center items-center h-[195px] mt-1">
                 게시글이 없습니다!
@@ -47,7 +48,7 @@ export default function HistoryBoard({ paramsId }: HistoryBoradProps) {
               hasMore={hasNextPage}
               loadMore={() => fetchNextPage()}>
               <div className="flex flex-wrap gap-x-4 gap-y-9 mb-9">
-                {page.boardWritten?.map((board: any) => (
+                {page.boardLiked?.map((board: any) => (
                   <div
                     key={board.boardId}
                     onClick={() => router.push(`/post/${board.boardId}`)}
