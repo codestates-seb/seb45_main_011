@@ -30,7 +30,7 @@ export default function SelectLeafModal() {
     findLeaves(),
   );
 
-  const { mutate } = useConnectLeaf();
+  const { mutate: connectionMutate } = useConnectLeaf();
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target instanceof HTMLElement) {
@@ -48,7 +48,7 @@ export default function SelectLeafModal() {
     if (userId && infoTarget) {
       const plantObjId = infoTarget.plantObjId;
 
-      mutate({ userId, plantObjId, selectedLeafId });
+      connectionMutate({ userId, plantObjId, selectedLeafId });
     }
 
     unobserve();

@@ -21,12 +21,12 @@ export default function PostDeleteModal() {
 
   if (!targetId) return;
 
-  const { mutate } = useMutation({
-    mutationFn: ({ targetId }: DeletePostParameters) => deletePost(targetId),
+  const { mutate: deletePostMutate } = useMutation({
+    mutationFn: ({ targetId }: DeletePostParameters) => deletePost(postId),
     onSuccess: () => close(),
   });
 
-  const handleDelete = () => mutate({ targetId });
+  const handleDelete = () => deletePostMutate({ targetId });
 
   const handleCancel = () => close();
 

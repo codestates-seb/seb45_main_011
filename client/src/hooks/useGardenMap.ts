@@ -10,6 +10,7 @@ import { getInitialMapInfo } from '@/utils/getInitialMapInfo';
 
 const useGardenMap = () => {
   const {
+    point,
     plants,
     moveTarget,
     reference,
@@ -21,7 +22,7 @@ const useGardenMap = () => {
   } = useGardenStore();
   const { userId } = useUserStore();
 
-  const { mutate } = useSaveGarden();
+  const { mutate: gardenMutate } = useSaveGarden();
 
   const { uninstallableLocations, installedPlants } = getInitialMapInfo(plants);
 
@@ -54,7 +55,7 @@ const useGardenMap = () => {
       locationDto: { ...location },
     }));
 
-    if (userId) mutate({ userId, plantLocations });
+    if (userId) gardenMutate({ userId, plantLocations });
 
     changeEditMode(false);
   };
@@ -72,6 +73,7 @@ const useGardenMap = () => {
   };
 
   return {
+    point,
     uninstallableLocations,
     installedPlants,
     targetX,

@@ -19,7 +19,7 @@ export default function HeaderLink({
     <div>
       <Link
         href={location}
-        className={`flex justify-center items-center font-bold border-[3px] rounded-lg ${HEADER_LINK_STYLE[content]} bg-contain bg-center ${HEADER_LINK_BG[content]} px-[10px] py-[3px] text-base whitespace-nowrap`}>
+        className={`flex justify-center items-center font-bold border-[3px] rounded-lg ${HEADER_LINK_STYLE[content]} bg-contain bg-center ${HEADER_LINK_BG[content]} px-[10px] py-[3px] text-base whitespace-nowrap hover:scale-105 transition-transform`}>
         {HEADER_LINK_CONTENT[title]}
       </Link>
     </div>

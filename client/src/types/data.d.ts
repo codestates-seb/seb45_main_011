@@ -36,6 +36,7 @@ export type PlantObj = {
 };
 
 export interface RawGardenInfo {
+  displayName: string;
   point: Point;
   plantObjs: PlantObj[];
   products: Product[];
@@ -102,25 +103,26 @@ export interface PostFormValues {
 }
 
 export interface RawPostInfo {
+  boardId: number;
   title: string;
   content: string;
-  imageUrl: string;
+  boardImageUrl: string;
+  likeNum: number;
   createdAt: string;
   modifiedAt: string;
-  leaves: { leafId: number; title: string; imageUrl: string }[];
-  likes: { accountId: number }[];
-  hashTag: { tag: string }[];
-  board_account: { accountId: number; displayName: string; imageUrl: string }[];
+  accountId: number;
+  displayName: string;
+  profileImageUrl: string | null;
+  hashTags: { hashTagId: number; tag: string }[];
   comments: {
     commentId: number;
     content: string;
+    accountId: number;
+    displayName: string;
+    profileUrl: string | null;
     createdAt: StringMappingType;
     modifiedAt: string;
-    comment_account: {
-      accountId: number;
-      displayName: string;
-      imageUrl: string;
-    }[];
+    commentLikeNum: number;
   }[];
 }
 
