@@ -9,8 +9,8 @@ interface PostCountInfoProps extends DefaultProps {
   likesNum: number;
   commentNum: number | null;
   usage: 'board' | 'post';
-  liked: boolean;
-  boardId: number;
+  liked?: boolean;
+  boardId?: number;
 }
 
 export default function PostCountInfo({
@@ -21,7 +21,7 @@ export default function PostCountInfo({
   className,
   boardId,
 }: PostCountInfoProps) {
-  const { mutate: likePost } = useLikePostMutation(boardId);
+  const { mutate: likePost } = useLikePostMutation(boardId as number);
 
   return (
     <div className={`flex gap-3 ${className}`}>
@@ -30,7 +30,7 @@ export default function PostCountInfo({
           className="flex gap-[0.375rem]"
           role="button"
           onClick={() => {
-            likePost(boardId);
+            likePost();
           }}>
           {liked ? (
             <Image

@@ -6,7 +6,7 @@ const useLikePostMutation = (boardId: number) => {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
-    mutationFn: likeBoard,
+    mutationFn: () => likeBoard(boardId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['post', boardId] });
     },

@@ -3,8 +3,7 @@ import axios from 'axios';
 export const commonAxios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
-    Authorization:
-      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhY2NvdW50SWQiOjEsImRpc3BsYXlOYW1lIjoi6rSA66as7J6QIiwicm9sZXMiOlsiQURNSU4iLCJVU0VSIl0sInVzZXJuYW1lIjoiYWRtaW5AZ21haWwuY29tIiwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNjk0NjEyNDY2LCJleHAiOjE2OTQ2MTQyNjZ9.-PlOtg5Z2MQA6ssEo-H40CcUSVi9TiO7-RDuWHk-HYs',
+    Authorization: '',
     // Refresh:
   },
   withCredentials: true,
@@ -37,7 +36,6 @@ export async function getBoardsBySearch({
     })
     .then((res) => res.data);
 
-  console.log(res);
   return {
     boards: res.data,
     pageInfo: res.pageInfo,

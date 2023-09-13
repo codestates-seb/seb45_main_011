@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import InfiniteScroll from 'react-infinite-scroller';
 
 import useBoardStore from '@/stores/boardStore';
@@ -10,16 +8,7 @@ import useGetSearchBoardQuery from '@/hooks/useGetBoardSearchQuery';
 import PostCard from './PostCard';
 
 export default function PostList() {
-  const [board, setBoard] = useState<any>();
-
   const searchKey = useBoardStore((state) => state.searchKey);
-  const searchResult = useGetSearchBoardQuery(searchKey);
-
-  // const {
-  //   data: allBoards,
-  //   fetchNextPage,
-  //   hasNextPage,
-  // } = useBoardInfinityQuery();
 
   const {
     data: allBoards,
@@ -27,10 +16,7 @@ export default function PostList() {
     hasNextPage,
   } = searchKey ? useGetSearchBoardQuery(searchKey) : useBoardInfinityQuery();
 
-  useEffect(() => {
-    const boards = allBoards?.map((ele) => ele.boards);
-    if (boards) setBoard([].concat(...boards));
-  }, [allBoards, searchKey]);
+  const boards = allBoards?.map((boards) => boards.boards).flat();
 
   return (
     <div className="pr-3 w-full h-[404px] flex flex-wrap  gap-4 overflow-y-scroll scrollbar">
@@ -39,37 +25,20 @@ export default function PostList() {
         hasMore={hasNextPage}
         loadMore={() => fetchNextPage()}
         useWindow={false}
-        loader={<div>loading...</div>}>
+        loader={<div key="loader">loading...</div>}>
         <ul className="flex flex-wrap gap-4">
-          {board &&
-            board?.map(
-              (ele: any) =>
-                ele && (
-                  <PostCard
-                    key={ele.boardId}
-                    title={ele.title}
-                    imageSrc={ele.boardImageUrl}
-                    likesNum={ele.likeNum}
-                    commentsNum={ele.commentNum}
-                    postId={ele.boardId}
-                  />
-                ),
-            )}
-
-          {/* {searchKey
-            ? data?.searchBoards
-            : allBoards?.map((ele) =>
-                ele.passengers.map((e: any, idx: any) => (
-                  <PostCard
-                    key={idx}
-                    title={idx}
-                    imageSrc={idx}
-                    likesNum={idx}
-                    commentsNum={idx}
-                    postId={idx}
-                  />
-                )),
-              )} */}
+          {boards?.map((board) => {
+            return (
+              <PostCard
+                key={board.boardId}
+                title={board.title}
+                imageSrc={board.boardImageUrl}
+                likesNum={board.likeNum}
+                commentsNum={board.commentNum}
+                postId={board.boardId}
+              />
+            );
+          })}
         </ul>
       </InfiniteScroll>
     </div>
