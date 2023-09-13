@@ -20,14 +20,14 @@ import LeafDiary from '@/components/leaf/LeafDiary';
 import LeafDateInfo from '@/components/leaf/LeafDateInfo';
 import EmptyDiary from '@/components/leaf/EmptyDiary';
 import LeafModal from '@/components/leaf/LeafModal';
-// 컨벤션 협의 썰 정리하자
+import ShareButton from '@/components/common/ShareButton';
+
 import { DiaryDataInfo, LeafDataInfo } from '@/types/data';
 
 interface LeafProps {
   params: { leafId: string; userId: string };
 }
 
-// TODO: Leaf 날짜 부분 컴포넌트 분리 / leaf 리팩토링
 export default function Leaf({ params }: LeafProps) {
   const pathLeafId = Number(params.leafId);
   const pathUserId = Number(params.userId);
@@ -55,11 +55,10 @@ export default function Leaf({ params }: LeafProps) {
       },
     ],
   });
-
   const isLoading = results.some((result) => result.isLoading);
   const isError = results.some((result) => result.isError);
 
-  const isEmpty = diaries && diaries?.length === 0;
+  const isEmpty = !diaries || diaries?.length === 0;
 
   useEffectOnce(() => {
     if (!userId) {
@@ -79,7 +78,7 @@ export default function Leaf({ params }: LeafProps) {
   }, [leaf]);
 
   useEffect(() => {
-    if (isEmpty) setLastDiaryDay(new Date(diaries[0].createdAt));
+    if (!isEmpty) setLastDiaryDay(new Date(diaries[0].createdAt));
   }, [diaries]);
 
   if (isLoading) return <div>loading</div>;
@@ -87,8 +86,9 @@ export default function Leaf({ params }: LeafProps) {
   if (!leaf) return <div>error</div>;
 
   return (
-    <div className="w-full flex justify-center items-center">
+    <div className="pt-[120px] w-full flex justify-center items-center">
       <div className="relative w-full max-w-[720px] h-[645px] border-gradient rounded-xl">
+        <ShareButton />
         <div className="h-full p-5">
           <div className="h-full overflow-y-scroll scrollbar">
             <Screws />
@@ -101,7 +101,6 @@ export default function Leaf({ params }: LeafProps) {
               createdAt={leaf?.createdAt}
             />
             <LeafDateInfo />
-            {/* 예외를 앞으로. */}
             {isEmpty ? (
               <EmptyDiary pathUserId={pathUserId} userId={userId} />
             ) : (

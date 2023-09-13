@@ -61,7 +61,7 @@ export default function Post({ params }: PostProps) {
   if (isLoading) return <div>isLoading</div>;
 
   return (
-    <main className="mt-[60px] pt-[52px] px-4 flex justify-center items-center">
+    <main className="px-4 flex justify-center items-center">
       <div className="relative w-full max-w-[720px] min-w-[328px] h-[864px] border-gradient rounded-xl">
         <div className="h-full px-5 py-5">
           <Screws />
@@ -89,10 +89,11 @@ export default function Post({ params }: PostProps) {
                 <HashTags hashTags={post.hashTags} />
               </div>
               <PostCountInfo
+                liked={post.liked}
                 likesNum={post.likeNum}
                 commentNum={comments?.length || 0}
-                isLike={false}
                 usage="post"
+                boardId={post.boardId}
                 className="mb-3"
               />
               <CommentForm boardId={post.boardId} />

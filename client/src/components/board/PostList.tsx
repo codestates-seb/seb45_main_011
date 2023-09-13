@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import InfiniteScroll from 'react-infinite-scroller';
 
 import useBoardStore from '@/stores/boardStore';
@@ -10,16 +8,7 @@ import useGetSearchBoardQuery from '@/hooks/useGetBoardSearchQuery';
 import PostCard from './PostCard';
 
 export default function PostList() {
-  const [board, setBoard] = useState<any>();
-
   const searchKey = useBoardStore((state) => state.searchKey);
-  const searchResult = useGetSearchBoardQuery(searchKey);
-
-  // const {
-  //   data: allBoards,
-  //   fetchNextPage,
-  //   hasNextPage,
-  // } = useBoardInfinityQuery();
 
   const {
     data: allBoards,
@@ -27,49 +16,28 @@ export default function PostList() {
     hasNextPage,
   } = searchKey ? useGetSearchBoardQuery(searchKey) : useBoardInfinityQuery();
 
-  useEffect(() => {
-    const boards = allBoards?.map((ele) => ele.boards);
-    if (boards) setBoard([].concat(...boards));
-  }, [allBoards, searchKey]);
+  const boards = allBoards?.map((boards) => boards.boards).flat();
 
   return (
-    <div className="flex flex-wrap gap-4 w-full h-[404px] pr-4 overflow-y-scroll scrollbar">
-      {/* 무한 스크롤 직접 구현해보기 / 데이터가 많아지면 어떻게 처리할지 생각 -> 윈도잉 방식 */}
+    <div className="pr-3 w-full h-[404px] overflow-y-scroll scrollbar">
       <InfiniteScroll
         hasMore={hasNextPage}
         loadMore={() => fetchNextPage()}
         useWindow={false}
-        loader={<div>loading...</div>}>
-        <ul className="flex flex-wrap gap-4 ml-2">
-          {board &&
-            board?.map(
-              (ele: any) =>
-                ele && (
-                  <PostCard
-                    key={ele.boardId}
-                    title={ele.title}
-                    imageSrc={ele.boardImageUrl}
-                    likesNum={ele.likeNum}
-                    commentsNum={ele.commentNum}
-                    postId={ele.boardId}
-                  />
-                ),
-            )}
-
-          {/* {searchKey
-            ? data?.searchBoards
-            : allBoards?.map((ele) =>
-                ele.passengers.map((e: any, idx: any) => (
-                  <PostCard
-                    key={idx}
-                    title={idx}
-                    imageSrc={idx}
-                    likesNum={idx}
-                    commentsNum={idx}
-                    postId={idx}
-                  />
-                )),
-              )} */}
+        loader={<div key="loader">loading...</div>}>
+        <ul className="grid grid-cols-3 gap-4 place-items-center items-start max-[730px]:grid-cols-2 max-[530px]:grid-cols-1">
+          {boards?.map((board) => {
+            return (
+              <PostCard
+                key={board.boardId}
+                title={board.title}
+                imageSrc={board.boardImageUrl}
+                likesNum={board.likeNum}
+                commentsNum={board.commentNum}
+                postId={board.boardId}
+              />
+            );
+          })}
         </ul>
       </InfiniteScroll>
     </div>

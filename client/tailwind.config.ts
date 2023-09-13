@@ -13,7 +13,7 @@ const config: Config = {
     colors,
     extend: { boxShadow },
   },
-  plugins: [require('tailwind-scrollbar-hide')],
+  plugins: [],
 };
 
 export default config;

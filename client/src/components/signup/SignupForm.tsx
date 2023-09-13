@@ -3,18 +3,20 @@
 import { useRouter } from 'next/navigation';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import { postCodeByEmail, postCreateUser } from '@/api/user';
+
 import useSignModalStore from '@/stores/signModalStore';
 import useSignStore from '@/stores/signStore';
 
 import SignInput from '../sign/SignInput';
-import CommonButton from '../common/CommonButton';
 import SignPasswordInput from '../sign/SignPasswordInput';
+
+import CommonButton from '../common/CommonButton';
 
 import { SignFormValue } from '@/types/common';
 
-import { postCodeByEmail, postCreateUser } from '@/api/user';
-
 export default function SignupForm() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -22,13 +24,13 @@ export default function SignupForm() {
     watch,
     reset,
   } = useForm<SignFormValue>();
-  const router = useRouter();
 
   const { changeState, currentState } = useSignModalStore();
-  const { setCode, code, getSigninForm, getSignupForm } = useSignStore();
+  const { setCode, getSigninForm, getSignupForm } = useSignStore();
 
   const successedCode = currentState === 'Successed';
 
+  // d
   const handleValiateEmail = () => {
     changeState('AuthEmailModal');
   };
@@ -42,8 +44,9 @@ export default function SignupForm() {
     password,
     nickname,
   }: SignFormValue) => {
+    // 세밀한 처리를 위해 try, catch 사용
     try {
-      const response = await postCreateUser(email, password, nickname);
+      await postCreateUser(email, password, nickname);
 
       reset();
 
@@ -56,6 +59,7 @@ export default function SignupForm() {
     }
   };
 
+  // sendCodeWithEmail
   const postCode = async (email: string) => {
     if (!email) return;
 

@@ -9,9 +9,10 @@ import useSignModalStore from '@/stores/signModalStore';
 import useSignStore from '@/stores/signStore';
 import useUserStore from '@/stores/userStore';
 
-import CommonButton from '../common/CommonButton';
 import SignPasswordInput from '../sign/SignPasswordInput';
 import SignInput from '../sign/SignInput';
+
+import CommonButton from '../common/CommonButton';
 
 import { SignFormValue } from '@/types/common';
 
@@ -28,17 +29,7 @@ export default function SigninForm() {
 
   const { changeState } = useSignModalStore();
   const { getSigninForm, getSignupForm } = useSignStore();
-  const {
-    setIsLogin,
-    setAccessToken,
-    setRefershToken,
-    setDisplayName,
-    setProfileImageUrl,
-    saveUserId,
-  } = useUserStore();
-
-  const email = watch('email');
-  const password = watch('password');
+  const { setIsLogin, setUser } = useUserStore();
 
   const onLogin: SubmitHandler<SignFormValue> = async ({
     email,
@@ -50,20 +41,23 @@ export default function SigninForm() {
       const userId = String(response.data.accountId);
       const accessToken = response.headers.authorization;
       const refreshToken = response.headers.refresh;
-      const username = response.data.displayName;
-      const userProfileImage = response.data.profileImageUrl;
-
-      setAccessToken(accessToken);
-      setRefershToken(refreshToken);
-      setDisplayName(decodeURIComponent(username));
-      setProfileImageUrl(userProfileImage);
-      saveUserId(userId);
+      const displayName = decodeURIComponent(response.data.displayName);
+      const profileImageUrl = response.data.profileImageUrl;
 
       setIsLogin(true);
+      setUser({
+        userId,
+        accessToken,
+        refreshToken,
+        displayName,
+        profileImageUrl,
+      });
+
       getSigninForm(false);
       getSignupForm(false);
 
       reset();
+
       router.push('/');
     } catch (error) {
       alert('로그인에 실패했습니다. 다시 시도해 주세요.');
@@ -88,7 +82,7 @@ export default function SigninForm() {
             <CommonButton
               type="submit"
               size="md"
-              className="w-[121px] h-[44px]"
+              className="w-[92px] h-[44px]"
               children="로그인"
             />
             <CommonButton

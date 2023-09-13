@@ -3,7 +3,7 @@ import { create } from 'zustand';
 interface BoardState {
   boardCategory: 'all' | 'search';
   searchKey: string | null;
-  setSearchKey: (searchKey: string) => void;
+  setSearchKey: (searchKey: string | null) => void;
 }
 
 const useBoardStore = create<BoardState>((set) => ({

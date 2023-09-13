@@ -83,10 +83,11 @@ export interface LeafDataInfo {
 
 export interface BoardDataInfo {
   title: string;
-  imageUrl: string;
-  likesNum: number;
-  commentsNum: number;
+  boardImageUrl: string;
+  likeNum: number;
+  commentNum: number;
   boardId: number;
+  content: string;
 }
 export interface BoardUserDataInfo {
   userId: number;
@@ -155,4 +156,5 @@ export interface PostDataInfo {
   profileImageUrl: string | null;
   hashTags: HashTagInfo[] | null;
   comments: CommentDataInfo[] | null;
+  liked: boolean;
 }

@@ -1,10 +1,13 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
 import { useForm } from 'react-hook-form';
 
 import { updateUserNickname } from '@/api/profile';
 
 import useUserStore from '@/stores/userStore';
+import useSignModalStore from '@/stores/signModalStore';
 
 import TextInput from '../common/TextInput';
 import CommonButton from '../common/CommonButton';
@@ -16,32 +19,33 @@ type Token = {
 };
 
 export default function NicknameForm({ token }: Token) {
-  const { setDisplayName, displayName } = useUserStore();
+  const { setDisplayName, displayName, isGoogleLogin } = useUserStore();
+  const [newNickname, setNewNickname] = useState(displayName);
+  const changeState = useSignModalStore((state) => state.changeState);
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
     reset,
-  } = useForm<InputValues>({
-    defaultValues: {
-      nickname: displayName,
-    },
-  });
+    setValue,
+  } = useForm<InputValues>();
+
+  useEffect(() => {
+    setValue('nickname', displayName);
+  }, [displayName]);
 
   const nickname = watch('nickname');
 
-  const updateNickName = () => {
+  const updateNickName = async () => {
     if (!nickname) return;
 
-    try {
-      updateUserNickname(nickname, token);
-      setDisplayName(nickname);
-      reset();
-      alert('닉네임이 성공적으로 변경되었습니다.');
-    } catch (error) {
-      console.log(error);
-    }
+    const res = await updateUserNickname(nickname, token);
+
+    if (res.status === 204) setDisplayName(nickname);
+
+    reset();
+    changeState('ChangeNicknameModal');
   };
 
   return (
