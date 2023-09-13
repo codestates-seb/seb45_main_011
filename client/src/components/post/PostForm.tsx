@@ -36,17 +36,19 @@ interface PostFormProps {
 export default function PostForm({ post, postId, mode }: PostFormProps) {
   const router = useRouter();
 
-  const [isImageUpdated, setIsImageUpdated] = useState(false);
   const [tags, setTags] = useState<string[]>([]);
+  const [isImageUpdated, setIsImageUpdated] = useState(false);
 
-  const { mutate } = useMutation({
+  const { mutate: addPostMutate } = useMutation({
     mutationFn: ({ formValues, tags }: AddPostParameters) =>
       addPost(formValues, tags),
+    onSuccess: () => router.push('/boards'),
   });
 
-  const editMutation = useMutation({
+  const { mutate: editPostMutate } = useMutation({
     mutationFn: ({ formValues, tags, postId }: EditPostParameters) =>
       editPost(formValues, tags, postId),
+    onSuccess: () => router.push(`/boards/${postId}`),
   });
 
   const {
@@ -69,7 +71,12 @@ export default function PostForm({ post, postId, mode }: PostFormProps) {
 
   return (
     <form
-      onSubmit={handleSubmit((formValues) => mutate({ formValues, tags }))}
+      onSubmit={handleSubmit((formValues) => {
+        mode === 'add' && addPostMutate({ formValues, tags });
+        mode === 'edit' &&
+          postId &&
+          editPostMutate({ formValues, tags, postId });
+      })}
       className="flex flex-col justify-center items-center w-full px-12 pb-6">
       <div className="flex gap-3 min-w-[292px] w-full mb-2">
         <label
@@ -91,7 +98,7 @@ export default function PostForm({ post, postId, mode }: PostFormProps) {
         errors={errors}
         clearErrors={clearErrors}
         setValue={setValue}
-        imageUrl={post?.imageUrl}
+        imageUrl={post?.boardImageUrl}
         setIsImageUpdated={setIsImageUpdated}
       />
       <div className="flex gap-3 min-w-[292px] w-full mb-3">
