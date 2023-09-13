@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-import { PostFormValues } from '@/types/data';
+import { InputValues } from '@/types/common';
+
+import convertToFormData from '@/utils/convertToFormData';
 
 export const postAxios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -18,21 +20,12 @@ export const findPostById = async (postId: string) => {
   return data;
 };
 
-export const addPost = async (formValues: PostFormValues, tags: string[]) => {
-  const formData = new FormData();
-
-  const requestBoardDto = JSON.stringify({
-    title: formValues.title,
-    content: formValues.diaryContent,
-    hashTags: tags,
+export const addPost = async (formValues: InputValues, tags: string[]) => {
+  const formData = convertToFormData({
+    usage: 'addPost',
+    inputs: formValues,
+    tags,
   });
-
-  const blob = new Blob([requestBoardDto], {
-    type: 'application/json',
-  });
-
-  formData.append('image', formValues.image[0]);
-  formData.append('requestBoardDto', blob);
 
   await postAxios.post(`/boards`, formData, {
     headers: {
@@ -42,32 +35,23 @@ export const addPost = async (formValues: PostFormValues, tags: string[]) => {
 };
 
 export const editPost = async (
-  formValues: PostFormValues,
+  formValues: InputValues,
   tags: string[],
+  isImageUpdated: boolean,
   postId: string,
 ) => {
-  const formData = new FormData();
-
-  const requestBoardDto = JSON.stringify({
-    title: formValues.title,
-    content: formValues.diaryContent,
-    hashTags: tags,
+  const formData = convertToFormData({
+    usage: 'editPost',
+    inputs: formValues,
+    tags,
+    isImageUpdated,
   });
 
-  const blob = new Blob([requestBoardDto], {
-    type: 'application/json',
-  });
-
-  formValues.image && formData.append('image', formValues.image[0]);
-  formData.append('requestBoardDto', blob);
-
-  await postAxios.post(`/boards`, formData, {
+  await postAxios.patch(`/boards/${postId}`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
-
-  await postAxios.patch(`/boards/${postId}`, formData);
 };
 
 export const deletePost = async (postId: number) =>
