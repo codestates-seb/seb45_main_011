@@ -48,8 +48,8 @@ export async function getPostByBoardId(boardId: string) {
   return res.data;
 }
 
-export async function addComment(content: string) {
-  return commonAxios.post('/comments', {
+export async function addComment(content: string, boardId: number) {
+  return commonAxios.post(`comments/boards/${boardId}`, {
     content,
   });
 }

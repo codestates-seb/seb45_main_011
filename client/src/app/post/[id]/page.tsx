@@ -23,6 +23,7 @@ import HashTags from '@/components/post/HashTags';
 import CommentDeleteModal from '@/components/post/CommentDeleteModal';
 
 import { CommentDataInfo, PostDataInfo } from '@/types/data';
+import { useEffect, useState } from 'react';
 
 interface PostProps {
   params: { id: string };
@@ -33,24 +34,28 @@ export default function Post({ params }: PostProps) {
 
   const boardId = params.id;
 
+  const [comments, setComments] = useState<CommentDataInfo[]>();
+
   const { userId } = useTestUserStore();
   const { isOpen, usage } = usePostModalStore();
 
   if (!userId) return router.push('/signin');
-
+  console.log('page', boardId);
   const {
     data: post,
     isLoading,
     isError,
   } = useQuery<PostDataInfo>(
-    ['post', boardId],
+    ['post', Number(boardId)],
     () => getPostByBoardId(boardId),
     {
       enabled: !!userId,
     },
   );
 
-  console.log(post);
+  useEffect(() => {
+    if (post?.comments) setComments(post?.comments);
+  }, [post?.comments]);
 
   if (isError) return <div>error</div>;
   if (isLoading) return <div>isLoading</div>;
@@ -85,14 +90,14 @@ export default function Post({ params }: PostProps) {
               </div>
               <PostCountInfo
                 likesNum={post.likeNum}
-                commentNum={post.comments?.length || 0}
+                commentNum={comments?.length || 0}
                 isLike={false}
                 usage="post"
                 className="mb-3"
               />
               <CommentForm boardId={post.boardId} />
               <ul>
-                {post.comments?.map((comment: CommentDataInfo) => (
+                {comments?.map((comment: CommentDataInfo) => (
                   <Comment key={comment.commentId} comment={comment} />
                 ))}
               </ul>

@@ -6,8 +6,6 @@ import CommonButton from '@/components/common/CommonButton';
 import usePostStore from '@/stores/postStore';
 import usePostModalStore from '@/stores/postModalStore';
 
-interface CommentDeleteModalProps {}
-
 export default function CommentDeleteModal() {
   const { targetId } = usePostStore();
   const { close } = usePostModalStore();

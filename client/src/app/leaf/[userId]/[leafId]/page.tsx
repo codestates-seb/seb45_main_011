@@ -79,8 +79,7 @@ export default function Leaf({ params }: LeafProps) {
   }, [leaf]);
 
   useEffect(() => {
-    if (diaries && diaries.length !== 0)
-      setLastDiaryDay(new Date(diaries[0].createdAt));
+    if (isEmpty) setLastDiaryDay(new Date(diaries[0].createdAt));
   }, [diaries]);
 
   if (isLoading) return <div>loading</div>;

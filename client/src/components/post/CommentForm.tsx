@@ -13,11 +13,17 @@ interface CommentFormProps {
 }
 
 export default function CommentForm({ boardId }: CommentFormProps) {
-  const { register, handleSubmit } = useForm<CommentInputValue>();
+  const { register, handleSubmit, reset } = useForm<CommentInputValue>();
   const { mutate: addComment } = useAddCommentMutation({ boardId });
+
+  const submitCommentForm = (data: CommentInputValue) => {
+    addComment(data);
+    reset();
+  };
+
   return (
     <form
-      onSubmit={handleSubmit((data) => addComment(data))}
+      onSubmit={handleSubmit(submitCommentForm)}
       className="p-5 w-full h-[90px] flex justify-between items-center gap-3 bg-contain bg-center bg-[url('/assets/img/bg_wood_dark.png')] border-[3px] border-brown-70 rounded-lg common-drop-shadow mb-6 max-[560px]:p-3 max-[560px]:gap-2 max-[560px]:h-[74px]">
       <CommentProfileImage src="" />
       <input

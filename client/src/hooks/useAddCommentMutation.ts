@@ -10,9 +10,10 @@ const useAddCommentMutation = ({ boardId }: useAddCommentMutaionParameters) => {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
-    mutationFn: ({ comment }: CommentInputValue) => addComment(comment),
+    mutationFn: ({ comment }: CommentInputValue) =>
+      addComment(comment, boardId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['post', boardId] });
+      queryClient.invalidateQueries({ queryKey: ['post', Number(boardId)] });
     },
   });
 
