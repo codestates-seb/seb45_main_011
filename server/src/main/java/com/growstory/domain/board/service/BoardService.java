@@ -92,7 +92,6 @@ public class BoardService {
                         .boardId(board.getBoardId())
                         .title(board.getTitle())
                         .content(board.getContent())
-//                        .boardImageUrl(board.getBoardImages()==null? null : board.getBoardImages().get(0).getStoredImagePath())
                         .boardImageUrl(board.getBoardImages()
                                 .stream()
                                 .findFirst()
@@ -137,14 +136,15 @@ public class BoardService {
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_UNAUTHORIZED);
         }
 
+        BoardImage boardImage = findBoard.getBoardImages()
+                .stream()
+                .findFirst()
+                .orElse(null);
         // image가 있을 경우 S3에 저장된 image Object 삭제 + Board_Image(DB) 저장
         if (image != null) {
-            BoardImage boardImage = findBoard.getBoardImages()
-                    .stream()
-                    .findFirst()
-                    .orElse(null);
             if (boardImage != null) {
-                boardImageService.deleteBoardImage(boardId);
+                boardImageService.deleteBoardImage(boardImage);
+                findBoard.getBoardImages().clear();
                 boardImageService.saveBoardImage(image, findBoard);
             }
             else {
@@ -153,7 +153,8 @@ public class BoardService {
         }
         // image가 없을 경우 S3에 저장된 image Object 삭제 + Board_Image(DB) 삭제
         else {
-            boardImageService.deleteBoardImage(boardId);
+            boardImageService.deleteBoardImage(boardImage);
+            findBoard.getBoardImages().clear();
         }
 
         // title, content 더티 체킹
@@ -189,9 +190,11 @@ public class BoardService {
 
     public void removeBoard(Long boardId) {
         Board findBoard = findVerifiedBoard(boardId);
-
-        // delete Board Image in S3
-        boardImageService.deleteBoardImage(findBoard.getBoardId());
+        BoardImage boardImage = findBoard.getBoardImages()
+                .stream()
+                .findFirst()
+                .orElse(null);        // delete Board Image in S3
+        boardImageService.deleteBoardImage(boardImage);
 
         List<HashTag> findHashTag = hashTagRepository.findHashtagsByBoardId(boardId);
         hashTagRepository.deleteAll(findHashTag);
