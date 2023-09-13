@@ -1,7 +1,7 @@
 'use client';
 
-import { twMerge } from 'tailwind-merge';
 import uuid from 'react-uuid';
+import { twMerge } from 'tailwind-merge';
 
 import useGardenStore from '@/stores/gardenStore';
 
@@ -23,7 +23,7 @@ export default function GardenSidebar() {
   const listBlank = plantList.length > 2 ? 'px-3 mr-[10px]' : 'px-5';
 
   return (
-    <section className="w-[182px] h-[496px] border-gradient rounded-xl shadow-outer/down max-[984px]:w-full max-[984px]:min-w-[312px] max-[984px]:max-w-[736px] max-[984px]:h-[296px]">
+    <section className="w-[182px] h-[496px] ml-4 border-gradient rounded-xl shadow-outer/down max-[984px]:w-full max-[984px]:min-w-[312px] max-[984px]:max-w-[736px] max-[984px]:h-[296px] max-[984px]:ml-0 max-[984px]:mt-4">
       {!isEditMode && (
         <div className="flex gap-2 w-fit mx-auto my-3 max-[984px]:ml-4">
           <CommonButton
