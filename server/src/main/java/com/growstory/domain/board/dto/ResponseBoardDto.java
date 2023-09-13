@@ -19,6 +19,7 @@ public class ResponseBoardDto {
     private String title;
     private String content;
     private String boardImageUrl;
+    private boolean isLiked;
     private int likeNum;
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
@@ -26,9 +27,12 @@ public class ResponseBoardDto {
     private Long accountId;
     private String displayName;
     private String profileImageUrl;
+    private String grade;
 
     private List<ResponseHashTagDto> hashTags;
 
     private List<ResponseCommentDto> comments;
+
+    // 프런트에서 댓글 좋아요 구현 시 사용
     private int commentLikeNum;
 }
