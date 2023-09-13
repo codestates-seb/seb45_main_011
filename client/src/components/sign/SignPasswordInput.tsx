@@ -64,11 +64,10 @@ export default function SignPasswordInput({
         required
         {...register(tag, registerFormat?.validation)}
       />
-      {errors[tag] && (
-        <div className="text-[10px] text-red-50 leading-3 ml-10 my-2">
-          {errorMsg}
-        </div>
-      )}
+
+      <div className="h-[12px] mt-[8px] pl-3 w-full text-[0.6rem] leading-3 text-red-50">
+        {errorMsg}
+      </div>
     </div>
   );
 }

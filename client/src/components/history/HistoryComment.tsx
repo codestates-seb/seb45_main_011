@@ -3,20 +3,19 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import InfiniteScroll from 'react-infinite-scroller';
 
-import { getBoardWrittenByPage } from '@/api/history';
+import { getCommentWrittenByPage } from '@/api/history';
 
 import HistoryPostCard from './HistoryPostCard';
 
 import { HistoryBoradProps } from '@/types/common';
 import { useRouter } from 'next/navigation';
 
-export default function HistoryBoard({ paramsId }: HistoryBoradProps) {
+export default function HistoryComment({ paramsId }: HistoryBoradProps) {
   const router = useRouter();
   const { data, fetchNextPage, hasNextPage, isLoading, isError } =
     useInfiniteQuery(
-      ['boardWritten'],
-      ({ pageParam = 1 }) => getBoardWrittenByPage({ pageParam }, paramsId),
-
+      ['commentWritten'],
+      ({ pageParam = 1 }) => getCommentWrittenByPage({ pageParam }, paramsId),
       {
         getNextPageParam: (lastPage, allPosts) => {
           return lastPage.pageInfo.page !== lastPage.pageInfo.totalPages
@@ -26,17 +25,11 @@ export default function HistoryBoard({ paramsId }: HistoryBoradProps) {
       },
     );
 
-  const likesAmount = (likes: []) => {
-    if (likes?.length === 0) return 0;
-
-    return likes.length;
-  };
-
   return (
     <>
       {data?.pages.map((page, index) => (
         <div key={index}>
-          {page.boardWritten?.length === 0 ? (
+          {page.commentWritten?.length === 0 ? (
             <div className="flex justify-center items-center overflow-hidden">
               <div className="flex justify-center items-center h-[195px] mt-1">
                 게시글이 없습니다!
@@ -47,7 +40,7 @@ export default function HistoryBoard({ paramsId }: HistoryBoradProps) {
               hasMore={hasNextPage}
               loadMore={() => fetchNextPage()}>
               <div className="flex flex-wrap gap-x-4 gap-y-9 mb-9">
-                {page.boardWritten?.map((board: any) => (
+                {page.commentWritten?.map((board: any) => (
                   <div
                     key={board.boardId}
                     onClick={() => router.push(`/post/${board.boardId}`)}
@@ -55,7 +48,9 @@ export default function HistoryBoard({ paramsId }: HistoryBoradProps) {
                     <HistoryPostCard
                       imageUrl={board.imageUrls}
                       title={board.title}
-                      likes={likesAmount(board.likes)}
+                      likes={
+                        board.likes?.length === 0 ? 0 : board.likes?.length
+                      }
                       comment={board.commentNums}
                     />
                   </div>

@@ -66,11 +66,10 @@ export default function SignInput({
         required
         {...register(type, registerFormat?.validation)}
       />
-      {errors[type] && (
-        <div className="text-[10px] text-red-50 leading-3 ml-10 mt-2">
-          {errorMsg}
-        </div>
-      )}
+
+      <div className="h-[12px] mt-[8px] pl-3 w-full text-[0.6rem] leading-3 text-red-50">
+        {errorMsg}
+      </div>
     </div>
   );
 }
