@@ -25,7 +25,7 @@ export default function Post({ params }: PostProps) {
       <div className="relative w-full max-w-[720px] h-[864px] border-gradient rounded-xl">
         <div className="h-full px-5 py-5">
           <Screws />
-          <div className="relative h-full pr-5 pl-7 flex flex-col  overflow-y-scroll scrollbar ">
+          <div className="relative h-full pr-5 pl-7 flex flex-col   ">
             <PageTitle text="첫 바질!!!" />
             <div className="w-full flex justify-between items-center mb-4">
               <PostProfile
@@ -41,24 +41,26 @@ export default function Post({ params }: PostProps) {
                 targetId={boardId}
               />
             </div>
-            <div className="px-[1.875rem] py-[1.625rem] w-full bg-brown-10 border-2 border-brown-50 rounded-lg mb-8 common-drop-shadow ">
-              <PostImage src={'/assets/img/profile_hitmontop.png'} />
-              <PostContent content={`asda`} />
+            <div className="flex flex-col overflow-y-scroll scrollbar">
+              <div className="px-[1.875rem] py-[1.625rem] w-full bg-brown-10 border-2 border-brown-50 rounded-lg mb-8 common-drop-shadow ">
+                <PostImage src={'/assets/img/profile_hitmontop.png'} />
+                <PostContent content={`asda`} />
+              </div>
+              <PostCountInfo
+                likesNum={200}
+                commentNum={11}
+                isLike={false}
+                usage="post"
+                className="mb-3"
+              />
+              <CommentForm />
+              <Comment />
+              <Comment />
+              <Comment />
+              <Comment />
+              <Comment />
+              <Comment />
             </div>
-            <PostCountInfo
-              likesNum={200}
-              commentNum={11}
-              isLike={false}
-              usage="post"
-              className="mb-3"
-            />
-            <CommentForm />
-            <Comment />
-            <Comment />
-            <Comment />
-            <Comment />
-            <Comment />
-            <Comment />
           </div>
         </div>
       </div>

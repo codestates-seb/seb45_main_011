@@ -54,7 +54,7 @@ export default function PostCountInfo({
             height={16}
           />
 
-          {200}
+          {likesNum}
         </span>
       )}
 
