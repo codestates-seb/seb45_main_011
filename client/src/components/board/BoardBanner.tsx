@@ -5,6 +5,7 @@ import useEffectOnce from '@/hooks/useEffectOnce';
 
 export default function BoardBanner() {
   const [isSmallView, setIsSmallView] = useState(false);
+
   useEffectOnce(() => {
     const handleResize = () => {
       if (window.innerWidth < 588) return setIsSmallView(true);

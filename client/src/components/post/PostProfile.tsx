@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface PostProfileProps {
   userId: number;
@@ -18,15 +18,10 @@ export default function PostProfile({
   grade,
   usage,
 }: PostProfileProps) {
-  const router = useRouter();
-
-  const navigateToHistory = () => router.push(`/history/${userId}`);
-
   return (
-    <div
-      className={`flex gap-3 items-center ${PROFILE_STYLE[usage].container}`}
-      role="button"
-      onClick={navigateToHistory}>
+    <Link
+      href={`/history/${userId}`}
+      className={`flex gap-3 items-center ${PROFILE_STYLE[usage].container}`}>
       <div className="w-[44px] h-[44px] flex justify-center items-center border-[3px] rounded-[50%] border-brown-50 common-drop-shadow overflow-hidden max-[500px]:w-[38px] max-[500px]:h-[38px]">
         <Image
           className=" object-cover"
@@ -44,7 +39,7 @@ export default function PostProfile({
           {grade}
         </span>
       </div>
-    </div>
+    </Link>
   );
 }
 

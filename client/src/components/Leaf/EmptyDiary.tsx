@@ -6,6 +6,8 @@ interface EmptyDiaryProps {
 }
 
 export default function EmptyDiary({ pathUserId, userId }: EmptyDiaryProps) {
+  const isOwner = pathUserId === userId;
+
   const { modalOpen, setModalCategory } = useLeafStore();
 
   const addDiary = () => {
@@ -20,13 +22,13 @@ export default function EmptyDiary({ pathUserId, userId }: EmptyDiaryProps) {
           <p className="font-bold text-[1.25rem] text-brown-70">
             등록된 일지가 없어요 : (
           </p>
-          {pathUserId === userId && (
+          {isOwner && (
             <p className=" font-bold text-[1rem] text-brown-50">
               일지를 작성해보세요!
             </p>
           )}
         </div>
-        {pathUserId === userId && (
+        {isOwner && (
           <button
             className="px-3 py-2 bg-[url('/assets/img/bg_wood_dark.png')] bg-contain border-2 border-brown-70 rounded-lg shadow-outer/down text-sm font-bold text-brown-10"
             onClick={addDiary}>
