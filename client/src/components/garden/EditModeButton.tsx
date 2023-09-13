@@ -5,7 +5,7 @@ import useModalStore from '@/stores/gardenModalStore';
 
 import useRollback from '@/hooks/useRollback';
 
-export default function EditModebutton() {
+export default function EditModeButton() {
   const { inventory, plants } = useGardenStore();
   const { changeType, open } = useModalStore();
 
@@ -26,7 +26,7 @@ export default function EditModebutton() {
     <button
       onClick={handleClick}
       type="button"
-      className="px-4 py-[10px] text-lg text-brown-70 font-bold border-[8px] border-b-0 border-border-30 rounded-t-xl bg-contain bg-repeat bg-[url('/assets/img/bg_wood_yellow.png')] leading-5 whitespace-nowrap">
+      className="px-3 py-[10px] text-lg text-brown-70 font-bold border-[8px] border-b-0 border-border-30 rounded-t-xl bg-contain bg-repeat bg-[url('/assets/img/bg_wood_yellow.png')] leading-5 whitespace-nowrap">
       편집 모드
     </button>
   );

@@ -10,7 +10,7 @@ export default function GardenLayout({
   return (
     <>
       <Header />
-      <div className="h-full bg-cover bg-center bg-no-repeat bg-[url('/assets/img/bg_default.png')]">
+      <div className="h-full pt-[120px] bg-cover bg-center bg-no-repeat bg-[url('/assets/img/bg_default.png')]">
         {children}
       </div>
     </>

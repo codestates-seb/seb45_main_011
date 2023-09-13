@@ -16,6 +16,7 @@ export interface GardenState {
   isEditMode: boolean;
   sidebarState: SidebarState;
 
+  userName: string | null;
   point: number;
   shop: PlantInfo[] | [];
   inventory: PlantInfo[] | [];
@@ -31,6 +32,7 @@ export interface GardenState {
   changeEditMode: (isEditMode: boolean) => void;
   changeSidebarState: (sidbarState: SidebarState) => void;
 
+  setUserName: (userName: string) => void;
   setPoint: (point: number) => void;
   setShop: (shop: PlantInfo[]) => void;
   setInventory: (inventory: PlantInfo[]) => void;
@@ -49,6 +51,7 @@ const useGardenStore = create<GardenState>((set) => ({
   isEditMode: false,
   sidebarState: 'shop',
 
+  userName: null,
   point: 0,
   shop: [],
   inventory: [],
@@ -64,6 +67,7 @@ const useGardenStore = create<GardenState>((set) => ({
   changeEditMode: (isEditMode) => set(() => ({ isEditMode })),
   changeSidebarState: (sidebarState) => set(() => ({ sidebarState })),
 
+  setUserName: (userName) => set(() => ({ userName })),
   setPoint: (point) => set(() => ({ point })),
   setShop: (shop) => set(() => ({ shop })),
   setInventory: (inventory) => set(() => ({ inventory })),

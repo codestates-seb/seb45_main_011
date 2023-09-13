@@ -9,14 +9,15 @@ import { RawGardenInfo } from '@/types/data';
 import { createInventory } from '@/utils/createInventory';
 
 const useSyncGarden = (id: string) => {
-  const { point, setPoint, setShop, setInventory, setPlants } =
+  const { point, setUserName, setPoint, setShop, setInventory, setPlants } =
     useGardenStore();
 
   const syncGarden = (garden: RawGardenInfo) => {
-    const { point, products, plantObjs } = garden;
+    const { displayName, point, products, plantObjs } = garden;
 
     const newInventory = createInventory(plantObjs);
 
+    setUserName(displayName);
     setPoint(point.score);
     setShop(products);
     setInventory(newInventory);

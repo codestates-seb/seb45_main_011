@@ -15,11 +15,11 @@ export default function PurchaseInfoModal() {
   const { changeType, close } = useGardenModalStore();
   const { userId } = useUserStore();
 
-  const { mutate } = usePurchasePlant();
+  const { mutate: purchaseMutate } = usePurchasePlant();
 
   const handlePurchase = () => {
     if (userId && purchaseTarget?.isPurchasable)
-      mutate({ userId, productId: purchaseTarget.productId });
+      purchaseMutate({ userId, productId: purchaseTarget.productId });
 
     changeType('purchase');
   };
