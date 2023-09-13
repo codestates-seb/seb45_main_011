@@ -30,7 +30,7 @@ export default function PostCard({
       onClick={() => navigateToPost(postId)}>
       <div className="w-[121px] h-[92px] rounded-lg overflow-hidden mb-2 mx-auto border-2 border-brown-40">
         <Image
-          className="object-cover w-full h-full"
+          className="object-cover object-center w-full h-full"
           src={imageSrc || '/assets/img/bg_default_post.png'}
           alt=""
           width={131}

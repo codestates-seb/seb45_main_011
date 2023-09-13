@@ -19,14 +19,13 @@ export default function PostList() {
   const boards = allBoards?.map((boards) => boards.boards).flat();
 
   return (
-    <div className="pr-3 w-full h-[404px] flex flex-wrap  gap-4 overflow-y-scroll scrollbar">
-      {/* 무한 스크롤 직접 구현해보기 / 데이터가 많아지면 어떻게 처리할지 생각 -> 윈도잉 방식 */}
+    <div className="pr-3 w-full h-[404px]  overflow-y-scroll scrollbar">
       <InfiniteScroll
         hasMore={hasNextPage}
         loadMore={() => fetchNextPage()}
         useWindow={false}
         loader={<div key="loader">loading...</div>}>
-        <ul className="flex flex-wrap gap-4">
+        <ul className="grid grid-cols-3 gap-4 place-items-center items-start max-[730px]:grid-cols-2 max-[530px]:grid-cols-1">
           {boards?.map((board) => {
             return (
               <PostCard

@@ -9,7 +9,7 @@ interface LeafDiaryProps {
 
 export default function LeafDiary({ diaries, pathUserId }: LeafDiaryProps) {
   return (
-    <ul className="w-full flex flex-col items-center gap-4">
+    <ul className="w-full flex flex-col items-center gap-4 ">
       {diaries.map((diary) => (
         <Diary
           key={diary.journalId}
