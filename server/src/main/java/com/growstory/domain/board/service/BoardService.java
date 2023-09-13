@@ -9,7 +9,6 @@ import com.growstory.domain.board.entity.Board_HashTag;
 import com.growstory.domain.board.repository.BoardHashTagRepository;
 import com.growstory.domain.board.repository.BoardRepository;
 import com.growstory.domain.comment.dto.ResponseCommentDto;
-import com.growstory.domain.comment.repository.CommentRepository;
 import com.growstory.domain.comment.service.CommentService;
 import com.growstory.domain.hashTag.dto.ResponseHashTagDto;
 import com.growstory.domain.hashTag.entity.HashTag;
@@ -30,7 +29,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional
@@ -81,11 +79,11 @@ public class BoardService {
     public ResponseBoardDto getBoard(Long boardId) {
         Account findAccount = authUserUtils.getAuthUser();
         Board findBoard = findVerifiedBoard(boardId);
-        BoardImage findBoardImage = boardImageService.verifyExistBoardImage(boardId);
+//        BoardImage findBoardImage = boardImageService.verifyExistBoardImage(boardId);
         List<ResponseHashTagDto> findHashTag = hashTagService.getHashTagList(boardId);
         List<ResponseCommentDto> findComment = commentService.getCommentList(boardId);
 
-        return getResponseBoardDto(findAccount, findBoard, findBoardImage, findHashTag, findComment);
+        return getResponseBoardDto(findAccount, findBoard, findHashTag, findComment);
     }
 
     public Page<ResponseBoardPageDto> findBoards(int page, int size) {
@@ -207,7 +205,7 @@ public class BoardService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
     }
 
-    private static ResponseBoardDto getResponseBoardDto(Account findAccount, Board findBoard, BoardImage findBoardImage, List<ResponseHashTagDto> findHashTag, List<ResponseCommentDto> findComment) {
+    private static ResponseBoardDto getResponseBoardDto(Account findAccount, Board findBoard, List<ResponseHashTagDto> findHashTag, List<ResponseCommentDto> findComment) {
         return ResponseBoardDto.builder()
                 .boardId(findBoard.getBoardId())
                 .title(findBoard.getTitle())
