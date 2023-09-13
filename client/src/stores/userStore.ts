@@ -10,7 +10,7 @@ interface User {
   accessToken: string;
   refershToken: string;
 
-  userId: number;
+  userId: string;
   displayName: string;
   profileImageUrl: string;
   point: number;
@@ -25,7 +25,7 @@ interface User {
   setDisplayName: (displayName: string) => void;
   setProfileImageUrl: (profileImageUrl: string) => void;
   setPoint: (point: number) => void;
-  saveUserId: (userId: number) => void;
+  saveUserId: (userId: string) => void;
 
   getLeafCard: (leafCard: number) => void;
 
@@ -41,7 +41,7 @@ const useUserStore = create(
       accessToken: '',
       refershToken: '',
 
-      userId: 0,
+      userId: '',
       displayName: '',
       profileImageUrl: '',
       point: 0,
@@ -84,7 +84,7 @@ const useUserStore = create(
           accessToken: '',
           refershToken: '',
 
-          userId: 0,
+          userId: '',
           displayName: '',
           profileImageUrl: '',
           point: 0,
