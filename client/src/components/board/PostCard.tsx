@@ -5,7 +5,7 @@ import PostCountInfo from '../common/PostCountInfo';
 
 interface PostCardProps {
   title: string;
-  imageSrc: string;
+  imageSrc?: string;
   likesNum: number;
   commentsNum: number;
   postId: number;
@@ -28,10 +28,10 @@ export default function PostCard({
       className="w-[200px] h-[175px] pt-[0.875rem] px-[0.625rem] pb-[0.625rem] flex flex-col bg-brown-10 border-2 border-brown-50 rounded-lg"
       role="button"
       onClick={() => navigateToPost(postId)}>
-      <div className="w-[121px] h-[92px] rounded-lg overflow-hidden mb-2 mx-auto">
+      <div className="w-[121px] h-[92px] rounded-lg overflow-hidden mb-2 mx-auto border-2 border-brown-40">
         <Image
           className="object-cover w-full h-full"
-          src={imageSrc}
+          src={imageSrc || '/assets/img/bg_default_post.png'}
           alt=""
           width={131}
           height={102}

@@ -48,3 +48,7 @@ export type SignFormValue = {
 export type SearchValues = {
   search: string;
 };
+
+export type CommentInputValue = {
+  comment: string;
+};

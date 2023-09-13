@@ -1,19 +1,22 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { getBoardsBySearch } from '@/api/board';
 
-import { BoardDataInfo } from '@/types/data';
-
 export default function useGetSearchBoardQuery(searchKey: string | null) {
-  if (!searchKey) return null;
-
-  const {
-    data: searchBoards,
-    isLoading,
-    isError,
-  } = useQuery<BoardDataInfo[] | null>(['search', searchKey], () =>
-    getBoardsBySearch(searchKey),
+  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery(
+    ['search', searchKey],
+    ({ pageParam = 1 }) =>
+      getBoardsBySearch({ pageParam, search: searchKey || 'test' }),
+    {
+      enabled: searchKey !== null,
+      getNextPageParam: (lastPage, allPosts) => {
+        console.log(lastPage);
+        return lastPage.pageInfo.totalPages &&
+          lastPage.pageInfo.page !== lastPage.pageInfo.totalPages
+          ? lastPage.pageInfo.page + 1
+          : undefined;
+      },
+    },
   );
-
-  return { searchBoards, isLoading, isError };
+  return { data: data?.pages, fetchNextPage, hasNextPage };
 }
