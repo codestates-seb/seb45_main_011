@@ -36,7 +36,7 @@ export default function InstalledPlants({
           <div
             key={plantObjId}
             data-plant-id={plantObjId}
-            className={`absolute flex flex-col items-center cursor-pointer ${divStyle}`}
+            className={`absolute flex flex-col items-center cursor-pointer hover:scale-[1.15] transition-transform ${divStyle}`}
             style={{
               top: `${location.y * 60}px`,
               left: `${location.x * 60}px`,

@@ -21,12 +21,12 @@ interface PostDeleteModalProps {
 export default function PostDeleteModal({ postId }: PostDeleteModalProps) {
   const { close } = usePostModalStore();
 
-  const { mutate } = useMutation({
+  const { mutate: deletePostMutate } = useMutation({
     mutationFn: ({ postId }: DeletePostParameters) => deletePost(postId),
     onSuccess: () => close(),
   });
 
-  const handleDelete = () => mutate({ postId });
+  const handleDelete = () => deletePostMutate({ postId });
 
   const handleCancel = () => close();
 

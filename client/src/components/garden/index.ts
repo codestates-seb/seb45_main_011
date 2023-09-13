@@ -1,5 +1,6 @@
 import EditModeButton from './EditModeButton';
 import EditModeInfo from './EditModeInfo';
+import GardenInfo from './GardenInfo';
 import GardenMap from './GardenMap';
 import GardenSidebar from './GardenSidebar';
 import GardenSquares from './GardenSquares';
@@ -20,6 +21,7 @@ export {
   EditModeButton,
   EditModeInfo,
   EmptyInventoryModal,
+  GardenInfo,
   GardenMap,
   GardenSidebar,
   GardenSquares,

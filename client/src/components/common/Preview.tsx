@@ -8,7 +8,7 @@ export default function Preview({ src }: { src: string }) {
         alt={''}
         width={242}
         height={190}
-        className="object-cover w-full h-[180px]"
+        className="object-cover object-center w-full h-[180px]"
       />
     </div>
   );
