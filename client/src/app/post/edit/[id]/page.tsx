@@ -26,7 +26,7 @@ export default function EditPost({ params }: EditPostProps) {
   if (isError) return <ErrorNotice isTransparent={false} className="mx-auto" />;
 
   return (
-    <div className="relative flex flex-col items-center min-w-[328px] max-w-[531px] mx-auto border-gradient rounded-xl bg-repeat shadow-outer/down max-[563px]:mx-4">
+    <div className="relative flex flex-col items-center min-w-[328px] max-w-[531px] mx-auto border-gradient rounded-xl bg-repeat shadow-container max-[563px]:mx-4">
       {isLoading ? (
         <LoadingNotice
           isTransparent={true}
