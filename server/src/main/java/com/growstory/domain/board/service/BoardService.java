@@ -6,8 +6,6 @@ import com.growstory.domain.board.dto.ResponseBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardPageDto;
 import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.board.repository.BoardRepository;
-import com.growstory.domain.comment.service.CommentService;
-import com.growstory.domain.hashTag.dto.RequestHashTagDto;
 import com.growstory.domain.hashTag.entity.HashTag;
 import com.growstory.domain.hashTag.service.HashTagService;
 import com.growstory.domain.images.entity.BoardImage;
