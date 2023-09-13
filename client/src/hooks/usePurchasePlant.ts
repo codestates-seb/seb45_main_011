@@ -16,8 +16,8 @@ interface PurchaseParameters {
 const usePurchasePlant = () => {
   const { plants, setPlants, setInventory, setPoint } = useGardenStore();
 
-  const updateGarden = (plantObj: PlantObj, point: Point) => {
-    const newPlants = [...plants, plantObj];
+  const updateGarden = (plant: PlantObj, point: Point) => {
+    const newPlants = [...plants, plant];
     const newInventory = createInventory(newPlants);
 
     setPlants(newPlants);
