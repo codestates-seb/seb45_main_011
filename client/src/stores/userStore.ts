@@ -15,7 +15,6 @@ interface User extends UserInfo {
   isLogin: boolean;
   isGoogleLogin: boolean;
 
-  point: number;
   leafCard: number;
 
   setUser: (userInfo: UserInfo) => void;
@@ -23,7 +22,6 @@ interface User extends UserInfo {
   setIsLogin: (isLogin: boolean) => void;
   setIsGoogleLogin: (isGoogleLogin: boolean) => void;
 
-  setPoint: (point: number) => void;
   setProfileImageUrl: (profileImageUrl: string) => void;
   setDisplayName: (displayName: string) => void;
 
@@ -44,7 +42,6 @@ const useUserStore = create(
       userId: '',
       displayName: '',
       profileImageUrl: '',
-      point: 0,
 
       leafCard: 0,
 
@@ -76,9 +73,6 @@ const useUserStore = create(
         set({ leafCard });
       },
 
-      setPoint: (point) => {
-        set({ point });
-      },
       setProfileImageUrl: (profileImageUrl) => {
         set({ profileImageUrl });
       },
@@ -97,7 +91,6 @@ const useUserStore = create(
           userId: '',
           displayName: '',
           profileImageUrl: '',
-          point: 0,
           leafCard: 0,
         }),
     }),

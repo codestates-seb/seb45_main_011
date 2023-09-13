@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useForm } from 'react-hook-form';
 
@@ -29,19 +29,20 @@ export default function NicknameForm({ token }: Token) {
     watch,
     reset,
     setValue,
-  } = useForm<InputValues>({
-    defaultValues: {
-      nickname: displayName,
-    },
-  });
+  } = useForm<InputValues>();
+
+  useEffect(() => {
+    setValue('nickname', displayName);
+  }, [displayName]);
 
   const nickname = watch('nickname');
 
   const updateNickName = async () => {
     if (!nickname) return;
 
-    setDisplayName(nickname);
-    await updateUserNickname(nickname, token);
+    const res = await updateUserNickname(nickname, token);
+
+    if (res.status === 204) setDisplayName(nickname);
 
     reset();
     changeState('ChangeNicknameModal');
@@ -57,12 +58,7 @@ export default function NicknameForm({ token }: Token) {
             닉네임 :&nbsp;
           </label>
         </div>
-        <TextInput
-          name="nickname"
-          register={register}
-          errors={errors}
-          setValue={() => setValue('nickname', displayName)}
-        />
+        <TextInput name="nickname" register={register} errors={errors} />
         <div className="mt-[2px]">
           <CommonButton
             type="submit"

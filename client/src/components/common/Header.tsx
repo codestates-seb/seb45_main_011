@@ -1,9 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import useUserStore from '@/stores/userStore';
+
+import useClient from '@/hooks/useClient';
 
 import Logo from './Logo';
 import HeaderLink from './HeaderLink';
@@ -11,7 +13,7 @@ import HeaderNav from './HeaderNav';
 
 export default function Header() {
   const [isHover, setIsHover] = useState(false);
-  const { isLogin, isGoogleLogin, profileImageUrl, setClear } = useUserStore();
+  const { isLogin, isGoogleLogin, profileImageUrl } = useUserStore();
   const isClient = useClient();
 
   const profileImage = () => {
@@ -21,7 +23,7 @@ export default function Header() {
       return profileImageUrl as string;
     }
 
-    return '/assets/img/profile_avocado.png';
+    return '/assets/img/bg_default_profile.png';
   };
 
   // 1. 문제인식을 나는 어떻게 했는가? 2.문제를 해결하기 위한 삽질과정 3.결과 4. 느낀점
@@ -83,7 +85,7 @@ export default function Header() {
               />
               {isHover && (isLogin || isGoogleLogin) && (
                 <div className="flex justify-end">
-                  <HeaderNav isHover={isHover} setIsHover={setIsHover} />
+                  <HeaderNav isHover={isHover} />
                 </div>
               )}
             </li>
@@ -97,13 +99,3 @@ export default function Header() {
     </>
   );
 }
-
-const useClient = () => {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  return isClient;
-};

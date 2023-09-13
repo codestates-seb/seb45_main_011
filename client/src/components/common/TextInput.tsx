@@ -12,7 +12,6 @@ interface TextInputProps extends DefaultProps {
   name: 'plantName' | 'title' | 'nickname';
   register: UseFormRegister<InputValues>;
   errors: FieldErrors<InputValues>;
-  setValue: UseFormSetValue<InputValues>;
   required?: boolean;
 }
 
@@ -21,7 +20,6 @@ export default function TextInput({
   name,
   register,
   errors,
-  setValue,
   required,
 }: TextInputProps) {
   const TypeFormat = getTextInputTypeFormat(name);

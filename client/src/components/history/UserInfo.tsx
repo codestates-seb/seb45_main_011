@@ -1,35 +1,33 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
-import { useParams, useRouter } from 'next/navigation';
-
-import { getLeafsByUserId } from '@/api/leaf';
+import { getUserInfo } from '@/api/history';
 
 import useUserStore from '@/stores/userStore';
+import useHistoryStore from '@/stores/historyStore';
+
+import useClient from '@/hooks/useClient';
 
 import CommonButton from '../common/CommonButton';
 
-type Token = {
-  token: string;
-};
+interface HistoryUserProps {
+  paramsId: string;
+}
 
-export default function UserInfo({ token }: Token) {
-  // const [data, setData] = useState('123');
-
-  // setData('abc'); // 1. 렌더링할거야 하고 예약만한다. 2. 값을 바꾼다.(abc로) 3. 할거 다하고 4. 렌더링한다.
-  // [data, setData] = useReducer();
-  // 리액트의 탄생 이유는 리렌더링 최소화입니다.
-  // 데이터를 넣고 렌더링하는게 아니고 렌더링하는겸 데이터를 갱신해준다.
-
-  // document.querySelector('button')?.click();
-  const [grade, setGrade] = useState('브론즈 가드너');
+export default function UserInfo({ paramsId }: HistoryUserProps) {
+  const isClient = useClient();
   const router = useRouter();
-  const { id } = useParams();
-  const userId = useUserStore((state) => state.userId);
 
-  const { isGoogleLogin, isLogin, profileImageUrl, displayName, point } =
-    useUserStore();
+  const userId = '1';
+  // const userId = useUserStore((state) => state.userId);
+  const id = paramsId;
+
+  const { setHistoryUser, profileImageUrl, displayName, grade, point } =
+    useHistoryStore();
+  const { isGoogleLogin, isLogin } = useUserStore();
 
   const profileImage = () => {
     if (!profileImageUrl) return '/assets/img/bg_default_profile.png';
@@ -37,50 +35,45 @@ export default function UserInfo({ token }: Token) {
     if (isLogin || isGoogleLogin) {
       return profileImageUrl;
     }
-  };
 
-  // 모든 유저 정보 조회!
+    return '/assets/img/bg_default_profile.png';
+  };
 
   useEffect(() => {
     const getHistoryData = async () => {
       try {
-        //TODO: 서버에서 식물 카드 전체 조회 시 length로 등급 매기기
-        // const getLeafCard = await getLeafsByUserId(userId);
-        // console.log(getLeafCard);
-        const userLeafCardAmount = 100;
+        const response = await getUserInfo(id);
 
-        if (50 < userLeafCardAmount && userLeafCardAmount < 100) {
-          return setGrade('실버 가드너');
-        }
-
-        if (100 < userLeafCardAmount) {
-          return setGrade('골드 가드너');
-        }
+        setHistoryUser(response.data.data);
       } catch (error) {
         console.error(error);
       }
     };
 
     getHistoryData();
-  }, []);
+  }, [id]);
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <img
-        src={profileImage()}
-        className="w-[100px] h-[100px] rounded-[50%] border-brown-50 border-[3px] mb-4 shadow-outer/down"
-        alt="profile_img"
-      />
+      {isClient && (
+        <Image
+          src={profileImage()}
+          className="rounded-[50%] border-brown-50 border-[3px] mb-4 shadow-outer/down"
+          width={100}
+          height={100}
+          alt="profile_img"
+        />
+      )}
       <div className="flex flex-col justify-center items-center mb-4 gap-2">
-        <div className="text-2xl font-bold text-brown-80">
-          {token ? displayName : null}
-        </div>
+        <div className="text-2xl font-bold text-brown-80">{displayName}</div>
         <p className="font-bold text-brown-70">{grade}</p>
       </div>
       {userId === id ? (
         <div className="flex items-center justify-center gap-2 bg-[url('/assets/img/bg_board_sm.png')] w-[192px] h-[96px] shadow-outer/down mb-5">
           <img src="/assets/img/point.svg" />
-          <p className="text-xl font-bold text-brown-10">{point}</p>
+          <p className="text-xl font-bold text-brown-10">
+            {point.toLocaleString()}
+          </p>
         </div>
       ) : (
         <>
