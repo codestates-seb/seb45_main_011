@@ -12,10 +12,10 @@ export default function ProfileBox() {
   const accessToken = useUserStore((state) => state.accessToken);
 
   return (
-    <div className="relative flex flex-col items-center justify-center bg-[url('/assets/img/bg_wood_yellow.png')] w-[560px] h-[518px] rounded-[12px] border-8 border-border-30 shadow-outer/down shadow-container border-gradient">
+    <div className="relative flex flex-col items-center justify-center bg-[url('/assets/img/bg_wood_yellow.png')] w-full min-w-[312px] max-w-[560px] h-full rounded-xl shadow-container border-gradient">
       <Screws />
-      <ImageForm token={accessToken} />
-      <div className="w-full flex flex-col items-center ml-4">
+      <ImageForm token={accessToken} className="mt-8" />
+      <div className="w-full flex flex-col items-center mb-4">
         <NicknameForm token={accessToken} />
         <PasswordForm token={accessToken} />
       </div>

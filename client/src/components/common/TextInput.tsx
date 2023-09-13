@@ -2,6 +2,7 @@
 
 import { FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
+import { twMerge } from 'tailwind-merge';
 
 import { DefaultProps, InputValues } from '@/types/common';
 
@@ -21,11 +22,16 @@ export default function TextInput({
   register,
   errors,
   required,
+  className,
 }: TextInputProps) {
   const TypeFormat = getTextInputTypeFormat(name);
 
   return (
-    <div className={`w-full flex flex-col ', ${INPUT_SIZE[name]}`}>
+    <div
+      className={twMerge(
+        `w-full flex flex-col ${INPUT_SIZE[name]}`,
+        className,
+      )}>
       <input
         id={id}
         required={required}
@@ -47,7 +53,7 @@ export default function TextInput({
 }
 
 const INPUT_SIZE = {
-  plantName: 'max-w-[248px] ',
+  plantName: 'max-w-[369px]',
   title: 'max-w-[369px]',
   nickname: 'max-w-[248px]',
 };

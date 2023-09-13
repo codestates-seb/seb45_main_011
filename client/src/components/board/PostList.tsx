@@ -19,7 +19,7 @@ export default function PostList() {
   const boards = allBoards?.map((boards) => boards.boards).flat();
 
   return (
-    <div className="pr-3 w-full h-[404px]  overflow-y-scroll scrollbar">
+    <div className="pr-3 w-full h-[404px] overflow-y-scroll scrollbar">
       <InfiniteScroll
         hasMore={hasNextPage}
         loadMore={() => fetchNextPage()}

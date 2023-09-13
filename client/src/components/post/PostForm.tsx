@@ -3,10 +3,11 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 
-import { addPost, editPost } from '@/api/post';
+import useAddPost from '@/hooks/useAddPost';
+import useEditPost from '@/hooks/useEditPost';
+import useEffectOnce from '@/hooks/useEffectOnce';
 
 import TextInput from '@/components/common/TextInput';
 import ImageUpload from '@/components/common/ImageUpload';
@@ -15,17 +16,7 @@ import TagInput from '@/components/common/TagInput';
 import CommonButton from '@/components/common/CommonButton';
 
 import { InputValues } from '@/types/common';
-import { PostFormValues, RawPostInfo } from '@/types/data';
-import useEffectOnce from '@/hooks/useEffectOnce';
-
-interface AddPostParameters {
-  formValues: PostFormValues;
-  tags: string[];
-}
-
-interface EditPostParameters extends AddPostParameters {
-  postId: string;
-}
+import { RawPostInfo } from '@/types/data';
 
 interface PostFormProps {
   post?: RawPostInfo;
@@ -36,20 +27,12 @@ interface PostFormProps {
 export default function PostForm({ post, postId, mode }: PostFormProps) {
   const router = useRouter();
 
-  const [tags, setTags] = useState<string[]>([]);
   const [isImageUpdated, setIsImageUpdated] = useState(false);
+  const [tags, setTags] = useState<string[]>([]);
 
-  const { mutate: addPostMutate } = useMutation({
-    mutationFn: ({ formValues, tags }: AddPostParameters) =>
-      addPost(formValues, tags),
-    onSuccess: () => router.push('/boards'),
-  });
+  const { addPostMutate } = useAddPost();
 
-  const { mutate: editPostMutate } = useMutation({
-    mutationFn: ({ formValues, tags, postId }: EditPostParameters) =>
-      editPost(formValues, tags, postId),
-    onSuccess: () => router.push(`/boards/${postId}`),
-  });
+  const { editPostMutate } = useEditPost(postId as string);
 
   const {
     register,
@@ -60,25 +43,30 @@ export default function PostForm({ post, postId, mode }: PostFormProps) {
     setValue,
   } = useForm<InputValues>();
 
-  const handleCancel = () => router.back();
-
   useEffectOnce(() => {
     if (post) {
+      const tags = post.hashTags.map(({ tag }) => tag);
+
       setValue('title', post.title);
       setValue('diaryContent', post.content);
+      setTags(tags);
     }
   });
 
+  const handleMutate = (formValues: InputValues) => {
+    mode === 'add' && addPostMutate({ formValues, tags });
+    mode === 'edit' &&
+      postId &&
+      editPostMutate({ formValues, tags, isImageUpdated, postId });
+  };
+
+  const handleCancel = () => router.push('/board');
+
   return (
     <form
-      onSubmit={handleSubmit((formValues) => {
-        mode === 'add' && addPostMutate({ formValues, tags });
-        mode === 'edit' &&
-          postId &&
-          editPostMutate({ formValues, tags, postId });
-      })}
+      onSubmit={handleSubmit(handleMutate)}
       className="flex flex-col justify-center items-center w-full px-12 pb-6">
-      <div className="flex gap-3 min-w-[292px] w-full mb-2">
+      <div className="flex gap-3 min-w-[280px] w-full mb-2">
         <label
           htmlFor="title"
           className="mt-2 font-bold text-brown-80 whitespace-nowrap">
@@ -93,7 +81,6 @@ export default function PostForm({ post, postId, mode }: PostFormProps) {
         />
       </div>
       <ImageUpload
-        required={mode === 'add'}
         register={register}
         errors={errors}
         clearErrors={clearErrors}
@@ -101,7 +88,7 @@ export default function PostForm({ post, postId, mode }: PostFormProps) {
         imageUrl={post?.boardImageUrl}
         setIsImageUpdated={setIsImageUpdated}
       />
-      <div className="flex gap-3 min-w-[292px] w-full mb-3">
+      <div className="flex gap-3 min-w-[280px] w-full mb-3">
         <label
           htmlFor="contents"
           className="mt-2 font-bold text-brown-80 whitespace-nowrap">
@@ -115,7 +102,7 @@ export default function PostForm({ post, postId, mode }: PostFormProps) {
           required
         />
       </div>
-      <div className="flex gap-3 min-w-[292px] w-full mb-4">
+      <div className="flex gap-3 min-w-[280px] w-full mb-4">
         <label
           htmlFor="tag"
           className="mt-2 font-bold text-brown-80 whitespace-nowrap">
@@ -131,10 +118,17 @@ export default function PostForm({ post, postId, mode }: PostFormProps) {
         />
       </div>
       <div className="flex gap-2">
-        <CommonButton type="submit" size="sm">
+        <CommonButton
+          type="submit"
+          size="sm"
+          className="hover:scale-110 transition-transform">
           완료
         </CommonButton>
-        <CommonButton onCancel={handleCancel} type="button" size="sm">
+        <CommonButton
+          onCancel={handleCancel}
+          type="button"
+          size="sm"
+          className="hover:scale-110 transition-transform">
           취소
         </CommonButton>
       </div>

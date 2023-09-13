@@ -2,6 +2,7 @@
 
 import { ErrorMessage } from '@hookform/error-message';
 import { FieldErrors, UseFormRegister, UseFormWatch } from 'react-hook-form';
+import { twMerge } from 'tailwind-merge';
 
 import { DefaultProps, InputValues } from '@/types/common';
 
@@ -76,13 +77,17 @@ export default function PasswordInput({
   watch,
   required,
   password,
+  className,
 }: PasswordInputProps) {
   const TypeFormat = getTypeFormat(name, watch, password);
 
   if (TypeFormat === null) return null;
   return (
     <div
-      className={`w-full flex flex-col justify-center', ${INPUT_SIZE[name]}`}>
+      className={twMerge(
+        `w-full flex flex-col justify-center ${INPUT_SIZE[name]}`,
+        className,
+      )}>
       <input
         required={required}
         className="w-full h-[36px] bg-white-10 border-2 border-brown-70 p-3 rounded-lg shadow-outer/down text-xs leading-3 placeholder:text-gray-50 focus:outline-0"

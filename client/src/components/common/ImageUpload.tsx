@@ -90,7 +90,7 @@ function ImageUpload({
         <CommonButton
           type="button"
           size="sm"
-          className="mt-3 mb-3 leading-4"
+          className="mt-3 mb-3 leading-4 hover:scale-110 transition-transform"
           onClick={handleImageUpload}>
           이미지 등록
         </CommonButton>

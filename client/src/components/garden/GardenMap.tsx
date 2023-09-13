@@ -42,15 +42,23 @@ export default function GardenMap({ isMyself }: GardenMapProps) {
           {isEditMode && <EditModeInfo />}
           {isEditMode && (
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-              <CommonButton onSave={handleSave} type="button" size="sm">
+              <CommonButton
+                onSave={handleSave}
+                type="button"
+                size="sm"
+                className="hover:scale-110 transition-transform">
                 저장
               </CommonButton>
-              <CommonButton onCancel={handleCancel} type="button" size="sm">
+              <CommonButton
+                onCancel={handleCancel}
+                type="button"
+                size="sm"
+                className="hover:scale-110 transition-transform">
                 취소
               </CommonButton>
             </div>
           )}
-          <MapController className="min-[960px]:hidden bottom-4 left-4 z-30" />
+          <MapController className="min-[960px]:hidden bottom-4 left-4 z-[5]" />
           {isEditMode && (
             <GardenSquares uninstallableLocations={uninstallableLocations} />
           )}

@@ -11,11 +11,13 @@ import useClient from '@/hooks/useClient';
 
 import CommonButton from '../common/CommonButton';
 
-type Token = {
-  token: string;
-};
+import { DefaultProps } from '@/types/common';
 
-export default function ImageForm({ token }: Token) {
+interface ImageFormProps extends DefaultProps {
+  token: string;
+}
+
+export default function ImageForm({ token, className }: ImageFormProps) {
   const isClient = useClient();
   const { profileImageUrl, setProfileImageUrl } = useUserStore();
 
@@ -68,7 +70,7 @@ export default function ImageForm({ token }: Token) {
   }, []);
 
   return (
-    <form>
+    <form className={className}>
       <div className="flex flex-col items-center justify-center">
         {isClient && (
           <Image
@@ -91,7 +93,7 @@ export default function ImageForm({ token }: Token) {
           type="submit"
           size="sm"
           children="이미지 등록"
-          className="w-[100px] h-8 mb-3"
+          className="w-[100px] h-8 mb-3 hover:scale-110 transition-transform"
           onSubmit={onImageSubmit}
         />
         <p className="text-gray-70 text-xs mb-8">
