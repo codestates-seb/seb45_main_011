@@ -9,24 +9,24 @@ import usePostModalStore from '@/stores/postModalStore';
 import Modal from '@/components/common/Modal';
 import ModalPortal from '@/components/common/ModalPortal';
 import CommonButton from '@/components/common/CommonButton';
+import usePostStore from '@/stores/postStore';
 
 interface DeletePostParameters {
-  postId: string;
+  targetId: number;
 }
 
-interface PostDeleteModalProps {
-  postId: string;
-}
-
-export default function PostDeleteModal({ postId }: PostDeleteModalProps) {
+export default function PostDeleteModal() {
   const { close } = usePostModalStore();
+  const { targetId } = usePostStore();
+
+  if (!targetId) return;
 
   const { mutate } = useMutation({
-    mutationFn: ({ postId }: DeletePostParameters) => deletePost(postId),
+    mutationFn: ({ targetId }: DeletePostParameters) => deletePost(targetId),
     onSuccess: () => close(),
   });
 
-  const handleDelete = () => mutate({ postId });
+  const handleDelete = () => mutate({ targetId });
 
   const handleCancel = () => close();
 

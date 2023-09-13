@@ -24,7 +24,7 @@ export default function ControlMenu({
 
   if (userId !== ownerId) return null;
 
-  const { open, setUsage } = usePostModalStore();
+  const { open, setType } = usePostModalStore();
 
   const handleEdit = () => {
     if (usage === 'post') return router.push(`/post/edit/${targetId}`);
@@ -37,7 +37,7 @@ export default function ControlMenu({
     // 삭제 모달
 
     open();
-    setUsage(usage);
+    setType(usage);
     setTargetId(targetId);
   };
 

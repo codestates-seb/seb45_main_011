@@ -48,8 +48,13 @@ export async function getPostByBoardId(boardId: string) {
   return res.data;
 }
 
+/** boardId에 해당하는 게시글에 댓글 등록 */
 export async function addComment(content: string, boardId: number) {
   return commonAxios.post(`comments/boards/${boardId}`, {
     content,
   });
+}
+/** commentId에 해당하는 댓글 삭제 */
+export async function deleteComment(commentId: number) {
+  return commonAxios.delete(`comments/${commentId}}`);
 }

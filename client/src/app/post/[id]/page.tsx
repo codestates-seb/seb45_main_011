@@ -37,7 +37,7 @@ export default function Post({ params }: PostProps) {
   const [comments, setComments] = useState<CommentDataInfo[]>();
 
   const { userId } = useTestUserStore();
-  const { isOpen, usage } = usePostModalStore();
+  const { isOpen, type } = usePostModalStore();
 
   if (!userId) return router.push('/signin');
   console.log('page', boardId);
@@ -106,11 +106,7 @@ export default function Post({ params }: PostProps) {
         </div>
       </div>
       {isOpen &&
-        (usage === 'post' ? (
-          <PostDeleteModal postId={params.id} />
-        ) : (
-          <CommentDeleteModal />
-        ))}
+        (type === 'post' ? <PostDeleteModal /> : <CommentDeleteModal />)}
     </main>
   );
 }

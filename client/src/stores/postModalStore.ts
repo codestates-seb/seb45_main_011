@@ -1,25 +1,23 @@
 import { create } from 'zustand';
 
-type usageType = 'post' | 'comment' | null;
-
 export interface GardenModalState {
   isOpen: boolean;
-  usage: usageType;
+  type: 'post' | 'comment' | null;
 
   open: () => void;
   close: () => void;
 
-  setUsage: (usage: usageType) => void;
+  setType: (type: 'post' | 'comment' | null) => void;
 }
 
 const usePostModalStore = create<GardenModalState>((set) => ({
   isOpen: false,
-  usage: null,
+  type: null,
 
   open: () => set(() => ({ isOpen: true })),
   close: () => set(() => ({ isOpen: false })),
 
-  setUsage: (usage: usageType) => set(() => ({ usage })),
+  setType: (type: 'post' | 'comment' | null) => set(() => ({ type })),
 }));
 
 export default usePostModalStore;

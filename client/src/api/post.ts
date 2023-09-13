@@ -57,5 +57,5 @@ export const editPost = async (
   await postAxios.patch(`/boards/${postId}`, formData);
 };
 
-export const deletePost = async (postId: string) =>
+export const deletePost = async (postId: number) =>
   await postAxios.delete(`/boards/${postId}`);
