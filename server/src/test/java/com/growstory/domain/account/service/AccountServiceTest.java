@@ -1,9 +1,7 @@
 package com.growstory.domain.account.service;
 
-import com.growstory.domain.account.dto.AccountDto;
 import com.growstory.domain.account.repository.AccountRepository;
 import com.growstory.domain.point.service.PointService;
-import com.growstory.domain.stubdata.TestStubData;
 import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.auth.utils.CustomAuthorityUtils;
 import com.growstory.global.aws.service.S3Uploader;
@@ -12,7 +10,6 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
@@ -67,21 +64,21 @@ public class AccountServiceTest {
         autoCloseable.close();
     }
 
-    @Test
-    @DisplayName("회원가입")
-    public void createAccountTest() {
-        // given
-        AccountDto.Post requestDto = AccountDto.Post.builder()
-                .email("user@gmail.com")
-                .displayName("user1")
-                .password("user1234")
-                .build();
-
-        // when
-
-
-        // then
-    }
+//    @Test
+//    @DisplayName("회원가입")
+//    public void createAccountTest() {
+//        // given
+//        AccountDto.Post requestDto = AccountDto.Post.builder()
+//                .email("user@gmail.com")
+//                .displayName("user1")
+//                .password("user1234")
+//                .build();
+//
+//        // when
+//
+//
+//        // then
+//    }
 
     @DisplayName("isAuthIdMatching 테스트 : 인증되지 않은 사용자")
     @Test

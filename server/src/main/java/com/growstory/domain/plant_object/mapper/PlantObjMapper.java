@@ -9,6 +9,7 @@ import com.growstory.domain.plant_object.location.mapper.LocationMapper;
 import com.growstory.domain.point.dto.PointDto;
 import com.growstory.domain.point.entity.Point;
 import com.growstory.domain.product.dto.ProductDto;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -24,7 +25,6 @@ public class PlantObjMapper {
         this.leafMapper = leafMapper;
         this.locationMapper = locationMapper;
     }
-
 
     // GET : GardenInfo 정보 조회용 매퍼 (단일 객체)
     public PlantObjDto.Response toPlantObjResponse(PlantObj plantObj) {

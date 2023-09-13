@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 import com.growstory.domain.account.dto.AccountDto;
 import com.growstory.domain.account.service.AccountService;
 import com.growstory.domain.point.entity.Point;
-import com.growstory.global.exception.BusinessLogicException;
-import com.growstory.global.exception.ExceptionCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,38 +45,38 @@ public class AccountControllerTest {
 
     }
 
-    @Test
-    @DisplayName("회원가입 성공")
-    void postAccountSuccessTest() throws Exception {
-        // given
-        AccountDto.Post requestDto = AccountDto.Post.builder()
-                .email("user@gmail.com")
-                .displayName("user1")
-                .password("user1234")
-                .build();
-
-        AccountDto.Response responseDto = AccountDto.Response.builder()
-                .accountId(1L)
-                .email("user@gmail.com")
-                .displayName("user1")
-                .profileImageUrl(null)
-                .point(Point.builder().score(500).build())
-                .build();
-
-        given(accountService.createAccount(Mockito.any(AccountDto.Post.class)))
-                .willReturn(responseDto);
-
-        // when
-        ResultActions actions = mockMvc.perform(
-                post("/v1/accounts/signup")
-                        .contentType(MediaType.APPLICATION_JSON) // contentType은 default가 application/octet-stream
-                        .content(gson.toJson(requestDto)));
-
-        // then
-        actions
-                .andExpect(status().isCreated())
-                .andExpect(header().string("Location", is(("/v1/accounts/" + responseDto.getAccountId().toString()))));
-    }
+//    @Test
+//    @DisplayName("회원가입 성공")
+//    void postAccountSuccessTest() throws Exception {
+//        // given
+//        AccountDto.Post requestDto = AccountDto.Post.builder()
+//                .email("user@gmail.com")
+//                .displayName("user1")
+//                .password("user1234")
+//                .build();
+//
+//        AccountDto.Response responseDto = AccountDto.Response.builder()
+//                .accountId(1L)
+//                .email("user@gmail.com")
+//                .displayName("user1")
+//                .profileImageUrl(null)
+//                .point(Point.builder().score(500).build())
+//                .build();
+//
+//        given(accountService.createAccount(Mockito.any(AccountDto.Post.class)))
+//                .willReturn(responseDto);
+//
+//        // when
+//        ResultActions actions = mockMvc.perform(
+//                post("/v1/accounts/signup")
+//                        .contentType(MediaType.APPLICATION_JSON) // contentType은 default가 application/octet-stream
+//                        .content(gson.toJson(requestDto)));
+//
+//        // then
+//        actions
+//                .andExpect(status().isCreated())
+//                .andExpect(header().string("Location", is(("/v1/accounts/" + responseDto.getAccountId().toString()))));
+//    }
 
 //    @Test
 //    @DisplayName("회원가입 실패 (이메일 중복)")

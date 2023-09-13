@@ -9,6 +9,8 @@ import javax.persistence.*;
 
 
 @Getter
+@Builder
+@AllArgsConstructor
 @Entity
 public class Location {
     @Id

@@ -10,7 +10,6 @@ import com.growstory.domain.journal.repository.JournalRepository;
 import com.growstory.domain.leaf.entity.Leaf;
 import com.growstory.domain.leaf.service.LeafService;
 import com.growstory.domain.point.service.PointService;
-import com.growstory.global.aws.service.S3Uploader;
 import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;

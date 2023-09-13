@@ -10,11 +10,13 @@ import com.growstory.domain.leaf.entity.Leaf;
 import com.growstory.domain.plant_object.dto.PlantObjDto;
 import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.plant_object.location.dto.LocationDto;
+import com.growstory.domain.plant_object.location.entity.Location;
 import com.growstory.domain.point.entity.Point;
 import com.growstory.domain.product.dto.ProductDto;
 import com.growstory.domain.product.entity.Product;
 import org.springframework.http.HttpMethod;
 
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,7 +70,7 @@ public class TestStubData {
         public static PlantObjDto.GardenInfoResponse getStubGardenInfo() {
             return PlantObjDto.GardenInfoResponse.builder()
                     .displayName(MockAccount.getSingleResponseBody().getDisplayName())
-                    .products(MockProduct.getStubProductsResponseDto())
+                    .products(MockProduct.getStubProductResponses())
 //                    .plantObjs(MockPlantObj.getStubPlantObjsResponseDtos())
 //                    .point(MockPoint.getStubPointResponseDto())
                     .build();
@@ -110,9 +112,25 @@ public class TestStubData {
                     getStubProduct2().getImageUrlLarge());
         }
 
-        public static List<ProductDto.Response> getStubProductsResponseDto() {
-            return List.of(new ProductDto.Response(getStubProduct1().getProductId(), getStubProduct1().getName(), getStubProduct1().getKorName(), getStubProduct1().getPrice(), getStubImageUrlTable1()),
-                    new ProductDto.Response(getStubProduct2().getProductId(), getStubProduct2().getName(), getStubProduct2().getKorName(), getStubProduct2().getPrice(), getStubImageUrlTable2()));
+        public static List<ProductDto.Response> getStubProductResponses() {
+            List<ProductDto.Response> productResponseDtos = new ArrayList<>();
+            productResponseDtos.add(
+                    ProductDto.Response.builder()
+                            .productId(getStubProduct1().getProductId())
+                            .imageUrlTable(getStubImageUrlTable1())
+                            .price(getStubProduct1().getPrice())
+                            .korName(getStubProduct1().getKorName())
+                            .name(getStubProduct1().getName())
+                            .build());
+            productResponseDtos.add(
+                    ProductDto.Response.builder()
+                            .productId(getStubProduct2().getProductId())
+                            .imageUrlTable(getStubImageUrlTable2())
+                            .price(getStubProduct2().getPrice())
+                            .korName(getStubProduct2().getKorName())
+                            .name(getStubProduct2().getName())
+                            .build());
+            return productResponseDtos;
         }
     }
 
@@ -148,8 +166,8 @@ public class TestStubData {
                     .productName(MockProduct.getStubProduct1().getName())
                     .korName(MockProduct.getStubProduct1().getKorName())
                     .price(MockProduct.getStubProduct1().getPrice())
-                    .location(MockLocation.getStubLocationResponseDto1())
-                    .leafDto(MockLeaf.getStubLeafResponseDto())
+//                    .location(MockLocation.getStubLocationResponseDto1())
+//                    .leafDto(MockLeaf.getStubLeafResponseDto())
                     .imageUrlTable(MockProduct.getStubImageUrlTable1())
                     .build();
         }
@@ -160,8 +178,8 @@ public class TestStubData {
                     .productName(MockProduct.getStubProduct2().getName())
                     .korName(MockProduct.getStubProduct2().getKorName())
                     .price(MockProduct.getStubProduct2().getPrice())
-                    .location(MockLocation.getStubLocationResponseDto2())
-                    .leafDto(MockLeaf.getStubLeafResponseDto())
+//                    .location(MockLocation.getStubLocationResponseDto2())
+//                    .leafDto(MockLeaf.getStubLeafResponseDto())
                     .imageUrlTable(MockProduct.getStubImageUrlTable2())
                     .build();
         }
@@ -190,6 +208,38 @@ public class TestStubData {
                     .isInstalled(true)
                     .build();
         }
+        public static PlantObjDto.PatchLocation getStubPatchLocation1() {
+            return PlantObjDto.PatchLocation.builder()
+                    .plantObjId(1L)
+                    .locationDto(LocationDto.Patch.builder()
+                            .locationId(1L).x(5).y(6).isInstalled(true).build())
+                    .build();
+        }
+        public static PlantObjDto.PatchLocation getStubPatchLocation2() {
+            return PlantObjDto.PatchLocation.builder()
+                    .plantObjId(2L)
+                    .locationDto(LocationDto.Patch.builder()
+                            .locationId(2L).x(0).y(0).isInstalled(false).build())
+                    .build();
+        }
+        public static List<PlantObjDto.PatchLocation> getStubPatchLocationResponses() {
+            List<PlantObjDto.PatchLocation> patchLocations = new ArrayList<>();
+            patchLocations.add(getStubPatchLocation1());
+            patchLocations.add(getStubPatchLocation2());
+
+            return patchLocations;
+        }
+
+        public static Location getStubLocation() {
+            PlantObjDto.PatchLocation patchLocation = getStubPatchLocation1();
+
+            return Location.builder()
+                    .locationId(patchLocation.getLocationDto().getLocationId())
+                    .x(patchLocation.getLocationDto().getX())
+                    .y(patchLocation.getLocationDto().getY())
+                    .isInstalled(patchLocation.getLocationDto().isInstalled())
+                    .build();
+        }
     }
 
     public static class MockLeaf {
@@ -208,7 +258,7 @@ public class TestStubData {
             return LeafDto.ResponseForGardenInfo.builder()
                     .id(getStubLeaf().getLeafId())
                     .name(getStubLeaf().getLeafName())
-                    .imageUrl(getStubLeafResponseDto().getImageUrl())
+                    .imageUrl(getStubLeaf().getLeafImageUrl())
                     .journalCount(MockJournal.getStubJournalResponseDtos().size())
                     .build();
         }
@@ -220,7 +270,7 @@ public class TestStubData {
                     .journalId(1L)
                     .title("230909 일지")
                     .content("오늘은 물을 줬다.")
-                    .journalImage(MockJournalImage.getStubJournalImage1())
+//                    .journalImage(MockJournalImage.getStubJournalImage1())
                     .leaf(MockLeaf.getStubLeaf())
                     .build();
         }
@@ -229,7 +279,7 @@ public class TestStubData {
                     .journalId(2L)
                     .title("230910 일지")
                     .content("오늘은 물을 안줬다.")
-                    .journalImage(MockJournalImage.getStubJournalImage2())
+//                    .journalImage(MockJournalImage.getStubJournalImage2())
                     .leaf(MockLeaf.getStubLeaf())
                     .build();
         }
