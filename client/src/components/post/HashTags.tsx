@@ -5,6 +5,7 @@ interface HashTagsProps {
 }
 
 export default function HashTags({ hashTags }: HashTagsProps) {
+  if (!hashTags || hashTags.length === 0) return null;
   return (
     <div className="flex flex-nowrap gap-2">
       {hashTags?.map((hashTag) => {

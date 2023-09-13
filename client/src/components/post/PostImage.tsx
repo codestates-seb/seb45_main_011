@@ -5,6 +5,8 @@ interface PostImageProps {
 }
 
 export default function PostImage({ src }: PostImageProps) {
+  if (!src) return null;
+
   return (
     <div className="w-full max-w-[360px] rounded-lg overflow-hidden mx-auto mb-[24px]">
       <Image

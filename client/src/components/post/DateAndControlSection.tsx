@@ -1,5 +1,5 @@
 import getDateFormat from '@/utils/getDateFormat';
-import ControlMenu from './PostContolButton';
+import ControlMenu from './ControlMenu';
 
 interface DateAndControlProps {
   date?: Date;
@@ -20,7 +20,7 @@ export default function DateAndControlSection({
 
   return (
     <div
-      className={`flex items-center gap-2 absolute z-[1] top-0 right-[20px] ${SECTION_STYLE[usage].container}`}>
+      className={`flex items-center gap-2 absolute z-[1] ${SECTION_STYLE[usage].container}`}>
       <span
         className={`text-sm leading-[0.875rem] font-bold text-brown-80 ${SECTION_STYLE[usage].dayText}`}>
         {formattedDay}
@@ -33,12 +33,12 @@ export default function DateAndControlSection({
 const SECTION_STYLE = {
   post: {
     container:
-      'max-[500px]:flex-col-reverse max-[500px]:items-end max-[500px]:right-[35px] max-[500px]:top-[10px]',
+      'top-0 right-[20px] max-[500px]:flex-col-reverse max-[500px]:items-end max-[500px]:right-[35px] max-[500px]:top-[10px]',
     dayText: 'max-[500px]:text-xs ',
   },
   comment: {
     container:
-      'max-[500px]:flex-col-reverse max-[500px]:items-end max-[500px]:right-[25px] max-[500px]:top-[-5px] max-[500px]:gap-1',
+      'top-0 right-0 max-[500px]:flex-col-reverse max-[500px]:items-end max-[500px]:right-[25px] max-[500px]:top-[-5px] max-[500px]:gap-1',
     dayText: 'max-[500px]:text-[0.4rem] ',
   },
 };

@@ -76,7 +76,7 @@ export default function Post({ params }: PostProps) {
                 usage="post"
               />
               <DateAndControl
-                date={new Date()}
+                date={new Date(post.createAt)}
                 usage="post"
                 ownerId={post.accountId}
                 targetId={post.boardId}

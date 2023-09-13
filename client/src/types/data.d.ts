@@ -146,7 +146,7 @@ export interface PostDataInfo {
   content: string;
   boardImageUrl: string | null;
   likeNum: number;
-  createdAt: string;
+  createAt: string;
   modifiedAt: string | null;
   accountId: number;
   displayName: string;
