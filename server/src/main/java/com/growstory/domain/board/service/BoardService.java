@@ -79,12 +79,13 @@ public class BoardService {
     }
 //
     public ResponseBoardDto getBoard(Long boardId) {
+        Account findAccount = authUserUtils.getAuthUser();
         Board findBoard = findVerifiedBoard(boardId);
         BoardImage findBoardImage = boardImageService.verifyExistBoardImage(boardId);
         List<ResponseHashTagDto> findHashTag = hashTagService.getHashTagList(boardId);
         List<ResponseCommentDto> findComment = commentService.getCommentList(boardId);
 
-        return getResponseBoardDto(findBoard, findBoardImage, findHashTag, findComment);
+        return getResponseBoardDto(findAccount, findBoard, findBoardImage, findHashTag, findComment);
     }
 
     public Page<ResponseBoardPageDto> findBoards(int page, int size) {
@@ -109,7 +110,7 @@ public class BoardService {
     }
 
     public Page<ResponseBoardPageDto> findBoardsByKeyword(int page, int size, String keyword) {
-        Page<ResponseBoardPageDto> boards = boardRepository.findAll(PageRequest.of(page, size, Sort.by("createdAt")))
+        Page<ResponseBoardPageDto> boards = boardRepository.findByKeyword(keyword, PageRequest.of(page, size, Sort.by("createdAt").descending()))
                 .map(board -> ResponseBoardPageDto.builder()
                         .boardId(board.getBoardId())
                         .title(board.getTitle())
@@ -122,6 +123,7 @@ public class BoardService {
                         .likeNum(board.getBoardLikes().size())
                         .commentNum(board.getBoardComments().size())
                         .build());
+
 
         // boardImage 여러 개일 경우 ResponseBoardPageDto 에서 imageUrl 타입을 List로 변경 후
 //                .boardImageUrl(board.getBoardImages().stream().map(boardImage -> boardImage.getStoredImagePath()).collect(Collectors.toList()))
@@ -205,18 +207,20 @@ public class BoardService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
     }
 
-    private static ResponseBoardDto getResponseBoardDto(Board findBoard, BoardImage findBoardImage, List<ResponseHashTagDto> findHashTag, List<ResponseCommentDto> findComment) {
+    private static ResponseBoardDto getResponseBoardDto(Account findAccount, Board findBoard, BoardImage findBoardImage, List<ResponseHashTagDto> findHashTag, List<ResponseCommentDto> findComment) {
         return ResponseBoardDto.builder()
                 .boardId(findBoard.getBoardId())
                 .title(findBoard.getTitle())
                 .content(findBoard.getContent())
                 .boardImageUrl(findBoardImage.getStoredImagePath())
+                .isLiked(findBoard.getBoardLikes().stream().anyMatch(boardLike -> boardLike.getAccount().getAccountId() == findAccount.getAccountId()))
                 .likeNum(findBoard.getBoardLikes().size())
                 .createAt(findBoard.getCreatedAt())
                 .modifiedAt(findBoard.getModifiedAt())
                 .accountId(findBoard.getAccount().getAccountId())
                 .displayName(findBoard.getAccount().getDisplayName())
                 .profileImageUrl(findBoard.getAccount().getProfileImageUrl())
+                .grade(findBoard.getAccount().getAccountGrade().getStepDescription())
                 .hashTags(findHashTag)
                 .comments(findComment)
                 .build();
