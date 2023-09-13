@@ -8,11 +8,13 @@ import useUserStore from '@/stores/userStore';
 
 import CommonButton from '../common/CommonButton';
 
-type Token = {
-  token: string;
-};
+import { DefaultProps } from '@/types/common';
 
-export default function ImageForm({ token }: Token) {
+interface ImageFormProps extends DefaultProps {
+  token: string;
+}
+
+export default function ImageForm({ token, className }: ImageFormProps) {
   const { profileImageUrl, setProfileImageUrl } = useUserStore();
 
   const [image, setImage] = useState<FileList>();
@@ -60,7 +62,7 @@ export default function ImageForm({ token }: Token) {
   }, []);
 
   return (
-    <form>
+    <form className={className}>
       <div className="flex flex-col items-center justify-center">
         <img
           src={imageUrl || profileImageUrl}
@@ -79,7 +81,7 @@ export default function ImageForm({ token }: Token) {
           type="submit"
           size="sm"
           children="이미지 등록"
-          className="w-[100px] h-8 mb-3"
+          className="w-[100px] h-8 mb-3 hover:scale-110 transition-transform"
           onSubmit={onImageSubmit}
         />
         <p className="text-gray-70 text-xs mb-8">
