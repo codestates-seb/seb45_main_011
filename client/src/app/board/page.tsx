@@ -21,11 +21,11 @@ export default function Board() {
   };
 
   return (
-    <div className="mt-[60px] pt-[52px] px-4 flex flex-col gap-5 justify-center items-center max-[415px]:gap-3 max-[415px]:pt-2 ">
+    <div className="mt-[60px] pt-[52px] px-4 flex flex-col gap-5 justify-center items-center max-[415px]:gap-4 max-[415px]:pt-2 ">
       <RankBoard />
       <BoardBanner />
-      <div className="w-full max-w-[720px] h-[487px] border-gradient">
-        <div className="p-4 h-full flex flex-col gap-6">
+      <div className="w-full min-w-[312px] max-w-[720px] h-[487px] border-gradient rounded-xl shadow-container">
+        <div className="p-4 h-full flex flex-col gap-4">
           <div className="flex justify-between">
             <BoardSearchForm />
             <CommonButton type="button" size="sm" onClick={navigateToAddPost}>

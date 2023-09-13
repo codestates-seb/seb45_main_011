@@ -47,7 +47,7 @@ export default function SigninForm() {
     try {
       const response = await postUserInfo(email, password);
 
-      const userId = response.data.accountId;
+      const userId = String(response.data.accountId);
       const accessToken = response.headers.authorization;
       const refreshToken = response.headers.refresh;
       const username = response.data.displayName;
@@ -57,7 +57,7 @@ export default function SigninForm() {
       setRefershToken(refreshToken);
       setDisplayName(decodeURIComponent(username));
       setProfileImageUrl(userProfileImage);
-      saveUserId(Number(userId));
+      saveUserId(userId);
 
       setIsLogin(true);
       getSigninForm(false);

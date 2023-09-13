@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export default function RankBoard() {
   return (
-    <div className="py-10  w-[448px] flex flex-col items-center bg-cover bg-center bgco bg-[url('/assets/img/bg_board_lg.png')] drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] scale-100 max-[585px]:scale-75 max-[415px]:scale-[0.6]">
+    <div className="py-10  w-[448px] flex flex-col items-center bg-cover bg-center bgco bg-[url('/assets/img/bg_board_lg.png')] drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] scale-100 max-[604px]:scale-75 max-[604px]:-mb-5 max-[415px]:scale-[0.7] max-[415px]:-mb-7">
       <h2 className=" text-2xl leading-6 text-brown-10 font-bold">
         이주의 좋아요 순위
       </h2>
