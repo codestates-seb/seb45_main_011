@@ -44,14 +44,7 @@ public class PlantObj {
 
 
     public void updateLeaf(Leaf leaf) {
-        if(leaf == null) {
-            this.leaf = null;
-            return;
-        }
         this.leaf = leaf;
-        if(leaf.getPlantObj() != this) {
-            leaf.updatePlantObj(this);
-        }
     }
 
     public void updateAccount(Account account) {

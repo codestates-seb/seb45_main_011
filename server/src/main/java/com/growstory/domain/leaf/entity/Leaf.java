@@ -40,10 +40,22 @@ public class Leaf extends BaseTimeEntity {
     private List<Journal> journals;
 
     public void updatePlantObj(PlantObj plantObj) {
+//        if(plantObj == null) {
+//            this.plantObj = null;
+//            return;
+//        }
+//        if(this.plantObj == plantObj) return;
+//
+//        // else , if(this.plantObj != plantObj)
+//        if(this.getPlantObj()!=null){
+//            this.getPlantObj().updateLeaf(null);
+//        }
+//
+//        this.plantObj = plantObj;
+//        if(this.plantObj.getLeaf()!=this) {
+//            this.plantObj.updateLeaf(this);
+//        }
         this.plantObj = plantObj;
-        if(plantObj.getLeaf()!=this) {
-            plantObj.updateLeaf(this);
-        }
     }
 
     public void removePlantObj() {

@@ -114,7 +114,7 @@ public class PlantObjService {
                 .anyMatch(obj -> obj.getPlantObjId() == plantObjId)) {
              resell(findAccount,plantObj);
         } else { // 사용자가 보유하고 있는 plantObj 중 해당 품목이 없다면 예외 던지기
-            throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
+            throw new BusinessLogicException(ExceptionCode.PLANT_OBJ_NOT_FOUND);
         }
         return PointDto.Response.builder()
                 .score(findAccount.getPoint().getScore())
@@ -143,7 +143,6 @@ public class PlantObjService {
     }
 
     // PATCH : 오브젝트와 식물 카드 연결 / 해제 / 교체
-
     public PlantObjDto.Response updateLeafConnection(Long accountId, Long plantObjId, Long leafId) {
         accountService.isAuthIdMatching(accountId);
         boolean isLeafNull = leafId == null;
@@ -152,9 +151,11 @@ public class PlantObjService {
         if(!isLeafNull) { // leafId가 null이 아닌경우 NPE에 대한 우려 없이 DB에서 조회
             Leaf findLeaf = leafService.findLeafEntityBy(leafId);
             findPlantObj.updateLeaf(findLeaf);
+            findLeaf.updatePlantObj(findPlantObj);
         } else { // 전달된 leaf가 null인 경우
-            Leaf nullLeaf = null;
-            findPlantObj.updateLeaf(nullLeaf);
+            Leaf beforeLeaf = findPlantObj.getLeaf();
+            beforeLeaf.updatePlantObj(null);
+            findPlantObj.updateLeaf(null);
         }
         return plantObjMapper.toPlantObjResponse(findPlantObj);
     }
