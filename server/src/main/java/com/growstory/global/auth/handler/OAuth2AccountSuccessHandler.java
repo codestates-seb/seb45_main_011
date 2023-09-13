@@ -15,10 +15,13 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.yaml.snakeyaml.util.UriEncoder;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
 
@@ -55,6 +58,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
                     .profileImageUrl(profileImageUrl)
                     .point(point)
                     .roles(authorities)
+                    .accountGrade(Account.AccountGrade.GRADE_BRONZE)
                     .build());
 
             point.updateAccount(savedAccount);
@@ -73,6 +77,10 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
 
         //FE 애플리케이션 쪽의 URI 생성.
         String uri = createURI(accessToken, refreshToken, account).toString();
+
+        response = addCookies(response, account, accessToken, refreshToken);
+//        HttpSession httpSession = request.getSession(true);
+//        httpSession.setAttribute("accessToken", accessToken);
 
         //SimpleUrlAuthenticationSuccessHandler에서 제공하는 sendRedirect() 메서드를 이용해 Frontend 애플리케이션 쪽으로 리다이렉트
         getRedirectStrategy().sendRedirect(request, response, uri);
@@ -107,14 +115,6 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
         return refreshToken;
     }
     private Object createURI(String accessToken, String refreshToken, Account account) {
-        // HTTP 요청의 쿼리 파라미터나 헤더를 구성하기 위한 Map
-        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
-        queryParams.add("displayName", account.getDisplayName());
-        queryParams.add("profileImageUrl", account.getProfileImageUrl());
-        queryParams.add("access_token", accessToken);
-        queryParams.add("refresh_token", refreshToken);
-
-        //http://localhost/receive-token.html?access_token=XXX&refresh_token=YYY 형식으로 받도록 함.
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
@@ -123,10 +123,25 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
 //                .host("growstory.s3-website.ap-northeast-2.amazonaws.com")
 //                .port(80) //S3는 80포트
                 .path("/signin")
-                .queryParam("accountId", account.getAccountId())
-                .queryParams(queryParams)
-                .encode()
                 .build()
                 .toUri();
+    }
+
+    private HttpServletResponse addCookies(HttpServletResponse response, Account account, String accessToken, String refreshToken) {
+        response.addCookie(createCookie("access_token", accessToken));
+        response.addCookie(createCookie("refresh_token", refreshToken));
+        response.addCookie(createCookie("account_id", account.getAccountId().toString()));
+        response.addCookie(createCookie("displayName", account.getDisplayName()));
+        response.addCookie(createCookie("profileImageUrl", account.getProfileImageUrl()));
+
+        return response;
+    }
+
+    private Cookie createCookie(String key, String value) {
+        Cookie cookie = new Cookie(key, value);
+        cookie.setPath("/");
+//        cookie.setMaxAge(180);
+
+        return cookie;
     }
 }

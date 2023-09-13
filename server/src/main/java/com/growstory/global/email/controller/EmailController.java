@@ -4,6 +4,8 @@ import com.growstory.global.constants.HttpStatusCode;
 import com.growstory.global.email.dto.EmailDto;
 import com.growstory.global.email.service.EmailService;
 import com.growstory.global.response.SingleResponseDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +18,12 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "Email", description = "Email Controller")
 @RequestMapping("/v1/emails")
 public class EmailController {
     private final EmailService emailService;
 
-    // 회원가입 시 메일 인증
+    @Operation(summary = "회원가입 시 메일 인증", description = "회원가입 시 입력받은 이메일로 메일 전송")
     @PostMapping("/signup")
     public ResponseEntity<SingleResponseDto<EmailDto.SignUpResponse>> postAuthCodeMail(@Valid @RequestBody EmailDto.Post emailPostDto) {
         EmailDto.SignUpResponse responseDto = emailService.sendAuthCodeMail(emailPostDto);
@@ -32,7 +35,7 @@ public class EmailController {
                 .build());
     }
 
-    // 비밀번호 찾기 시 임시 비밀번호 전송
+    @Operation(summary = "비밀번호 찾기 시 임시 비밀번호 전송", description = "비밀번호 찾기 시 입력받은 이메일로 임시 비밀번호 전송")
     @PostMapping("/password")
     public ResponseEntity<SingleResponseDto<EmailDto.PasswordResponse>> postPasswordMail(@Valid @RequestBody EmailDto.Post emailPostDto) {
         EmailDto.PasswordResponse responseDto = emailService.sendPasswordMail(emailPostDto);

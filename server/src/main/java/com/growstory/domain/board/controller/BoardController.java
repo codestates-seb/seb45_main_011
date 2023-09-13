@@ -4,12 +4,10 @@ import com.growstory.domain.board.dto.RequestBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardPageDto;
 import com.growstory.domain.board.service.BoardService;
-import com.growstory.domain.hashTag.dto.RequestHashTagDto;
-import com.growstory.domain.hashTag.entity.HashTag;
 import com.growstory.global.constants.HttpStatusCode;
 import com.growstory.global.response.MultiResponseDto;
 import com.growstory.global.response.SingleResponseDto;
-import com.growstory.global.util.UriCreator;
+import com.growstory.global.utils.UriCreator;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -36,8 +34,8 @@ public class BoardController {
     @Operation(summary = "Create Board API", description = "게시판 추가 기능")
     @PostMapping
     public ResponseEntity<HttpStatus> postBoard(
-                                                @Valid @RequestPart RequestBoardDto.Post requestBoardDto,
-                                                @RequestPart(value = "image", required = false) MultipartFile image) {
+            @Valid @RequestPart RequestBoardDto.Post requestBoardDto,
+            @RequestPart(value = "image", required = false) MultipartFile image) {
         Long boardId = boardService.createBoard(requestBoardDto, image);
 
         // https://localhost:8888/v1/boards/{boardId}
@@ -56,8 +54,8 @@ public class BoardController {
                 .message(HttpStatusCode.OK.getMessage())
                 .data(responseBoardDto).build());
     }
-//
-//
+
+
     @Operation(summary = "Get Boards API", description = "전체 게시판 조회 기능")
     @GetMapping
     public ResponseEntity<MultiResponseDto<ResponseBoardPageDto>> getBoards(@Positive @RequestParam(defaultValue = "1") int page,
@@ -70,17 +68,30 @@ public class BoardController {
                 .data(responseBoardDtos.getContent()).page(responseBoardDtos).build());
     }
 
-
-//    @Operation(summary = "Update Board API", description = "게시판 수정 기능")
-//    @PatchMapping("/{boardId}")
-//    public ResponseEntity<HttpStatus> patchBoard(@Positive @PathVariable("boardId") Long boardId,
-//                                                 @Valid @RequestPart RequestBoardDto.Patch requestBoardDto,
-//                                                 @RequestPart(value = "image", required = false) MultipartFile image) {
+//    @Operation(summary = "Get Boards by keyword API", description = "키워드를 기준으로 전체 게시판 조회")
+//    @GetMapping
+//    public ResponseEntity<MultiResponseDto<ResponseBoardPageDto>> getBoardsByKeyword(@Positive @RequestParam(defaultValue = "1") int page,
+//                                                                                     @Positive @RequestParam(defaultValue = "12") int size,
+//                                                                                     @RequestParam("keyword") String keyword) {
+//        Page<ResponseBoardPageDto> responseBoardDtos = boardService.findBoardsByKeyword(page - 1, size, keyword);
 //
-//        boardService.modifyBoard(boardId, requestBoardDto, image);
-//
-//        return ResponseEntity.noContent().build();
+//        return ResponseEntity.ok(MultiResponseDto.<ResponseBoardPageDto>builder()
+//                .status(HttpStatusCode.OK.getStatusCode())
+//                .message(HttpStatusCode.OK.getMessage())
+//                .data(responseBoardDtos.getContent()).page(responseBoardDtos).build());
 //    }
+
+
+    @Operation(summary = "Update Board API", description = "게시판 수정 기능")
+    @PatchMapping("/{boardId}")
+    public ResponseEntity<HttpStatus> patchBoard(@Positive @PathVariable("boardId") Long boardId,
+                                                 @Valid @RequestPart RequestBoardDto.Patch requestBoardDto,
+                                                 @RequestPart(value = "image", required = false) MultipartFile image) {
+
+        boardService.modifyBoard(boardId, requestBoardDto, image);
+
+        return ResponseEntity.noContent().build();
+    }
 
 
     @Operation(summary = "Delete Board API", description = "게시판 삭제 기능")

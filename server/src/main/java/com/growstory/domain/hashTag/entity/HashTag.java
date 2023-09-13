@@ -22,11 +22,15 @@ public class HashTag {
 
     private String tag;
 
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
     @Builder
     public HashTag(String tag) {
         this.tag = tag;
     }
 
-    @OneToMany(mappedBy = "hashTag")
+    @OneToMany(mappedBy = "hashTag", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Board_HashTag> boardHashTags = new ArrayList<>();
 }

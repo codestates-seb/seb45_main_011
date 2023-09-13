@@ -13,6 +13,10 @@ public enum ExceptionCode {
     BOARD_NOT_ALLOW(405, "That Board doesn't have authority"),
     BOARD_ALREADY_EXISTS(409, "Board already exists"),
 
+    BOARD_IMAGE_NOT_FOUND(404, "Board image not found"),
+    BOARD_IMAGE_NOT_ALLOW(405, "That Board image doesn't have authority"),
+    BOARD_IMAGE_ALREADY_EXISTS(409, "Board image already exists"),
+
     COMMENT_NOT_FOUND(404, "Comment not found"),
     COMMENT_NOT_ALLOW(405, "That Comment doesn't have authority"),
     COMMENT_ALREADY_EXISTS(409, "Comment already exists"),
