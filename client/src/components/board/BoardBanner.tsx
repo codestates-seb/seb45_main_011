@@ -56,7 +56,7 @@ export default function BoardBanner() {
         </div>
       </div>
       {isSmallView && (
-        <p className="text-center text-[0.5rem] text-gray-50">
+        <p className="text-center text-[0.5rem] text-gray-70">
           포인트는 매주 월요일에 지급되며, 이전 랭킹은 초기화 됩니다.
         </p>
       )}

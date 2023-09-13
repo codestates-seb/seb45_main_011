@@ -18,7 +18,8 @@ export default function useBoardInfinityQuery() {
       ({ pageParam = 1 }) => getBoardsByPageNum({ pageParam }),
       {
         getNextPageParam: (lastPage, allPosts) => {
-          return lastPage.pageInfo.page !== lastPage.pageInfo.totalPages
+          return lastPage.pageInfo.totalPages &&
+            lastPage.pageInfo.page !== lastPage.pageInfo.totalPages
             ? lastPage.pageInfo.page + 1
             : undefined;
         },

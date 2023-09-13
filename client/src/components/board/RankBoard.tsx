@@ -6,7 +6,7 @@ export default function RankBoard() {
       <h2 className=" text-2xl leading-6 text-brown-10 font-bold">
         이주의 좋아요 순위
       </h2>
-      <div className="pt-5 max-w-[720px] flex flex-col items-center gap-2 text-base leading-4 text-brown-10 font-normal whitespace-nowrap overflow-x-hidden">
+      <div className="pt-5 max-w-[720px] flex flex-col items-center gap-2 text-base leading-4 text-brown-10 font-normal whitespace-nowrap overflow-x-hidden ">
         <p className="flex gap-3 items-center">
           <Image src="/assets/img/gold.svg" alt="1등" width={20} height={28} />
           식집사 님의 첫 바질!!
