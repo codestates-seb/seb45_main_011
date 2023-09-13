@@ -212,7 +212,7 @@ public class BoardService {
                 .boardId(findBoard.getBoardId())
                 .title(findBoard.getTitle())
                 .content(findBoard.getContent())
-                .boardImageUrl(findBoardImage.getStoredImagePath())
+                .boardImageUrl(findBoard.getBoardImages().stream().findFirst().map(BoardImage::getStoredImagePath).orElse(null))
                 .isLiked(findBoard.getBoardLikes().stream().anyMatch(boardLike -> boardLike.getAccount().getAccountId() == findAccount.getAccountId()))
                 .likeNum(findBoard.getBoardLikes().size())
                 .createAt(findBoard.getCreatedAt())
