@@ -3,8 +3,7 @@ import axios from 'axios';
 export const commonAxios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
-    Authorization:
-      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhY2NvdW50SWQiOjEsImRpc3BsYXlOYW1lIjoi6rSA66as7J6QIiwicm9sZXMiOlsiQURNSU4iLCJVU0VSIl0sInVzZXJuYW1lIjoiYWRtaW5AZ21haWwuY29tIiwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNjk0NjA4ODM1LCJleHAiOjE2OTQ2MTA2MzV9.WES0RX-cNgK_8agBd2hoQ3TSFS7XF58Ekc9ZnNDQOm0',
+    Authorization: '',
     // Refresh:
   },
   withCredentials: true,
@@ -58,8 +57,16 @@ export async function addComment(content: string, boardId: number) {
     content,
   });
 }
+
 /** commentId에 해당하는 댓글 삭제 */
 export async function deleteComment(commentId: number) {
   console.log(commentId);
   return commonAxios.delete(`comments/${commentId}`);
+}
+
+/** commentId에 해당하는 댓글 삭제 */
+export async function editComment(commentId: number, content: string) {
+  return commonAxios.patch(`comments/${commentId}`, {
+    content,
+  });
 }

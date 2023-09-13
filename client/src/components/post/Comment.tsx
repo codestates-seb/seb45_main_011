@@ -2,6 +2,8 @@ import { useForm } from 'react-hook-form';
 
 import usePostStore from '@/stores/postStore';
 
+import useEditCommentMutation from '@/hooks/useEditCommentMutation';
+
 import PostProfile from './PostProfile';
 import DateAndControlSection from './DateAndControlSection';
 import CommonButton from '../common/CommonButton';
@@ -11,10 +13,11 @@ import { CommentInputValue } from '@/types/common';
 
 interface CommentProps {
   comment: CommentDataInfo | null;
+  boardId: number | null;
 }
 
-export default function Comment({ comment }: CommentProps) {
-  if (!comment) return null;
+export default function Comment({ comment, boardId }: CommentProps) {
+  if (!comment || !boardId) return null;
 
   const { register, handleSubmit } = useForm<CommentInputValue>({
     defaultValues: {
@@ -24,7 +27,14 @@ export default function Comment({ comment }: CommentProps) {
 
   const { editMode, targetId, setEditMode } = usePostStore();
 
+  const { mutate: editComment } = useEditCommentMutation({ boardId, targetId });
+
   const isEdit = editMode && comment.commentId === targetId;
+
+  const submitCommentForm = (data: CommentInputValue) => {
+    editComment(data);
+    setEditMode(false);
+  };
 
   return (
     <li className="pl-[1.375rem] mb-8 max-[500px]:pl-0">
@@ -47,7 +57,7 @@ export default function Comment({ comment }: CommentProps) {
       </div>
       <div className="pl-11 max-[550px]:pl-0">
         {isEdit ? (
-          <form onSubmit={handleSubmit((data) => console.log(data))}>
+          <form onSubmit={handleSubmit(submitCommentForm)}>
             <input
               autoFocus={true}
               className="w-full px-[0.875rem] py-[0.75rem] bg-brown-10 border-2 border-brown-50 rounded-xl text-black-50 text-xs left-3 common-drop-shadow outline-none max-[500px]:py-[0.5rem]  max-[500px]:text-[0.5rem]"

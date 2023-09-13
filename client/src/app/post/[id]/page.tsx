@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 
@@ -23,7 +24,6 @@ import HashTags from '@/components/post/HashTags';
 import CommentDeleteModal from '@/components/post/CommentDeleteModal';
 
 import { CommentDataInfo, PostDataInfo } from '@/types/data';
-import { useEffect, useState } from 'react';
 
 interface PostProps {
   params: { id: string };
@@ -98,7 +98,11 @@ export default function Post({ params }: PostProps) {
               <CommentForm boardId={post.boardId} />
               <ul>
                 {comments?.map((comment: CommentDataInfo) => (
-                  <Comment key={comment.commentId} comment={comment} />
+                  <Comment
+                    key={comment.commentId}
+                    comment={comment}
+                    boardId={post.boardId}
+                  />
                 ))}
               </ul>
             </div>
