@@ -1,13 +1,11 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-
-import Collapse from '@kunukn/react-collapse';
-
 import useHistoryStore from '@/stores/historyStore';
 
-import { DROPDOWN_OPTIONS } from '@/constants/contents';
 import useDetectClose from '@/hooks/useDetectClose';
+
+import { DROPDOWN_OPTIONS } from '@/constants/contents';
+import { Collapse } from '@material-tailwind/react';
 
 export default function Dropdown() {
   const { selectOption, setSelectOption } = useHistoryStore();
@@ -37,7 +35,7 @@ export default function Dropdown() {
             )}
           </div>
         </div>
-        <Collapse isOpen={isOpen}>
+        <Collapse open={isOpen}>
           {isOpen && (
             <div className="flex flex-col w-[168px] h-[92px] mt-1 rounded-lg border-2 border-brown-70 bg-white-10 shadow-outer/down cursor-pointer">
               <div className="flex flex-col justify-center w-full h-full">

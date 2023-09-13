@@ -20,6 +20,8 @@ export default function HistoryBoard({ token }: Token) {
   const userId = useUserStore((state) => state.userId);
   const { id } = useParams();
 
+  // console.log(id);
+
   const { boards, setBoards } = useHistoryStore();
   const setPoint = useUserStore((state) => state.setPoint);
   const selectOption = useHistoryStore(
@@ -106,11 +108,12 @@ export default function HistoryBoard({ token }: Token) {
 
   return (
     <>
-      {userId === +id && <Dropdown />}
+      {userId === id && <Dropdown />}
+      <Dropdown />
       {data?.pages.map((page, index) => (
         <>
           {page?.length === 0 ? (
-            <div className="w-full flex justify-center items-center scrollbar-hide">
+            <div className="w-full flex justify-center items-center overflow-hidden">
               <div className="h-[195px] mt-1">게시글이 없습니다!</div>
             </div>
           ) : (

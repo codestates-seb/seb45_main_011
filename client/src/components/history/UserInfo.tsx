@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 import { getLeafsByUserId } from '@/api/leaf';
 
@@ -24,7 +24,7 @@ export default function UserInfo({ token }: Token) {
 
   // document.querySelector('button')?.click();
   const [grade, setGrade] = useState('브론즈 가드너');
-
+  const router = useRouter();
   const { id } = useParams();
   const userId = useUserStore((state) => state.userId);
 
@@ -39,10 +39,12 @@ export default function UserInfo({ token }: Token) {
     }
   };
 
+  // 모든 유저 정보 조회!
+
   useEffect(() => {
     const getHistoryData = async () => {
       try {
-        //TODO: 서버에서 식물 카드 전체 조회 시 length로 순위 매기기
+        //TODO: 서버에서 식물 카드 전체 조회 시 length로 등급 매기기
         // const getLeafCard = await getLeafsByUserId(userId);
         // console.log(getLeafCard);
         const userLeafCardAmount = 100;
@@ -75,7 +77,7 @@ export default function UserInfo({ token }: Token) {
         </div>
         <p className="font-bold text-brown-70">{grade}</p>
       </div>
-      {userId === +id ? (
+      {userId === id ? (
         <div className="flex items-center justify-center gap-2 bg-[url('/assets/img/bg_board_sm.png')] w-[192px] h-[96px] shadow-outer/down mb-5">
           <img src="/assets/img/point.svg" />
           <p className="text-xl font-bold text-brown-10">{point}</p>
@@ -88,13 +90,14 @@ export default function UserInfo({ token }: Token) {
               size="lg"
               children="정원 구경하기"
               className="w-[203px] h-[52px]"
+              onGoToGarden={() => router.push(`/garden/${id}`)}
             />
             <CommonButton
               type="button"
               size="lg"
               children="식물 카드 열람"
               className="w-[213px] h-[52px]"
-              // 식물 전체 페이지? 상세 페이지...?
+              onGoToLeafs={() => router.push(`/leafs/${id}`)}
             />
           </div>
           <CommonButton

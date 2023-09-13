@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form';
 
 import { updateUserPassword } from '@/api/profile';
 
+import useSignModalStore from '@/stores/signModalStore';
+
 import PasswordInput from '../common/PasswordInput';
 import CommonButton from '../common/CommonButton';
 
@@ -22,10 +24,12 @@ export default function PasswordForm({ token }: Token) {
     reset,
   } = useForm<InputValues>();
 
+  const changeState = useSignModalStore((state) => state.changeState);
+
   const presentPassword = watch('password');
   const changedPassword = watch('newPasswordCheck');
 
-  const updatePassword = () => {
+  const updatePassword = async () => {
     if (!presentPassword && !changedPassword) return;
 
     if (presentPassword === changedPassword) {
@@ -34,9 +38,9 @@ export default function PasswordForm({ token }: Token) {
     }
 
     try {
-      updateUserPassword(presentPassword, changedPassword, token);
+      await updateUserPassword(presentPassword, changedPassword, token);
       reset();
-      alert('비밀번호가 성공적으로 변경되었습니다.');
+      changeState('ChangePasswordModal');
     } catch (error) {
       console.log(error);
     }

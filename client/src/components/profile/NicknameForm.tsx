@@ -1,10 +1,13 @@
 'use client';
 
+import { useState } from 'react';
+
 import { useForm } from 'react-hook-form';
 
 import { updateUserNickname } from '@/api/profile';
 
 import useUserStore from '@/stores/userStore';
+import useSignModalStore from '@/stores/signModalStore';
 
 import TextInput from '../common/TextInput';
 import CommonButton from '../common/CommonButton';
@@ -16,13 +19,16 @@ type Token = {
 };
 
 export default function NicknameForm({ token }: Token) {
-  const { setDisplayName, displayName } = useUserStore();
+  const { setDisplayName, displayName, isGoogleLogin } = useUserStore();
+  const [newNickname, setNewNickname] = useState(displayName);
+  const changeState = useSignModalStore((state) => state.changeState);
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
     reset,
+    setValue,
   } = useForm<InputValues>({
     defaultValues: {
       nickname: displayName,
@@ -31,17 +37,14 @@ export default function NicknameForm({ token }: Token) {
 
   const nickname = watch('nickname');
 
-  const updateNickName = () => {
+  const updateNickName = async () => {
     if (!nickname) return;
 
-    try {
-      updateUserNickname(nickname, token);
-      setDisplayName(nickname);
-      reset();
-      alert('닉네임이 성공적으로 변경되었습니다.');
-    } catch (error) {
-      console.log(error);
-    }
+    setDisplayName(nickname);
+    await updateUserNickname(nickname, token);
+
+    reset();
+    changeState('ChangeNicknameModal');
   };
 
   return (
@@ -54,7 +57,12 @@ export default function NicknameForm({ token }: Token) {
             닉네임 :&nbsp;
           </label>
         </div>
-        <TextInput name="nickname" register={register} errors={errors} />
+        <TextInput
+          name="nickname"
+          register={register}
+          errors={errors}
+          setValue={() => setValue('nickname', displayName)}
+        />
         <div className="mt-[2px]">
           <CommonButton
             type="submit"

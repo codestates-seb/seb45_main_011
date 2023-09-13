@@ -17,9 +17,10 @@ export default function FailureModal() {
         <div className="flex flex-col items-center gap-6">
           <div className="flex flex-col items-center gap-3">
             <p className="font-bold text-brown-70 text-[28px]">
-              인증에 <span className="text-red-50">실패했습니다.</span>
+              인증에
+              <span className="text-red-50">실패했습니다.</span>
             </p>
-            <p className="font-bold text-brown-90  text-[28px]">
+            <p className="font-bold text-brown-90 text-[28px]">
               다시 입력해주세요.
             </p>
           </div>
