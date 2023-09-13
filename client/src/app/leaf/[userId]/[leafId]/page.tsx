@@ -20,7 +20,7 @@ import LeafDiary from '@/components/leaf/LeafDiary';
 import LeafDateInfo from '@/components/leaf/LeafDateInfo';
 import EmptyDiary from '@/components/leaf/EmptyDiary';
 import LeafModal from '@/components/leaf/LeafModal';
-
+// 컨벤션 협의 썰 정리하자
 import { DiaryDataInfo, LeafDataInfo } from '@/types/data';
 
 interface LeafProps {
@@ -36,11 +36,9 @@ export default function Leaf({ params }: LeafProps) {
 
   const userId = useTestUserStore((state) => state.userId);
 
-  useEffectOnce(() => {
-    if (!userId) {
-      router.push('/signin');
-    }
-  });
+  // 변수 선언 부분은 앞 쪽이 좋다.
+  const { modalCategory, isModalOpen, setStartDay, setLastDiaryDay } =
+    useLeafStore();
 
   const [leaf, setLeaf] = useState<LeafDataInfo>();
   const [diaries, setDiaries] = useState<DiaryDataInfo[]>();
@@ -61,6 +59,14 @@ export default function Leaf({ params }: LeafProps) {
   const isLoading = results.some((result) => result.isLoading);
   const isError = results.some((result) => result.isError);
 
+  const isEmpty = diaries && diaries?.length === 0;
+
+  useEffectOnce(() => {
+    if (!userId) {
+      router.push('/signin');
+    }
+  });
+
   useEffect(() => {
     if (results) {
       setLeaf(results[0].data);
@@ -73,12 +79,8 @@ export default function Leaf({ params }: LeafProps) {
   }, [leaf]);
 
   useEffect(() => {
-    if (diaries && diaries.length !== 0)
-      setLastDiaryDay(new Date(diaries[0].createdAt));
+    if (isEmpty) setLastDiaryDay(new Date(diaries[0].createdAt));
   }, [diaries]);
-
-  const { modalCategory, isModalOpen, setStartDay, setLastDiaryDay } =
-    useLeafStore();
 
   if (isLoading) return <div>loading</div>;
   if (isError) return <div>error</div>;
@@ -99,10 +101,14 @@ export default function Leaf({ params }: LeafProps) {
               createdAt={leaf?.createdAt}
             />
             <LeafDateInfo />
-            {diaries && diaries?.length !== 0 ? (
-              <LeafDiary pathUserId={pathUserId} diaries={diaries} />
-            ) : (
+            {/* 예외를 앞으로. */}
+            {isEmpty ? (
               <EmptyDiary pathUserId={pathUserId} userId={userId} />
+            ) : (
+              <LeafDiary
+                pathUserId={pathUserId}
+                diaries={diaries as DiaryDataInfo[]}
+              />
             )}
           </div>
         </div>

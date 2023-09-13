@@ -42,6 +42,7 @@ export default function Leafs({ params }: LeafsProps) {
   });
 
   // 라우팅 될때 비동기 처리가 되어 경고 메세지가 출력됨 -> userId를 이용하여 조건부로 처리한다.
+  // 스킵 기능이 있다.
   const {
     data: leafs,
     isLoading,
@@ -64,6 +65,8 @@ export default function Leafs({ params }: LeafsProps) {
         <div className="pt-5 pb-4 pl-6 pr-5 flex flex-col gap-5">
           <PageTitle
             text={
+              // 변수로 뺴놓는게 가독성이 좋다.
+              // 유저Id === path userId를 자주사용하므로 변수로 빼자.
               pathUserId === userId
                 ? '내 식물 카드'
                 : `${leafs[0].displayName}님의 식물 카드`
@@ -72,6 +75,7 @@ export default function Leafs({ params }: LeafsProps) {
           <div className="pr-3 w-full h-[404px] flex flex-wrap  gap-4 overflow-y-scroll scrollbar">
             {/** userId와 pathUserId가 일치하면 식물 카드 추가 버튼 렌더링 */}
             {userId === pathUserId && <AddLeafButton userId={userId} />}
+            {/* leaf를 구조분해 할당해서 사용 */}
             {leafs?.map((leaf) => (
               <Leaf
                 key={leaf.leafId}

@@ -19,13 +19,17 @@ export default function LeafExistModal() {
   const { changeType, close } = useGardenModalStore();
   const { userId } = useUserStore();
 
-  const { mutate } = useConnectLeaf();
+  const { mutate: connectionMutate } = useConnectLeaf();
 
   const handleConnect = () => changeType('selectLeaf');
 
   const handleDisConnect = () => {
     if (userId && infoTarget)
-      mutate({ userId, plantObjId: infoTarget.plantObjId, selectedLeafId });
+      connectionMutate({
+        userId,
+        plantObjId: infoTarget.plantObjId,
+        selectedLeafId,
+      });
 
     unobserve();
     close();

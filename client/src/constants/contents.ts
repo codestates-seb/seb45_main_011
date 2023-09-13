@@ -96,7 +96,7 @@ export const PLANT_CARD_BUTTON_CONTENTS = {
   inventory: '설치',
 } as const;
 
-export const LOADING_CONTENTS = '로딩 중...';
+export const LOADING_CONTENTS = '불러오는 중...';
 
 export const DROPDOWN_OPTIONS = [
   {

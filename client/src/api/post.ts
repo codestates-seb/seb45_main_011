@@ -21,24 +21,18 @@ export const findPostById = async (postId: string) => {
 export const addPost = async (formValues: PostFormValues, tags: string[]) => {
   const formData = new FormData();
 
-  const hashTag = JSON.stringify({
-    hashTag: tags,
-  });
   const requestBoardDto = JSON.stringify({
-    requestBoardDto: {
-      title: formValues.title,
-      content: formValues.diaryContent,
-    },
+    title: formValues.title,
+    content: formValues.diaryContent,
+    hashTags: tags,
   });
 
-  const hashTagBlob = new Blob([hashTag], { type: 'application/json' });
-  const requestBoardDtoBlob = new Blob([requestBoardDto], {
+  const blob = new Blob([requestBoardDto], {
     type: 'application/json',
   });
 
   formData.append('image', formValues.image[0]);
-  formData.append('hashTag', hashTagBlob);
-  formData.append('requestBoardDto', requestBoardDtoBlob);
+  formData.append('requestBoardDto', blob);
 
   await postAxios.post(`/boards`, formData, {
     headers: {
@@ -54,8 +48,27 @@ export const editPost = async (
 ) => {
   const formData = new FormData();
 
+  const requestBoardDto = JSON.stringify({
+    title: formValues.title,
+    content: formValues.diaryContent,
+    hashTags: tags,
+  });
+
+  const blob = new Blob([requestBoardDto], {
+    type: 'application/json',
+  });
+
+  formValues.image && formData.append('image', formValues.image[0]);
+  formData.append('requestBoardDto', blob);
+
+  await postAxios.post(`/boards`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
   await postAxios.patch(`/boards/${postId}`, formData);
 };
 
-export const deletePost = async (postId: string) =>
+export const deletePost = async (postId: number) =>
   await postAxios.delete(`/boards/${postId}`);
