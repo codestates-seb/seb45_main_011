@@ -59,7 +59,7 @@ export default function Header() {
         border-b-[8px] 
         border-border-10
         shadow-outer/down 
-        z-10
+        z-20
         ">
       <Logo size="small" />
       <ul className="flex gap-2">
@@ -77,10 +77,10 @@ export default function Header() {
             <Image
               src={profileImage()}
               alt="profile_img"
-              className={`rounded-[50%] border-brown-50 border-[3px] w-11 h-11 cursor-pointer`}
+              className={`rounded-[50%] border-brown-50 border-[3px] w-9 h-9 cursor-pointer hover:scale-110 transition-transform`}
               onClick={logout}
-              width={38}
-              height={38}
+              width={36}
+              height={36}
             />
             {/* <img
               src={profileImage()}

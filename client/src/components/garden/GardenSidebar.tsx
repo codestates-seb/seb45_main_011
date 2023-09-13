@@ -30,14 +30,14 @@ export default function GardenSidebar() {
             onShop={handleShop}
             type="button"
             size="sm"
-            className="whitespace-nowrap">
+            className="whitespace-nowrap hover:scale-110 transition-transform">
             상점
           </CommonButton>
           <CommonButton
             onInventory={handleInventory}
             type="button"
             size="sm"
-            className="whitespace-nowrap">
+            className="whitespace-nowrap hover:scale-110 transition-transform">
             보관함
           </CommonButton>
         </div>
