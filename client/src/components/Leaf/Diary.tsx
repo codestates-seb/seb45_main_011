@@ -66,19 +66,16 @@ export default function Diary({
 
           <p className="text-[0.875rem] font-bold text-brown-80 ">{title}</p>
           <div className="flex gap-3">
-            {imageUrl ? (
-              <div className=" rounded-lg w-[106px] h-[81px] overflow-hidden">
-                <Image
-                  src={imageUrl || ''}
-                  alt=""
-                  width={116}
-                  height={91}
-                  className="object-cover w-[106px] h-[81px]"
-                />
-              </div>
-            ) : (
-              <NoImage location="diary" />
-            )}
+            <div className=" rounded-lg w-[106px] h-[81px] overflow-hidden border-2 border-brown-40">
+              <Image
+                src={imageUrl || '/assets/img/bg_default_post.png'}
+                alt=""
+                width={116}
+                height={91}
+                className="object-cover w-[106px] h-[81px]"
+              />
+            </div>
+
             <textarea
               readOnly
               className="max-w-[131px] w-full h-[81px] font-normal text-xs bg-transparent resize-none overflow-y-scroll scrollbar focus:outline-none"

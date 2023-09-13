@@ -71,7 +71,7 @@ export default function Leaf({
       {location === 'garden' && selectedLeafId === leafId ? (
         <div className="absolute flex justify-center items-center w-full h-full border-4 border-dashed border-brown-70 rounded-lg shadow-outer/down bg-brown-20 bg-opacity-[76%]">
           <Image
-            src={'/assets/img/checked.svg'}
+            src={'/assets/icon/checked.svg'}
             alt="로고"
             width={36}
             height={28}

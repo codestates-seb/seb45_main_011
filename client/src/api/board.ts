@@ -36,7 +36,6 @@ export async function getBoardsBySearch({
     })
     .then((res) => res.data);
 
-  console.log(res);
   return {
     boards: res.data,
     pageInfo: res.pageInfo,
@@ -69,4 +68,9 @@ export async function editComment(commentId: number, content: string) {
   return commonAxios.patch(`comments/${commentId}`, {
     content,
   });
+}
+
+/** boardId에 해당하는 게시글에 댓글 등록 */
+export async function likeBoard(boardId: number) {
+  return commonAxios.post(`likes/boards/${boardId}`);
 }
