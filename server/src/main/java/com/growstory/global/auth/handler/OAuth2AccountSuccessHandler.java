@@ -12,8 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.yaml.snakeyaml.util.UriEncoder;
 
@@ -21,7 +19,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
 
@@ -139,6 +136,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
 
     private Cookie createCookie(String key, String value) {
         Cookie cookie = new Cookie(key, value);
+        cookie.setDomain("localhost");
         cookie.setPath("/");
 //        cookie.setMaxAge(180);
 
