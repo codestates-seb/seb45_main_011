@@ -67,21 +67,21 @@ public class AccountServiceTest {
         autoCloseable.close();
     }
 
-    @Test
-    @DisplayName("회원가입")
-    public void createAccountTest() {
-        // given
-        AccountDto.Post requestDto = AccountDto.Post.builder()
-                .email("user@gmail.com")
-                .displayName("user1")
-                .password("user1234")
-                .build();
-
-        // when
-
-
-        // then
-    }
+//    @Test
+//    @DisplayName("회원가입")
+//    public void createAccountTest() {
+//        // given
+//        AccountDto.Post requestDto = AccountDto.Post.builder()
+//                .email("user@gmail.com")
+//                .displayName("user1")
+//                .password("user1234")
+//                .build();
+//
+//        // when
+//
+//
+//        // then
+//    }
 
     @DisplayName("isAuthIdMatching 테스트 : 인증되지 않은 사용자")
     @Test

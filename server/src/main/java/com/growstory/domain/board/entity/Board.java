@@ -10,19 +10,14 @@ import com.growstory.domain.images.entity.BoardImage;
 import com.growstory.domain.leaf.entity.Leaf;
 import com.growstory.domain.likes.entity.BoardLike;
 import com.growstory.global.audit.BaseTimeEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Board extends BaseTimeEntity {
     @Id
@@ -53,6 +48,19 @@ public class Board extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Board_HashTag> boardHashTags = new ArrayList<>();
+
+
+    @Builder
+    public Board(Long boardId, String title, String content, Account account, List<Comment> boardComments, List<BoardImage> boardImages, List<BoardLike> boardLikes, List<Board_HashTag> boardHashTags) {
+        this.boardId = boardId;
+        this.title = title;
+        this.content = content;
+        this.account = account;
+        this.boardComments = boardComments;
+        this.boardImages = boardImages;
+        this.boardLikes = boardLikes;
+        this.boardHashTags = boardHashTags;
+    }
 
     // Mockito Test를 위한 setter
     public void setBoardId(Long boardId) {
