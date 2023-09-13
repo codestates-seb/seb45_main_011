@@ -153,9 +153,27 @@ public class BoardService {
         }
         // image가 없을 경우 S3에 저장된 image Object 삭제 + Board_Image(DB) 삭제
         else {
-            boardImageService.deleteBoardImage(boardImage);
-            findBoard.getBoardImages().clear();
+            if (requestBoardDto.isImageUpdate() && boardImage != null) {
+                boardImageService.deleteBoardImage(boardImage);
+                findBoard.getBoardImages().clear();
+            }
         }
+
+//        if (requestBoardDto.isImageUpdate() && boardImage != null) {
+//            boardImageService.deleteBoardImage(boardImage);
+//            findBoard.getBoardImages().clear();
+//        }
+//
+//        if (image != null) {
+//            boardImageService.saveBoardImage(image, findBoard);
+//        }
+
+
+
+
+        // 1. 이미지를 유지하고 싶은 경우
+        // 2. 이미지를 삭제하고 싶은 경우
+        // 3. 이미지를 변경하고 싶은 경우
 
         // title, content 더티 체킹
         findBoard.update(requestBoardDto);
