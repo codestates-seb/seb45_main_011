@@ -5,6 +5,7 @@ export const commonAxios = axios.create({
   headers: {
     Authorization: '',
     // Refresh:
+    'Content-Type': 'application/json;charset=UTF-8',
   },
   withCredentials: true,
 });
@@ -21,12 +22,22 @@ export async function getBoardsByPageNum({ pageParam = 1 }) {
 }
 
 /** 검색어를 query로 보내 검색어를 포함하는 게시글 조회 */
-export async function getBoardsBySearch(search: string) {
+export async function getBoardsBySearch({
+  pageParam,
+  search,
+}: {
+  pageParam: number;
+  search: string;
+}) {
   const res = await commonAxios
-    .get(`/boards?page=${search}`)
+    .get(`boards/keyword?page=${pageParam}&keyword=${encodeURI(search)}`)
     .then((res) => res.data);
 
-  return res.boards;
+  console.log(res);
+  return {
+    boards: res.data,
+    pageInfo: res.pageInfo,
+  };
 }
 
 /** 검색어를 query로 보내 검색어를 포함하는 게시글 조회 */
@@ -34,7 +45,6 @@ export async function getPostByBoardId(boardId: string) {
   const res = await commonAxios
     .get(`/boards/${boardId}`)
     .then((res) => res.data);
-
   return res.data;
 }
 

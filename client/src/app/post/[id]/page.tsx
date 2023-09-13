@@ -20,9 +20,9 @@ import DateAndControl from '@/components/post/DateAndControlSection';
 import PostImage from '@/components/post/PostImage';
 import PostProfile from '@/components/post/PostProfile';
 import HashTags from '@/components/post/HashTags';
+import CommentDeleteModal from '@/components/post/CommentDeleteModal';
 
 import { CommentDataInfo, PostDataInfo } from '@/types/data';
-import CommentDeleteModal from '@/components/post/CommentDeleteModal';
 
 interface PostProps {
   params: { id: string };
