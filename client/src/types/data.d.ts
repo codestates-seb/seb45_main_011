@@ -155,4 +155,5 @@ export interface PostDataInfo {
   profileImageUrl: string | null;
   hashTags: HashTagInfo[] | null;
   comments: CommentDataInfo[] | null;
+  liked: boolean;
 }
