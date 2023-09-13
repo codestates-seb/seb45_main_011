@@ -10,7 +10,6 @@ export default function useGetSearchBoardQuery(searchKey: string | null) {
     {
       enabled: searchKey !== null,
       getNextPageParam: (lastPage, allPosts) => {
-        console.log(lastPage);
         return lastPage.pageInfo.totalPages &&
           lastPage.pageInfo.page !== lastPage.pageInfo.totalPages
           ? lastPage.pageInfo.page + 1

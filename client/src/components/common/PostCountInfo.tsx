@@ -3,21 +3,26 @@
 import Image from 'next/image';
 
 import { DefaultProps } from '@/types/common';
+import useLikePostMutation from '@/hooks/useLikePostMutation';
 
 interface PostCountInfoProps extends DefaultProps {
   likesNum: number;
   commentNum: number | null;
-  isLike?: boolean;
   usage: 'board' | 'post';
+  liked?: boolean;
+  boardId?: number;
 }
 
 export default function PostCountInfo({
   likesNum,
   commentNum,
-  isLike,
+  liked,
   usage,
   className,
+  boardId,
 }: PostCountInfoProps) {
+  const { mutate: likePost } = useLikePostMutation(boardId as number);
+
   return (
     <div className={`flex gap-3 ${className}`}>
       {usage === 'post' ? (
@@ -25,9 +30,9 @@ export default function PostCountInfo({
           className="flex gap-[0.375rem]"
           role="button"
           onClick={() => {
-            console.log(1);
+            likePost();
           }}>
-          {isLike ? (
+          {liked ? (
             <Image
               src="/assets/img/like.svg"
               alt="좋아요 개수"
@@ -35,9 +40,8 @@ export default function PostCountInfo({
               height={16}
             />
           ) : (
-            // 좋아요 체크 안된 이미지 어떻게??
             <Image
-              src="/assets/img/like.svg"
+              src="/assets/img/unlike.svg"
               alt="좋아요 개수"
               width={19}
               height={16}

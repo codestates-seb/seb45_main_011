@@ -20,6 +20,7 @@ import AddLeafButton from '@/components/leafs/AddLeafButton';
 import { LeafDeleteModal } from '@/components/leafs/LeafDeleteModal';
 
 import { LeafsDataInfo } from '@/types/data';
+import ShareButton from '@/components/common/ShareButton';
 
 interface LeafsProps {
   params: { id: string };
@@ -29,7 +30,7 @@ export default function Leafs({ params }: LeafsProps) {
   // URL path userId
   const pathUserId = Number(params.id);
 
-  const { userId, userName } = useTestUserStore();
+  const { userId } = useTestUserStore();
   const isModalOpen = useLeafsStore((state) => state.isModalOpen);
 
   const router = useRouter();
@@ -61,6 +62,7 @@ export default function Leafs({ params }: LeafsProps) {
   return (
     <div className="flex justify-center items-center pt-[120px]">
       <div className="relative w-full max-w-[720px] h-[528px] border-gradient rounded-xl shadow-container">
+        <ShareButton />
         <Screws />
         <div className="pt-5 pb-4 pl-6 pr-5 flex flex-col gap-5">
           <PageTitle
@@ -72,7 +74,7 @@ export default function Leafs({ params }: LeafsProps) {
                 : `${leafs[0].displayName}님의 식물 카드`
             }
           />
-          <div className="pr-3 w-full h-[404px] flex flex-wrap  gap-4 overflow-y-scroll scrollbar">
+          <div className="pr-3 w-full h-[404px] overflow-y-scroll scrollbar grid grid-cols-3 gap-4 place-items-center items-start max-[730px]:grid-cols-2 max-[530px]:grid-cols-1">
             {/** userId와 pathUserId가 일치하면 식물 카드 추가 버튼 렌더링 */}
             {userId === pathUserId && <AddLeafButton userId={userId} />}
             {/* leaf를 구조분해 할당해서 사용 */}
