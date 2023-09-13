@@ -91,7 +91,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
         Map<String, Object> claims = new HashMap<>();
         claims.put("accountId", account.getAccountId());
         claims.put("username", account.getEmail());
-        claims.put("displayName", account.getDisplayName());
+        claims.put("displayName", UriEncoder.encode(account.getDisplayName()));
         claims.put("profileImageUrl", account.getProfileImageUrl());
         claims.put("roles", authorities);
 
