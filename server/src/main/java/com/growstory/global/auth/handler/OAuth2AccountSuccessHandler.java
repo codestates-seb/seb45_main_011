@@ -91,7 +91,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
         Map<String, Object> claims = new HashMap<>();
         claims.put("accountId", account.getAccountId());
         claims.put("username", account.getEmail());
-        claims.put("displayName", UriEncoder.encode(account.getDisplayName()));
+        claims.put("displayName", account.getDisplayName());
         claims.put("profileImageUrl", account.getProfileImageUrl());
         claims.put("roles", authorities);
 
@@ -131,7 +131,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
         response.addCookie(createCookie("access_token", accessToken));
         response.addCookie(createCookie("refresh_token", refreshToken));
         response.addCookie(createCookie("account_id", account.getAccountId().toString()));
-        response.addCookie(createCookie("displayName", account.getDisplayName()));
+        response.addCookie(createCookie("displayName", UriEncoder.encode(account.getDisplayName())));
         response.addCookie(createCookie("profileImageUrl", account.getProfileImageUrl()));
 
         return response;
