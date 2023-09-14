@@ -1,6 +1,9 @@
 import useLeafStore from '@/stores/leafStore';
+
 import DiaryForm from './DiaryForm';
 import { DiaryDeleteModal } from './DiaryDeleteModal';
+import ModalPortal from '../common/ModalPortal';
+import Modal from '../common/Modal';
 
 interface LeafModalProps {
   modalCategory: 'add' | 'edit' | 'delete' | null;
@@ -22,25 +25,33 @@ export default function LeafModal({
     const { journalId, title, content, imageUrl } = targetDiary;
 
     return (
-      <DiaryForm
-        leafId={leafId}
-        userId={userId}
-        diaryId={String(journalId)}
-        title={title}
-        content={content}
-        imageUrl={imageUrl}
-        mode={modalCategory}
-      />
+      <ModalPortal>
+        <Modal className="w-full max-w-[531px] min-w-[312px] mx-4 h-fit">
+          <DiaryForm
+            leafId={leafId}
+            userId={userId}
+            diaryId={String(journalId)}
+            title={title}
+            content={content}
+            imageUrl={imageUrl}
+            mode={modalCategory}
+          />
+        </Modal>
+      </ModalPortal>
     );
   }
 
   if (modalCategory === 'delete' && targetDiary)
     return (
-      <DiaryDeleteModal
-        leafId={leafId}
-        userId={userId}
-        deleteTargetId={String(targetDiary.journalId)}
-      />
+      <ModalPortal>
+        <Modal className="w-full max-w-[415px] min-w-[344px] mx-4">
+          <DiaryDeleteModal
+            leafId={leafId}
+            userId={userId}
+            deleteTargetId={String(targetDiary.journalId)}
+          />
+        </Modal>
+      </ModalPortal>
     );
 
   return null;

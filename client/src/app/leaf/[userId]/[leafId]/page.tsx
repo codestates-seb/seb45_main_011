@@ -13,14 +13,14 @@ import useUserStore from '@/stores/userStore';
 import useEffectOnce from '@/hooks/useEffectOnce';
 
 import Screws from '@/components/common/Screws';
-import ModalPortal from '@/components/common/ModalPortal';
-import Modal from '@/components/common/Modal';
 import LeafInfo from '@/components/leaf/LeafInfo';
 import LeafDiary from '@/components/leaf/LeafDiary';
 import LeafDateInfo from '@/components/leaf/LeafDateInfo';
 import EmptyDiary from '@/components/leaf/EmptyDiary';
 import LeafModal from '@/components/leaf/LeafModal';
 import ShareButton from '@/components/common/ShareButton';
+import LoadingNotice from '@/components/common/LoadingNotice';
+import ErrorMessage from '@/components/common/ErrorMessage';
 
 import { DiaryDataInfo, LeafDataInfo } from '@/types/data';
 
@@ -83,47 +83,53 @@ export default function Leaf({ params }: LeafProps) {
     if (!isEmpty) setLastDiaryDay(new Date(diaries[0].createdAt));
   }, [diaries]);
 
-  if (isLoading) return <div>loading</div>;
-  if (isError) return <div>error</div>;
-  if (!leaf) return <div>error</div>;
-
   return (
-    <div className="pt-[120px] w-full flex justify-center items-center">
+    <div className="flex justify-center items-center pt-[120px] pb-[80px]">
       <div className="relative w-full min-w-[312px] max-w-[560px] h-[645px] mx-4 border-gradient rounded-xl shadow-container">
         <ShareButton />
         <div className="h-full pl-4 pr-1 py-8 mr-2">
-          <div className="h-full overflow-y-scroll scrollbar">
-            <Screws />
-            <LeafInfo
-              userId={userId}
-              pathUserId={pathUserId}
-              leafName={leaf?.leafName}
-              imageUrl={leaf?.leafImageUrl}
-              content={leaf?.content}
-              createdAt={leaf?.createdAt}
-            />
-            <LeafDateInfo />
-            {isEmpty ? (
-              <EmptyDiary pathUserId={pathUserId} userId={userId} />
-            ) : (
-              <LeafDiary
+          <Screws />
+          {isLoading && (
+            <div className="w-full h-full flex justify-center items-center">
+              <LoadingNotice isTransparent={true} />
+            </div>
+          )}
+          {isError && (
+            <div className="w-full h-full flex justify-center items-center">
+              <ErrorMessage />
+            </div>
+          )}
+
+          {leaf && (
+            <div className="h-full overflow-y-scroll scrollbar">
+              <LeafInfo
+                userId={userId}
                 pathUserId={pathUserId}
-                diaries={diaries as DiaryDataInfo[]}
+                leafName={leaf?.leafName}
+                imageUrl={leaf?.leafImageUrl}
+                content={leaf?.content}
+                createdAt={leaf?.createdAt}
               />
-            )}
-          </div>
+              <LeafDateInfo />
+              {isEmpty ? (
+                <EmptyDiary pathUserId={pathUserId} userId={userId} />
+              ) : (
+                <LeafDiary
+                  pathUserId={pathUserId}
+                  diaries={diaries as DiaryDataInfo[]}
+                />
+              )}
+            </div>
+          )}
         </div>
       </div>
+
       {isModalOpen && isOwner && (
-        <ModalPortal>
-          <Modal>
-            <LeafModal
-              modalCategory={modalCategory}
-              leafId={pathLeafId}
-              userId={userId}
-            />
-          </Modal>
-        </ModalPortal>
+        <LeafModal
+          modalCategory={modalCategory}
+          leafId={pathLeafId}
+          userId={userId}
+        />
       )}
     </div>
   );
