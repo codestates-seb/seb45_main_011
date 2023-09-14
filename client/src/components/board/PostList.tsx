@@ -25,7 +25,7 @@ export default function PostList() {
         loadMore={() => fetchNextPage()}
         useWindow={false}
         loader={<div key="loader">loading...</div>}>
-        <ul className="grid grid-cols-3 gap-4 place-items-center items-start max-[730px]:grid-cols-2 max-[530px]:grid-cols-1">
+        <ul className="grid grid-cols-3 gap-4 place-items-center items-start max-[730px]:grid-cols-2 max-[530px]:grid-cols-1 p-2 pb-4">
           {boards?.map((board) => {
             return (
               <PostCard
