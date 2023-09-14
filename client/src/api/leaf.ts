@@ -4,17 +4,28 @@ import { InputValues } from '@/types/common';
 
 import convertToFormData from '@/utils/convertToFormData';
 
+const accessToken =
+  typeof window !== 'undefined'
+    ? JSON.parse(sessionStorage.getItem('user-key') as string).state.accessToken
+    : null;
+
+const refreshToken =
+  typeof window !== 'undefined'
+    ? JSON.parse(sessionStorage.getItem('user-key') as string).state
+        .refreshToken
+    : null;
+
 export const commonAxios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
-    Authorization: '',
-    // Refresh:
+    Authorization: accessToken,
+    Refresh: refreshToken,
   },
   withCredentials: true,
 });
 
 /** 토큰을 통해 유저의 식물 카드 전체 조회 */
-export async function getLeafsByUserId(userId: number) {
+export async function getLeafsByUserId(userId: string) {
   const { data } = await commonAxios
     .get(`/leaves/account/${userId}`)
     .then((res) => res.data);
@@ -23,7 +34,7 @@ export async function getLeafsByUserId(userId: number) {
 }
 
 /** leafId를 통해 해당 식물 카드 상세 조회 */
-export async function getLeafByLeafId(leafId: number) {
+export async function getLeafByLeafId(leafId: string) {
   const { data } = await commonAxios
     .get(`/leaves/${leafId}`)
     .then((res) => res.data);
@@ -44,7 +55,7 @@ export async function addLeaf(inputs: InputValues) {
 }
 
 /** leafId를 통해 식물 카드 삭제 */
-export async function deleteLeaf(leafId: number) {
+export async function deleteLeaf(leafId: string) {
   return await commonAxios.delete(`/leaves/${leafId}`).then((res) => res.data);
 }
 
@@ -55,7 +66,7 @@ export async function editLeaf({
   isImageUpdated,
 }: {
   inputs: InputValues;
-  leafId: number;
+  leafId: string;
   isImageUpdated: boolean;
 }) {
   const formData = convertToFormData({
@@ -76,8 +87,8 @@ export async function editLeaf({
 
 /** leafId에 해당하는 다이어리 전체 조회 */
 export async function getDiariesByLeafAndUserId(
-  leafId: number,
-  userId: number,
+  leafId: string,
+  userId: string,
 ) {
   const { data } = await commonAxios
     .get(`/leaves/${leafId}/journals`, { params: { accountId: userId } })
@@ -92,10 +103,10 @@ export async function addDiary({
   isImageUpdated,
   userId,
 }: {
-  leafId: number;
+  leafId: string;
   inputs: InputValues;
   isImageUpdated?: boolean;
-  userId: number;
+  userId: string;
 }) {
   const formData = convertToFormData({
     usage: 'addDiary',
@@ -121,9 +132,9 @@ export async function editDiary({
   userId,
   isImageUpdated,
 }: {
-  diaryId?: number | null;
+  diaryId?: string | null;
   inputs: InputValues;
-  userId: number;
+  userId: string;
   isImageUpdated?: boolean;
 }) {
   if (!diaryId) return null;
@@ -148,8 +159,8 @@ export async function deleteDiary({
   diaryId,
   userId,
 }: {
-  diaryId: number;
-  userId: number;
+  diaryId: string;
+  userId: string;
 }) {
   const request = JSON.stringify({
     accountId: userId,
