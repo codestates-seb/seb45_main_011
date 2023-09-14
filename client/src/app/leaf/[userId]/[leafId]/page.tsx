@@ -89,9 +89,9 @@ export default function Leaf({ params }: LeafProps) {
 
   return (
     <div className="pt-[120px] w-full flex justify-center items-center">
-      <div className="relative w-full max-w-[720px] h-[645px] border-gradient rounded-xl">
+      <div className="relative w-full min-w-[312px] max-w-[560px] h-[645px] mx-4 border-gradient rounded-xl shadow-container">
         <ShareButton />
-        <div className="h-full p-5">
+        <div className="h-full pl-4 pr-1 py-8 mr-2">
           <div className="h-full overflow-y-scroll scrollbar">
             <Screws />
             <LeafInfo

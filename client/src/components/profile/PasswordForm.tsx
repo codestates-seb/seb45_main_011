@@ -51,7 +51,9 @@ export default function PasswordForm({ token }: Token) {
       onSubmit={handleSubmit(updatePassword)}
       className="relative w-fit flex flex-col justify-center items-center">
       <div className="w-fit flex max-[580px]:flex-col">
-        <label className="text-[20px] text-brown-80 font-bold pt-2 pr-2 whitespace-nowrap max-[580px]:p-0 max-[580px]:pb-3">
+        <label
+          htmlFor="password"
+          className="text-[20px] text-brown-80 font-bold pt-2 pr-2 whitespace-nowrap max-[580px]:p-0 max-[580px]:pb-3">
           기존 비밀번호 :
         </label>
         <PasswordInput
@@ -64,7 +66,9 @@ export default function PasswordForm({ token }: Token) {
         />
       </div>
       <div className="w-fit flex max-[580px]:flex-col">
-        <label className="text-[20px] text-brown-80 font-bold pt-2 pr-2 whitespace-nowrap max-[580px]:p-0 max-[580px]:pb-3">
+        <label
+          htmlFor="newPassword"
+          className="text-[20px] text-brown-80 font-bold pt-2 pr-2 whitespace-nowrap max-[580px]:p-0 max-[580px]:pb-3">
           새 비밀번호 :
         </label>
         <PasswordInput
@@ -75,7 +79,9 @@ export default function PasswordForm({ token }: Token) {
         />
       </div>
       <div className="w-fit flex max-[580px]:flex-col">
-        <label className="text-[20px] text-brown-80 font-bold pt-2 pr-2 whitespace-nowrap max-[580px]:p-0 max-[580px]:pb-3">
+        <label
+          htmlFor="newPasswordCheck"
+          className="text-[20px] text-brown-80 font-bold pt-2 pr-2 whitespace-nowrap max-[580px]:p-0 max-[580px]:pb-3">
           비밀번호 확인 :
         </label>
         <div className="flex">

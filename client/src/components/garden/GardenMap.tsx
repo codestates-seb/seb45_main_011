@@ -15,10 +15,10 @@ import {
 } from '@/components/garden';
 
 interface GardenMapProps {
-  isMyself: boolean;
+  isOwner: boolean;
 }
 
-export default function GardenMap({ isMyself }: GardenMapProps) {
+export default function GardenMap({ isOwner }: GardenMapProps) {
   const { isEditMode, moveTarget } = useGardenStore();
   const {
     uninstallableLocations,
@@ -33,7 +33,7 @@ export default function GardenMap({ isMyself }: GardenMapProps) {
 
   return (
     <div>
-      <GardenInfo isMyself={isMyself} />
+      <GardenInfo isOwner={isOwner} />
       <main className="min-w-[296px] border-garden rounded-lg rounded-tl-none bg-scroll shadow-outer/down box-content overflow-auto scrollbar-hidden max-[984px]:max-w-[720px]">
         <div
           onClick={handleGarden}
