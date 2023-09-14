@@ -37,7 +37,7 @@ export function DiaryDeleteModal({
     mutate();
   };
   return (
-    <div className="w-full px-[2rem] py-[1.5rem] flex flex-col justify-center">
+    <div className="w-full min-w-[352px] px-[2rem] py-[1.5rem] flex flex-col justify-center">
       <p className="text-center font-bold text-[1.45rem] leading-9 text-brown-90 mb-3 break-words">
         게시글로 등록한 일지의 <br className="hidden max-[400px]:inline" />
         경우 <b className="text-red-50">함께 삭제</b>

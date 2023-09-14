@@ -74,7 +74,7 @@ export default function DiaryForm({
   const handleModalCancel = () => modalClose();
 
   return (
-    <div className="w-full h-[600px] px-[1rem] py-[1rem] items-center flex flex-col ">
+    <div className="w-full min-w-[352px] h-[600px] px-[1rem] py-[1rem] items-center flex flex-col ">
       <PageTitle text="일지 작성하기" className="mt-5 mb-6" />
       <form
         onSubmit={handleSubmit(handleSubmitDiary)}

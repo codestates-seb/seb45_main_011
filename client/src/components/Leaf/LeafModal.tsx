@@ -19,14 +19,20 @@ export default function LeafModal({
   const { targetDiary } = useLeafStore();
 
   if (modalCategory === 'add')
-    return <DiaryForm leafId={leafId} userId={userId} mode={modalCategory} />;
+    return (
+      <ModalPortal>
+        <Modal className="w-full max-w-[531px] min-w-[312px] mx-4 ">
+          <DiaryForm leafId={leafId} userId={userId} mode={modalCategory} />
+        </Modal>
+      </ModalPortal>
+    );
 
   if (modalCategory === 'edit' && targetDiary) {
     const { journalId, title, content, imageUrl } = targetDiary;
 
     return (
       <ModalPortal>
-        <Modal className="w-full max-w-[531px] min-w-[312px] mx-4 h-fit">
+        <Modal className="w-full max-w-[531px] min-w-[312px] mx-4 ">
           <DiaryForm
             leafId={leafId}
             userId={userId}

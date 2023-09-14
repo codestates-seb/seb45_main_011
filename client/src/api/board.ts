@@ -70,7 +70,6 @@ export async function addComment(content: string, boardId: string) {
 
 /** commentId에 해당하는 댓글 삭제 */
 export async function deleteComment(commentId: string) {
-  console.log(commentId);
   return commonAxios.delete(`comments/${commentId}`);
 }
 

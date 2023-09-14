@@ -31,8 +31,8 @@ export function LeafDeleteModal({ userId, pathUserId }: LeafDeleteModalProps) {
 
   return (
     <ModalPortal>
-      <Modal className="w-full max-w-[415px] min-w-[344px] mx-4">
-        <div className="flex flex-col justify-center w-full py-8 px-6">
+      <Modal className="w-full max-w-[415px] mx-4">
+        <div className="flex flex-col justify-center w-full py-7 px-6 min-w-[352px] ">
           <p className="text-center font-bold text-[1.45rem] leading-9 text-brown-90 mb-3 break-wrods">
             정원에 설치한 식물 카드의{' '}
             <br className='className="hidden max-[405px]:inline' />
