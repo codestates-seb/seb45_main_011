@@ -30,6 +30,10 @@ export default function Logo({ size, className }: LogoProps) {
           className={LOGO_STYLE[size]}
           width={LOGO_SIZE[size].width}
           height={LOGO_SIZE[size].height}
+          style={{
+            width: LOGO_SIZE[size].width,
+            height: LOGO_SIZE[size].height,
+          }}
           priority
         />
       </Link>

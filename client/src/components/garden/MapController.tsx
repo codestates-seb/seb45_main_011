@@ -10,23 +10,39 @@ import { CONTROLLER_DIRECTIONS } from '@/constants/values';
 type ControllerDirection = 'up' | 'right' | 'down' | 'left';
 
 interface MapControllerProps extends DefaultProps {
-  handleClick?: (direction: ControllerDirection) => void;
+  gardenMap: HTMLElement | null;
 }
 
 export default function MapController({
-  handleClick,
+  gardenMap,
   className,
 }: MapControllerProps) {
+  const handleClick = (direction: ControllerDirection) => {
+    if (!gardenMap) return;
+
+    const scrollTop = gardenMap.scrollTop;
+    const scrollLeft = gardenMap.scrollLeft;
+
+    if (direction === 'up')
+      gardenMap.scroll({ top: scrollTop - 100, behavior: 'smooth' });
+    if (direction === 'right')
+      gardenMap.scroll({ left: scrollLeft + 100, behavior: 'smooth' });
+    if (direction === 'down')
+      gardenMap.scroll({ top: scrollTop + 100, behavior: 'smooth' });
+    if (direction === 'left')
+      gardenMap.scroll({ left: scrollLeft - 100, behavior: 'smooth' });
+  };
+
   return (
     <section className={twMerge('absolute w-[76px] h-[76px]', className)}>
-      {CONTROLLER_DIRECTIONS.map((value) => {
+      {CONTROLLER_DIRECTIONS.map((direction) => {
         return (
           <button
-            key={value}
-            onClick={() => handleClick && handleClick(value)}
+            key={direction}
+            onClick={() => handleClick(direction)}
             type="button"
-            title={`${CONTROLLER_TITLES[value]}으로 이동`}
-            className={`absolute w-6 h-6 bg-contain bg-center shadow-controller ${CONTROLLER_STYLE[value]}`}
+            title={`${CONTROLLER_TITLES[direction]}으로 이동`}
+            className={`absolute w-6 h-6 bg-contain bg-center shadow-controller hover:scale-[1.15] transition-transform ${CONTROLLER_STYLE[direction]}`}
           />
         );
       })}
