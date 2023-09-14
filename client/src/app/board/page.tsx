@@ -28,7 +28,11 @@ export default function Board() {
         <div className="p-4 h-full flex flex-col gap-4">
           <div className="flex justify-between">
             <BoardSearchForm />
-            <CommonButton type="button" size="sm" onClick={navigateToAddPost}>
+            <CommonButton
+              type="button"
+              size="sm"
+              onClick={navigateToAddPost}
+              className="hover:scale-105 transition-transform">
               글 쓰기
             </CommonButton>
           </div>
