@@ -21,7 +21,7 @@ export interface GardenState {
   shop: PlantInfo[] | [];
   inventory: PlantInfo[] | [];
   plants: PlantObj[] | [];
-  selectedLeafId: number | null;
+  selectedLeafId: string | null;
 
   moveTarget: MoveTarget | null;
   infoTarget: PlantObj | null;
@@ -37,7 +37,7 @@ export interface GardenState {
   setShop: (shop: PlantInfo[]) => void;
   setInventory: (inventory: PlantInfo[]) => void;
   setPlants: (plants: PlantObj[]) => void;
-  setSelectedLeafId: (selectedLeafId: number | null) => void;
+  setSelectedLeafId: (selectedLeafId: string | null) => void;
 
   observeMoveTarget: (moveTarget: MoveTarget | null) => void;
   observeInfoTarget: (infoTarget: PlantObj | null) => void;
