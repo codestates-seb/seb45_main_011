@@ -25,7 +25,7 @@ export default function HistoryBox({ paramsId }: HistoryProps) {
 
   const selectOption = useHistoryStore((state) => state.selectOption);
 
-  const isMeAccount = userId === id;
+  const isOwner = userId === id;
 
   const isBoardWritten = selectOption === 'boardWritten';
   const isBoardLike = selectOption === 'boardLiked';
@@ -36,14 +36,14 @@ export default function HistoryBox({ paramsId }: HistoryProps) {
       {isClient && (
         <div className="relative flex flex-col items-center justify-center bg-[url('/assets/img/bg_wood_yellow.png')] w-[720px] h-[635px] rounded-[12px] border-8 border-border-30 shadow-outer/down shadow-container border-gradient">
           <div className="w-full flex justify-end gap-3 mt-6 mr-6 mb-4">
-            {isMeAccount && <UserButton />}
+            {isOwner && <UserButton />}
           </div>
 
           <div className="mb-5">
             <UserInfo paramsId={paramsId} />
           </div>
 
-          {isMeAccount && (
+          {isOwner && (
             <div className="w-[92%]">
               <Dropdown />
             </div>
@@ -53,8 +53,8 @@ export default function HistoryBox({ paramsId }: HistoryProps) {
             <div className="flex flex-col items-start overflow-hidden">
               <div className="w-[650px] mt-3 overflow-x-hidden overflow-y-scroll scrollbar">
                 {isBoardWritten && <HistoryBoard paramsId={id} />}
-                {isMeAccount && isBoardLike && <HistoryLikes paramsId={id} />}
-                {isMeAccount && isComment && <HistoryComment paramsId={id} />}
+                {isOwner && isBoardLike && <HistoryLikes paramsId={id} />}
+                {isOwner && isComment && <HistoryComment paramsId={id} />}
               </div>
             </div>
           )}
