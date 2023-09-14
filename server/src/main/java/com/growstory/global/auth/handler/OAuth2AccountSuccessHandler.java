@@ -9,9 +9,12 @@ import com.growstory.global.auth.jwt.JwtTokenizer;
 import com.growstory.global.auth.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.yaml.snakeyaml.util.UriEncoder;
 
@@ -19,6 +22,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
 
@@ -75,9 +79,18 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
         //FE 애플리케이션 쪽의 URI 생성.
         String uri = createURI(accessToken, refreshToken, account).toString();
 
+//        response.setHeader("accessToken", accessToken);
+//        response.setHeader("accountId", account.getAccountId().toString());
+
+//        response.sendRedirect(uri);
+
+//        response.setStatus(HttpStatus.TEMPORARY_REDIRECT.value());
+//        response.setHeader("Location", "http://localhost:8888/v1/accounts/oauth/login");
+
         response = addCookies(response, account, accessToken, refreshToken);
 //        HttpSession httpSession = request.getSession(true);
 //        httpSession.setAttribute("accessToken", accessToken);
+//        httpSession.setAttribute("accountId", account.getAccountId());
 
         //SimpleUrlAuthenticationSuccessHandler에서 제공하는 sendRedirect() 메서드를 이용해 Frontend 애플리케이션 쪽으로 리다이렉트
         getRedirectStrategy().sendRedirect(request, response, uri);
@@ -115,11 +128,11 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host("localhost")
-                .port(3000)
-//                .host("growstory.s3-website.ap-northeast-2.amazonaws.com")
+//                .host("localhost")
+//                .port(3000)
+                .host("growstory.s3-website.ap-northeast-2.amazonaws.com")
 //                .port(80) //S3는 80포트
-                .path("/signin")
+//                .path("/signin")
                 .build()
                 .toUri();
     }
@@ -136,7 +149,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
 
     private Cookie createCookie(String key, String value) {
         Cookie cookie = new Cookie(key, value);
-        cookie.setDomain("localhost");
+        cookie.setDomain(".ap-northeast-2.amazonaws.com");
         cookie.setPath("/");
 //        cookie.setMaxAge(180);
 
