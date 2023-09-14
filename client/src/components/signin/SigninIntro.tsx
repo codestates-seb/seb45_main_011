@@ -42,7 +42,7 @@ export default function SigninIntro() {
         displayName,
         profileImageUrl,
       });
-      router.push('/');
+      // router.push('/');
     }
   }, [isGoogleLogin]);
 

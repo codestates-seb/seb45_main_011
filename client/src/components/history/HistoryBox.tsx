@@ -1,15 +1,16 @@
 'use client';
 
 import useHistoryStore from '@/stores/historyStore';
+import useUserStore from '@/stores/userStore';
 
 import useClient from '@/hooks/useClient';
 
+import UserButton from './UserButton';
 import UserInfo from './UserInfo';
-import HistoryBoard from './HistoryBoard';
 import Dropdown from './Dropdown';
+import HistoryBoard from './HistoryBoard';
 import HistoryLikes from './HistoryLikes';
 import HistoryComment from './HistoryComment';
-import UserButton from './UserButton';
 
 interface HistoryProps {
   paramsId: string;
@@ -19,13 +20,12 @@ export default function HistoryBox({ paramsId }: HistoryProps) {
   const isClient = useClient();
 
   const id = paramsId;
-  // const userId = useUserStore((state) => state.userId);
-  const userId = '1';
+  const userId = useUserStore((state) => state.userId);
+  // const testId = '17';
 
   const selectOption = useHistoryStore((state) => state.selectOption);
 
-  const isMeLogin = userId && paramsId;
-  const isMeAccount = userId === paramsId;
+  const isMeAccount = userId === id;
 
   const isBoardWritten = selectOption === 'boardWritten';
   const isBoardLike = selectOption === 'boardLiked';
@@ -53,8 +53,8 @@ export default function HistoryBox({ paramsId }: HistoryProps) {
             <div className="flex flex-col items-start overflow-hidden">
               <div className="w-[650px] mt-3 overflow-x-hidden overflow-y-scroll scrollbar">
                 {isBoardWritten && <HistoryBoard paramsId={id} />}
-                {isMeLogin && isBoardLike && <HistoryLikes paramsId={id} />}
-                {isMeLogin && isComment && <HistoryComment paramsId={id} />}
+                {isMeAccount && isBoardLike && <HistoryLikes paramsId={id} />}
+                {isMeAccount && isComment && <HistoryComment paramsId={id} />}
               </div>
             </div>
           )}

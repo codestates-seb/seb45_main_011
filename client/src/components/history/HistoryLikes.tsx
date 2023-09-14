@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import InfiniteScroll from 'react-infinite-scroller';
 
@@ -7,17 +8,20 @@ import { getBoardLikedByPage } from '@/api/history';
 
 import HistoryPostCard from './HistoryPostCard';
 
+import LoadingMessage from '../common/LoadingMessage';
+import ErrorMessage from '../common/ErrorMessage';
+
 import { HistoryBoradProps } from '@/types/common';
-import { useRouter } from 'next/navigation';
 
 export default function HistoryLikes({ paramsId }: HistoryBoradProps) {
   const router = useRouter();
+
   const { data, fetchNextPage, hasNextPage, isLoading, isError } =
     useInfiniteQuery(
       ['boardLiked'],
       ({ pageParam = 1 }) => getBoardLikedByPage({ pageParam }, paramsId),
       {
-        getNextPageParam: (lastPage, allPosts) => {
+        getNextPageParam: (lastPage) => {
           if (lastPage.pageInfo.totalElement === 0) return;
 
           if (lastPage.pageInfo.page !== lastPage.pageInfo.totalPages) {
@@ -66,6 +70,16 @@ export default function HistoryLikes({ paramsId }: HistoryBoradProps) {
           )}
         </div>
       ))}
+      {isLoading && (
+        <div className="flex justify-center items-center">
+          <LoadingMessage />
+        </div>
+      )}
+      {isError && (
+        <div className="flex justify-center items-center">
+          <ErrorMessage />
+        </div>
+      )}
     </>
   );
 }

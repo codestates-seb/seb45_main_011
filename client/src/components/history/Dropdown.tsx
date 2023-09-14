@@ -1,11 +1,12 @@
 'use client';
 
+import { Collapse } from '@material-tailwind/react';
+
 import useHistoryStore from '@/stores/historyStore';
 
 import useDetectClose from '@/hooks/useDetectClose';
 
 import { DROPDOWN_OPTIONS } from '@/constants/contents';
-import { Collapse } from '@material-tailwind/react';
 
 export default function Dropdown() {
   const { selectOption, setSelectOption } = useHistoryStore();

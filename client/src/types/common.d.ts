@@ -45,6 +45,15 @@ export type SignFormValue = {
   onLogin: () => void;
 };
 
+export type UserData = {
+  accountId: number;
+  displayName: string;
+  email: string;
+  grade: string;
+  point: number;
+  profileImageUrl: string | null;
+};
+
 export type SearchValues = {
   search: string;
 };

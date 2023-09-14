@@ -27,7 +27,7 @@ export default function SigninForm() {
 
   const router = useRouter();
 
-  const { changeState } = useSignModalStore();
+  const changeState = useSignModalStore((state) => state.changeState);
   const { getSigninForm, getSignupForm } = useSignStore();
   const { setIsLogin, setUser } = useUserStore();
 

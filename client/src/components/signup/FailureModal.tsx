@@ -5,7 +5,7 @@ import Modal from '../common/Modal';
 import ModalPortal from '../common/ModalPortal';
 
 export default function FailureModal() {
-  const { changeState } = useSignModalStore();
+  const changeState = useSignModalStore((state) => state.changeState);
 
   const handleCodeFailure = () => {
     return changeState('AuthEmailModal');

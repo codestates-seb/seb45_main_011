@@ -7,7 +7,7 @@ export const updateUserNickname = async (
   token: string,
 ) => {
   const response = await axios.patch(
-    `${url}/v1/accounts/displayname`,
+    `${url}/accounts/displayname`,
     {
       displayName,
     },
@@ -23,7 +23,7 @@ export const updateUserPassword = async (
   token: string,
 ) => {
   const response = await axios.patch(
-    `${url}/v1/accounts/password`,
+    `${url}/accounts/password`,
     {
       presentPassword,
       changedPassword,
@@ -44,7 +44,7 @@ export const updateUserProfileImage = async (file: File, token: string) => {
 
   try {
     const response = await axios.patch(
-      `${url}/v1/accounts/profileimage`,
+      `${url}/accounts/profileimage`,
       formData,
       {
         headers: {

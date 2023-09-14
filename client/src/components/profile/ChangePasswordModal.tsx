@@ -5,7 +5,7 @@ import Modal from '../common/Modal';
 import ModalPortal from '../common/ModalPortal';
 
 export default function ChangePasswordModal() {
-  const { close } = useSignModalStore();
+  const close = useSignModalStore((state) => state.close);
 
   return (
     <ModalPortal>

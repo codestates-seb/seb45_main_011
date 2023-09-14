@@ -1,10 +1,9 @@
 import axios from 'axios';
 
 const url = process.env.NEXT_PUBLIC_API_URL;
-// const googleOauth = process.env.NEXT_PUBLIC_GOOGLE_OAUTH_URL;
 
 export const postUserInfo = async (email: string, password: string) => {
-  const response = await axios.post(`${url}/v1/accounts/authentication`, {
+  const response = await axios.post(`${url}/accounts/authentication`, {
     email,
     password,
   });
@@ -17,7 +16,7 @@ export const postCreateUser = async (
   password: string,
   displayName: string,
 ) => {
-  const response = await axios.post(`${url}/v1/accounts/signup`, {
+  const response = await axios.post(`${url}/accounts/signup`, {
     email,
     password,
     displayName,
@@ -26,16 +25,16 @@ export const postCreateUser = async (
   return response;
 };
 
-export const postCodeByEmail = async (email: string) => {
-  const response = await axios.post(`${url}/v1/emails/signup`, {
+export const sendCodeByEmail = async (email: string) => {
+  const response = await axios.post(`${url}/emails/signup`, {
     email,
   });
 
   return response;
 };
 
-export const postPasswordByEmail = async (email: string) => {
-  const response = await axios.post(`${url}/v1/emails/password`, {
+export const sendTemporaryPasswordByEmail = async (email: string) => {
+  const response = await axios.post(`${url}/emails/password`, {
     email,
   });
 
@@ -44,14 +43,10 @@ export const postPasswordByEmail = async (email: string) => {
 
 export const getUsersEmail = async () => {
   try {
-    const response = await axios.get(`${url}/v1/accounts/all`);
+    const response = await axios.get(`${url}/accounts/all`);
 
     return response;
   } catch (error) {
     console.log(error);
   }
 };
-
-// export const fetchLoginToGoogle = () => {
-// window.location.href = googleOauth;
-// };

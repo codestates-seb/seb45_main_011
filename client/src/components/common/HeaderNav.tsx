@@ -1,8 +1,7 @@
 'use client';
 
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Dispatch, SetStateAction } from 'react';
+import Link from 'next/link';
 
 import useUserStore from '@/stores/userStore';
 import useSignStore from '@/stores/signStore';

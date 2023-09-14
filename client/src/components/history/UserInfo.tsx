@@ -21,23 +21,12 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
   const isClient = useClient();
   const router = useRouter();
 
-  const userId = '1';
-  // const userId = useUserStore((state) => state.userId);
+  // const testId = '17';
+  const userId = useUserStore((state) => state.userId);
   const id = paramsId;
 
   const { setHistoryUser, profileImageUrl, displayName, grade, point } =
     useHistoryStore();
-  const { isGoogleLogin, isLogin } = useUserStore();
-
-  const profileImage = () => {
-    if (!profileImageUrl) return '/assets/img/bg_default_profile.png';
-
-    if (isLogin || isGoogleLogin) {
-      return profileImageUrl;
-    }
-
-    return '/assets/img/bg_default_profile.png';
-  };
 
   useEffect(() => {
     const getHistoryData = async () => {
@@ -57,7 +46,7 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
     <div className="flex flex-col justify-center items-center">
       {isClient && (
         <Image
-          src={profileImage()}
+          src={profileImageUrl || '/assets/img/bg_default_profile.png'}
           className="rounded-[50%] border-brown-50 border-[3px] mb-4 shadow-outer/down"
           width={100}
           height={100}

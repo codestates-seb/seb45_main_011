@@ -11,27 +11,27 @@ import CommonButton from '../common/CommonButton';
 
 export default function LoginButtion() {
   const googleOauth = process.env.NEXT_PUBLIC_GOOGLE_OAUTH_URL;
-  const router = useRouter();
+
   const isClient = useClient();
+  const router = useRouter();
 
   const getSigninForm = useSignStore((state) => state.getSigninForm);
   const { isGoogleLogin, setIsGoogleLogin } = useUserStore();
 
   const onGoogleLogin = () => {
-    router.push(`${googleOauth}`);
     setIsGoogleLogin(true);
+
+    router.push(`${googleOauth}`);
   };
 
   return (
     <>
       {isClient && (
         <div className="flex flex-col gap-5 mt-8">
-          {/* 소셜 로그인 버튼 */}
           <CommonButton type="submit" size="fix" onGoogle={onGoogleLogin}>
             구글로 로그인
           </CommonButton>
 
-          {/* 자체 로그인 버튼 */}
           <CommonButton
             type="button"
             size="fix"
