@@ -9,7 +9,6 @@ import com.growstory.domain.board.entity.Board_HashTag;
 import com.growstory.domain.board.repository.BoardHashTagRepository;
 import com.growstory.domain.board.repository.BoardRepository;
 import com.growstory.domain.comment.dto.ResponseCommentDto;
-import com.growstory.domain.comment.repository.CommentRepository;
 import com.growstory.domain.comment.service.CommentService;
 import com.growstory.domain.hashTag.dto.ResponseHashTagDto;
 import com.growstory.domain.hashTag.entity.HashTag;
@@ -30,7 +29,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional
@@ -79,12 +77,13 @@ public class BoardService {
     }
 //
     public ResponseBoardDto getBoard(Long boardId) {
+        Account findAccount = authUserUtils.getAuthUser();
         Board findBoard = findVerifiedBoard(boardId);
-        BoardImage findBoardImage = boardImageService.verifyExistBoardImage(boardId);
+//        BoardImage findBoardImage = boardImageService.verifyExistBoardImage(boardId);
         List<ResponseHashTagDto> findHashTag = hashTagService.getHashTagList(boardId);
         List<ResponseCommentDto> findComment = commentService.getCommentList(boardId);
 
-        return getResponseBoardDto(findBoard, findBoardImage, findHashTag, findComment);
+        return getResponseBoardDto(findAccount, findBoard, findHashTag, findComment);
     }
 
     public Page<ResponseBoardPageDto> findBoards(int page, int size) {
@@ -93,7 +92,6 @@ public class BoardService {
                         .boardId(board.getBoardId())
                         .title(board.getTitle())
                         .content(board.getContent())
-//                        .boardImageUrl(board.getBoardImages()==null? null : board.getBoardImages().get(0).getStoredImagePath())
                         .boardImageUrl(board.getBoardImages()
                                 .stream()
                                 .findFirst()
@@ -109,7 +107,7 @@ public class BoardService {
     }
 
     public Page<ResponseBoardPageDto> findBoardsByKeyword(int page, int size, String keyword) {
-        Page<ResponseBoardPageDto> boards = boardRepository.findAll(PageRequest.of(page, size, Sort.by("createdAt")))
+        Page<ResponseBoardPageDto> boards = boardRepository.findByKeyword(keyword, PageRequest.of(page, size, Sort.by("createdAt").descending()))
                 .map(board -> ResponseBoardPageDto.builder()
                         .boardId(board.getBoardId())
                         .title(board.getTitle())
@@ -122,6 +120,7 @@ public class BoardService {
                         .likeNum(board.getBoardLikes().size())
                         .commentNum(board.getBoardComments().size())
                         .build());
+
 
         // boardImage 여러 개일 경우 ResponseBoardPageDto 에서 imageUrl 타입을 List로 변경 후
 //                .boardImageUrl(board.getBoardImages().stream().map(boardImage -> boardImage.getStoredImagePath()).collect(Collectors.toList()))
@@ -137,24 +136,43 @@ public class BoardService {
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_UNAUTHORIZED);
         }
 
+        BoardImage boardImage = findBoard.getBoardImages()
+                .stream()
+                .findFirst()
+                .orElse(null);
         // image가 있을 경우 S3에 저장된 image Object 삭제 + Board_Image(DB) 저장
         if (image != null) {
-            BoardImage boardImage = findBoard.getBoardImages()
-                    .stream()
-                    .findFirst()
-                    .orElse(null);
             if (boardImage != null) {
-                boardImageService.deleteBoardImage(boardId);
-                boardImageService.saveBoardImage(image, findBoard);
+                boardImageService.deleteBoardImage(boardImage);
+                findBoard.getBoardImages().clear();
             }
-            else {
-                boardImageService.saveBoardImage(image, findBoard);
-            }
+            boardImageService.saveBoardImage(image, findBoard);
         }
         // image가 없을 경우 S3에 저장된 image Object 삭제 + Board_Image(DB) 삭제
+        // isImageUpdate = true => 기존 이미지를 삭제하고 싶을 때
+        // isImageUpdate = false => 기존 이미지를 유지하고 싶을 때
         else {
-            boardImageService.deleteBoardImage(boardId);
+            if (requestBoardDto.isImageUpdate() && boardImage != null) {
+                boardImageService.deleteBoardImage(boardImage);
+                findBoard.getBoardImages().clear();
+            }
         }
+
+//        if (requestBoardDto.isImageUpdate() && boardImage != null) {
+//            boardImageService.deleteBoardImage(boardImage);
+//            findBoard.getBoardImages().clear();
+//        }
+//
+//        if (image != null) {
+//            boardImageService.saveBoardImage(image, findBoard);
+//        }
+
+
+
+
+        // 1. 이미지를 유지하고 싶은 경우
+        // 2. 이미지를 삭제하고 싶은 경우
+        // 3. 이미지를 변경하고 싶은 경우
 
         // title, content 더티 체킹
         findBoard.update(requestBoardDto);
@@ -189,9 +207,11 @@ public class BoardService {
 
     public void removeBoard(Long boardId) {
         Board findBoard = findVerifiedBoard(boardId);
-
-        // delete Board Image in S3
-        boardImageService.deleteBoardImage(findBoard.getBoardId());
+        BoardImage boardImage = findBoard.getBoardImages()
+                .stream()
+                .findFirst()
+                .orElse(null);        // delete Board Image in S3
+        boardImageService.deleteBoardImage(boardImage);
 
         List<HashTag> findHashTag = hashTagRepository.findHashtagsByBoardId(boardId);
         hashTagRepository.deleteAll(findHashTag);
@@ -205,18 +225,20 @@ public class BoardService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
     }
 
-    private static ResponseBoardDto getResponseBoardDto(Board findBoard, BoardImage findBoardImage, List<ResponseHashTagDto> findHashTag, List<ResponseCommentDto> findComment) {
+    private static ResponseBoardDto getResponseBoardDto(Account findAccount, Board findBoard, List<ResponseHashTagDto> findHashTag, List<ResponseCommentDto> findComment) {
         return ResponseBoardDto.builder()
                 .boardId(findBoard.getBoardId())
                 .title(findBoard.getTitle())
                 .content(findBoard.getContent())
-                .boardImageUrl(findBoardImage.getStoredImagePath())
+                .boardImageUrl(findBoard.getBoardImages().stream().findFirst().map(BoardImage::getStoredImagePath).orElse(null))
+                .isLiked(findBoard.getBoardLikes().stream().anyMatch(boardLike -> boardLike.getAccount().getAccountId() == findAccount.getAccountId()))
                 .likeNum(findBoard.getBoardLikes().size())
                 .createAt(findBoard.getCreatedAt())
                 .modifiedAt(findBoard.getModifiedAt())
                 .accountId(findBoard.getAccount().getAccountId())
                 .displayName(findBoard.getAccount().getDisplayName())
                 .profileImageUrl(findBoard.getAccount().getProfileImageUrl())
+                .grade(findBoard.getAccount().getAccountGrade().getStepDescription())
                 .hashTags(findHashTag)
                 .comments(findComment)
                 .build();
