@@ -64,7 +64,7 @@ export default function ImageForm({ token, className }: ImageFormProps) {
         <div className="flex flex-col items-center justify-center">
           <Image
             src={imageUrl || '/assets/img/bg_default_profile.png'}
-            className="w-[100px] h-[100px] rounded-[50%] border-brown-50 border-[3px] cursor-pointer mb-4 shadow-outer/down"
+            className="w-[100px] h-[100px] rounded-[50%] border-brown-50 border-[3px] cursor-pointer mb-4 shadow-outer/down object-cover"
             alt="profile_img"
             width={100}
             height={100}
