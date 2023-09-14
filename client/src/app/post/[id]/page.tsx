@@ -63,7 +63,7 @@ export default function Post({ params }: PostProps) {
   console.log(post);
 
   return (
-    <main className="px-4 flex justify-center items-center">
+    <main className="px-4 flex justify-center items-center pb-[60px]">
       <div className="relative w-full max-w-[720px] min-w-[328px] h-[864px] border-gradient rounded-xl">
         <div className="h-full px-5 py-5">
           <Screws />

@@ -27,7 +27,6 @@ interface LeafsProps {
 }
 
 export default function Leafs({ params }: LeafsProps) {
-  // URL path userId
   const pathUserId = params.id;
 
   const { userId } = useUserStore();
@@ -35,15 +34,12 @@ export default function Leafs({ params }: LeafsProps) {
 
   const router = useRouter();
 
-  // 로그인 상태가 아니라면 로그인 페이지로 이동
   useEffectOnce(() => {
     if (!userId) {
       router.push('/signin');
     }
   });
 
-  // 라우팅 될때 비동기 처리가 되어 경고 메세지가 출력됨 -> userId를 이용하여 조건부로 처리한다.
-  // 스킵 기능이 있다.
   const {
     data: leafs,
     isLoading,
@@ -55,7 +51,7 @@ export default function Leafs({ params }: LeafsProps) {
   });
 
   return (
-    <div className="flex justify-center items-center pt-[120px]">
+    <div className="flex justify-center items-center pt-[120px] pb-[60px]">
       <div className="relative w-full min-w-[312px] max-w-[732px] h-[528px] mx-4 border-gradient rounded-xl shadow-container">
         <ShareButton />
         <Screws />

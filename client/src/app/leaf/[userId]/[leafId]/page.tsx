@@ -84,7 +84,7 @@ export default function Leaf({ params }: LeafProps) {
   }, [diaries]);
 
   return (
-    <div className="flex justify-center items-center pt-[120px] pb-[80px]">
+    <div className="flex justify-center items-center pt-[120px] pb-[60px]">
       <div className="relative w-full min-w-[312px] max-w-[560px] h-[645px] mx-4 border-gradient rounded-xl shadow-container">
         <ShareButton />
         <div className="h-full pl-4 pr-1 py-8 mr-2">
