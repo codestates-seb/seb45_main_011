@@ -63,12 +63,12 @@ export default function Leafs({ params }: LeafsProps) {
       <div className="relative w-full min-w-[312px] max-w-[732px] h-[528px] mx-4 border-gradient rounded-xl shadow-container">
         <ShareButton />
         <Screws />
-        <div className="pt-5 pb-4 pl-6 pr-5 flex flex-col gap-5">
+        <div className="pt-7 pb-4 pl-6 pr-5 flex flex-col gap-5">
           <PageTitle
             text={
               pathUserId === userId
                 ? '내 식물 카드'
-                : `${leafs[0].displayName}님의 식물 카드`
+                : `${leafs[0].displayName} 님의 식물 카드`
             }
           />
           <div className="pt-2 pb-2 pl-2 pr-4 w-full h-[404px] overflow-y-scroll scrollbar grid grid-cols-3 gap-4 place-items-center items-start max-[730px]:grid-cols-2 max-[530px]:grid-cols-1">

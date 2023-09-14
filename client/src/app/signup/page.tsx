@@ -10,7 +10,7 @@ export default function Signup() {
   const currentState = useSignModalStore((state) => state.currentState);
 
   return (
-    <div className="flex flex-col justify-center items-center h-full">
+    <div className="flex flex-col justify-center items-center h-full mx-4">
       <SignupIntro />
 
       {currentState === 'AuthEmailModal' && <AuthEmailModal />}
