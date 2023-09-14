@@ -196,6 +196,21 @@ public class AccountServiceTest {
 //        // then
 //        verify(s3Uploader, times(0)).deleteImageFromS3(Mockito.anyString(), Mockito.anyString());
 //    }
+//    @Test
+//    @DisplayName("회원가입")
+//    public void createAccountTest() {
+//        // given
+//        AccountDto.Post requestDto = AccountDto.Post.builder()
+//                .email("user@gmail.com")
+//                .displayName("user1")
+//                .password("user1234")
+//                .build();
+//
+//        // when
+//
+//
+//        // then
+//    }
 
     @DisplayName("isAuthIdMatching 테스트 : 입력과 동일한 사용자")
     @Test

@@ -87,7 +87,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
 //        response.setStatus(HttpStatus.TEMPORARY_REDIRECT.value());
 //        response.setHeader("Location", "http://localhost:8888/v1/accounts/oauth/login");
 
-        response = addCookies(response, account, accessToken, refreshToken);
+//        response = addCookies(response, account, accessToken, refreshToken);
 //        HttpSession httpSession = request.getSession(true);
 //        httpSession.setAttribute("accessToken", accessToken);
 //        httpSession.setAttribute("accountId", account.getAccountId());
@@ -128,31 +128,31 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-//                .host("localhost")
-//                .port(3000)
-                .host("growstory.s3-website.ap-northeast-2.amazonaws.com")
+                .host("localhost")
+                .port(3000)
+//                .host("growstory.s3-website.ap-northeast-2.amazonaws.com")
 //                .port(80) //S3는 80포트
-//                .path("/signin")
+                .path("/signin")
                 .build()
                 .toUri();
     }
 
-    private HttpServletResponse addCookies(HttpServletResponse response, Account account, String accessToken, String refreshToken) {
-        response.addCookie(createCookie("access_token", accessToken));
-        response.addCookie(createCookie("refresh_token", refreshToken));
-        response.addCookie(createCookie("account_id", account.getAccountId().toString()));
-        response.addCookie(createCookie("displayName", UriEncoder.encode(account.getDisplayName())));
-        response.addCookie(createCookie("profileImageUrl", account.getProfileImageUrl()));
-
-        return response;
-    }
-
-    private Cookie createCookie(String key, String value) {
-        Cookie cookie = new Cookie(key, value);
-        cookie.setDomain("amazonaws.com");
-        cookie.setPath("/");
-//        cookie.setMaxAge(180);
-
-        return cookie;
-    }
+//    private HttpServletResponse addCookies(HttpServletResponse response, Account account, String accessToken, String refreshToken) {
+//        response.addCookie(createCookie("access_token", accessToken));
+//        response.addCookie(createCookie("refresh_token", refreshToken));
+//        response.addCookie(createCookie("account_id", account.getAccountId().toString()));
+//        response.addCookie(createCookie("displayName", UriEncoder.encode(account.getDisplayName())));
+//        response.addCookie(createCookie("profileImageUrl", account.getProfileImageUrl()));
+//
+//        return response;
+//    }
+//
+//    private Cookie createCookie(String key, String value) {
+//        Cookie cookie = new Cookie(key, value);
+//        cookie.setDomain("amazonaws.com");
+//        cookie.setPath("/");
+////        cookie.setMaxAge(180);
+//
+//        return cookie;
+//    }
 }

@@ -52,8 +52,12 @@ public class CommentService {
                 .accountId(comment.getAccount().getAccountId())
                 .displayName(comment.getAccount().getDisplayName())
                 .profileUrl(comment.getAccount().getProfileImageUrl())
+                .grade(comment.getAccount().getAccountGrade().getStepDescription())
                 .commentLikeNum(comment.getCommentLikes().size())
-                .createdAt(comment.getCreatedAt()).modifiedAt(comment.getModifiedAt()).build()).collect(Collectors.toList());
+                .createdAt(comment.getCreatedAt())
+                .modifiedAt(comment.getModifiedAt())
+                .build())
+                .collect(Collectors.toList());
 
         return responseCommentDtoList;
     }
