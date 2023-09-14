@@ -31,16 +31,12 @@ const getTypeFormat = (
   watch?: UseFormWatch<InputValues>,
   password?: string,
 ) => {
-  if (name === 'password' && watch) {
+  if (name === 'password') {
     return {
       validationSchema: {
         required: '이 필드는 필수 입력 사항입니다.',
-        validate: (value: string) =>
-          /**
-           * 다른 컴포넌트에서 watch로 잡은 password를 넘기면
-           * 이슈가 발생해서 해당 validate에서 watch를 잡았습니다...
-           */
-          value === watch('password') || '비밀번호가 일치하지 않습니다.',
+        // validate: (value: string) =>
+        //   value === password || '비밀번호가 일치하지 않습니다.',
       },
       placeholder: '기존 비밀번호를 입력해주세요.',
     };

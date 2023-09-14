@@ -61,7 +61,6 @@ export default function PasswordForm({ token }: Token) {
           name="password"
           register={register}
           errors={errors}
-          watch={watch}
           password={presentPassword}
           className="w-[244px] mr-14 max-[420px]:w-[200px]"
         />
