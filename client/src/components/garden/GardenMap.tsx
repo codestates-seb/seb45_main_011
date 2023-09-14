@@ -21,44 +21,34 @@ interface GardenMapProps {
 export default function GardenMap({ isOwner }: GardenMapProps) {
   const { isEditMode, moveTarget } = useGardenStore();
   const {
+    gardenMapRef,
     uninstallableLocations,
     installedPlants,
     targetX,
     targetY,
+    isDrag,
     handleGarden,
     handleMouseMove,
     handleSave,
     handleCancel,
+    handleDragStart,
+    handleDragEnd,
+    handleDragMove,
   } = useGardenMap();
 
   return (
-    <div>
+    <div className="relative">
       <GardenInfo isOwner={isOwner} />
-      <main className="min-w-[296px] border-garden rounded-lg rounded-tl-none bg-scroll shadow-outer/down box-content overflow-auto scrollbar-hidden max-[984px]:max-w-[720px]">
+      <main
+        ref={gardenMapRef}
+        className="min-w-[296px] border-garden rounded-lg rounded-tl-none bg-scroll shadow-outer/down box-content overflow-auto scrollbar-hidden max-[984px]:max-w-[720px] max-[420px]:h-[320px]">
         <div
           onClick={handleGarden}
-          onMouseMove={handleMouseMove}
+          onMouseDown={handleDragStart}
+          onMouseMove={isDrag ? handleDragMove : handleMouseMove}
+          onMouseUp={handleDragEnd}
+          onMouseLeave={handleDragEnd}
           className="relative grid-garden w-[720px] h-[480px] rounded-lg rounded-tl-none bg-[url('/assets/img/bg_garden.png')]">
-          {isEditMode && <EditModeInfo />}
-          {isEditMode && (
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-              <CommonButton
-                onSave={handleSave}
-                type="button"
-                size="sm"
-                className="hover:scale-110 transition-transform">
-                저장
-              </CommonButton>
-              <CommonButton
-                onCancel={handleCancel}
-                type="button"
-                size="sm"
-                className="hover:scale-110 transition-transform">
-                취소
-              </CommonButton>
-            </div>
-          )}
-          <MapController className="min-[960px]:hidden bottom-4 left-4 z-[5]" />
           {isEditMode && (
             <GardenSquares uninstallableLocations={uninstallableLocations} />
           )}
@@ -75,6 +65,29 @@ export default function GardenMap({ isOwner }: GardenMapProps) {
           )}
         </div>
       </main>
+      {isEditMode && <EditModeInfo />}
+      {isEditMode && (
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+          <CommonButton
+            onSave={handleSave}
+            type="button"
+            size="sm"
+            className="hover:scale-110 transition-transform">
+            저장
+          </CommonButton>
+          <CommonButton
+            onCancel={handleCancel}
+            type="button"
+            size="sm"
+            className="hover:scale-110 transition-transform">
+            취소
+          </CommonButton>
+        </div>
+      )}
+      <MapController
+        gardenMap={gardenMapRef.current}
+        className="absolute min-[960px]:hidden bottom-5 left-5 z-[5]"
+      />
     </div>
   );
 }
