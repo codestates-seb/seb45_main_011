@@ -18,7 +18,7 @@ const usePlantCard = () => {
   } = useGardenStore();
   const { changeType, open } = useModalStore();
 
-  const handlePurchase = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handlePurchase = (event: React.MouseEvent<HTMLElement>) => {
     if (event.target instanceof HTMLElement) {
       const targetId = event.target.closest('li')?.dataset.shopId;
       const item = shop.find(({ productId }) => productId === Number(targetId));
@@ -35,7 +35,7 @@ const usePlantCard = () => {
     open();
   };
 
-  const handleInstall = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleInstall = (event: React.MouseEvent<HTMLElement>) => {
     changeEditMode(true);
 
     saveReference({
@@ -66,8 +66,11 @@ const usePlantCard = () => {
     }
   };
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) =>
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    if (!(event.target instanceof HTMLButtonElement)) return;
+
     sidebarState === 'shop' ? handlePurchase(event) : handleInstall(event);
+  };
 
   return { handleClick };
 };

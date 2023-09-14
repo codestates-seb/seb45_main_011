@@ -51,6 +51,7 @@ export default function Header() {
               width={28}
               height={24}
               className="hover:scale-105 transition-transform"
+              style={{ width: 28, height: 24 }}
             />
             {isMenuHover && (
               <div className="flex justify-end">
@@ -60,7 +61,11 @@ export default function Header() {
           </li>
           <li className="max-[480px]:hidden">
             <HeaderLink
-              location={`/garden/${userId}`}
+              location={
+                isClient && (isLogin || isGoogleLogin)
+                  ? `/garden/${userId}`
+                  : '/signin'
+              }
               content="activity"
               title="garden"
             />
@@ -74,7 +79,11 @@ export default function Header() {
           </li>
           <li className="max-[480px]:hidden">
             <HeaderLink
-              location={`/leafs/${userId}`}
+              location={
+                isClient && (isLogin || isGoogleLogin)
+                  ? `/leafs/${userId}`
+                  : '/signin'
+              }
               content="activity"
               title="leafCard"
             />
@@ -85,7 +94,7 @@ export default function Header() {
               onMouseLeave={() => setIsProfileHover(false)}>
               <Image
                 src={profileImageUrl || '/assets/img/bg_default_profile.png'}
-                alt="profile_img"
+                alt="프로필 이미지"
                 className={`w-9 h-9 rounded-[50%] border-brown-50 border-[3px] cursor-pointer hover:scale-110 transition-transform`}
                 width={36}
                 height={36}
