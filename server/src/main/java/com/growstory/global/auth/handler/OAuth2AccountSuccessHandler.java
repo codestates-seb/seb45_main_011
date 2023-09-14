@@ -131,9 +131,9 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
     private Object createURI(String accessToken, String refreshToken, Account account) {
         return UriComponentsBuilder
                 .newInstance()
-                .scheme("https")
-                .host("seb45-main-011.vercel.app")
-//                .port(3000)
+                .scheme("http")
+                .host("localhost")
+                .port(3000)
 //                .host("growstory.s3-website.ap-northeast-2.amazonaws.com")
 //                .port(80) //S3는 80포트
                 .path("/signin")
