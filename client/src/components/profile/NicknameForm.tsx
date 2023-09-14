@@ -53,11 +53,14 @@ export default function NicknameForm({ token }: Token) {
       onSubmit={handleSubmit(updateNickName)}
       className="relative w-fit flex justify-center">
       <div className="w-fit flex justify-center max-[580px]:flex-col">
-        <label className="text-[20px] text-brown-80 font-bold pt-2 pr-2.5 ml-[68px] max-[580px]:ml-0 max-[580px]:p-0 max-[580px]:pb-3">
+        <label
+          htmlFor="nickname"
+          className="text-[20px] text-brown-80 font-bold pt-2 pr-2.5 ml-[68px] max-[580px]:ml-0 max-[580px]:p-0 max-[580px]:pb-3">
           닉네임 :
         </label>
         <div className="flex">
           <TextInput
+            id="nickname"
             name="nickname"
             register={register}
             errors={errors}
