@@ -1,6 +1,7 @@
 'use client';
 
 import useSignStore from '@/stores/signStore';
+
 import CommonButton from '../common/CommonButton';
 
 export default function SignButton() {
@@ -23,6 +24,7 @@ export default function SignButton() {
           </div>
         </div>
       </div>
+
       <CommonButton
         type="button"
         size="fix"

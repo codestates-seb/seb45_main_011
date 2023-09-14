@@ -4,6 +4,7 @@ interface SignState {
   isEmailSignup: boolean;
   isEmailSignin: boolean;
   isCorrectPassword: boolean;
+
   code: string;
 
   setCode: (code: string) => void;
@@ -18,7 +19,6 @@ const useSignStore = create<SignState>((set) => ({
   isEmailSignin: false,
   isCorrectPassword: false,
 
-  googleProfileImage: '',
   code: '',
 
   setCode: (newCode) => set({ code: newCode }),

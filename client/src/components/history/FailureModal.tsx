@@ -7,7 +7,7 @@ import ModalPortal from '../common/ModalPortal';
 import CommonButton from '../common/CommonButton';
 
 export default function FailureModal() {
-  const { close, changeState } = useSignModalStore();
+  const close = useSignModalStore((state) => state.close);
 
   return (
     <ModalPortal>

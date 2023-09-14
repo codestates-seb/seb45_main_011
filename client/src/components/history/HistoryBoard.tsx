@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import InfiniteScroll from 'react-infinite-scroller';
 
@@ -7,18 +8,21 @@ import { getBoardWrittenByPage } from '@/api/history';
 
 import HistoryPostCard from './HistoryPostCard';
 
+import ErrorMessage from '../common/ErrorMessage';
+import LoadingMessage from '../common/LoadingMessage';
+
 import { HistoryBoradProps } from '@/types/common';
-import { useRouter } from 'next/navigation';
 
 export default function HistoryBoard({ paramsId }: HistoryBoradProps) {
   const router = useRouter();
+
   const { data, fetchNextPage, hasNextPage, isLoading, isError } =
     useInfiniteQuery(
       ['boardWritten'],
       ({ pageParam = 1 }) => getBoardWrittenByPage({ pageParam }, paramsId),
 
       {
-        getNextPageParam: (lastPage, allPosts) => {
+        getNextPageParam: (lastPage) => {
           return lastPage.pageInfo.page !== lastPage.pageInfo.totalPages
             ? lastPage.pageInfo.page + 1
             : undefined;
@@ -65,6 +69,16 @@ export default function HistoryBoard({ paramsId }: HistoryBoradProps) {
           )}
         </div>
       ))}
+      {isLoading && (
+        <div className="flex justify-center items-center">
+          <LoadingMessage />
+        </div>
+      )}
+      {isError && (
+        <div className="flex justify-center items-center">
+          <ErrorMessage />
+        </div>
+      )}
     </>
   );
 }

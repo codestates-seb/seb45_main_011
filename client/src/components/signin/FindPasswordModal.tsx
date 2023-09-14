@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 
-import { getUsersEmail, postPasswordByEmail } from '@/api/user';
+import { getUsersEmail, sendTemporaryPasswordByEmail } from '@/api/user';
 
 import useSignModalStore from '@/stores/signModalStore';
 
@@ -11,7 +11,7 @@ import ModalPortal from '../common/ModalPortal';
 import SignModalInput from '../sign/SignModalInput';
 import CommonButton from '../common/CommonButton';
 
-import { SignFormValue } from '@/types/common';
+import { SignFormValue, UserData } from '@/types/common';
 
 export default function FindPasswordModal() {
   const { register, watch } = useForm<SignFormValue>();
@@ -22,9 +22,7 @@ export default function FindPasswordModal() {
   const postNewPassword = async (email: string) => {
     if (!email) return;
 
-    // try, catch 필요없다, sendTemporaryPassword로 변경해주기
-    // 이름 작성이 힘들다면 혹은 애초에 사용할 때 한글로 이름 짓기 -> 확정이 되면 영어로 변경하기
-    await postPasswordByEmail(email);
+    await sendTemporaryPasswordByEmail(email);
   };
 
   const handleEmailCheck = async (email: string) => {
@@ -32,9 +30,10 @@ export default function FindPasswordModal() {
 
     const response = await getUsersEmail();
 
-    // response를 보고 타입 고쳐놓기
+    console.log(response);
+
     const existEmail = response?.data.data.find(
-      (current: any) => current.email === userEmail,
+      (current: UserData) => current.email === userEmail,
     );
 
     if (userEmail === existEmail.email) {

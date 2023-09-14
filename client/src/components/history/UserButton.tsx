@@ -1,8 +1,10 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import CommonButton from '../common/CommonButton';
+
 import useSignModalStore from '@/stores/signModalStore';
+
+import CommonButton from '../common/CommonButton';
 
 export default function UserButton() {
   const router = useRouter();
@@ -12,6 +14,7 @@ export default function UserButton() {
   const handleResignModal = () => {
     changeState('ResignModal');
   };
+
   return (
     <>
       <CommonButton

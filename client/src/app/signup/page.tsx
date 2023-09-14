@@ -7,7 +7,7 @@ import FailureModal from '@/components/signup/FailureModal';
 import SignupIntro from '@/components/signup/SignupIntro';
 
 export default function Signup() {
-  const { currentState } = useSignModalStore();
+  const currentState = useSignModalStore((state) => state.currentState);
 
   return (
     <div className="flex flex-col justify-center items-center h-full">

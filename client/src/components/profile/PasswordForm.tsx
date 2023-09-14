@@ -39,6 +39,7 @@ export default function PasswordForm({ token }: Token) {
 
     try {
       await updateUserPassword(presentPassword, changedPassword, token);
+
       reset();
       changeState('ChangePasswordModal');
     } catch (error) {
