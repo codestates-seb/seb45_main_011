@@ -27,6 +27,8 @@ export default function LeafInfo({
   const setModalCategory = useLeafStore((state) => state.setModalCategory);
   const modalOpen = useLeafStore((state) => state.modalOpen);
 
+  const isOwner = userId === pathUserId;
+
   const navigateToGarden = () => router.push(`/garden/${pathUserId}`);
 
   const AddDiary = () => {
@@ -48,7 +50,7 @@ export default function LeafInfo({
       <p className="p-[10px] mb-5 max-w-[232px] w-full bg-brown-10 border-2 border-brown-50 rounded-lg text-xs font-normal text-black-50 text-center shadow-outer/down">
         {content}
       </p>
-      {userId === pathUserId && (
+      {isOwner && (
         <div className="flex gap-2 mb-3">
           <CommonButton
             type="button"

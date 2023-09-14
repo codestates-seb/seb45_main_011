@@ -36,7 +36,8 @@ export default function Leaf({ params }: LeafProps) {
 
   const userId = useTestUserStore((state) => state.userId);
 
-  // 변수 선언 부분은 앞 쪽이 좋다.
+  const isOwner = userId === pathUserId;
+
   const { modalCategory, isModalOpen, setStartDay, setLastDiaryDay } =
     useLeafStore();
 
@@ -55,6 +56,7 @@ export default function Leaf({ params }: LeafProps) {
       },
     ],
   });
+
   const isLoading = results.some((result) => result.isLoading);
   const isError = results.some((result) => result.isError);
 
@@ -112,7 +114,7 @@ export default function Leaf({ params }: LeafProps) {
           </div>
         </div>
       </div>
-      {isModalOpen && pathUserId === userId && (
+      {isModalOpen && isOwner && (
         <ModalPortal>
           <Modal>
             <LeafModal

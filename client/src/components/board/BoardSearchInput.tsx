@@ -1,7 +1,8 @@
 import { UseFormRegister } from 'react-hook-form';
 
-import { SearchValues } from '@/types/common';
 import useBoardStore from '@/stores/boardStore';
+
+import { SearchValues } from '@/types/common';
 
 interface BoardSearchInputProps {
   register: UseFormRegister<SearchValues>;
