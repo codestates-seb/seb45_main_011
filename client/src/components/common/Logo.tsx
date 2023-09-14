@@ -1,6 +1,9 @@
-import { DefaultProps } from '@/types/common';
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
+
+import { twMerge } from 'tailwind-merge';
+
+import { DefaultProps } from '@/types/common';
 
 interface LogoProps extends DefaultProps {
   size: 'small' | 'medium' | 'large';
@@ -17,10 +20,10 @@ interface Logo {
   large: Size;
 }
 
-export default function Logo({ size }: LogoProps) {
+export default function Logo({ size, className }: LogoProps) {
   return (
     <>
-      <Link href="/" className="block">
+      <Link href="/" className={twMerge('block', className)}>
         <Image
           src="/assets/img/logo.svg"
           alt="로고"
@@ -36,7 +39,7 @@ export default function Logo({ size }: LogoProps) {
 
 const LOGO_SIZE: Logo = {
   small: {
-    width: 60,
+    width: 58,
     height: 36,
   },
   medium: {
@@ -50,7 +53,7 @@ const LOGO_SIZE: Logo = {
 };
 
 const LOGO_STYLE = {
-  small: 'min-w-[60px]',
+  small: 'min-w-[58px]',
   medium: 'min-w-[137px]',
   large: 'min-w-[260px]',
 };

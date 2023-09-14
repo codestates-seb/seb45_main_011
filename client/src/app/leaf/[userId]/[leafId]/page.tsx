@@ -8,7 +8,7 @@ import { useQueries } from '@tanstack/react-query';
 import { getDiariesByLeafAndUserId, getLeafByLeafId } from '@/api/leaf';
 
 import useLeafStore from '@/stores/leafStore';
-import useTestUserStore from '@/stores/testUserStore';
+import useUserStore from '@/stores/userStore';
 
 import useEffectOnce from '@/hooks/useEffectOnce';
 
@@ -29,12 +29,12 @@ interface LeafProps {
 }
 
 export default function Leaf({ params }: LeafProps) {
-  const pathLeafId = Number(params.leafId);
-  const pathUserId = Number(params.userId);
+  const pathLeafId = params.leafId;
+  const pathUserId = params.userId;
 
   const router = useRouter();
 
-  const userId = useTestUserStore((state) => state.userId);
+  const userId = useUserStore((state) => state.userId);
 
   const isOwner = userId === pathUserId;
 

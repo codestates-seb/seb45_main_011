@@ -69,19 +69,20 @@ export default function SignupForm() {
   return (
     <div>
       <form onSubmit={handleSubmit(onSignup)}>
-        <div className="flex flex-col gap-2 w-[300px]">
+        <div className="flex flex-col gap-1 w-[300px]">
           <SignInput type="email" register={register} errors={errors} />
           <div className="flex justify-center">
             <CommonButton
               type="button"
               size="sm"
-              children={successedCode ? '인증 완료!' : '이메일 인증하기'}
               onOpen={() => {
                 handleValidateEmail();
                 sendCodeWithEmail(email);
               }}
               disabled={successedCode}
-            />
+              className="mb-3 hover:scale-105 transition-transform">
+              {successedCode ? '인증 완료!' : '이메일 인증하기'}
+            </CommonButton>
           </div>
 
           <SignInput
@@ -111,9 +112,9 @@ export default function SignupForm() {
             <CommonButton
               type="submit"
               size="md"
-              className="w-[121px] h-[44px] mt-4"
-              children="회원 가입"
-            />
+              className="w-[121px] h-[44px] hover:scale-105 transition-transform">
+              회원 가입
+            </CommonButton>
           </div>
         </div>
       </form>

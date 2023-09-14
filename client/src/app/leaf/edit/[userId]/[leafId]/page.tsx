@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { getLeafByLeafId } from '@/api/leaf';
 
-import useTestUserStore from '@/stores/testUserStore';
+import useUserStore from '@/stores/userStore';
 
 import useEffectOnce from '@/hooks/useEffectOnce';
 
@@ -21,12 +21,12 @@ interface EditLeafProps {
 }
 
 export default function EditLeaf({ params }: EditLeafProps) {
-  const leafId = Number(params.leafId);
-  const pathUserId = Number(params.userId);
+  const leafId = params.leafId;
+  const pathUserId = params.userId;
 
   const router = useRouter();
 
-  const userId = useTestUserStore((state) => state.userId);
+  const userId = useUserStore((state) => state.userId);
 
   useEffectOnce(() => {
     if (pathUserId !== userId) router.back();

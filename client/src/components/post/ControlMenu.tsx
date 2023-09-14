@@ -4,13 +4,13 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import usePostModalStore from '@/stores/postModalStore';
-import useTestUserStore from '@/stores/testUserStore';
 import usePostStore from '@/stores/postStore';
+import useUserStore from '@/stores/userStore';
 
 interface ContolMenuProps {
   usage: 'post' | 'comment';
-  targetId: number;
-  ownerId: number;
+  targetId: string;
+  ownerId: string;
 }
 export default function ControlMenu({
   usage,
@@ -19,7 +19,7 @@ export default function ControlMenu({
 }: ContolMenuProps) {
   const router = useRouter();
 
-  const userId = useTestUserStore((state) => state.userId);
+  const userId = useUserStore((state) => state.userId);
   const { setEditMode, setTargetId } = usePostStore();
 
   if (userId !== ownerId) return null;
@@ -50,7 +50,7 @@ export default function ControlMenu({
         alt="수정, 삭제 버튼"
         width={20}
         height={5}></Image>
-      {/* <div
+      <div
         className={`absolute  -left-[40px] w-[92px] h-[114px] group-hover:block ${BUTTON_STYLE[usage].hiddenContainer}`}>
         <div
           className={`hidden absolute left-0 bottom-0 w-[92px] h-[76px] group-hover:flex flex-col justify-center items-center border-2 border-brown-70 bg-brown-50 rounded-lg common-drop-shadow text-brown-10 text-[1rem] leading-4 font-bold ${BUTTON_STYLE[usage].hiddenBox}`}>
@@ -64,7 +64,7 @@ export default function ControlMenu({
             삭제하기
           </button>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }

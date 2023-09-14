@@ -19,9 +19,9 @@ interface DiaryFormProps {
   imageUrl?: string;
   content?: string;
   title?: string;
-  leafId: number;
-  diaryId?: number | null;
-  userId: number;
+  leafId: string;
+  diaryId?: string | null;
+  userId: string;
   mode: 'add' | 'edit';
 }
 export default function DiaryForm({

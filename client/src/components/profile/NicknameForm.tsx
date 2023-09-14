@@ -68,9 +68,9 @@ export default function NicknameForm({ token }: Token) {
             <CommonButton
               type="submit"
               size="sm"
-              children="변경"
-              className="w-[52px] h-8 ml-2"
-            />
+              className="w-[52px] h-8 ml-2 hover:scale-110 transition-transform">
+              변경
+            </CommonButton>
           </div>
         </div>
       </div>

@@ -1,10 +1,21 @@
 import axios from 'axios';
 
+const accessToken =
+  typeof window !== 'undefined'
+    ? JSON.parse(sessionStorage.getItem('user-key') as string).state.accessToken
+    : null;
+
+const refreshToken =
+  typeof window !== 'undefined'
+    ? JSON.parse(sessionStorage.getItem('user-key') as string).state
+        .refreshToken
+    : null;
+
 export const commonAxios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
-    Authorization: '',
-    // Refresh:
+    Authorization: accessToken,
+    Refresh: refreshToken,
   },
   withCredentials: true,
 });

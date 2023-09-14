@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation';
 
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { editPost } from '@/api/post';
 
@@ -16,6 +16,7 @@ interface EditPostParameters {
 const useEditPost = (postId: string) => {
   const router = useRouter();
 
+  const queryClient = useQueryClient();
   const { mutate: editPostMutate } = useMutation({
     mutationFn: ({
       formValues,
@@ -24,7 +25,10 @@ const useEditPost = (postId: string) => {
       postId,
     }: EditPostParameters) =>
       editPost(formValues, tags, isImageUpdated, postId),
-    onSuccess: () => router.push(`/post/${postId}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['post']);
+      router.push(`/post/${postId}`);
+    },
   });
 
   return { editPostMutate };

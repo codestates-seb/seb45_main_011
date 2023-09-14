@@ -36,7 +36,8 @@ export default function LeafExistModal() {
   };
 
   const handleBrowse = () => {
-    router.push(`/leaf/${userId}/${infoTarget?.plantObjId}`);
+    if (infoTarget?.leafDto)
+      router.push(`/leaf/${userId}/${infoTarget.leafDto.id}`);
 
     close();
   };

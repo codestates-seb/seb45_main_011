@@ -55,17 +55,17 @@ export default function SignPasswordInput({
   const registerFormat = getRegisterByType(tag, watch);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col max-[420px]:mx-5">
       <input
         type="password"
-        className={`min-w-[300px] pl-9 py-[10px] font-normal text-[12px] border-2 border-brown-70 rounded-lg bg-[center_left_12px] bg-no-repeat ${SIGN_INPUT_BG[tag]} leading-[12px] outline-none shadow-outer/down`}
+        className={`pl-9 py-[10px] font-normal text-[12px] border-2 border-brown-70 rounded-lg bg-[center_left_12px] bg-no-repeat ${SIGN_INPUT_BG[tag]} leading-[12px] outline-none shadow-outer/down min-[420px]:min-w-[300px]`}
         placeholder={SIGNIN_REQUIRE[tag]}
         disabled={disabled}
         required
         {...register(tag, registerFormat?.validation)}
       />
 
-      <div className="h-[12px] mt-[8px] pl-3 w-full text-[0.6rem] leading-3 text-red-50">
+      <div className="h-[12px] mt-[8px] pl-[38px] w-full text-[0.6rem] leading-3 text-red-50">
         {errorMsg}
       </div>
     </div>

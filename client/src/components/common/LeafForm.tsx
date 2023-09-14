@@ -16,9 +16,9 @@ import { LeafDataInfo } from '@/types/data';
 
 interface LeafFormProps {
   leaf?: LeafDataInfo | null;
-  leafId?: number;
+  leafId?: string;
   mode: 'add' | 'edit';
-  userId: number;
+  userId: string;
 }
 
 export default function LeafForm({
@@ -41,7 +41,7 @@ export default function LeafForm({
   const { mutate } =
     mode === 'add'
       ? useAddLeafMutaion()
-      : useEditLeafMutaion({ leafId: leafId as number, isImageUpdated });
+      : useEditLeafMutaion({ leafId: leafId as string, isImageUpdated });
 
   const {
     register,

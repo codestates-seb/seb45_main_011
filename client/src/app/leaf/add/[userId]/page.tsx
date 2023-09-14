@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
-import useTestUserStore from '@/stores/testUserStore';
+import useUserStore from '@/stores/userStore';
 
 import useEffectOnce from '@/hooks/useEffectOnce';
 
@@ -15,11 +15,11 @@ interface AddLeafProps {
 }
 
 export default function AddLeaf({ params }: AddLeafProps) {
-  const pathUserId = Number(params.userId);
+  const pathUserId = params.userId;
 
   const router = useRouter();
 
-  const userId = useTestUserStore((state) => state.userId);
+  const userId = useUserStore((state) => state.userId);
 
   // userId와 pathId가 일치하지 않으면 비정상적인 접근 경로로 인식.
   useEffectOnce(() => {

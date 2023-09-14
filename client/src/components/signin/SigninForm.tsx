@@ -66,10 +66,10 @@ export default function SigninForm() {
   };
 
   return (
-    <div className="flex flex-col items-center gap-5 ">
+    <div className="flex flex-col items-center gap-5 px-5 mt-3">
       <form onSubmit={handleSubmit(onLogin)}>
-        <div className="flex flex-col gap-8">
-          <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-1">
             <SignInput type="email" register={register} errors={errors} />
             <SignPasswordInput
               tag="password"
@@ -82,16 +82,16 @@ export default function SigninForm() {
             <CommonButton
               type="submit"
               size="md"
-              className="w-[92px] h-[44px]"
-              children="로그인"
-            />
+              className="w-[92px] h-[44px] hover:scale-105 transition-transform">
+              로그인
+            </CommonButton>
             <CommonButton
               type="button"
               size="md"
-              className="w-[161px] h-[44px]"
-              children="비밀번호 찾기"
-              onFind={() => changeState('FindPasswordModal')}
-            />
+              className="w-[161px] h-[44px] hover:scale-105 transition-transform"
+              onFind={() => changeState('FindPasswordModal')}>
+              비밀번호 찾기
+            </CommonButton>
           </div>
         </div>
       </form>
