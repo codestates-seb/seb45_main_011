@@ -73,9 +73,6 @@ public class AccountDto {
         private String profileImageUrl;
         private String grade;
         private Point point;
-//        private List<List<BoardResponse>> boardWritten; // 자신이 쓴 게시글
-//        private List<List<BoardResponse>> boardLiked; // 좋아요 누른 게시글
-//        private List<List<BoardResponse>> commentWritten; // 댓글을 쓴 게시글
 
         public int getPoint() {
             return point.getScore();

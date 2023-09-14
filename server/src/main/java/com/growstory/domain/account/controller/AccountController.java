@@ -66,7 +66,7 @@ public class AccountController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "나의 계정 조회", description = "로그인된 사용자의 정보 조회")
+    @Operation(summary = "단일 계정 조회", description = "입력받은 사용자의 정보 조회")
     @GetMapping("/{account-id}")
     public ResponseEntity<SingleResponseDto<AccountDto.Response>> getAccount(@Positive @PathVariable("account-id") Long accountId) {
         AccountDto.Response responseDto = accountService.getAccount(accountId);
