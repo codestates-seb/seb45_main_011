@@ -6,6 +6,7 @@ import useBoardInfinityQuery from '@/hooks/useBoardInfinityQuery';
 import useGetSearchBoardQuery from '@/hooks/useGetBoardSearchQuery';
 
 import PostCard from './PostCard';
+import LoadingNotice from '../common/LoadingNotice';
 
 export default function PostList() {
   const searchKey = useBoardStore((state) => state.searchKey);
@@ -24,7 +25,7 @@ export default function PostList() {
         hasMore={hasNextPage}
         loadMore={() => fetchNextPage()}
         useWindow={false}
-        loader={<div key="loader">loading...</div>}>
+        loader={<LoadingNotice key="loader" isTransparent={true} />}>
         <ul className="grid grid-cols-3 gap-4 place-items-center items-start max-[730px]:grid-cols-2 max-[530px]:grid-cols-1 p-2 pb-4">
           {boards?.map((board) => {
             return (

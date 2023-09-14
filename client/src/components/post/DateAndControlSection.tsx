@@ -4,8 +4,8 @@ import ControlMenu from './ControlMenu';
 interface DateAndControlProps {
   date?: Date;
   usage: 'post' | 'comment';
-  targetId: number;
-  ownerId: number;
+  targetId: string;
+  ownerId: string;
 }
 
 export default function DateAndControlSection({
