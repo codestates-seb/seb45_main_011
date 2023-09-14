@@ -2,8 +2,9 @@
 
 import Image from 'next/image';
 
-import { DefaultProps } from '@/types/common';
 import useLikePostMutation from '@/hooks/useLikePostMutation';
+
+import { DefaultProps } from '@/types/common';
 
 interface PostCountInfoProps extends DefaultProps {
   likesNum: number;
