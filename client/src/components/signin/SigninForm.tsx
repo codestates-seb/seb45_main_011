@@ -38,7 +38,7 @@ export default function SigninForm() {
     try {
       const response = await postUserInfo(email, password);
 
-      const userId = response.data.accountId;
+      const userId = String(response.data.accountId);
       const accessToken = response.headers.authorization;
       const refreshToken = response.headers.refresh;
       const displayName = decodeURIComponent(response.data.displayName);

@@ -28,11 +28,11 @@ export default function AddLeaf({ params }: AddLeafProps) {
 
   return (
     <div className="flex justify-center items-center pt-[120px]">
-      <div className="relative w-full min-w-[312px] max-w-[720px] h-full mx-4 border-gradient rounded-xl shadow-container">
+      <div className="relative w-full min-w-[312px] max-w-[540px] h-full mx-4 border-gradient rounded-xl shadow-container">
         <Screws />
         <div className="p-5 h-full">
           <div className="w-full h-full flex flex-col overflow-y-scroll scrollbar">
-            <PageTitle text="식물 카드 등록" className="mb-5" />
+            <PageTitle text="식물 카드 등록" className="mt-3 mb-6" />
             <LeafForm userId={pathUserId} mode="add" />
           </div>
         </div>

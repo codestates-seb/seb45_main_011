@@ -10,7 +10,7 @@ export default function AddLeafButton({ userId }: AddLeafButtonProps) {
     <Link href={`/leaf/add/${userId}`} className="w-full max-w-[200px]">
       <button
         type="button"
-        className="flex justify-center items-center w-full max-w-[200px] h-40 bg-brown-20 border-4 border-dashed border-brown-70 rounded-xl shadow-outer/down">
+        className="flex justify-center items-center w-full max-w-[200px] h-40 bg-brown-20/70 border-4 border-dashed border-brown-70 rounded-xl shadow-outer/down hover:scale-105 transition-transform">
         <div className="w-[36px] h-[36px] overflow-hidden">
           <Image
             src="/assets/img/plus.svg"

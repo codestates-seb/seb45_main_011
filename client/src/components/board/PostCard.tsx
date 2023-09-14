@@ -22,7 +22,7 @@ export default function PostCard({
     <li>
       <Link
         href={`/post/${postId}`}
-        className="w-[200px] h-[175px] pt-[0.875rem] px-[0.625rem] pb-[0.625rem] flex flex-col bg-brown-10 border-2 border-brown-50 rounded-lg overflow-hidden">
+        className="w-[200px] h-[175px] pt-[0.875rem] px-[0.625rem] pb-[0.625rem] flex flex-col bg-brown-10 border-2 border-brown-50 rounded-lg overflow-hidden  shadow-outer/down">
         <div className="w-[121px] h-[92px] rounded-lg overflow-hidden mb-2 mx-auto border-2 border-brown-40">
           <Image
             className="object-cover object-center w-full h-full"
