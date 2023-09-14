@@ -8,7 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getPostByBoardId } from '@/api/board';
 
 import usePostModalStore from '@/stores/postModalStore';
-import useTestUserStore from '@/stores/testUserStore';
+import useUserStore from '@/stores/userStore';
 
 import PostDeleteModal from '@/components/post/PostDeleteModal';
 import PageTitle from '@/components/common/PageTitle';
@@ -36,7 +36,7 @@ export default function Post({ params }: PostProps) {
 
   const [comments, setComments] = useState<CommentDataInfo[]>();
 
-  const { userId } = useTestUserStore();
+  const { userId } = useUserStore();
   const { isOpen, type } = usePostModalStore();
 
   if (!userId) return router.push('/signin');
@@ -60,6 +60,8 @@ export default function Post({ params }: PostProps) {
   if (isError) return <div>error</div>;
   if (isLoading) return <div>isLoading</div>;
 
+  console.log(post);
+
   return (
     <main className="px-4 flex justify-center items-center">
       <div className="relative w-full max-w-[720px] min-w-[328px] h-[864px] border-gradient rounded-xl">
@@ -78,8 +80,8 @@ export default function Post({ params }: PostProps) {
               <DateAndControl
                 date={new Date(post.createAt)}
                 usage="post"
-                ownerId={post.accountId}
-                targetId={post.boardId}
+                ownerId={String(post.accountId)}
+                targetId={String(post.boardId)}
               />
             </div>
             <div className="relative pr-5 flex flex-col overflow-y-scroll scrollbar">

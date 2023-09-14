@@ -7,9 +7,9 @@ import useLeafStore from '@/stores/leafStore';
 import { deleteDiary } from '@/api/leaf';
 
 interface DiaryDeleteModalProps {
-  deleteTargetId?: number | null;
-  leafId: number;
-  userId: number;
+  deleteTargetId?: string | null;
+  leafId: string;
+  userId: string;
 }
 
 export function DiaryDeleteModal({

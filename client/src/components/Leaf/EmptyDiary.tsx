@@ -1,8 +1,8 @@
 import useLeafStore from '@/stores/leafStore';
 
 interface EmptyDiaryProps {
-  pathUserId: number;
-  userId: number | null;
+  pathUserId: string;
+  userId: string | null;
 }
 
 export default function EmptyDiary({ pathUserId, userId }: EmptyDiaryProps) {

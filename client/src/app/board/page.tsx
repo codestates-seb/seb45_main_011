@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
-import useTestUserStore from '@/stores/testUserStore';
+import useUserStore from '@/stores/userStore';
 
 import BoardBanner from '@/components/board/BoardBanner';
 import BoardSearchForm from '@/components/board/BoardSearchForm';
@@ -13,7 +13,7 @@ import PostList from '@/components/board/PostList';
 export default function Board() {
   const router = useRouter();
 
-  const userId = useTestUserStore((state) => state.userId);
+  const userId = useUserStore((state) => state.userId);
 
   const navigateToAddPost = () => {
     if (userId !== null) return router.push('/post/add');
