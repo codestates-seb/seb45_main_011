@@ -44,10 +44,9 @@ public class BoardImageService {
 //
 //    }
 
-    public void deleteBoardImage(long boardId) {
-        BoardImage boardImage = verifyExistBoardImage(boardId);
+    public void deleteBoardImage(BoardImage boardImage) {
         s3Uploader.deleteImageFromS3(boardImage.getStoredImagePath(), BOARD_IMAGE_PROCESS_TYPE);
-        boardImageRepository.delete(boardImage);
+//        boardImageRepository.delete(boardImage);
     }
 
 
@@ -56,6 +55,8 @@ public class BoardImageService {
         return boardImageRepository.findById(boardImageId)
                 .orElseThrow(() -> new EntityNotFoundException("Not found BoardImage"));
     }
+
+
 
 //    @Transactional(readOnly = true)
 //    public BoardImage verifyExistBoardImageByBoardId(Long boardId) {

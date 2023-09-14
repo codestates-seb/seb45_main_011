@@ -68,18 +68,18 @@ public class BoardController {
                 .data(responseBoardDtos.getContent()).page(responseBoardDtos).build());
     }
 
-//    @Operation(summary = "Get Boards by keyword API", description = "키워드를 기준으로 전체 게시판 조회")
-//    @GetMapping
-//    public ResponseEntity<MultiResponseDto<ResponseBoardPageDto>> getBoardsByKeyword(@Positive @RequestParam(defaultValue = "1") int page,
-//                                                                                     @Positive @RequestParam(defaultValue = "12") int size,
-//                                                                                     @RequestParam("keyword") String keyword) {
-//        Page<ResponseBoardPageDto> responseBoardDtos = boardService.findBoardsByKeyword(page - 1, size, keyword);
-//
-//        return ResponseEntity.ok(MultiResponseDto.<ResponseBoardPageDto>builder()
-//                .status(HttpStatusCode.OK.getStatusCode())
-//                .message(HttpStatusCode.OK.getMessage())
-//                .data(responseBoardDtos.getContent()).page(responseBoardDtos).build());
-//    }
+    @Operation(summary = "Get Boards by keyword API", description = "키워드를 기준으로 전체 게시판 조회")
+    @GetMapping("/keyword")
+    public ResponseEntity<MultiResponseDto<ResponseBoardPageDto>> getBoardsByKeyword(@Positive @RequestParam(defaultValue = "1") int page,
+                                                                                     @Positive @RequestParam(defaultValue = "12") int size,
+                                                                                     @RequestParam("keyword") String keyword) {
+        Page<ResponseBoardPageDto> responseBoardDtos = boardService.findBoardsByKeyword(page - 1, size, keyword);
+
+        return ResponseEntity.ok(MultiResponseDto.<ResponseBoardPageDto>builder()
+                .status(HttpStatusCode.OK.getStatusCode())
+                .message(HttpStatusCode.OK.getMessage())
+                .data(responseBoardDtos.getContent()).page(responseBoardDtos).build());
+    }
 
 
     @Operation(summary = "Update Board API", description = "게시판 수정 기능")
