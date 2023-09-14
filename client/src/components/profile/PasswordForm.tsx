@@ -61,7 +61,6 @@ export default function PasswordForm({ token }: Token) {
           name="password"
           register={register}
           errors={errors}
-          watch={watch}
           password={presentPassword}
           className="w-[244px] mr-14 max-[420px]:w-[200px]"
         />
@@ -97,9 +96,9 @@ export default function PasswordForm({ token }: Token) {
             <CommonButton
               type="submit"
               size="sm"
-              children="변경"
-              className="w-[52px] h-8 ml-2"
-            />
+              className="w-[52px] h-8 ml-2 hover:scale-110 transition-transform">
+              변경
+            </CommonButton>
           </div>
         </div>
       </div>

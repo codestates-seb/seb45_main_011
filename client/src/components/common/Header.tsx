@@ -1,7 +1,7 @@
 'use client';
 
-import Image from 'next/image';
 import { useState } from 'react';
+import Image from 'next/image';
 
 import useUserStore from '@/stores/userStore';
 
@@ -10,16 +10,13 @@ import useClient from '@/hooks/useClient';
 import Logo from './Logo';
 import HeaderLink from './HeaderLink';
 import HeaderNav from './HeaderNav';
-import { useParams } from 'next/navigation';
 
 export default function Header() {
-  const [isHover, setIsHover] = useState(false);
-  const { isLogin, isGoogleLogin, profileImageUrl } = useUserStore();
+  const [isProfileHover, setIsProfileHover] = useState(false);
+  const [isMenuHover, setIsMenuHover] = useState(false);
+  const { userId, isLogin, isGoogleLogin, profileImageUrl } = useUserStore();
 
   const isClient = useClient();
-
-  const { id } = useParams();
-  const paramsId = id;
 
   return (
     <>
@@ -32,7 +29,7 @@ export default function Header() {
         items-center
         bg-[url('/assets/img/bg_wood_yellow.png')] 
         bg-contain 
-        min-w-[480px] 
+        min-w-[360px] 
         w-full 
         h-[60px] 
         px-3
@@ -42,43 +39,60 @@ export default function Header() {
         shadow-outer/down 
         z-20
         ">
-        <Logo size="small" />
-        <ul className="flex gap-2">
-          <li>
+        <Logo size="small" className="mt-[2px]" />
+        <ul className="flex items-center gap-2 max-[480px]:gap-3">
+          <li
+            onMouseOver={() => setIsMenuHover(true)}
+            onMouseLeave={() => setIsMenuHover(false)}
+            className="min-[480px]:hidden">
+            <Image
+              src="/assets/img/hamburger.svg"
+              alt="햄버거 버튼"
+              width={28}
+              height={24}
+              className="hover:scale-105 transition-transform"
+            />
+            {isMenuHover && (
+              <div className="flex justify-end">
+                <HeaderNav isMenuHover={isMenuHover} />
+              </div>
+            )}
+          </li>
+          <li className="max-[480px]:hidden">
             <HeaderLink
-              location={`/garden/${paramsId}`}
+              location={`/garden/${userId}`}
               content="activity"
               title="garden"
             />
           </li>
-          <li>
+          <li className="max-[480px]:hidden">
             <HeaderLink
               location="/board"
               content="activity"
               title="community"
             />
           </li>
-          <li>
+          <li className="max-[480px]:hidden">
             <HeaderLink
-              location={`/leafs/${paramsId}`}
+              location={`/leafs/${userId}`}
               content="activity"
               title="leafCard"
             />
           </li>
           {isClient && (isLogin || isGoogleLogin) ? (
             <li
-              onMouseOver={() => setIsHover(true)}
-              onMouseLeave={() => setIsHover(false)}>
+              onMouseOver={() => setIsProfileHover(true)}
+              onMouseLeave={() => setIsProfileHover(false)}>
               <Image
                 src={profileImageUrl || '/assets/img/bg_default_profile.png'}
                 alt="profile_img"
-                className={`rounded-[50%] border-brown-50 border-[3px] w-9 h-9 cursor-pointer hover:scale-110 transition-transform`}
+                className={`w-9 h-9 rounded-[50%] border-brown-50 border-[3px] cursor-pointer hover:scale-110 transition-transform`}
                 width={36}
                 height={36}
               />
-              {isHover && (isLogin || isGoogleLogin) && (
+              {isProfileHover && (isLogin || isGoogleLogin) && (
                 <div className="flex justify-end">
-                  <HeaderNav isHover={isHover} />
+                  <HeaderNav isProfileHover={isProfileHover} />
                 </div>
               )}
             </li>

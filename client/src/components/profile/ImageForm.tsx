@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import Image from 'next/image';
 
 import { updateUserProfileImage } from '@/api/profile';
 
@@ -61,10 +62,12 @@ export default function ImageForm({ token, className }: ImageFormProps) {
       {/* {isClient && ( */}
       <form className={className}>
         <div className="flex flex-col items-center justify-center">
-          <img
+          <Image
             src={imageUrl || '/assets/img/bg_default_profile.png'}
             className="w-[100px] h-[100px] rounded-[50%] border-brown-50 border-[3px] cursor-pointer mb-4 shadow-outer/down"
             alt="profile_img"
+            width={100}
+            height={100}
             onClick={() => imageUploadRef.current?.click()}
           />
           <input
@@ -78,7 +81,7 @@ export default function ImageForm({ token, className }: ImageFormProps) {
             type="submit"
             size="sm"
             children="이미지 등록"
-            className="w-[100px] h-8 mb-3"
+            className="w-[100px] h-8 mb-3 hover:scale-110 transition-transform"
             onSubmit={onImageSubmit}
           />
           <p className="text-gray-70 text-xs mb-8">

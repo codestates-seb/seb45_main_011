@@ -47,7 +47,7 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
       {isClient && (
         <Image
           src={profileImageUrl || '/assets/img/bg_default_profile.png'}
-          className="rounded-[50%] border-brown-50 border-[3px] mb-4 shadow-outer/down"
+          className="w-[100px] h-[100px] rounded-[50%] border-brown-50 border-[3px] mb-4 shadow-outer/down"
           width={100}
           height={100}
           alt="profile_img"

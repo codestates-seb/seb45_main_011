@@ -9,9 +9,9 @@ interface convertToFormDataParameters {
     | 'addPost'
     | 'editPost';
   inputs: InputValues;
-  leafId?: number;
+  leafId?: string;
   isImageUpdated?: boolean;
-  userId?: number;
+  userId?: string;
   tags?: string[];
 }
 

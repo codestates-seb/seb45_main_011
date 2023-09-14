@@ -4,18 +4,18 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import useLeafsStore from '@/stores/leafsStore';
-import useTestUserStore from '@/stores/testUserStore';
+import useUserStore from '@/stores/userStore';
 
 import ControlButton from './ControlButton';
 import LeafName from './LeafName';
 
 interface LeafProps {
   location: 'garden' | 'leaf';
-  pathUserId?: number;
+  pathUserId?: string;
   imageUrl: string;
   name: string;
-  leafId: number;
-  selectedLeafId?: number | null;
+  leafId: string;
+  selectedLeafId?: string | null;
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
@@ -32,7 +32,7 @@ export default function Leaf({
 
   const { modalOpen, setDeleteTargetId } = useLeafsStore();
 
-  const userId = useTestUserStore((state) => state.userId);
+  const userId = useUserStore((state) => state.userId);
 
   const handleLeafClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (onClick) {
@@ -53,7 +53,7 @@ export default function Leaf({
 
   const openLeafDeleteModal = (
     e: React.MouseEvent<HTMLButtonElement>,
-    leafId: number,
+    leafId: string,
   ) => {
     e.stopPropagation();
     setDeleteTargetId(leafId);
@@ -87,7 +87,9 @@ export default function Leaf({
           />
         </div>
       )}
-      <div className="w-[200px] h-[160px] rounded-xl border-2 border-brown-50 shadow-outer/down overflow-hidden">
+      <div
+        data-leaf-id={leafId}
+        className="w-[200px] h-[160px] rounded-xl border-2 border-brown-50 shadow-outer/down overflow-hidden">
         <Image
           src={imageUrl || ''}
           alt={name}

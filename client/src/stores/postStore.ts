@@ -2,11 +2,11 @@ import { create } from 'zustand';
 
 interface PostState {
   editMode: boolean;
-  targetId: number | null;
+  targetId: string | null;
 
   setEditMode: (editMode: boolean) => void;
 
-  setTargetId: (id: number) => void;
+  setTargetId: (id: string) => void;
 }
 
 const usePostStore = create<PostState>((set) => ({

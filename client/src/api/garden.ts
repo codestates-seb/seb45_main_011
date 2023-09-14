@@ -2,10 +2,22 @@ import axios from 'axios';
 
 import { PlantLocation } from '@/types/data';
 
+const accessToken =
+  typeof window !== 'undefined'
+    ? JSON.parse(sessionStorage.getItem('user-key') as string).state.accessToken
+    : null;
+
+const refreshToken =
+  typeof window !== 'undefined'
+    ? JSON.parse(sessionStorage.getItem('user-key') as string).state
+        .refreshToken
+    : null;
+
 export const gardenAxios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
-    Authorization: '',
+    Authorization: accessToken,
+    Refresh: refreshToken,
   },
   withCredentials: true,
 });
@@ -46,7 +58,7 @@ export const findLeaves = async () => {
 export const connectLeaf = async (
   userId: string,
   plantObjId: number,
-  leafId: number | null,
+  leafId: string | null,
 ) => {
   const { data } = await gardenAxios
     .patch(

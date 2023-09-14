@@ -13,14 +13,14 @@ export default function FailureModal() {
 
   return (
     <ModalPortal>
-      <Modal className="min-w-[531px] h-[240px] flex flex-col justify-center items-center">
-        <div className="flex flex-col items-center gap-6">
+      <Modal className="w-full min-w-[312px] max-w-[440px] h-fit flex flex-col justify-center items-center">
+        <div className="flex flex-col items-center gap-6 px-5 mt-10 mx-4">
           <div className="flex flex-col items-center gap-3">
-            <p className="font-bold text-brown-70 text-[28px]">
+            <p className="font-bold text-brown-70 text-[28px] text-center break-keep leading-8">
               인증에
-              <span className="text-red-50">실패했습니다.</span>
+              <span className="text-red-50"> 실패했습니다.</span>
             </p>
-            <p className="font-bold text-brown-90 text-[28px]">
+            <p className="font-bold text-brown-90 text-2xl">
               다시 입력해주세요.
             </p>
           </div>
@@ -28,10 +28,10 @@ export default function FailureModal() {
             <CommonButton
               type="button"
               size="md"
-              children="뒤로 가기"
-              className="w-[155px] h-[52px] text-[24px]"
-              onFailure={handleCodeFailure}
-            />
+              className="w-[155px] h-[52px] mb-8 text-[24px] hover:scale-105 transition-transform"
+              onFailure={handleCodeFailure}>
+              뒤로 가기
+            </CommonButton>
           </div>
         </div>
       </Modal>

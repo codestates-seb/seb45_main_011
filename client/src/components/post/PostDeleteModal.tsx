@@ -1,5 +1,7 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import { useMutation } from '@tanstack/react-query';
 
 import { deletePost } from '@/api/post';
@@ -12,18 +14,23 @@ import CommonButton from '@/components/common/CommonButton';
 import usePostStore from '@/stores/postStore';
 
 interface DeletePostParameters {
-  targetId: number;
+  targetId: string;
 }
 
 export default function PostDeleteModal() {
+  const router = useRouter();
+
   const { close } = usePostModalStore();
   const { targetId } = usePostStore();
 
   if (!targetId) return;
 
   const { mutate: deletePostMutate } = useMutation({
-    mutationFn: ({ targetId }: DeletePostParameters) => deletePost(postId),
-    onSuccess: () => close(),
+    mutationFn: ({ targetId }: DeletePostParameters) => deletePost(targetId),
+    onSuccess: () => {
+      close();
+      router.push('/board');
+    },
   });
 
   const handleDelete = () => deletePostMutate({ targetId });

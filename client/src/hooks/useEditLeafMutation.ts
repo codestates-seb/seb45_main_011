@@ -4,12 +4,12 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { editLeaf } from '@/api/leaf';
 
-import useTestUserStore from '@/stores/testUserStore';
+import useUserStore from '@/stores/userStore';
 
 import { InputValues } from '@/types/common';
 
 interface useEditLeafMutationPatameters {
-  leafId: number;
+  leafId: string;
   isImageUpdated: boolean;
 }
 
@@ -21,7 +21,7 @@ const useEditLeafMutaion = ({
 
   const router = useRouter();
 
-  const { userId } = useTestUserStore();
+  const { userId } = useUserStore();
 
   const { mutate } = useMutation({
     mutationFn: (inputs: InputValues) =>

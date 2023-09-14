@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 
-import { findLeaves } from '@/api/garden';
+import { getLeafsByUserId } from '@/api/leaf';
 
 import useGardenStore from '@/stores/gardenStore';
 import useGardenModalStore from '@/stores/gardenModalStore';
@@ -28,7 +28,7 @@ export default function SelectLeafModal() {
   const { userId } = useUserStore();
 
   const { data: leaves, isLoading } = useQuery<LeafDataInfo[]>(['leaves'], () =>
-    findLeaves(),
+    getLeafsByUserId(userId),
   );
 
   const { mutate: connectionMutate } = useConnectLeaf();
@@ -40,7 +40,7 @@ export default function SelectLeafModal() {
       if (targetLeaf) {
         const leafId = targetLeaf.dataset.leafId;
 
-        setSelectedLeafId(leafId ? Number(leafId) : null);
+        setSelectedLeafId(leafId ? leafId : null);
       }
     }
   };
@@ -63,8 +63,6 @@ export default function SelectLeafModal() {
 
     close();
   };
-
-  const divStyle = leaves && leaves.length > 0 ? 'w-[512px]' : 'w-[420px]';
 
   return (
     <ModalPortal>
@@ -92,7 +90,7 @@ export default function SelectLeafModal() {
                             location="garden"
                             name={leafName}
                             imageUrl={leafImageUrl}
-                            leafId={leafId}
+                            leafId={String(leafId)}
                             selectedLeafId={selectedLeafId}
                             onClick={handleClick}
                           />

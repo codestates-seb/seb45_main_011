@@ -1,15 +1,14 @@
 import Image from 'next/image';
 
 import useLeafStore from '@/stores/leafStore';
-import useTestUserStore from '@/stores/testUserStore';
+import useUserStore from '@/stores/userStore';
 
 import ControlButton from '../common/ControlButton';
-import NoImage from '../common/NoImage';
 
 import { DiaryDataInfo } from '@/types/data';
 
 interface DiaryProps extends DiaryDataInfo {
-  pathUserId: number;
+  pathUserId: string;
 }
 
 export default function Diary({
@@ -28,7 +27,7 @@ export default function Diary({
     title,
   };
 
-  const userId = useTestUserStore((state) => state.userId);
+  const userId = useUserStore((state) => state.userId);
 
   const { modalOpen, setModalCategory, setTargetDiary } = useLeafStore();
 
