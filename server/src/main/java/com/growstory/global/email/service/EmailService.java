@@ -3,8 +3,6 @@ package com.growstory.global.email.service;
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.account.repository.AccountRepository;
 import com.growstory.global.email.dto.EmailDto;
-import com.growstory.global.exception.BusinessLogicException;
-import com.growstory.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
