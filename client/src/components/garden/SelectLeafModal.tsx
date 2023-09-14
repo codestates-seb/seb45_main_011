@@ -11,6 +11,7 @@ import useUserStore from '@/stores/userStore';
 
 import useConnectLeaf from '@/hooks/useConnectLeaf';
 
+import LoadingNotice from '@/components/common/LoadingNotice';
 import ModalPortal from '@/components/common/ModalPortal';
 import Modal from '@/components/common/Modal';
 import Leaf from '@/components/common/Leaf';
@@ -68,8 +69,14 @@ export default function SelectLeafModal() {
   return (
     <ModalPortal>
       <Modal>
-        <div className={`flex flex-col gap-7 w-[512px] pt-10 pb-8 ${divStyle}`}>
-          {isLoading && <div>로딩 중...</div>}
+        <div
+          className={`flex flex-col gap-7 w-full min-w-[312px] max-w-[512px] pt-10 pb-8`}>
+          {isLoading && (
+            <LoadingNotice
+              isTransparent={true}
+              className="flex justify-center items-center"
+            />
+          )}
           {!isLoading && (
             <>
               {leaves && leaves.length > 0 ? (
@@ -108,11 +115,11 @@ export default function SelectLeafModal() {
                   </div>
                 </>
               ) : (
-                <section className="flex flex-col gap-3 items-center mx-auto font-bold">
-                  <p className="text-[32px] text-brown-90">
+                <section className="flex flex-col gap-4 items-center mx-auto px-8 font-bold max-[822px]:gap-0">
+                  <p className="text-[32px] text-brown-90 max-[822px]:text-2xl">
                     식물 카드가 없어요 : (
                   </p>
-                  <p className="mb-7 text-2xl text-brown-70 leading-6">
+                  <p className="mb-4 text-2xl text-brown-70 leading-5 max-[822px]:text-xl">
                     식물 카드를 생성해보세요!
                   </p>
                   <CommonButton onCreate={handleCreate} type="button" size="lg">

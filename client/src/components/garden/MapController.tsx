@@ -26,7 +26,7 @@ export default function MapController({
             onClick={() => handleClick && handleClick(value)}
             type="button"
             title={`${CONTROLLER_TITLES[value]}으로 이동`}
-            className={`absolute  w-6 h-6 bg-contain bg-center shadow-controller ${CONTROLLER_STYLE[value]}`}
+            className={`absolute w-6 h-6 bg-contain bg-center shadow-controller ${CONTROLLER_STYLE[value]}`}
           />
         );
       })}

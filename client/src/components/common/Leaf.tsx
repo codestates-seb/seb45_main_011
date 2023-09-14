@@ -62,9 +62,7 @@ export default function Leaf({
 
   return (
     <div
-      className={
-        'relative flex flex-col items-center w-[200px] h-[205px] gap-2 cursor-pointer bg-transparent'
-      }
+      className="relative flex flex-col items-center w-[200px] h-[205px] gap-2 cursor-pointer bg-transparent hover:scale-105 transition-transform"
       role="button"
       data-leaf-id={leafId}
       onClick={handleLeafClick}>

@@ -30,7 +30,7 @@ export default function PlantCard({ usage, plantInfo }: PlantCardProps) {
     <li
       data-shop-id={sidebarState === 'shop' && productId}
       data-plant-id={sidebarState === 'inventory' && plantObjId}
-      className={`flex flex-col gap-1 items-center min-w-[126px] border-2 border-brown-50 rounded-lg bg-repeat bg-[url('/assets/img/bg_paper.png')] font-bold shadow-outer/down ${PLANT_CARD_SIZE[usage]}`}>
+      className={`flex flex-col gap-1 items-center min-w-[126px] border-2 border-brown-50 rounded-lg bg-repeat bg-[url('/assets/img/bg_paper.png')] font-bold shadow-outer/down hover:scale-105 transition-transform ${PLANT_CARD_SIZE[usage]}`}>
       <Plant
         name={korName}
         imageUrl={imageUrlTable.sm}

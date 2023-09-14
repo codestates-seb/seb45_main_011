@@ -10,7 +10,7 @@ export default function Profile() {
   const currentState = useSignModalStore((state) => state.currentState);
 
   return (
-    <div className="flex justify-center items-center h-full bg-cover bg-center bg-no-repeat bg-[url('/assets/img/bg_default.png')] pt-[120px]">
+    <div className="flex flex-col justify-center items-center mx-4">
       <ProfileBox />
 
       {currentState === 'ChangePasswordModal' && <ChangePasswordModal />}

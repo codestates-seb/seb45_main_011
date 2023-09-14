@@ -1,11 +1,18 @@
 import { InputValues } from '@/types/common';
 
 interface convertToFormDataParameters {
-  usage: 'addLeaf' | 'editLeaf' | 'addDiary' | 'editDiary';
+  usage:
+    | 'addLeaf'
+    | 'editLeaf'
+    | 'addDiary'
+    | 'editDiary'
+    | 'addPost'
+    | 'editPost';
   inputs: InputValues;
   leafId?: number;
   isImageUpdated?: boolean;
   userId?: number;
+  tags?: string[];
 }
 
 export default function convertToFormData({
@@ -14,6 +21,7 @@ export default function convertToFormData({
   leafId,
   isImageUpdated,
   userId,
+  tags,
 }: convertToFormDataParameters) {
   const formData = new FormData();
 
@@ -88,6 +96,41 @@ export default function convertToFormData({
     if (isImageUpdated) formData.append('image', inputs.image[0]);
     formData.append('patchDto', patchDtoBlob);
     formData.append('leafAuthor', leafAuthorBlob);
+
+    return formData;
+  }
+
+  if (usage === 'addPost') {
+    const requestBoardDto = JSON.stringify({
+      title: inputs.title,
+      content: inputs.diaryContent,
+      hashTags: tags,
+    });
+
+    const requestBoardDtoBlob = new Blob([requestBoardDto], {
+      type: 'application/json',
+    });
+
+    inputs.image && formData.append('image', inputs.image[0]);
+    formData.append('requestBoardDto', requestBoardDtoBlob);
+
+    return formData;
+  }
+
+  if (usage === 'editPost') {
+    const requestBoardDto = JSON.stringify({
+      title: inputs.title,
+      content: inputs.diaryContent,
+      hashTags: tags,
+      isImageUpdated,
+    });
+
+    const requestBoardDtoBlob = new Blob([requestBoardDto], {
+      type: 'application/json',
+    });
+
+    inputs.image && formData.append('image', inputs.image[0]);
+    formData.append('requestBoardDto', requestBoardDtoBlob);
 
     return formData;
   }

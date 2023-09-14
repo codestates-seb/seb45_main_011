@@ -61,7 +61,7 @@ export default function Leafs({ params }: LeafsProps) {
   // TODO 클릭한 유저 정보 받아와야 한다. (클릭한 유저이름을 상태로 저장? 아니면 서버로 요청?)
   return (
     <div className="flex justify-center items-center pt-[120px]">
-      <div className="relative w-full max-w-[720px] h-[528px] border-gradient rounded-xl shadow-container">
+      <div className="relative w-full min-w-[312px] max-w-[732px] h-[528px] mx-4 border-gradient rounded-xl shadow-container">
         <ShareButton />
         <Screws />
         <div className="pt-5 pb-4 pl-6 pr-5 flex flex-col gap-5">
@@ -74,7 +74,7 @@ export default function Leafs({ params }: LeafsProps) {
                 : `${leafs[0].displayName}님의 식물 카드`
             }
           />
-          <div className="pr-3 w-full h-[404px] overflow-y-scroll scrollbar grid grid-cols-3 gap-4 place-items-center items-start max-[730px]:grid-cols-2 max-[530px]:grid-cols-1">
+          <div className="pt-2 pb-2 pl-2 pr-4 w-full h-[404px] overflow-y-scroll scrollbar grid grid-cols-3 gap-4 place-items-center items-start max-[730px]:grid-cols-2 max-[530px]:grid-cols-1">
             {/** userId와 pathUserId가 일치하면 식물 카드 추가 버튼 렌더링 */}
             {userId === pathUserId && <AddLeafButton userId={userId} />}
             {/* leaf를 구조분해 할당해서 사용 */}
