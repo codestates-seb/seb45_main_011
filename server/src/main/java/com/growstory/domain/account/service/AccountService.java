@@ -161,17 +161,17 @@ public class AccountService {
         accountRepository.delete(findAccount);
     }
 
+    public Boolean verifyPassword(AccountDto.PasswordVerify passwordVerifyDto) {
+        Account findAccount = authUserUtils.getAuthUser();
+
+        return passwordEncoder.matches(passwordVerifyDto.getPassword(), findAccount.getPassword());
+    }
+
     private void verifyExistsEmail(String email) {
         Optional<Account> findAccount = accountRepository.findByEmail(email);
 
         if(findAccount.isPresent())
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_ALREADY_EXISTS);
-    }
-
-    public Boolean verifyPassword(AccountDto.PasswordVerify passwordVerifyDto) {
-        Account findAccount = authUserUtils.getAuthUser();
-
-        return passwordEncoder.matches(passwordVerifyDto.getPassword(), findAccount.getPassword());
     }
 
     @Transactional(readOnly = true)

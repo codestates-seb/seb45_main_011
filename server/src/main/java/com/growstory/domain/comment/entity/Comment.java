@@ -40,7 +40,7 @@ public class Comment extends BaseTimeEntity {
     private List<CommentLike> commentLikes = new ArrayList<>();
 
 
-    @Builder
+    @Builder(toBuilder = true)
     public Comment(Long commentId, String content, Account account, Board board) {
         this.commentId = commentId;
         this.content = content;

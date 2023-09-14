@@ -88,6 +88,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
 //        response.setStatus(HttpStatus.TEMPORARY_REDIRECT.value());
 //        response.setHeader("Location", "http://localhost:8888/v1/accounts/oauth/login");
 
+//        client growstory.com => server api.growstory.com => cookie.setDomain(".growstory.com")
 //        response = addCookies(response, account, accessToken, refreshToken);
 //        HttpSession httpSession = request.getSession(true);
 //        httpSession.setAttribute("accessToken", accessToken);
