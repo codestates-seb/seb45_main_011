@@ -128,16 +128,20 @@ public class AccountServiceTest {
         이미지_수정() throws IOException {
         }
 
+        private void uploadImage() {
+            given(s3Uploader.uploadImageToS3(Mockito.any(MockMultipartFile.class), Mockito.anyString()))
+                    .willReturn(s3ImageUrl);
+            given(accountRepository.save(Mockito.any(Account.class)))
+                    .willReturn(account.toBuilder().profileImageUrl(s3ImageUrl).build());
+        }
+
         @Test
         public void 기존_이미지가_존재할_때() {
             given(authUserUtils.getAuthUser()).willReturn(account);
 
             willDoNothing().given(s3Uploader).deleteImageFromS3(Mockito.anyString(), Mockito.anyString());
 
-            given(s3Uploader.uploadImageToS3(Mockito.any(MockMultipartFile.class), Mockito.anyString()))
-                    .willReturn(s3ImageUrl);
-            given(accountRepository.save(Mockito.any(Account.class)))
-                    .willReturn(account.toBuilder().profileImageUrl(s3ImageUrl).build());
+            uploadImage();
 
             // when
             accountService.updateProfileImage(testImage);
@@ -151,10 +155,7 @@ public class AccountServiceTest {
             given(authUserUtils.getAuthUser())
                     .willReturn(account.toBuilder().profileImageUrl(null).build());
 
-            given(s3Uploader.uploadImageToS3(Mockito.any(MockMultipartFile.class), Mockito.anyString()))
-                    .willReturn(s3ImageUrl);
-            given(accountRepository.save(Mockito.any(Account.class)))
-                    .willReturn(account.toBuilder().profileImageUrl(s3ImageUrl).build());
+            uploadImage();
 
             // when
             accountService.updateProfileImage(testImage);
@@ -162,55 +163,17 @@ public class AccountServiceTest {
             // then
             verify(s3Uploader, times(0)).deleteImageFromS3(Mockito.anyString(), Mockito.anyString());
         }
-
     }
-//    public void 기존_이미지가_존재할_때_이미지_수정() throws IOException {
-//        // given
-//
-//    }
-//
-//    @Test
-//    public void 기존_이미지가_없을_때_이미지_수정() throws IOException {
-//        // given
-//        MockMultipartFile testImage = new MockMultipartFile("profileImage",
-//                "testImage.jpg",
-//                "jpg",
-//                new FileInputStream("src/test/resources/images/testImage.jpg"));
-//        String s3ImageUrl = "s3/path";
-//
-//        Account account = getAccount(1L, "user1@gmail.com", "user1",
-//                "user1234", null, Point.builder().build(),
-//                List.of("USER"), Account.AccountGrade.GRADE_BRONZE);
-//
-//        given(authUserUtils.getAuthUser())
-//                .willReturn(account);
-//
-//        given(s3Uploader.uploadImageToS3(Mockito.any(MockMultipartFile.class), Mockito.anyString()))
-//                .willReturn(s3ImageUrl);
-//        given(accountRepository.save(Mockito.any(Account.class)))
-//                .willReturn(account.toBuilder().profileImageUrl(s3ImageUrl).build());
-//
-//        // when
-//        accountService.updateProfileImage(testImage);
-//
-//        // then
-//        verify(s3Uploader, times(0)).deleteImageFromS3(Mockito.anyString(), Mockito.anyString());
-//    }
-//    @Test
-//    @DisplayName("회원가입")
-//    public void createAccountTest() {
-//        // given
-//        AccountDto.Post requestDto = AccountDto.Post.builder()
-//                .email("user@gmail.com")
-//                .displayName("user1")
-//                .password("user1234")
-//                .build();
-//
-//        // when
-//
-//
-//        // then
-//    }
+
+
+    @Nested
+    class 사용자_검증 {
+
+        @Test
+        public void 로그인된_사용자가_입력과_동일할_때() {
+
+        }
+    }
 
     @DisplayName("isAuthIdMatching 테스트 : 입력과 동일한 사용자")
     @Test

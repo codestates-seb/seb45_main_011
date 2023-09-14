@@ -211,7 +211,9 @@ public class BoardService {
                 .stream()
                 .findFirst()
                 .orElse(null);        // delete Board Image in S3
-        boardImageService.deleteBoardImage(boardImage);
+
+        if (boardImage != null)
+            boardImageService.deleteBoardImage(boardImage);
 
         List<HashTag> findHashTag = hashTagRepository.findHashtagsByBoardId(boardId);
         hashTagRepository.deleteAll(findHashTag);
