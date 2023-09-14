@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import InfiniteScroll from 'react-infinite-scroller';
 
@@ -7,17 +8,20 @@ import { getCommentWrittenByPage } from '@/api/history';
 
 import HistoryPostCard from './HistoryPostCard';
 
+import LoadingMessage from '../common/LoadingMessage';
+import ErrorMessage from '../common/ErrorMessage';
+
 import { HistoryBoradProps } from '@/types/common';
-import { useRouter } from 'next/navigation';
 
 export default function HistoryComment({ paramsId }: HistoryBoradProps) {
   const router = useRouter();
+
   const { data, fetchNextPage, hasNextPage, isLoading, isError } =
     useInfiniteQuery(
       ['commentWritten'],
       ({ pageParam = 1 }) => getCommentWrittenByPage({ pageParam }, paramsId),
       {
-        getNextPageParam: (lastPage, allPosts) => {
+        getNextPageParam: (lastPage) => {
           return lastPage.pageInfo.page !== lastPage.pageInfo.totalPages
             ? lastPage.pageInfo.page + 1
             : undefined;
@@ -60,6 +64,16 @@ export default function HistoryComment({ paramsId }: HistoryBoradProps) {
           )}
         </div>
       ))}
+      {isLoading && (
+        <div className="flex justify-center items-center">
+          <LoadingMessage />
+        </div>
+      )}
+      {isError && (
+        <div className="flex justify-center items-center">
+          <ErrorMessage />
+        </div>
+      )}
     </>
   );
 }

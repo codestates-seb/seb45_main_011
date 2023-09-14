@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { postCodeByEmail, postCreateUser } from '@/api/user';
+import { postCreateUser, sendCodeByEmail } from '@/api/user';
 
 import useSignModalStore from '@/stores/signModalStore';
 import useSignStore from '@/stores/signStore';
@@ -30,21 +30,17 @@ export default function SignupForm() {
 
   const successedCode = currentState === 'Successed';
 
-  // d
-  const handleValiateEmail = () => {
+  const handleValidateEmail = () => {
     changeState('AuthEmailModal');
   };
 
   const email = watch('email');
-  const password = watch('password');
-  const nickname = watch('nickname');
 
   const onSignup: SubmitHandler<SignFormValue> = async ({
     email,
     password,
     nickname,
   }: SignFormValue) => {
-    // 세밀한 처리를 위해 try, catch 사용
     try {
       await postCreateUser(email, password, nickname);
 
@@ -59,12 +55,11 @@ export default function SignupForm() {
     }
   };
 
-  // sendCodeWithEmail
-  const postCode = async (email: string) => {
+  const sendCodeWithEmail = async (email: string) => {
     if (!email) return;
 
     try {
-      const response = await postCodeByEmail(email);
+      const response = await sendCodeByEmail(email);
       setCode(response.data.data.authCode);
     } catch (error) {
       console.error(error);
@@ -82,18 +77,20 @@ export default function SignupForm() {
               size="sm"
               children={successedCode ? '인증 완료!' : '이메일 인증하기'}
               onOpen={() => {
-                handleValiateEmail();
-                postCode(email);
+                handleValidateEmail();
+                sendCodeWithEmail(email);
               }}
               disabled={successedCode}
             />
           </div>
+
           <SignInput
             type="nickname"
             register={register}
             errors={errors}
             disabled={!successedCode}
           />
+
           <SignPasswordInput
             tag="password"
             register={register}
@@ -101,6 +98,7 @@ export default function SignupForm() {
             watch={watch}
             disabled={!successedCode}
           />
+
           <SignPasswordInput
             tag="passwordCheck"
             register={register}
@@ -108,6 +106,7 @@ export default function SignupForm() {
             watch={watch}
             disabled={!successedCode}
           />
+
           <div className="flex flex-col justify-center items-center gap-3">
             <CommonButton
               type="submit"

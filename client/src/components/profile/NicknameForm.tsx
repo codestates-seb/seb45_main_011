@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { updateUserNickname } from '@/api/profile';
@@ -19,9 +18,7 @@ type Token = {
 };
 
 export default function NicknameForm({ token }: Token) {
-  const { setDisplayName, displayName, isGoogleLogin } = useUserStore();
-  const [newNickname, setNewNickname] = useState(displayName);
-  const changeState = useSignModalStore((state) => state.changeState);
+  const { setDisplayName, displayName } = useUserStore();
   const {
     register,
     handleSubmit,
@@ -31,18 +28,19 @@ export default function NicknameForm({ token }: Token) {
     setValue,
   } = useForm<InputValues>();
 
+  const changeState = useSignModalStore((state) => state.changeState);
+
+  const nickname = watch('nickname');
+
   useEffect(() => {
     setValue('nickname', displayName);
   }, [displayName]);
 
-  const nickname = watch('nickname');
-
   const updateNickName = async () => {
     if (!nickname) return;
 
-    const res = await updateUserNickname(nickname, token);
-
-    if (res.status === 204) setDisplayName(nickname);
+    await updateUserNickname(nickname, token);
+    setDisplayName(nickname);
 
     reset();
     changeState('ChangeNicknameModal');

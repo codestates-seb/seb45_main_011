@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
+import { useRef, useState } from 'react';
 
 import { updateUserProfileImage } from '@/api/profile';
 
@@ -48,12 +47,6 @@ export default function ImageForm({ token }: Token) {
     }
   };
 
-  const profileImage = () => {
-    if (!profileImageUrl) return '/assets/img/bg_default_profile.png';
-
-    return imageUrl || profileImageUrl;
-  };
-
   const onImageSubmit = () => {
     if (image && token) {
       updateUserProfileImage(image[0], token);
@@ -61,43 +54,37 @@ export default function ImageForm({ token }: Token) {
     }
   };
 
-  useEffect(() => {
-    if (!profileImageUrl) {
-      setProfileImageUrl(imageUrl);
-    }
-  }, []);
-
   return (
-    <form>
-      <div className="flex flex-col items-center justify-center">
-        {isClient && (
-          <Image
-            src={profileImage()}
-            className="rounded-[50%] border-brown-50 border-[3px] cursor-pointer mb-4 shadow-outer/down"
-            alt="profile_img"
-            width={100}
-            height={100}
-            onClick={() => imageUploadRef.current?.click()}
-          />
-        )}
-        <input
-          type="file"
-          accept="image/*"
-          className="hidden"
-          ref={imageUploadRef}
-          onChange={onImageChange}
-        />
-        <CommonButton
-          type="submit"
-          size="sm"
-          children="이미지 등록"
-          className="w-[100px] h-8 mb-3"
-          onSubmit={onImageSubmit}
-        />
-        <p className="text-gray-70 text-xs mb-8">
-          2mb 이하의 이미지만 등록이 가능합니다.
-        </p>
-      </div>
-    </form>
+    <>
+      {isClient && (
+        <form>
+          <div className="flex flex-col items-center justify-center">
+            <img
+              src={imageUrl || '/assets/img/bg_default_profile.png'}
+              className="w-[100px] h-[100px] rounded-[50%] border-brown-50 border-[3px] cursor-pointer mb-4 shadow-outer/down"
+              alt="profile_img"
+              onClick={() => imageUploadRef.current?.click()}
+            />
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              ref={imageUploadRef}
+              onChange={onImageChange}
+            />
+            <CommonButton
+              type="submit"
+              size="sm"
+              children="이미지 등록"
+              className="w-[100px] h-8 mb-3"
+              onSubmit={onImageSubmit}
+            />
+            <p className="text-gray-70 text-xs mb-8">
+              2mb 이하의 이미지만 등록이 가능합니다.
+            </p>
+          </div>
+        </form>
+      )}
+    </>
   );
 }

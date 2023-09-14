@@ -27,7 +27,7 @@ export default function SigninForm() {
 
   const router = useRouter();
 
-  const { changeState } = useSignModalStore();
+  const changeState = useSignModalStore((state) => state.changeState);
   const { getSigninForm, getSignupForm } = useSignStore();
   const { setIsLogin, setUser } = useUserStore();
 
@@ -38,7 +38,7 @@ export default function SigninForm() {
     try {
       const response = await postUserInfo(email, password);
 
-      const userId = response.data.accountId;
+      const userId = String(response.data.accountId);
       const accessToken = response.headers.authorization;
       const refreshToken = response.headers.refresh;
       const displayName = decodeURIComponent(response.data.displayName);

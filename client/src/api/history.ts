@@ -3,14 +3,14 @@ import axios from 'axios';
 const url = process.env.NEXT_PUBLIC_API_URL;
 
 export const getUserInfo = async (id: string) => {
-  const response = await axios.get(`${url}/v1/accounts/${id}`);
+  const response = await axios.get(`${url}/accounts/${id}`);
 
   return response;
 };
 
 export const postUserPassword = async (password: string, token: string) => {
   const response = await axios.post(
-    `${url}/v1/accounts/password/verification`,
+    `${url}/accounts/password/verification`,
     {
       password,
     },
@@ -23,7 +23,7 @@ export const postUserPassword = async (password: string, token: string) => {
 };
 
 export const deleteUser = async (token: string) => {
-  const response = await axios.delete(`${url}/v1/accounts`, {
+  const response = await axios.delete(`${url}/accounts`, {
     headers: { Authorization: token },
   });
 
@@ -32,7 +32,7 @@ export const deleteUser = async (token: string) => {
 
 export const getBoardWrittenByPage = async ({ pageParam = 1 }, id: string) => {
   const response = await axios
-    .get(`${url}/v1/accounts/boardWritten/${id}?page=${pageParam}`)
+    .get(`${url}/accounts/boardWritten/${id}?page=${pageParam}`)
     .then((response) => response.data);
 
   return { boardWritten: response.data, pageInfo: response.pageInfo };
@@ -40,7 +40,7 @@ export const getBoardWrittenByPage = async ({ pageParam = 1 }, id: string) => {
 
 export const getBoardLikedByPage = async ({ pageParam = 1 }, id: string) => {
   const response = await axios
-    .get(`${url}/v1/accounts/boardLiked/${id}?page=${pageParam}`)
+    .get(`${url}/accounts/boardLiked/${id}?page=${pageParam}`)
     .then((response) => response.data);
 
   return { boardLiked: response.data, pageInfo: response.pageInfo };
@@ -51,7 +51,7 @@ export const getCommentWrittenByPage = async (
   id: string,
 ) => {
   const response = await axios
-    .get(`${url}/v1/accounts/commentWritten/${id}?page=${pageParam}`)
+    .get(`${url}/accounts/commentWritten/${id}?page=${pageParam}`)
     .then((response) => response.data);
 
   return { commentWritten: response.data, pageInfo: response.pageInfo };

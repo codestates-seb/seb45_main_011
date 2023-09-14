@@ -16,7 +16,7 @@ export default function AuthEmailModal() {
   const { register, watch } = useForm<SignFormValue>();
 
   const { close, changeState } = useSignModalStore();
-  const { code } = useSignStore();
+  const code = useSignStore((state) => state.code);
 
   const userCode = watch('code');
 
@@ -44,6 +44,7 @@ export default function AuthEmailModal() {
           </div>
           <SignModalInput type="code" register={register} />
         </div>
+
         <div className="flex gap-2 mt-6">
           <CommonButton
             type="button"

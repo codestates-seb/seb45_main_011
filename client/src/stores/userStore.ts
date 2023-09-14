@@ -10,12 +10,9 @@ interface UserInfo {
   displayName: string;
   profileImageUrl: string;
 }
-
 interface User extends UserInfo {
   isLogin: boolean;
   isGoogleLogin: boolean;
-
-  leafCard: number;
 
   setUser: (userInfo: UserInfo) => void;
 
@@ -24,8 +21,6 @@ interface User extends UserInfo {
 
   setProfileImageUrl: (profileImageUrl: string) => void;
   setDisplayName: (displayName: string) => void;
-
-  getLeafCard: (leafCard: number) => void;
 
   setClear: () => void;
 }
@@ -42,8 +37,6 @@ const useUserStore = create(
       userId: '',
       displayName: '',
       profileImageUrl: '',
-
-      leafCard: 0,
 
       setIsLogin: (isLogin) => {
         set({ isLogin: isLogin });
@@ -69,10 +62,6 @@ const useUserStore = create(
         });
       },
 
-      getLeafCard: (leafCard) => {
-        set({ leafCard });
-      },
-
       setProfileImageUrl: (profileImageUrl) => {
         set({ profileImageUrl });
       },
@@ -90,8 +79,7 @@ const useUserStore = create(
 
           userId: '',
           displayName: '',
-          profileImageUrl: '',
-          leafCard: 0,
+          profileImageUrl: '/assets/img/bg_default_profile.png',
         }),
     }),
     {

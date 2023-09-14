@@ -10,14 +10,16 @@ import Modal from '../common/Modal';
 import ModalPortal from '../common/ModalPortal';
 
 export default function SuccessedModal() {
-  const { close } = useSignModalStore();
-  const setClear = useUserStore((state) => state.setClear);
   const router = useRouter();
+
+  const close = useSignModalStore((state) => state.close);
+  const setClear = useUserStore((state) => state.setClear);
 
   const allCloseData = () => {
     setClear();
     sessionStorage.clear();
     close();
+
     router.push('/');
   };
 

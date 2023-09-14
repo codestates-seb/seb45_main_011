@@ -15,8 +15,10 @@ export default function SignupIntro() {
       <Screws />
       <div className="flex flex-col items-center gap-8">
         <Logo size="medium" />
+
         {isEmailSignup ? <SignupForm /> : <SignButton />}
       </div>
+
       <div className="mt-3">
         <SignLink
           type="signin"

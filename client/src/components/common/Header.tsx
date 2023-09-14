@@ -16,18 +16,6 @@ export default function Header() {
   const { isLogin, isGoogleLogin, profileImageUrl } = useUserStore();
   const isClient = useClient();
 
-  const profileImage = () => {
-    if (!profileImageUrl) return '/assets/img/bg_default_profile.png';
-
-    if (isLogin || isGoogleLogin) {
-      return profileImageUrl as string;
-    }
-
-    return '/assets/img/bg_default_profile.png';
-  };
-
-  // 1. 문제인식을 나는 어떻게 했는가? 2.문제를 해결하기 위한 삽질과정 3.결과 4. 느낀점
-
   return (
     <>
       <header
@@ -72,12 +60,12 @@ export default function Header() {
               title="leafCard"
             />
           </li>
-          {isClient && (isLogin || isGoogleLogin) ? ( // 서버에 있을때 다르게 동작
+          {isClient && (isLogin || isGoogleLogin) ? (
             <li
               onMouseOver={() => setIsHover(true)}
               onMouseLeave={() => setIsHover(false)}>
               <Image
-                src={profileImage()}
+                src={profileImageUrl || '/assets/img/bg_default_profile.png'}
                 alt="profile_img"
                 className={`rounded-[50%] border-brown-50 border-[3px] w-11 h-11 cursor-pointer `}
                 width={44}

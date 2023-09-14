@@ -14,7 +14,7 @@ export default function History() {
   const { id } = useParams();
   const pathId = id as string;
 
-  const { currentState } = useSignModalStore();
+  const currentState = useSignModalStore((state) => state.currentState);
 
   return (
     <div className="flex justify-center items-center h-full bg-cover bg-center bg-no-repeat bg-[url('/assets/img/bg_default.png')] pt-[120px]">
