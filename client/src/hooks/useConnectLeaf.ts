@@ -9,7 +9,7 @@ import { PlantObj } from '@/types/data';
 interface ConnectParameters {
   userId: string;
   plantObjId: number;
-  selectedLeafId: number | null;
+  selectedLeafId: string | null;
 }
 
 const useConnectLeaf = () => {

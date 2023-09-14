@@ -2,11 +2,11 @@ import { create } from 'zustand';
 
 interface LeafsState {
   isModalOpen: boolean;
-  deleteTargetLeafsId: number | null;
+  deleteTargetLeafsId: string | null;
 
   modalOpen: () => void;
   modalClose: () => void;
-  setDeleteTargetId: (deleteTargetId: number) => void;
+  setDeleteTargetId: (deleteTargetId: string) => void;
 }
 
 const useLeafsStore = create<LeafsState>((set) => ({

@@ -4,7 +4,7 @@ import { DiaryDataInfo } from '@/types/data';
 
 interface LeafDiaryProps {
   diaries: DiaryDataInfo[];
-  pathUserId: number;
+  pathUserId: string;
 }
 
 export default function LeafDiary({ diaries, pathUserId }: LeafDiaryProps) {

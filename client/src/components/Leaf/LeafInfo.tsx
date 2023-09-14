@@ -7,12 +7,12 @@ import PageTitle from '../common/PageTitle';
 import CommonButton from '../common/CommonButton';
 
 interface LeafInfoProps {
-  pathUserId: number;
+  pathUserId: string;
   leafName: string;
   imageUrl: string;
   content: string;
   createdAt: string;
-  userId: number | null;
+  userId: string | null;
 }
 
 export default function LeafInfo({
