@@ -6,7 +6,7 @@ import { updateUserProfileImage } from '@/api/profile';
 
 import useUserStore from '@/stores/userStore';
 
-import useClient from '@/hooks/useClient';
+// import useClient from '@/hooks/useClient';
 
 import CommonButton from '../common/CommonButton';
 
@@ -17,7 +17,7 @@ interface ImageFormProps extends DefaultProps {
 }
 
 export default function ImageForm({ token, className }: ImageFormProps) {
-  const isClient = useClient();
+  // const isClient = useClient();
   const { profileImageUrl, setProfileImageUrl } = useUserStore();
 
   const [image, setImage] = useState<FileList>();
@@ -58,35 +58,35 @@ export default function ImageForm({ token, className }: ImageFormProps) {
 
   return (
     <>
-      {isClient && (
-        <form>
-          <div className="flex flex-col items-center justify-center">
-            <img
-              src={imageUrl || '/assets/img/bg_default_profile.png'}
-              className="w-[100px] h-[100px] rounded-[50%] border-brown-50 border-[3px] cursor-pointer mb-4 shadow-outer/down"
-              alt="profile_img"
-              onClick={() => imageUploadRef.current?.click()}
-            />
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              ref={imageUploadRef}
-              onChange={onImageChange}
-            />
-            <CommonButton
-              type="submit"
-              size="sm"
-              children="이미지 등록"
-              className="w-[100px] h-8 mb-3"
-              onSubmit={onImageSubmit}
-            />
-            <p className="text-gray-70 text-xs mb-8">
-              2mb 이하의 이미지만 등록이 가능합니다.
-            </p>
-          </div>
-        </form>
-      )}
+      {/* {isClient && ( */}
+      <form className={className}>
+        <div className="flex flex-col items-center justify-center">
+          <img
+            src={imageUrl || '/assets/img/bg_default_profile.png'}
+            className="w-[100px] h-[100px] rounded-[50%] border-brown-50 border-[3px] cursor-pointer mb-4 shadow-outer/down"
+            alt="profile_img"
+            onClick={() => imageUploadRef.current?.click()}
+          />
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            ref={imageUploadRef}
+            onChange={onImageChange}
+          />
+          <CommonButton
+            type="submit"
+            size="sm"
+            children="이미지 등록"
+            className="w-[100px] h-8 mb-3"
+            onSubmit={onImageSubmit}
+          />
+          <p className="text-gray-70 text-xs mb-8">
+            2mb 이하의 이미지만 등록이 가능합니다.
+          </p>
+        </div>
+      </form>
+      {/* )} */}
     </>
   );
 }
