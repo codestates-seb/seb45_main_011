@@ -149,7 +149,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
 
     private Cookie createCookie(String key, String value) {
         Cookie cookie = new Cookie(key, value);
-        cookie.setDomain(".amazonaws.com");
+        cookie.setDomain("amazonaws.com");
         cookie.setPath("/");
 //        cookie.setMaxAge(180);
 
