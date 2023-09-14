@@ -54,7 +54,7 @@ const getTypeFormat = (
           message: '6-12글자의 영문과 숫자를 함께 사용해야 합니다.',
         },
       },
-      placeholder: '변경할 비밀번호를 입력해주세요.',
+      placeholder: '새 비밀번호를 입력해주세요.',
     };
   }
   if (name === 'newPasswordCheck' && watch) {
@@ -64,7 +64,7 @@ const getTypeFormat = (
         validate: (value: string) =>
           value === watch('newPassword') || '비밀번호가 일치하지 않습니다.',
       },
-      placeholder: '동일한 비밀번호를 다시 입력해주세요.',
+      placeholder: '비밀번호를 다시 입력해주세요.',
     };
   }
   return null;
@@ -89,6 +89,7 @@ export default function PasswordInput({
         className,
       )}>
       <input
+        id={name}
         required={required}
         className="w-full h-[36px] bg-white-10 border-2 border-brown-70 p-3 rounded-lg shadow-outer/down text-xs leading-3 placeholder:text-gray-50 focus:outline-0"
         type="password"
