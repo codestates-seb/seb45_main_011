@@ -6,7 +6,7 @@ import ModalPortal from '../common/ModalPortal';
 import Modal from '../common/Modal';
 
 interface LeafModalProps {
-  modalCategory: 'add' | 'edit' | 'delete' | null;
+  modalCategory: 'add' | 'edit' | 'delete' | 'share' | null;
   leafId: string;
   userId: string;
 }

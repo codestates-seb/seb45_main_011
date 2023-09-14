@@ -3,7 +3,7 @@ import { create } from 'zustand';
 
 interface LeafState {
   isModalOpen: boolean;
-  modalCategory: 'add' | 'delete' | 'edit' | null;
+  modalCategory: 'add' | 'delete' | 'edit' | 'share' | null;
   targetDiary: DiaryDataInfo | null;
   lastDiaryDay: Date | null;
   startDay: Date | null;
@@ -11,7 +11,9 @@ interface LeafState {
   modalOpen: () => void;
   modalClose: () => void;
 
-  setModalCategory: (modalCategory: 'add' | 'delete' | 'edit') => void;
+  setModalCategory: (
+    modalCategory: 'add' | 'delete' | 'edit' | 'share' | null,
+  ) => void;
   setTargetDiary: (diary: DiaryDataInfo) => void;
   setLastDiaryDay: (day: Date) => void;
   setStartDay: (day: Date) => void;

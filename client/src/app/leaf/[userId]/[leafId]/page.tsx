@@ -21,6 +21,7 @@ import LeafModal from '@/components/leaf/LeafModal';
 import ShareButton from '@/components/common/ShareButton';
 import LoadingNotice from '@/components/common/LoadingNotice';
 import ErrorMessage from '@/components/common/ErrorMessage';
+import ShareModal from '@/components/common/ShareModal';
 
 import { DiaryDataInfo, LeafDataInfo } from '@/types/data';
 
@@ -86,7 +87,7 @@ export default function Leaf({ params }: LeafProps) {
   return (
     <div className="flex justify-center items-center pt-[120px] pb-[60px]">
       <div className="relative w-full min-w-[312px] max-w-[560px] h-[645px] mx-4 border-gradient rounded-xl shadow-container">
-        <ShareButton />
+        <ShareButton location="leaf" />
         <div className="h-full pl-4 pr-1 py-8 mr-2">
           <Screws />
           {isLoading && (
@@ -124,13 +125,17 @@ export default function Leaf({ params }: LeafProps) {
         </div>
       </div>
 
-      {isModalOpen && isOwner && (
-        <LeafModal
-          modalCategory={modalCategory}
-          leafId={pathLeafId}
-          userId={userId}
-        />
-      )}
+      {isModalOpen &&
+        isOwner &&
+        (modalCategory === 'share' ? (
+          <ShareModal location="leaf" />
+        ) : (
+          <LeafModal
+            modalCategory={modalCategory}
+            leafId={pathLeafId}
+            userId={userId}
+          />
+        ))}
     </div>
   );
 }

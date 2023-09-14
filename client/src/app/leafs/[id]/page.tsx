@@ -19,6 +19,7 @@ import { LeafDeleteModal } from '@/components/leafs/LeafDeleteModal';
 import LoadingNotice from '@/components/common/LoadingNotice';
 import ErrorMessage from '@/components/common/ErrorMessage';
 import ShareButton from '@/components/common/ShareButton';
+import ShareModal from '@/components/common/ShareModal';
 
 import { LeafsDataInfo } from '@/types/data';
 
@@ -30,7 +31,7 @@ export default function Leafs({ params }: LeafsProps) {
   const pathUserId = params.id;
 
   const { userId } = useUserStore();
-  const isModalOpen = useLeafsStore((state) => state.isModalOpen);
+  const { isModalOpen, modalCategory } = useLeafsStore();
 
   const router = useRouter();
 
@@ -53,7 +54,7 @@ export default function Leafs({ params }: LeafsProps) {
   return (
     <div className="flex justify-center items-center pt-[120px] pb-[60px]">
       <div className="relative w-full min-w-[312px] max-w-[732px] h-[528px] mx-4 border-gradient rounded-xl shadow-container">
-        <ShareButton />
+        <ShareButton location="leafs" />
         <Screws />
         {isLoading && (
           <div className="w-full h-full flex justify-center items-center">
@@ -95,9 +96,12 @@ export default function Leafs({ params }: LeafsProps) {
         )}
       </div>
 
-      {isModalOpen && (
-        <LeafDeleteModal pathUserId={pathUserId} userId={userId} />
-      )}
+      {isModalOpen &&
+        (modalCategory === 'deleteLeaf' ? (
+          <LeafDeleteModal pathUserId={pathUserId} userId={userId} />
+        ) : (
+          <ShareModal location="leafs" />
+        ))}
     </div>
   );
 }
