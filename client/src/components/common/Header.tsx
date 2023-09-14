@@ -10,11 +10,16 @@ import useClient from '@/hooks/useClient';
 import Logo from './Logo';
 import HeaderLink from './HeaderLink';
 import HeaderNav from './HeaderNav';
+import { useParams } from 'next/navigation';
 
 export default function Header() {
   const [isHover, setIsHover] = useState(false);
   const { isLogin, isGoogleLogin, profileImageUrl } = useUserStore();
+
   const isClient = useClient();
+
+  const { id } = useParams();
+  const paramsId = id;
 
   return (
     <>
@@ -41,7 +46,7 @@ export default function Header() {
         <ul className="flex gap-2">
           <li>
             <HeaderLink
-              location="/garden/1"
+              location={`/garden/${paramsId}`}
               content="activity"
               title="garden"
             />
@@ -55,7 +60,7 @@ export default function Header() {
           </li>
           <li>
             <HeaderLink
-              location="/leafs/1"
+              location={`/leafs/${paramsId}`}
               content="activity"
               title="leafCard"
             />
