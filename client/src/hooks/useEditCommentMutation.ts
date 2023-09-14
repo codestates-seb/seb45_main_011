@@ -5,8 +5,8 @@ import { editComment } from '@/api/board';
 import { CommentInputValue } from '@/types/common';
 
 interface useEditCommentMutaionParameters {
-  targetId: number | null;
-  boardId: number;
+  targetId: string | null;
+  boardId: string;
 }
 const useEditCommentMutation = ({
   targetId,
@@ -16,9 +16,9 @@ const useEditCommentMutation = ({
 
   const { mutate } = useMutation({
     mutationFn: (inputs: CommentInputValue) =>
-      editComment(targetId as number, inputs.comment),
+      editComment(targetId as string, inputs.comment),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['post', Number(boardId)] });
+      queryClient.invalidateQueries({ queryKey: ['post', boardId] });
     },
   });
 

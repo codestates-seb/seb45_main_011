@@ -25,7 +25,11 @@ export default function getTextInputTypeFormat(name: string) {
       validationSchema: {
         minLength: {
           value: 2,
-          message: '2글자 이상의 영문 또는 한글을 입력해야 합니다.',
+          message: '2글자 이상 20글자 이하의 영문 또는 한글을 입력해야 합니다.',
+        },
+        maxLength: {
+          value: 20,
+          message: '2글자 이상 20글자 이하의 영문 또는 한글을 입력해야 합니다.',
         },
       },
       placeholder: '제목을 입력해주세요.',

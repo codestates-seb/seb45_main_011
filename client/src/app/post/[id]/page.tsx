@@ -22,6 +22,8 @@ import PostImage from '@/components/post/PostImage';
 import PostProfile from '@/components/post/PostProfile';
 import HashTags from '@/components/post/HashTags';
 import CommentDeleteModal from '@/components/post/CommentDeleteModal';
+import LoadingNotice from '@/components/common/LoadingNotice';
+import ErrorMessage from '@/components/common/ErrorMessage';
 
 import { CommentDataInfo, PostDataInfo } from '@/types/data';
 
@@ -46,7 +48,7 @@ export default function Post({ params }: PostProps) {
     isLoading,
     isError,
   } = useQuery<PostDataInfo>(
-    ['post', Number(boardId)],
+    ['post', boardId],
     () => getPostByBoardId(boardId),
     {
       enabled: !!userId,
@@ -57,66 +59,75 @@ export default function Post({ params }: PostProps) {
     if (post?.comments) setComments(post?.comments);
   }, [post?.comments]);
 
-  if (isError) return <div>error</div>;
-  if (isLoading) return <div>isLoading</div>;
-
-  console.log(post);
-
   return (
     <main className="px-4 flex justify-center items-center pb-[60px]">
-      <div className="relative w-full max-w-[720px] min-w-[328px] h-[864px] border-gradient rounded-xl">
+      <div className="relative w-full max-w-[720px] min-w-[328px] h-[780px] border-gradient rounded-xl">
         <div className="h-full px-5 py-5">
           <Screws />
-          <div className="relative h-full pl-7 flex flex-col max-[450px]:pl-2">
-            <PageTitle text={post.title} className=" mb-7" />
-            <div className="relative w-full flex justify-between items-center mb-4">
-              <PostProfile
-                displayName={post.displayName}
-                userId={post.accountId}
-                profileImageUrl={post.profileImageUrl}
-                grade="브론즈 가드너"
-                usage="post"
-              />
-              <DateAndControl
-                date={new Date(post.createAt)}
-                usage="post"
-                ownerId={String(post.accountId)}
-                targetId={String(post.boardId)}
-              />
+          {isLoading && (
+            <div className="w-full h-full flex justify-center items-center">
+              <LoadingNotice isTransparent={true} />
             </div>
-            <div className="relative pr-5 flex flex-col overflow-y-scroll scrollbar">
-              <div className="px-[1.875rem] py-[1.625rem] w-full bg-brown-10 border-2 border-brown-50 rounded-lg mb-8 common-drop-shadow ">
-                <PostImage src={post.boardImageUrl} />
-                <PostContent content={post.content} />
-                <HashTags hashTags={post.hashTags} />
+          )}
+          {isError && (
+            <div className="w-full h-full flex justify-center items-center">
+              <ErrorMessage />
+            </div>
+          )}
+          {post && (
+            <div className="px-5 h-full flex flex-col max-[450px]:pl-2">
+              <PageTitle text={post.title} className="mb-7 break-words" />
+
+              <div className="relative w-full flex justify-between items-center mb-4">
+                <PostProfile
+                  displayName={post.displayName}
+                  userId={post.accountId}
+                  profileImageUrl={post.profileImageUrl}
+                  grade="브론즈 가드너"
+                  usage="post"
+                />
+                <DateAndControl
+                  date={new Date(post.createAt)}
+                  usage="post"
+                  ownerId={String(post.accountId)}
+                  targetId={String(post.boardId)}
+                />
               </div>
-              <PostCountInfo
-                liked={post.liked}
-                likesNum={post.likeNum}
-                commentNum={comments?.length || 0}
-                usage="post"
-                boardId={post.boardId}
-                className="mb-3"
-              />
-              <CommentForm boardId={post.boardId} />
-              <ul>
-                {comments?.map((comment: CommentDataInfo) => (
-                  <Comment
-                    key={comment.commentId}
-                    comment={comment}
-                    boardId={post.boardId}
-                  />
-                ))}
-              </ul>
+              <div className=" h-full pr-5 flex flex-col overflow-y-scroll scrollbar">
+                <div className="px-[1.875rem] py-[1.625rem] w-full bg-brown-10 border-2 border-brown-50 rounded-lg mb-8 common-drop-shadow ">
+                  <PostImage src={post.boardImageUrl} />
+                  <PostContent content={post.content} />
+                  <HashTags hashTags={post.hashTags} />
+                </div>
+                <PostCountInfo
+                  liked={post.liked}
+                  likesNum={post.likeNum}
+                  commentNum={comments?.length || 0}
+                  usage="post"
+                  boardId={post.boardId}
+                  className="mb-3"
+                />
+                <CommentForm boardId={String(post.boardId)} />
+                <ul>
+                  {comments?.map((comment: CommentDataInfo) => (
+                    <Comment
+                      key={comment.commentId}
+                      comment={comment}
+                      boardId={String(post.boardId)}
+                    />
+                  ))}
+                </ul>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
       {isOpen &&
+        post &&
         (type === 'post' ? (
           <PostDeleteModal />
         ) : (
-          <CommentDeleteModal boardId={post.boardId} />
+          <CommentDeleteModal boardId={String(post?.boardId)} />
         ))}
     </main>
   );
