@@ -41,7 +41,7 @@ export default function Garden({ params }: GardenProps) {
 
   if (isError) return <ErrorNotice isTransparent={false} />;
 
-  const isMyself = userId === params.id;
+  const isOwner = userId === params.id;
 
   return (
     <div className="mx-auto">
@@ -50,8 +50,8 @@ export default function Garden({ params }: GardenProps) {
           <LoadingNotice isTransparent={false} />
         ) : (
           <>
-            <GardenMap isMyself={isMyself} />
-            {isMyself && <GardenSidebar />}
+            <GardenMap isOwner={isOwner} />
+            {isOwner && <GardenSidebar />}
           </>
         )}
       </div>
