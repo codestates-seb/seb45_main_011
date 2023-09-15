@@ -118,17 +118,10 @@ export default function PostForm({ post, postId, mode }: PostFormProps) {
         />
       </div>
       <div className="flex gap-2">
-        <CommonButton
-          type="submit"
-          size="sm"
-          className="hover:scale-110 transition-transform">
+        <CommonButton type="submit" size="sm">
           완료
         </CommonButton>
-        <CommonButton
-          onCancel={handleCancel}
-          type="button"
-          size="sm"
-          className="hover:scale-110 transition-transform">
+        <CommonButton onCancel={handleCancel} type="button" size="sm">
           취소
         </CommonButton>
       </div>

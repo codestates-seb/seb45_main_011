@@ -93,17 +93,10 @@ export default function LeafForm({
         </div>
       </div>
       <div className="flex justify-center gap-2 mb-2">
-        <CommonButton
-          type="submit"
-          size="sm"
-          className="hover:scale-110 transition-transform">
+        <CommonButton type="submit" size="sm">
           완료
         </CommonButton>
-        <CommonButton
-          type="button"
-          size="sm"
-          onClick={cancelEdit}
-          className="hover:scale-110 transition-transform">
+        <CommonButton type="button" size="sm" onClick={cancelEdit}>
           취소
         </CommonButton>
       </div>

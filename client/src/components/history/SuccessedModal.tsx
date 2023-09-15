@@ -43,7 +43,7 @@ export default function SuccessedModal() {
               type="button"
               size="md"
               children="닫기"
-              className="w-[96px] h-[52px] text-[24px] hover:scale-105 transition-transform mb-6"
+              className="w-[96px] h-[52px] text-[24px] mb-6"
               onClose={allCloseData}
             />
           </div>

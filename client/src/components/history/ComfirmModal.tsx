@@ -39,14 +39,14 @@ export default function ComfirmModal() {
           <CommonButton
             type="button"
             size="md"
-            className="w-[96px] h-[52px] text-[24px] hover:scale-105 transition-transform"
+            className="w-[96px] h-[52px] text-[24px]"
             onCheck={hanldeDeleteUser}>
             네
           </CommonButton>
           <CommonButton
             type="button"
             size="md"
-            className="w-[120px] h-[52px] text-[24px] hover:scale-105 transition-transform"
+            className="w-[120px] h-[52px] text-[24px]"
             onClose={close}>
             아니오
           </CommonButton>

@@ -20,14 +20,14 @@ export default function UserButton() {
       <CommonButton
         type="button"
         size="md"
-        className="w-[121px] h-[44px] hover:scale-105 transition-transform"
+        className="w-[121px] h-[44px]"
         onProfile={() => router.push('/profile')}>
         정보 수정
       </CommonButton>
       <CommonButton
         type="button"
         size="md"
-        className="w-[121px] h-[44px] hover:scale-105 transition-transform"
+        className="w-[121px] h-[44px]"
         onOpen={() => handleResignModal()}>
         회원 탈퇴
       </CommonButton>

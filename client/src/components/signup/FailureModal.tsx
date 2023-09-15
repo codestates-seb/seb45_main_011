@@ -28,7 +28,7 @@ export default function FailureModal() {
             <CommonButton
               type="button"
               size="md"
-              className="w-[155px] h-[52px] mb-8 text-[24px] hover:scale-105 transition-transform"
+              className="w-[155px] h-[52px] mb-8 text-[24px]"
               onFailure={handleCodeFailure}>
               뒤로 가기
             </CommonButton>

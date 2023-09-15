@@ -52,18 +52,10 @@ export default function LeafInfo({
       </p>
       {isOwner && (
         <div className="flex gap-2 mb-3">
-          <CommonButton
-            type="button"
-            size="sm"
-            onClick={navigateToGarden}
-            className="hover:scale-105 transition-transform">
+          <CommonButton type="button" size="sm" onClick={navigateToGarden}>
             정원에 설치하기
           </CommonButton>
-          <CommonButton
-            type="button"
-            size="sm"
-            onClick={AddDiary}
-            className="hover:scale-105 transition-transform">
+          <CommonButton type="button" size="sm" onClick={AddDiary}>
             일지 작성
           </CommonButton>
         </div>
