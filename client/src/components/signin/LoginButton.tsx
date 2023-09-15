@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 import useUserStore from '@/stores/userStore';
 import useSignStore from '@/stores/signStore';
@@ -16,13 +17,44 @@ export default function LoginButtion() {
   const router = useRouter();
 
   const getSigninForm = useSignStore((state) => state.getSigninForm);
-  const { isGoogleLogin, setIsGoogleLogin } = useUserStore();
+  const { isGoogleLogin, setIsGoogleLogin, setUser } = useUserStore();
 
   const onGoogleLogin = () => {
     setIsGoogleLogin(true);
-
     router.push(`${googleOauth}`);
   };
+
+  useEffect(() => {
+    const queryString = window?.location?.search;
+    const urlParams = new URLSearchParams(queryString);
+
+    const userId = String(urlParams.get('accountId'));
+    const accessToken = `Bearer ${urlParams.get('access_token')}`;
+    const refreshToken = urlParams.get('refresh_token');
+    const username = urlParams.get('displayName');
+    //! profileIamgeUrl
+    const profileImageUrl = urlParams.get('profileIamgeUrl');
+
+    const displayName = decodeURIComponent(username as string);
+
+    if (
+      userId &&
+      accessToken &&
+      refreshToken &&
+      displayName &&
+      profileImageUrl
+    ) {
+      setUser({
+        accessToken,
+        refreshToken,
+        userId,
+        displayName,
+        profileImageUrl,
+      });
+
+      router.push('/');
+    }
+  }, [isGoogleLogin]);
 
   return (
     <>
