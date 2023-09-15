@@ -36,7 +36,7 @@ export default function PostForm({ post, postId, mode }: PostFormProps) {
 
   const {
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     handleSubmit,
     clearErrors,
     resetField,
@@ -121,7 +121,8 @@ export default function PostForm({ post, postId, mode }: PostFormProps) {
         <CommonButton
           type="submit"
           size="sm"
-          className="hover:scale-110 transition-transform">
+          className="hover:scale-110 transition-transform"
+          disabled={isSubmitting}>
           완료
         </CommonButton>
         <CommonButton
