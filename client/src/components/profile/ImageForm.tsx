@@ -23,6 +23,7 @@ export default function ImageForm({ token, className }: ImageFormProps) {
 
   const [image, setImage] = useState<FileList>();
   const [imageUrl, setImageUrl] = useState(profileImageUrl);
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const imageUploadRef = useRef<HTMLInputElement | null>(null);
 
@@ -47,13 +48,16 @@ export default function ImageForm({ token, className }: ImageFormProps) {
 
       const newFileURL = URL.createObjectURL(file[0]);
       setImageUrl(newFileURL);
+      setIsDisabled(false);
     }
   };
 
   const onImageSubmit = () => {
-    if (image && token) {
+    if (image && token && isDisabled) {
       updateUserProfileImage(image[0], token);
+
       setProfileImageUrl(imageUrl);
+      setIsDisabled(true);
     }
   };
 
@@ -83,6 +87,7 @@ export default function ImageForm({ token, className }: ImageFormProps) {
             children="이미지 등록"
             className="w-[100px] h-8 mb-3 hover:scale-110 transition-transform"
             onSubmit={onImageSubmit}
+            disabled={isDisabled}
           />
           <p className="text-gray-70 text-xs mb-8">
             2mb 이하의 이미지만 등록이 가능합니다.

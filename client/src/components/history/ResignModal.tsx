@@ -15,7 +15,11 @@ import CommonButton from '../common/CommonButton';
 import { SignFormValue } from '@/types/common';
 
 export default function ResignModal() {
-  const { register, watch } = useForm<SignFormValue>();
+  const {
+    register,
+    watch,
+    formState: { isSubmitting },
+  } = useForm<SignFormValue>();
 
   const token = useUserStore((state) => state.accessToken);
   const { close, changeState } = useSignModalStore();
@@ -64,6 +68,7 @@ export default function ResignModal() {
             type="button"
             size="md"
             className="w-[96px] h-[52px] text-[24px] hover:scale-105 transition-transform"
+            disabled={isSubmitting}
             onCheck={handlePasswordCheck}>
             완료
           </CommonButton>

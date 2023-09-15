@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 
 import useUserStore from '@/stores/userStore';
+import useSignStore from '@/stores/signStore';
 
 import useClient from '@/hooks/useClient';
 
@@ -14,7 +15,9 @@ import HeaderNav from './HeaderNav';
 export default function Header() {
   const [isProfileHover, setIsProfileHover] = useState(false);
   const [isMenuHover, setIsMenuHover] = useState(false);
+
   const { userId, isLogin, isGoogleLogin, profileImageUrl } = useUserStore();
+  const getSigninForm = useSignStore((state) => state.getSigninForm);
 
   const isClient = useClient();
 
@@ -106,7 +109,7 @@ export default function Header() {
               )}
             </li>
           ) : (
-            <li>
+            <li onClick={() => getSigninForm(false)}>
               <HeaderLink location="/signin" content="auth" title="signin" />
             </li>
           )}

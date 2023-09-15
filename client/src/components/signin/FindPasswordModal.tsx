@@ -14,7 +14,11 @@ import CommonButton from '../common/CommonButton';
 import { SignFormValue, UserData } from '@/types/common';
 
 export default function FindPasswordModal() {
-  const { register, watch } = useForm<SignFormValue>();
+  const {
+    register,
+    watch,
+    formState: { isSubmitting },
+  } = useForm<SignFormValue>();
   const { close, changeState } = useSignModalStore();
 
   const userEmail = watch('email');
@@ -60,6 +64,7 @@ export default function FindPasswordModal() {
             type="button"
             size="md"
             className="w-[96px] h-[52px] text-[24px] mb-8 hover:scale-105 transition-transform"
+            disabled={isSubmitting}
             onCheck={() => {
               handleEmailCheck(userEmail);
             }}>
