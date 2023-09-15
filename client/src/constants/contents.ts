@@ -116,3 +116,15 @@ export const DROPDOWN_OPTIONS = [
     selected: '댓글을 작성한 게시글',
   },
 ] as const;
+
+export const INFOMATION_TEXT = {
+  diary: '등록된 일지가 없어요 : (',
+  addDiary: '일지를 작성해보세요!',
+
+  board: '등록된 게시글이 없어요 : (',
+  addBoard: '게시글을 작성해보세요!',
+
+  likes: '좋아요한 게시글이 없어요 : (',
+
+  comment: '댓글을 단 게시글이 없어요 : (',
+} as const;

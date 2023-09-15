@@ -39,17 +39,19 @@ export default function ResignModal() {
 
   return (
     <ModalPortal>
-      <Modal className="min-w-[531px] h-[350px] flex flex-col justify-center items-center">
-        <div className="flex flex-col items-center gap-6">
-          <div className="flex flex-col items-center gap-3">
-            <p className="font-bold text-brown-70 text-[32px] leading-5">
+      <Modal className="w-full min-w-[312px] max-w-[531px] h-fit flex flex-col justify-center items-center shadow-container">
+        <div className="flex flex-col items-center gap-6 px-5 mt-10 mx-4">
+          <div className="flex flex-col items-center gap-2">
+            <p className="font-bold text-brown-70 max-[360px]:text-[24px] text-center break-keep leading-8 text-[30px]">
               탈퇴하시려면
             </p>
-            <div className="flex flex-col items-center font-bold text-brown-70 text-[32px]">
-              <p className="text-brown-80 text-4xl">가입 시 등록하셨던</p>
-              <div className="text-brown-80 text-4xl">
+            <div className="flex flex-col items-center gap-2 font-bold text-brown-70 max-[360px]:text-[28px] text-[30px]">
+              <p className="font-bold text-brown-80 max-[360px]:text-[24px] text-center break-keep leading-8 text-[30px]">
+                가입 시 등록하셨던
+              </p>
+              <div className="font-bold text-brown-80 max-[360px]:text-[24px] text-center break-keep leading-8 text-[30px]">
                 비밀번호
-                <span className="text-brown-70 text-[32px]">
+                <span className="text-brown-70 max-[360px]:text-[22px] text-[30px]">
                   를 입력해주세요.
                 </span>
               </div>
@@ -57,21 +59,22 @@ export default function ResignModal() {
           </div>
           <SignModalInput type="password" register={register} />
         </div>
-        <div className="flex gap-2 mt-6">
+        <div className="flex gap-2 mt-6 mb-6">
           <CommonButton
             type="button"
             size="md"
-            children="완료"
-            className="w-[96px] h-[52px] text-[24px]"
-            onCheck={handlePasswordCheck}
-          />
+            className="w-[96px] h-[52px] text-[24px] hover:scale-105 transition-transform"
+            onCheck={handlePasswordCheck}>
+            완료
+          </CommonButton>
+
           <CommonButton
             type="button"
             size="md"
-            children="취소"
-            className="w-[96px] h-[52px] text-[24px]"
-            onClose={close}
-          />
+            className="w-[96px] h-[52px] text-[24px] hover:scale-105 transition-transform"
+            onClose={close}>
+            취소
+          </CommonButton>
         </div>
       </Modal>
     </ModalPortal>

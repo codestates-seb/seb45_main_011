@@ -11,21 +11,25 @@ export default function FailureModal() {
 
   return (
     <ModalPortal>
-      <Modal className="min-w-[420px] h-[227px] flex flex-col justify-center items-center">
-        <div className="flex flex-col items-center gap-6">
-          <div className="flex flex-col items-center text-[28px] font-bold text-brown-90">
-            비밀번호가
-            <span className="text-red-50 mt-3">일치하지 않습니다.</span>
+      <Modal className="w-full min-w-[312px] max-w-[480px] h-fit flex flex-col justify-center items-center">
+        <div className="flex flex-col items-center gap-6 py-10">
+          <div className="flex flex-col items-center gap-3 px-5">
+            <p className="font-bold text-brown-70 text-[28px] text-center break-keep leading-8">
+              비밀번호가
+            </p>
+            <p className="font-bold text-[28px]">
+              <b className="text-red-50">일치하지 않습니다.</b>
+            </p>
           </div>
         </div>
         <div>
           <CommonButton
             type="button"
             size="md"
-            children="닫기"
-            className="w-[96px] h-[52px] text-[24px] mt-7"
-            onClose={close}
-          />
+            className="w-[96px] h-[52px] text-[24px] hover:scale-105 transition-transform mb-5"
+            onClose={close}>
+            닫기
+          </CommonButton>
         </div>
       </Modal>
     </ModalPortal>

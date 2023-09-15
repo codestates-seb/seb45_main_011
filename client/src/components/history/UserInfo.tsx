@@ -21,7 +21,6 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
   const isClient = useClient();
   const router = useRouter();
 
-  // const testId = '17';
   const userId = useUserStore((state) => state.userId);
   const id = paramsId;
 
@@ -58,27 +57,29 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
         <p className="font-bold text-brown-70">{grade}</p>
       </div>
       {userId === id ? (
-        <div className="flex items-center justify-center gap-2 bg-[url('/assets/img/bg_board_sm.png')] w-[192px] h-[96px] shadow-outer/down mb-5">
-          <img src="/assets/img/point.svg" />
-          <p className="text-xl font-bold text-brown-10">
-            {point.toLocaleString()}
-          </p>
+        <div className="flex items-center justify-center bg-[url('/assets/img/bg_board_sm.png')] w-[192px] h-[96px] shadow-outer/down mb-5">
+          <div className="flex items-center justify-center gap-2">
+            <img src="/assets/img/point.svg" />
+            <p className="text-xl font-bold text-brown-10">
+              {point.toLocaleString()}
+            </p>
+          </div>
         </div>
       ) : (
         <>
-          <div className="flex justify-center gap-3">
+          <div className="flex justify-center gap-3 max-[360px]:flex-col items-center">
             <CommonButton
               type="button"
               size="lg"
               children="정원 구경하기"
-              className="w-[203px] h-[52px]"
+              className="w-[203px] h-[52px] hover:scale-105 transition-transform"
               onGoToGarden={() => router.push(`/garden/${id}`)}
             />
             <CommonButton
               type="button"
               size="lg"
               children="식물 카드 열람"
-              className="w-[213px] h-[52px]"
+              className="w-[213px] h-[52px] max-[360px]:w-[203px] text-[22.5px] hover:scale-105 transition-transform"
               onGoToLeafs={() => router.push(`/leafs/${id}`)}
             />
           </div>
@@ -86,7 +87,7 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
             type="button"
             size="lg"
             children="작성한 게시글"
-            className="w-[203px] h-[52px] text-brown-50 border-brown-50 bg-[url('/assets/img/bg_wood_light.png')] mt-6 cursor-default"
+            className="w-[203px] h-[52px] text-brown-50 border-brown-50 bg-[url('/assets/img/bg_wood_light.png')] mt-6 cursor-default max-[360px]:mt-3 hover:scale-105 transition-transform"
           />
         </>
       )}

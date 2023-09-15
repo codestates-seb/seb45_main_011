@@ -42,7 +42,9 @@ export default function Dropdown() {
               <div className="flex flex-col justify-center w-full h-full">
                 <div
                   className="border-b border-dotted border-brown-50"
-                  onClick={() => setSelectOption('boardWritten')}>
+                  onClick={() => {
+                    setSelectOption('boardWritten');
+                  }}>
                   <p className="text-xs text-brown-80 pl-2 py-[6px]">
                     작성한 게시글
                   </p>
@@ -54,7 +56,10 @@ export default function Dropdown() {
                     좋아요를 누른 게시글
                   </p>
                 </div>
-                <div onClick={() => setSelectOption('commentWritten')}>
+                <div
+                  onClick={() => {
+                    setSelectOption('commentWritten');
+                  }}>
                   <p className="text-xs text-brown-80 pl-2 py-[6px]">
                     댓글을 작성한 게시글
                   </p>
