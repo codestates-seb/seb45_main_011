@@ -40,9 +40,9 @@ export default function Comment({ comment, boardId }: CommentProps) {
     <li className="pl-[1.375rem] mb-8 max-[500px]:pl-0">
       <div className="flex justify-between mb-2 relative">
         <PostProfile
-          userId={1}
+          userId={comment.accountId}
           displayName={comment.displayName}
-          grade="브론즈 가드너"
+          grade={comment.grade}
           profileImageUrl={comment.profileUrl}
           usage="comment"
         />

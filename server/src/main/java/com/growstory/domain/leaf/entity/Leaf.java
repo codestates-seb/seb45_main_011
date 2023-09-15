@@ -3,14 +3,19 @@ package com.growstory.domain.leaf.entity;
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.journal.entity.Journal;
-import com.growstory.domain.plant_object.entity.PlantObject;
+import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.global.audit.BaseTimeEntity;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
+@Getter
+@Builder(toBuilder = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Leaf extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,18 +24,9 @@ public class Leaf extends BaseTimeEntity {
     @Column(nullable = false)
     private String leafName;
 
-    @Column(nullable = false)
-    private String leafNickName;
-
     @Lob
     @Column(nullable = false)
     private String content;
-
-    private LocalDate startDate;
-
-    private LocalDate waterDate;
-
-    private String place;
 
     @Column(nullable = false)
     private String leafImageUrl;
@@ -43,8 +39,19 @@ public class Leaf extends BaseTimeEntity {
     private Board board;
 
     @OneToOne(mappedBy = "leaf")
-    private PlantObject plantObject;
+    private PlantObj plantObj;
 
     @OneToMany(mappedBy = "leaf")
     private List<Journal> journals;
+
+    public void updateAccount(Account account) {
+        this.account = account;
+    }
+
+    public void updatePlantObj(PlantObj plantObj) {
+        this.plantObj = plantObj;
+        if(plantObj.getLeaf()!=this) {
+            plantObj.updateLeaf(this);
+        }
+    }
 }

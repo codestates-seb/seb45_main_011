@@ -2,7 +2,7 @@
 FROM openjdk:11
 
 # ⭐ 'ARG' 예약어를 통해 인자로 전달 받아야 한다.
-ARG MYSQL_ID \
+ARG MYSQL_USERNAME \
     MYSQL_PASSWORD \
     RDS_ENDPOINT
 

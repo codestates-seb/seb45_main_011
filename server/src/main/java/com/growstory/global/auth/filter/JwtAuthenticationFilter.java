@@ -17,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,6 +67,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         response.setHeader("Authorization", "Bearer " + accessToken); //응답헤더(Authorization)에 AccessToken을 추가
         response.setHeader("Refresh", refreshToken);
+        response.setHeader("DisplayName", URLEncoder.encode(account.getDisplayName(), "UTF-8"));
+        response.setHeader("AccountId", account.getAccountId().toString());
+        response.setHeader("ProfileImageUrl", account.getProfileImageUrl());
 
         //AuthenticationSuccessHandler의 onAuthenticationSuccess() 메서드를 호출 -> AccountAuthenticationSuccessHandler의 onAuthenticationSuccess 호출
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
@@ -73,7 +77,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private String delegateAccessToken(Account account) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("accountId", account.getAccountId());
         claims.put("username", account.getEmail());
+        claims.put("profileImageUrl", account.getProfileImageUrl());
         claims.put("roles", account.getRoles());
         claims.put("displayName", account.getDisplayName());
 

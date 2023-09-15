@@ -7,6 +7,7 @@ export type GardenModalType =
   | 'purchaseInfo'
   | 'purchase'
   | 'emptyInventory'
+  | 'share'
   | null;
 
 export interface GardenModalState {

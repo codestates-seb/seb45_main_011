@@ -32,6 +32,10 @@ public class Board extends BaseTimeEntity {
     @Column(nullable = false)
     private String content;
 
+    @Column(nullable = false)
+    private Boolean isConnection;
+
+
     @ManyToOne
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
@@ -51,4 +55,8 @@ public class Board extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "board")
     private List<Board_HashTag> boardHashTags;
+
+    public void addBoardLike(BoardLike boardLike) {
+        boardLikes.add(boardLike);
+    }
 }

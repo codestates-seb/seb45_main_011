@@ -128,7 +128,7 @@ export default function Leaf({ params }: LeafProps) {
           )}
         </div>
         <div className="flex justify-center my-6">
-          <ShareButton location="leafs" position="bottom" />
+          <ShareButton location="leaf" position="bottom" />
         </div>
       </div>
 

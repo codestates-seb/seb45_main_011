@@ -141,6 +141,7 @@ export interface CommentDataInfo {
   createdAt: string;
   modifiedAt: string | null;
   commentLikeNum: number;
+  grade: string;
 }
 
 export interface PostDataInfo {
@@ -157,4 +158,5 @@ export interface PostDataInfo {
   hashTags: HashTagInfo[] | null;
   comments: CommentDataInfo[] | null;
   liked: boolean;
+  grade: string;
 }

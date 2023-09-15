@@ -1,6 +1,8 @@
 package com.growstory.domain.images.entity;
 
+import javax.persistence.MappedSuperclass;
 
+@MappedSuperclass
 public class Image {
 
     String originName;

@@ -21,7 +21,6 @@ export default function AddLeaf({ params }: AddLeafProps) {
 
   const userId = useUserStore((state) => state.userId);
 
-  // userId와 pathId가 일치하지 않으면 비정상적인 접근 경로로 인식.
   useEffectOnce(() => {
     if (userId !== pathUserId) router.back();
   });
