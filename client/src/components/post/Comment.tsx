@@ -29,7 +29,11 @@ export default function Comment({ comment, boardId }: CommentProps) {
 
   const isOwner = userId === String(comment.accountId);
 
-  const { register, handleSubmit } = useForm<CommentInputValue>({
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<CommentInputValue>({
     defaultValues: {
       comment: comment.content,
     },
@@ -74,7 +78,8 @@ export default function Comment({ comment, boardId }: CommentProps) {
                 <CommonButton
                   size="sm"
                   type="button"
-                  onClick={() => setEditMode(false)}>
+                  onClick={() => setEditMode(false)}
+                  disabled={isSubmitting}>
                   취소
                 </CommonButton>
               </div>

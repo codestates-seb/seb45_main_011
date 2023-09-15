@@ -45,11 +45,13 @@ export default function LeafForm({
 
   const {
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     handleSubmit,
     clearErrors,
     setValue,
   } = useForm<InputValues>();
+
+  console.log(isSubmitting);
 
   const submitLeaf = (inputs: InputValues) => {
     mutate(inputs);
@@ -96,7 +98,8 @@ export default function LeafForm({
         <CommonButton
           type="submit"
           size="sm"
-          className="hover:scale-110 transition-transform">
+          className="hover:scale-110 transition-transform"
+          disabled={isSubmitting}>
           완료
         </CommonButton>
         <CommonButton

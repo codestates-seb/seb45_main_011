@@ -37,7 +37,7 @@ export default function DiaryForm({
 
   const {
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     clearErrors,
     handleSubmit,
     setValue,
@@ -147,7 +147,8 @@ export default function DiaryForm({
           <CommonButton
             type="submit"
             size="sm"
-            className="hover:scale-105 hover:transition-transform">
+            className="hover:scale-105 hover:transition-transform"
+            disabled={isSubmitting}>
             완료
           </CommonButton>
           <CommonButton
