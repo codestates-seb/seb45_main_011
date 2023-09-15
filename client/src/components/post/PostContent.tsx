@@ -11,14 +11,17 @@ export default function PostContent({ content }: PostContentProps) {
   useEffect(() => {
     if (textAreaRef.current) {
       textAreaRef.current.style.height = 'auto';
+
       textAreaRef.current.style.height =
-        textAreaRef.current?.scrollHeight + 'px';
+        textAreaRef.current?.scrollHeight + 50 + 'px';
+
+      textAreaRef.current.style.resize = 'none';
     }
-  }, [content]);
+  }, [textAreaRef.current?.style.height]);
 
   return (
     <textarea
-      className="w-full bg-transparent resize-none active:outline-none focus:outline-none mb-7 max-[500px]:text-[0.875rem]"
+      className=" w-full bg-transparent resize-none  overflow-hidden active:outline-none focus:outline-none  max-[500px]:text-[0.875rem]"
       value={content}
       readOnly
       rows={1}
