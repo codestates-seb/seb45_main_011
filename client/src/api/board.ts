@@ -62,26 +62,25 @@ export async function getPostByBoardId(boardId: string) {
 }
 
 /** boardId에 해당하는 게시글에 댓글 등록 */
-export async function addComment(content: string, boardId: number) {
+export async function addComment(content: string, boardId: string) {
   return commonAxios.post(`comments/boards/${boardId}`, {
     content,
   });
 }
 
 /** commentId에 해당하는 댓글 삭제 */
-export async function deleteComment(commentId: number) {
-  console.log(commentId);
+export async function deleteComment(commentId: string) {
   return commonAxios.delete(`comments/${commentId}`);
 }
 
 /** commentId에 해당하는 댓글 삭제 */
-export async function editComment(commentId: number, content: string) {
+export async function editComment(commentId: string, content: string) {
   return commonAxios.patch(`comments/${commentId}`, {
     content,
   });
 }
 
 /** boardId에 해당하는 게시글에 댓글 등록 */
-export async function likeBoard(boardId: number) {
+export async function likeBoard(boardId: string) {
   return commonAxios.post(`likes/boards/${boardId}`);
 }

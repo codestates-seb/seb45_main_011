@@ -10,7 +10,7 @@ import ModalPortal from '@/components/common/ModalPortal';
 import CommonButton from '@/components/common/CommonButton';
 
 interface CommentDeleteModalProps {
-  boardId: number | null;
+  boardId: string | null;
 }
 
 export default function CommentDeleteModal({

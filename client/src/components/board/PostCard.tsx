@@ -32,7 +32,7 @@ export default function PostCard({
             height={102}
           />
         </div>
-        <h2 className="text-center text-sm leading-[0.875rem] text-brown-80 font-bold mb-[17px]">
+        <h2 className="text-center text-sm leading-[0.875rem] text-brown-80 font-bold mb-[17px] overflow-hidden whitespace-nowrap text-ellipsis break-words">
           {title}
         </h2>
         <PostCountInfo

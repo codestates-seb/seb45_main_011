@@ -27,5 +27,5 @@ export default function useBoardInfinityQuery() {
     );
 
   // return { data: data?.pages, fetchNextPage, hasNextPage };
-  return { data: data?.pages, fetchNextPage, hasNextPage };
+  return { data: data?.pages, fetchNextPage, hasNextPage, isLoading, isError };
 }
