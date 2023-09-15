@@ -27,29 +27,29 @@ export default function ComfirmModal() {
 
   return (
     <ModalPortal>
-      <Modal className="min-w-[420px] h-[200px] flex flex-col justify-center items-center">
-        <div className="flex flex-col items-center gap-6">
+      <Modal className="w-full min-w-[312px] max-w-[480px] h-fit flex flex-col justify-center items-center">
+        <div className="flex flex-col items-center justify-center gap-6 py-10">
           <div className="text-[28px] font-bold text-brown-90">
             정말&nbsp;
             <span className="text-red-50">탈퇴</span>
             하시겠습니까?
           </div>
         </div>
-        <div className="flex gap-2 mt-6">
+        <div className="flex gap-2 mb-6">
           <CommonButton
             type="button"
             size="md"
-            children="네"
-            className="w-[96px] h-[52px] text-[24px]"
-            onCheck={hanldeDeleteUser}
-          />
+            className="w-[96px] h-[52px] text-[24px] hover:scale-105 transition-transform"
+            onCheck={hanldeDeleteUser}>
+            네
+          </CommonButton>
           <CommonButton
             type="button"
             size="md"
-            children="아니오"
-            className="w-[120px] h-[52px] text-[24px]"
-            onClose={close}
-          />
+            className="w-[120px] h-[52px] text-[24px] hover:scale-105 transition-transform"
+            onClose={close}>
+            아니오
+          </CommonButton>
         </div>
       </Modal>
     </ModalPortal>

@@ -1,16 +1,26 @@
 'use client';
 
+import { useRef } from 'react';
+
 import uuid from 'react-uuid';
 import { twMerge } from 'tailwind-merge';
 
 import useGardenStore from '@/stores/gardenStore';
 
+import usePlantCard from '@/hooks/usePlantCard';
+import useMouseDrag from '@/hooks/useMouseDrag';
+
 import CommonButton from '@/components/common/CommonButton';
 import PlantCard from './PlantCard';
 
 export default function GardenSidebar() {
+  const sidebarRef = useRef<HTMLUListElement>(null);
   const { isEditMode, sidebarState, shop, inventory, changeSidebarState } =
     useGardenStore();
+
+  const { handleClick } = usePlantCard();
+  const { isDrag, handleDragStart, handleDragEnd, handleDragMove } =
+    useMouseDrag(sidebarRef);
 
   const handleShop = () => changeSidebarState('shop');
 
@@ -43,8 +53,14 @@ export default function GardenSidebar() {
         </div>
       )}
       <ul
+        ref={sidebarRef}
+        onClick={handleClick}
+        onMouseDown={handleDragStart}
+        onMouseMove={isDrag ? handleDragMove : undefined}
+        onMouseUp={handleDragEnd}
+        onMouseLeave={handleDragEnd}
         className={twMerge(
-          `flex flex-col gap-3 w-fit overflow-x-hidden overflow-y-scroll scrollbar ${listHeight} ${listBlank} max-[984px]:flex-row max-[984px]:w-auto max-[984px]:h-[212px] max-[984px]:px-0 max-[984px]:mx-4 max-[984px]:overflow-x-scroll max-[984px]:overflow-y-hidden`,
+          `flex flex-col gap-3 w-fit pt-[6px] overflow-x-hidden overflow-y-scroll scrollbar ${listHeight} ${listBlank} max-[984px]:flex-row max-[984px]:w-auto max-[984px]:h-[216px] max-[984px]:px-1 max-[984px]:mx-4 max-[984px]:overflow-x-scroll max-[984px]:overflow-y-hidden`,
         )}>
         {plantList.map((plant) => (
           <PlantCard key={uuid()} usage={sidebarState} plantInfo={plant} />

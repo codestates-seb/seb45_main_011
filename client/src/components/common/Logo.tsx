@@ -30,6 +30,10 @@ export default function Logo({ size, className }: LogoProps) {
           className={LOGO_STYLE[size]}
           width={LOGO_SIZE[size].width}
           height={LOGO_SIZE[size].height}
+          style={{
+            width: LOGO_SIZE[size].width,
+            height: LOGO_SIZE[size].height,
+          }}
           priority
         />
       </Link>
@@ -47,13 +51,13 @@ const LOGO_SIZE: Logo = {
     height: 80,
   },
   large: {
-    width: 260,
-    height: 158,
+    width: 216,
+    height: 145,
   },
 };
 
 const LOGO_STYLE = {
   small: 'min-w-[58px]',
   medium: 'min-w-[137px]',
-  large: 'min-w-[260px]',
+  large: 'min-w-[216px]',
 };

@@ -100,7 +100,6 @@ export default function Leaf({ params }: LeafProps) {
               <ErrorMessage />
             </div>
           )}
-
           {leaf && (
             <div className="h-full overflow-y-scroll scrollbar">
               <LeafInfo
@@ -113,7 +112,12 @@ export default function Leaf({ params }: LeafProps) {
               />
               <LeafDateInfo />
               {isEmpty ? (
-                <EmptyDiary pathUserId={pathUserId} userId={userId} />
+                <EmptyDiary
+                  pathUserId={pathUserId}
+                  userId={userId}
+                  info="diary"
+                  addInfo="addDiary"
+                />
               ) : (
                 <LeafDiary
                   pathUserId={pathUserId}

@@ -2,8 +2,6 @@
 
 import useGardenStore from '@/stores/gardenStore';
 
-import usePlantCard from '@/hooks/usePlantCard';
-
 import CommonButton from '@/components/common/CommonButton';
 import Plant from './Plant';
 
@@ -18,8 +16,6 @@ interface PlantCardProps {
 
 export default function PlantCard({ usage, plantInfo }: PlantCardProps) {
   const { sidebarState } = useGardenStore();
-
-  const { handleClick } = usePlantCard();
 
   const { productId, plantObjId, name, korName, imageUrlTable, price } =
     plantInfo;
@@ -46,11 +42,7 @@ export default function PlantCard({ usage, plantInfo }: PlantCardProps) {
           {price}
         </p>
       )}
-      <CommonButton
-        onClick={handleClick}
-        type="button"
-        size="sm"
-        className="my-[10px]">
+      <CommonButton type="button" size="sm" className="my-[10px]">
         {PLANT_CARD_BUTTON_CONTENTS[usage]}
       </CommonButton>
     </li>

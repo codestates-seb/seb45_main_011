@@ -13,7 +13,7 @@ export default function Intro({ className, children }: IntroProps) {
   return (
     <div
       className={twMerge(
-        'relative flex flex-col gap-6 justify-center items-center min-w-[540px] h-[380px] rounded-xl border-gradient shadow-container',
+        'relative flex flex-col gap-3 justify-center items-center min-w-[440px] h-[360px] rounded-xl border-gradient shadow-container',
         className,
       )}>
       <Logo size="large" />
