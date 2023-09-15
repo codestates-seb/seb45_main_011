@@ -30,12 +30,16 @@ export default function PurchaseModal() {
               </p>
             </div>
           ) : (
-            <p className="text-2xl font-bold">
+            <p className="text-2xl text-brown-80 font-bold">
               포인트가{' '}
               <span className="text-[28px] text-red-50">부족합니다!</span>
             </p>
           )}
-          <CommonButton onClose={handleClose} type="button" size="md">
+          <CommonButton
+            onClose={handleClose}
+            type="button"
+            size="md"
+            className="hover:scale-105 transition-transform">
             닫기
           </CommonButton>
         </section>

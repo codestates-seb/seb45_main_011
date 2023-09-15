@@ -48,7 +48,7 @@ export default function Modal({ children, className }: ModalProps) {
       />
       <main
         className={twMerge(
-          `fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 mx-4 border-gradient rounded-xl bg-repeat shadow-outer/down z-50`,
+          `fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-gradient rounded-xl bg-repeat shadow-container z-50`,
           className,
         )}>
         {children}
