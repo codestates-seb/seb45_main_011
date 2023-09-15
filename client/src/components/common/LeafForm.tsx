@@ -51,8 +51,6 @@ export default function LeafForm({
     setValue,
   } = useForm<InputValues>();
 
-  console.log(isSubmitting);
-
   const submitLeaf = (inputs: InputValues) => {
     mutate(inputs);
   };
