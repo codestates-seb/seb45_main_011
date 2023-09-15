@@ -20,7 +20,7 @@ export default function SigninForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     watch,
     reset,
   } = useForm<SignFormValue>();
@@ -82,7 +82,8 @@ export default function SigninForm() {
             <CommonButton
               type="submit"
               size="md"
-              className="w-[92px] h-[44px] hover:scale-105 transition-transform">
+              className="w-[92px] h-[44px] hover:scale-105 transition-transform"
+              disabled={isSubmitting}>
               로그인
             </CommonButton>
             <CommonButton

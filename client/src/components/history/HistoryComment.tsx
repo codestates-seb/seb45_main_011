@@ -36,20 +36,21 @@ export default function HistoryComment({ paramsId }: HistoryBoradProps) {
   return (
     <>
       {data?.pages.map((page, index) => (
-        <div key={index}>
+        <div key={index} className="max-[700px]:ml-[21px]">
           {page.commentWritten?.length === 0 ? (
             <div className="mt-3 overflow-hidden">
               <EmptyDiary
                 pathUserId={paramsId}
                 userId={userId}
                 info="comment"
+                className="max-w-[314px] max-[507px]:mx-3 max-[401px]:w-[214px] text-[15px]"
               />
             </div>
           ) : (
             <InfiniteScroll
               hasMore={hasNextPage}
               loadMore={() => fetchNextPage()}>
-              <div className="grid grid-cols-3 gap-4 place-items-center items-start max-[730px]:grid-cols-2 max-[530px]:grid-cols-1 p-2 pb-4">
+              <div className="grid grid-cols-3 gap-4 place-items-center items-start max-[730px]:grid-cols-2 max-[530px]:grid-cols-1 px-2 pb-4">
                 {page.commentWritten?.map((board: any) => (
                   <div
                     key={board.boardId}

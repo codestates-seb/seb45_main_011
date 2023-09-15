@@ -44,16 +44,21 @@ export default function HistoryLikes({ paramsId }: HistoryBoradProps) {
   return (
     <>
       {data?.pages.map((page, index) => (
-        <div key={index}>
+        <div key={index} className="max-[700px]:ml-[21px] ">
           {page?.boardLiked?.length === 0 ? (
-            <div className="mt-3 overflow-hidden">
-              <EmptyDiary pathUserId={paramsId} userId={userId} info="likes" />
+            <div key={index} className="max-[700px]:ml-[21px]">
+              <EmptyDiary
+                pathUserId={paramsId}
+                userId={userId}
+                info="likes"
+                className="max-w-[314px] max-[507px]:mx-3 max-[401px]:w-[214px] text-[15px]"
+              />
             </div>
           ) : (
             <InfiniteScroll
               hasMore={hasNextPage}
               loadMore={() => fetchNextPage()}>
-              <div className="flex flex-wrap gap-x-4 gap-y-9 mb-9 max-[360px]:flex-col justify-center items-center mt-2 ml-[15px]">
+              <div className="grid grid-cols-3 gap-4 place-items-center items-start max-[730px]:grid-cols-2 max-[530px]:grid-cols-1 px-2 pb-4 ">
                 {page.boardLiked?.map((board: any) => (
                   <div
                     key={board.boardId}
