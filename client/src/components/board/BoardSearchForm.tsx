@@ -7,7 +7,11 @@ import BoardSearchInput from './BoardSearchInput';
 import { SearchValues } from '@/types/common';
 
 export default function BoardSearchForm() {
-  const { register, handleSubmit } = useForm<SearchValues>();
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<SearchValues>();
 
   const setSearchKey = useBoardStore((state) => state.setSearchKey);
 
@@ -15,7 +19,7 @@ export default function BoardSearchForm() {
 
   return (
     <form onSubmit={handleSubmit(handleSearch)}>
-      <BoardSearchInput register={register} />
+      <BoardSearchInput register={register} isSubmitting={isSubmitting} />
     </form>
   );
 }

@@ -6,6 +6,7 @@ interface DateAndControlProps {
   usage: 'post' | 'comment';
   targetId: string;
   ownerId: string;
+  isOwner?: boolean;
 }
 
 export default function DateAndControlSection({
@@ -13,6 +14,7 @@ export default function DateAndControlSection({
   usage,
   targetId,
   ownerId,
+  isOwner,
 }: DateAndControlProps) {
   if (!date) return null;
 
@@ -20,25 +22,27 @@ export default function DateAndControlSection({
 
   return (
     <div
-      className={`flex items-center gap-2 absolute z-[1] ${SECTION_STYLE[usage].container}`}>
+      className={`flex items-center  z-[1] ${SECTION_STYLE[usage].container} ${
+        isOwner ? 'pr-11' : 'pr-0'
+      }`}>
       <span
         className={`text-sm leading-[0.875rem] font-bold text-brown-80 ${SECTION_STYLE[usage].dayText}`}>
         {formattedDay}
       </span>
-      <ControlMenu usage={usage} targetId={targetId} ownerId={ownerId} />
+      {isOwner && (
+        <ControlMenu usage={usage} targetId={targetId} ownerId={ownerId} />
+      )}
     </div>
   );
 }
 
 const SECTION_STYLE = {
   post: {
-    container:
-      'top-0 right-[20px] max-[500px]:flex-col-reverse max-[500px]:items-end max-[500px]:right-[35px] max-[500px]:top-[10px]',
-    dayText: 'max-[500px]:text-xs ',
+    container: 'max-[500px]:pr-0',
+    dayText: 'max-[500px]:text-[.7rem]',
   },
   comment: {
-    container:
-      'top-0 right-0 max-[500px]:flex-col-reverse max-[500px]:items-end max-[500px]:right-[25px] max-[500px]:top-[-5px] max-[500px]:gap-1',
+    container: 'max-[500px]:pr-0',
     dayText: 'max-[500px]:text-[0.4rem] ',
   },
 };

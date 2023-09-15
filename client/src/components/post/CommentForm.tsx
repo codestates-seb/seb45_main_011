@@ -14,7 +14,12 @@ interface CommentFormProps {
 }
 
 export default function CommentForm({ boardId }: CommentFormProps) {
-  const { register, handleSubmit, reset } = useForm<CommentInputValue>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
+  } = useForm<CommentInputValue>();
   const { mutate: addComment } = useAddCommentMutation({ boardId });
 
   const submitCommentForm = (data: CommentInputValue) => {
@@ -29,13 +34,15 @@ export default function CommentForm({ boardId }: CommentFormProps) {
       <input
         className="px-[1.125rem] w-full py-[0.6875rem] h-[36px] flex-1 rounded-[50px] text-[0.875rem] leading-[0.875rem] font-normal focus:outline-none shadow-outer/down max-[560px]:px-[0.8rem] max-[560px]:py-[0.4rem] max-[560px]:h-[32px] max-[500px]:text-[0.7rem] "
         placeholder="댓글을 입력하세요."
+        required
         {...register('comment')}
       />
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="px-[0.6875rem] py-[0.5625rem]  bg-contain bg-center bg-[url('/assets/img/bg_wood_light.png')] border-[3px] border-brown-50 rounded-xl text-[1rem] leading-[1rem] font-bold text-brown-40 shadow-outer/down max-[560px]:text-[0.85rem] max-[560px]:px-[0.55rem] max-[560px]:py-[0.5rem]  max-[500px]:text-[0.8rem] max-[500px]:px-[0.4rem]  max-[500px]:py-[0.3rem]"
-        type="submit">
+        className="px-[0.6875rem] py-[0.5625rem] bg-contain bg-center bg-[url('/assets/img/bg_wood_light.png')] border-[3px] border-brown-50 rounded-xl text-[1rem] leading-[1rem] font-bold text-brown-40 shadow-outer/down max-[560px]:text-[0.85rem] max-[560px]:px-[0.55rem] max-[560px]:py-[0.5rem]  max-[500px]:text-[0.8rem] max-[500px]:px-[0.4rem]  max-[500px]:py-[0.3rem]"
+        type="submit"
+        disabled={isSubmitting}>
         등록
       </motion.button>
     </form>

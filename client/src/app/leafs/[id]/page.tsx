@@ -61,7 +61,8 @@ export default function Leafs({ params }: LeafsProps) {
       animate="animate"
       className="flex justify-center items-center pt-[120px] pb-[60px]">
       <div className="relative w-full min-w-[312px] max-w-[732px] h-[528px] mx-4 border-gradient rounded-xl shadow-container">
-        <ShareButton location="leafs" position="top" />
+        {leafs && <ShareButton location="leafs" position="top" />}
+
         <Screws />
         {isLoading && (
           <div className="w-full h-full flex justify-center items-center">
@@ -99,9 +100,11 @@ export default function Leafs({ params }: LeafsProps) {
                 );
               })}
             </div>
-            <div className="flex justify-center mt-6">
-              <ShareButton location="leafs" position="bottom" />
-            </div>
+            {leafs && (
+              <div className="flex justify-center mt-6">
+                <ShareButton location="leafs" position="bottom" />
+              </div>
+            )}
           </div>
         )}
       </div>

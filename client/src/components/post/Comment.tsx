@@ -10,6 +10,7 @@ import CommonButton from '../common/CommonButton';
 
 import { CommentDataInfo } from '@/types/data';
 import { CommentInputValue } from '@/types/common';
+import useUserStore from '@/stores/userStore';
 
 interface CommentProps {
   comment: CommentDataInfo | null;
@@ -19,17 +20,24 @@ interface CommentProps {
 export default function Comment({ comment, boardId }: CommentProps) {
   if (!comment || !boardId) return null;
 
-  const { register, handleSubmit } = useForm<CommentInputValue>({
-    defaultValues: {
-      comment: comment.content,
-    },
-  });
-
   const { editMode, targetId, setEditMode } = usePostStore();
+  const { userId } = useUserStore();
 
   const { mutate: editComment } = useEditCommentMutation({ boardId, targetId });
 
   const isEdit = editMode && String(comment.commentId) === targetId;
+
+  const isOwner = userId === String(comment.accountId);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<CommentInputValue>({
+    defaultValues: {
+      comment: comment.content,
+    },
+  });
 
   const submitCommentForm = (data: CommentInputValue) => {
     editComment(data);
@@ -38,7 +46,7 @@ export default function Comment({ comment, boardId }: CommentProps) {
 
   return (
     <li className="pl-[1.375rem] mb-8 max-[500px]:pl-0">
-      <div className="flex justify-between mb-2 relative">
+      <div className="flex justify-between mb-2 relative max-[500px]:items-end">
         <PostProfile
           userId={comment.accountId}
           displayName={comment.displayName}
@@ -46,14 +54,13 @@ export default function Comment({ comment, boardId }: CommentProps) {
           profileImageUrl={comment.profileUrl}
           usage="comment"
         />
-        {isEdit || (
-          <DateAndControlSection
-            date={new Date(comment?.createdAt)}
-            usage="comment"
-            ownerId={String(comment.accountId)}
-            targetId={String(comment.commentId)}
-          />
-        )}
+        <DateAndControlSection
+          date={new Date(comment?.createdAt)}
+          isOwner={isOwner}
+          usage="comment"
+          ownerId={String(comment.accountId)}
+          targetId={String(comment.commentId)}
+        />
       </div>
       <div className="pl-11 max-[550px]:pl-0">
         {isEdit ? (
@@ -71,7 +78,8 @@ export default function Comment({ comment, boardId }: CommentProps) {
                 <CommonButton
                   size="sm"
                   type="button"
-                  onClick={() => setEditMode(false)}>
+                  onClick={() => setEditMode(false)}
+                  disabled={isSubmitting}>
                   취소
                 </CommonButton>
               </div>

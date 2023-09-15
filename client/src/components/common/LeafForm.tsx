@@ -45,7 +45,7 @@ export default function LeafForm({
 
   const {
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     handleSubmit,
     clearErrors,
     setValue,
@@ -93,7 +93,7 @@ export default function LeafForm({
         </div>
       </div>
       <div className="flex justify-center gap-2 mb-2">
-        <CommonButton type="submit" size="sm">
+        <CommonButton type="submit" size="sm" disabled={isSubmitting}>
           완료
         </CommonButton>
         <CommonButton type="button" size="sm" onClick={cancelEdit}>

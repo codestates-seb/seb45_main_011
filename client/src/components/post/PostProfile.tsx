@@ -23,7 +23,7 @@ export default function PostProfile({
   return (
     <Link
       href={`/history/${userId}`}
-      className={`flex gap-3 items-center ${PROFILE_STYLE[usage].container}`}>
+      className={`flex gap-2 items-center ${PROFILE_STYLE[usage].container}`}>
       <motion.div
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
@@ -36,7 +36,7 @@ export default function PostProfile({
           height={50}
         />
       </motion.div>
-      <div className="flex flex-col gap-2 max-[500px]:gap-1">
+      <div className="flex flex-col gap-1 max-[500px]:gap-1">
         <span className={`${PROFILE_STYLE[usage].displayName} text-brown-80`}>
           {displayName}
         </span>
@@ -50,17 +50,17 @@ export default function PostProfile({
 
 const PROFILE_STYLE = {
   post: {
-    container: 'max-[500px]:flex-col max-[500px]:items-start max-[500px]:gap-1',
+    container: '',
     displayName:
-      'text-xl leading-5 font-bold  max-[500px]:text-[1rem] max-[500px]:leading-[1rem]',
+      'text-lg leading-5 font-bold  max-[500px]:text-[.8rem] max-[500px]:leading-[1rem]',
     grade:
-      'text-[1rem] leading-4 font-normal max-[500px]:text-[0.875rem] max-[500px]:leading-[0.875rem]',
+      'text-[0.8rem] leading-4 font-normal max-[500px]:text-[0.7rem] max-[500px]:leading-[0.875rem]',
   },
   comment: {
     container: 'max-[550px]:gap-1',
     displayName:
-      'text-[1rem] leading-[1rem] font-bold  max-[500px]:text-[0.85rem] max-[500px]:leading-[0.85rem]',
+      'text-[1rem] leading-[1rem] font-bold  max-[500px]:text-[0.75rem] max-[500px]:leading-[0.85rem]',
     grade:
-      'text-[0.75rem] leading-[0.75rem] font-normal  max-[500px]:text-[0.675rem] max-[500px]:leading-[0.675rem]',
+      'text-[0.75rem] leading-[0.75rem] font-normal  max-[500px]:text-[0.65rem] max-[500px]:leading-[0.675rem]',
   },
 };

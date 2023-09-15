@@ -44,10 +44,18 @@ export default function CommentDeleteModal({
             <b className="text-red-50">삭제</b>하시겠습니까?
           </p>
           <div className="flex gap-3">
-            <CommonButton onDelete={handleDelete} type="button" size="md">
+            <CommonButton
+              onDelete={handleDelete}
+              type="button"
+              size="md"
+              className="hover:scale-105 hover:transition-transform">
               삭제
             </CommonButton>
-            <CommonButton onCancel={handleCancel} type="button" size="md">
+            <CommonButton
+              onCancel={handleCancel}
+              type="button"
+              size="md"
+              className="hover:scale-105 hover:transition-transform">
               취소
             </CommonButton>
           </div>

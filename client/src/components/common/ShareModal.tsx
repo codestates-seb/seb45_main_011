@@ -34,21 +34,21 @@ export default function ShareModal({ location }: ShareModalProps) {
   };
   return (
     <ModalPortal>
-      <Modal className="w-full max-w-[400px] mx-4 shadow-outer/down">
-        <div className="flex flex-col justify-center pt-6 pb-4 px-4 min-w-[352px]">
-          <p className="text-center font-bold text-[1.5rem] leading-8 text-brown-70 break-wrods mb-4">
+      <Modal>
+        <div className="flex flex-col justify-center pt-6 pb-4 px-5 w-[320px]">
+          <p className="text-center font-bold text-[1.3rem] leading-8 text-brown-70 break-wrods mb-4">
             현재 페이지 주소가
             <br />
             복사되었습니다.
           </p>
-          <p className="text-center font-bold text-[1.5rem] leading-8 text-brown-90 break-words mb-5">
+          <p className="text-center font-bold text-[1.32rem] leading-8 text-brown-90 break-words mb-5">
             다른 사람에게 <b className="text-brown-60">공유해보세요!</b>
           </p>
           <CommonButton
             type="button"
             size="md"
             onClick={handleModalCancel}
-            className="mx-auto">
+            className="mx-auto hover:scale-110 hover:transition-transform">
             확인
           </CommonButton>
         </div>

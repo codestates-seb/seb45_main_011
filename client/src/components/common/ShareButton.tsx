@@ -64,7 +64,7 @@ export default function ShareButton({
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         className={twMerge(
-          'absolute top-[36px] right-[36px] w-[40px] h-[40px] bg-brown-50 rounded-[50%] border-2 border-brown-70 shadow-outer/down max-[550px]:hidden',
+          'absolute top-[36px] right-[36px] w-[40px] h-[40px] bg-brown-50 rounded-[50%] border-2 border-brown-70 shadow-outer/down max-[590px]:hidden',
           className,
         )}
         onClick={handleShareUrl}>
@@ -83,7 +83,7 @@ export default function ShareButton({
         size="md"
         type="button"
         onClick={handleShareUrl}
-        className={(twMerge('hidden w-fit max-[550px]:inline'), className)}>
+        className="hidden w-fit max-[590px]:inline">
         공유하기
       </CommonButton>
     );
