@@ -58,7 +58,7 @@ export default function HistoryBoard({ paramsId }: HistoryBoradProps) {
             <InfiniteScroll
               hasMore={hasNextPage}
               loadMore={() => fetchNextPage()}>
-              <div className="grid grid-cols-3 gap-4 place-items-center items-start max-[730px]:grid-cols-2 max-[530px]:grid-cols-1 px-2 pb-4">
+              <div className="grid grid-cols-3 gap-4 place-items-center items-start max-[730px]:grid-cols-2 max-[530px]:grid-cols-1 px-2 pt-2 pb-4">
                 {page.boardWritten?.map((board: any) => (
                   <div
                     key={board.boardId}
