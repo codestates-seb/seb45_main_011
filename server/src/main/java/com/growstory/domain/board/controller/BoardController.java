@@ -3,6 +3,7 @@ package com.growstory.domain.board.controller;
 import com.growstory.domain.board.dto.RequestBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardPageDto;
+import com.growstory.domain.board.dto.ResponseRankingDto;
 import com.growstory.domain.board.service.BoardService;
 import com.growstory.global.constants.HttpStatusCode;
 import com.growstory.global.response.MultiResponseDto;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @Validated
@@ -102,5 +104,14 @@ public class BoardController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/top-likes")
+    public ResponseEntity<SingleResponseDto> getTop3LikedBoardsOfWeek() {
+        List<ResponseRankingDto> response = boardService.findTop3LikedBoards();
 
+        return ResponseEntity.ok(SingleResponseDto.builder()
+                        .status(HttpStatusCode.OK.getStatusCode())
+                        .message(HttpStatusCode.OK.getMessage())
+                        .data(response)
+                        .build());
+    }
 }
