@@ -22,7 +22,7 @@ export default function HistoryPostCard({
       </div>
 
       <div className="w-[180px] mb-1">
-        <p className="text-sm leading-[0.875rem] text-brown-80 font-bold text-ellipsis overflow-hidden whitespace-nowrap mb-1 px-5 max-[360px]:text-center">
+        <p className="text-sm leading-[0.875rem] text-brown-80 font-bold text-ellipsis overflow-hidden whitespace-nowrap mb-1 px-5 text-center">
           {title}
         </p>
       </div>

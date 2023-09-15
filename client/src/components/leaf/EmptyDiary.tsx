@@ -42,11 +42,11 @@ export default function EmptyDiary({
     <div className="w-full flex flex-col items-center">
       <div
         className={twMerge(
-          `w-full pt-6 pb-5 flex flex-col gap-[1.1rem] justify-center items-center max-w-[414px] h-[137px] bg-brown-10 border-2 border-brown-50 rounded-lg shadow-outer/down max-[360px]:w-[240px] max-[380px]:h-[164px]`,
+          `w-full pt-6 pb-5 flex flex-col gap-[1.1rem] justify-center items-center max-w-[414px] h-[137px] bg-brown-10 border-2 border-brown-50 rounded-lg shadow-outer/down`,
           className,
         )}>
         <div className="flex flex-col gap-2 text-center">
-          <p className="font-bold text-[1.15rem] text-brown-70 break-words px-3 max-[460px]:pt-2 break-keep leading-6">
+          <p className="font-bold text-[1.25rem] text-brown-70 break-words px-3 max-[460px]:pt-2 break-keep leading-6 max-[401px]:text-[15px]">
             {INFOMATION_TEXT[info]}
           </p>
           {isOwner && addInfo && (

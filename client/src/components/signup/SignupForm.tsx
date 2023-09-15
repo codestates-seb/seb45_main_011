@@ -20,7 +20,7 @@ export default function SignupForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     watch,
     reset,
   } = useForm<SignFormValue>();
@@ -112,7 +112,8 @@ export default function SignupForm() {
             <CommonButton
               type="submit"
               size="md"
-              className="w-[121px] h-[44px] hover:scale-105 transition-transform">
+              className="w-[121px] h-[44px] hover:scale-105 transition-transform"
+              disabled={isSubmitting}>
               회원 가입
             </CommonButton>
           </div>
