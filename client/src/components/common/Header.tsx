@@ -1,7 +1,9 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
+import { useState } from 'react';
+
+import { motion } from 'framer-motion';
 
 import useUserStore from '@/stores/userStore';
 import useSignStore from '@/stores/signStore';
@@ -32,7 +34,7 @@ export default function Header() {
         items-center
         bg-[url('/assets/img/bg_wood_yellow.png')] 
         bg-contain 
-        min-w-[360px] 
+        min-w-[348px] 
         w-full 
         h-[60px] 
         px-3
@@ -57,9 +59,12 @@ export default function Header() {
               style={{ width: 28, height: 24 }}
             />
             {isMenuHover && (
-              <div className="flex justify-end">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="flex justify-end">
                 <HeaderNav isMenuHover={isMenuHover} />
-              </div>
+              </motion.div>
             )}
           </li>
           <li className="max-[480px]:hidden">
@@ -103,9 +108,12 @@ export default function Header() {
                 height={36}
               />
               {isProfileHover && (isLogin || isGoogleLogin) && (
-                <div className="flex justify-end">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex justify-end">
                   <HeaderNav isProfileHover={isProfileHover} />
-                </div>
+                </motion.div>
               )}
             </li>
           ) : (

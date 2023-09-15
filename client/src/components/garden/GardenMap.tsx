@@ -1,5 +1,7 @@
 'use client';
 
+import { motion } from 'framer-motion';
+
 import useGardenStore from '@/stores/gardenStore';
 
 import useGardenMap from '@/hooks/useGardenMap';
@@ -13,6 +15,8 @@ import {
   TrackedPlant,
   GardenInfo,
 } from '@/components/garden';
+
+import { MOUNT_ANIMATION_VALUES } from '@/constants/values';
 
 interface GardenMapProps {
   isOwner: boolean;
@@ -37,7 +41,11 @@ export default function GardenMap({ isOwner }: GardenMapProps) {
   } = useGardenMap();
 
   return (
-    <div className="relative">
+    <motion.div
+      variants={MOUNT_ANIMATION_VALUES}
+      initial="initial"
+      animate="animate"
+      className="relative">
       <GardenInfo isOwner={isOwner} />
       <main
         ref={gardenMapRef}
@@ -68,18 +76,10 @@ export default function GardenMap({ isOwner }: GardenMapProps) {
       {isEditMode && <EditModeInfo />}
       {isEditMode && (
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-          <CommonButton
-            onSave={handleSave}
-            type="button"
-            size="sm"
-            className="hover:scale-110 transition-transform">
+          <CommonButton onSave={handleSave} type="button" size="sm">
             저장
           </CommonButton>
-          <CommonButton
-            onCancel={handleCancel}
-            type="button"
-            size="sm"
-            className="hover:scale-110 transition-transform">
+          <CommonButton onCancel={handleCancel} type="button" size="sm">
             취소
           </CommonButton>
         </div>
@@ -88,6 +88,6 @@ export default function GardenMap({ isOwner }: GardenMapProps) {
         gardenMap={gardenMapRef.current}
         className="absolute min-[960px]:hidden bottom-5 left-5 z-[5]"
       />
-    </div>
+    </motion.div>
   );
 }
