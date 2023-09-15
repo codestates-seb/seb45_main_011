@@ -65,7 +65,6 @@ public class AccountService {
                 .build();
     }
 
-    // 구글 이미지 수정 고치기
     public void updateProfileImage(MultipartFile profileImage) {
         Account findAccount = authUserUtils.getAuthUser();
 

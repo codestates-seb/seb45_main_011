@@ -48,11 +48,14 @@ public class RequestBoardDto {
         @Nullable
         private List<String> hashTags;
 
+        private boolean isImageUpdate;
+
         @Builder
-        public Patch(@Nullable String title, @Nullable String content, @Nullable List<String> hashTags) {
+        public Patch(@Nullable String title, @Nullable String content, @Nullable List<String> hashTags, boolean isImageUpdate) {
             this.title = title;
             this.content = content;
             this.hashTags = hashTags;
+            this.isImageUpdate = isImageUpdate;
         }
     }
 }
