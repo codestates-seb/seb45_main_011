@@ -41,7 +41,7 @@ export default function GardenMap({ isOwner }: GardenMapProps) {
       <GardenInfo isOwner={isOwner} />
       <main
         ref={gardenMapRef}
-        className="min-w-[296px] border-garden rounded-lg rounded-tl-none bg-scroll shadow-outer/down box-content overflow-auto scrollbar-hidden max-[984px]:max-w-[720px] max-[420px]:h-[320px]">
+        className="min-w-[296px] border-garden rounded-lg rounded-t-none  bg-scroll shadow-outer/down box-content overflow-auto scrollbar-hidden max-[984px]:max-w-[720px] max-[420px]:h-[320px] max-[480px]:rounded-tr-lg">
         <div
           onClick={handleGarden}
           onMouseDown={handleDragStart}
