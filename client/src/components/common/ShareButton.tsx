@@ -4,13 +4,18 @@ import { usePathname } from 'next/navigation';
 import useLeafsStore from '@/stores/leafsStore';
 import useLeafStore from '@/stores/leafStore';
 import CommonButton from './CommonButton';
+import { DefaultProps } from '@/types/common';
 
-interface ShareButtonProps {
+interface ShareButtonProps extends DefaultProps {
   location: 'leafs' | 'leaf';
   position: 'top' | 'bottom';
 }
 
-export default function ShareButton({ location, position }: ShareButtonProps) {
+export default function ShareButton({
+  location,
+  position,
+  className,
+}: ShareButtonProps) {
   const url = usePathname();
 
   const { modalOpen: leafsModalOpen, setModalCategory: setLeafsModalCategory } =
@@ -20,7 +25,7 @@ export default function ShareButton({ location, position }: ShareButtonProps) {
     useLeafStore();
 
   const shareUrl = () => {
-    const base = 'http://localhost:3000';
+    const base = 'https://grow-story.vercel.app/';
     const links = base + url;
 
     navigator.clipboard.writeText(links);
