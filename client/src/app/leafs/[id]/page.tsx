@@ -15,7 +15,7 @@ import Leaf from '@/components/common/Leaf';
 import PageTitle from '@/components/common/PageTitle';
 import Screws from '@/components/common/Screws';
 import AddLeafButton from '@/components/leafs/AddLeafButton';
-import { LeafDeleteModal } from '@/components/leafs/LeafDeleteModal';
+import LeafDeleteModal from '@/components/leafs/LeafDeleteModal';
 import LoadingNotice from '@/components/common/LoadingNotice';
 import ErrorMessage from '@/components/common/ErrorMessage';
 import ShareButton from '@/components/common/ShareButton';

@@ -11,7 +11,10 @@ interface LeafDeleteModalProps {
   userId: string | null;
 }
 
-export function LeafDeleteModal({ userId, pathUserId }: LeafDeleteModalProps) {
+export default function LeafDeleteModal({
+  userId,
+  pathUserId,
+}: LeafDeleteModalProps) {
   if (userId !== pathUserId) return null;
 
   const { mutate } = useDeleteLeafMutation();

@@ -1,6 +1,5 @@
 package com.growstory.domain.hashTag.entity;
 
-import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.board.entity.Board_HashTag;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,6 +20,10 @@ public class HashTag {
     private Long hashTagId;
 
     private String tag;
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
 
     @OneToMany(mappedBy = "hashTag")
     private List<Board_HashTag> boardHashTags;
