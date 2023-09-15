@@ -1,6 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
 
 import { findPostById } from '@/api/post';
 
@@ -11,6 +12,8 @@ import Screws from '@/components/common/Screws';
 import PostForm from '@/components/post/PostForm';
 
 import { RawPostInfo } from '@/types/data';
+
+import { MOUNT_ANIMATION_VALUES } from '@/constants/values';
 
 interface EditPostProps {
   params: { id: string };
@@ -26,7 +29,11 @@ export default function EditPost({ params }: EditPostProps) {
   if (isError) return <ErrorNotice isTransparent={false} className="mx-auto" />;
 
   return (
-    <div className="pb-[60px]">
+    <motion.div
+      variants={MOUNT_ANIMATION_VALUES}
+      initial="initial"
+      animate="animate"
+      className="pb-[60px]">
       <div className="relative flex flex-col items-center min-w-[328px] max-w-[531px] mx-auto border-gradient rounded-xl bg-repeat shadow-container max-[563px]:mx-4">
         {isLoading ? (
           <LoadingNotice
@@ -41,6 +48,6 @@ export default function EditPost({ params }: EditPostProps) {
         )}
         <Screws />
       </div>
-    </div>
+    </motion.div>
   );
 }

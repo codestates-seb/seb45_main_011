@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { useQueries } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
 
 import { getDiariesByLeafAndUserId, getLeafByLeafId } from '@/api/leaf';
 
@@ -24,6 +25,8 @@ import ErrorMessage from '@/components/common/ErrorMessage';
 import ShareModal from '@/components/common/ShareModal';
 
 import { DiaryDataInfo, LeafDataInfo } from '@/types/data';
+
+import { MOUNT_ANIMATION_VALUES } from '@/constants/values';
 
 interface LeafProps {
   params: { leafId: string; userId: string };
@@ -85,7 +88,11 @@ export default function Leaf({ params }: LeafProps) {
   }, [diaries]);
 
   return (
-    <div className="flex justify-center items-center pt-[120px] pb-[100px]">
+    <motion.div
+      variants={MOUNT_ANIMATION_VALUES}
+      initial="initial"
+      animate="animate"
+      className="flex justify-center items-center pt-[120px] pb-[100px]">
       <div className="relative w-full min-w-[312px] max-w-[560px] h-[645px] mx-4 border-gradient rounded-xl shadow-container">
         <ShareButton location="leaf" position="top" />
         <div className="h-full pl-4 pr-1 py-8 mr-2">
@@ -143,6 +150,6 @@ export default function Leaf({ params }: LeafProps) {
             userId={userId}
           />
         ))}
-    </div>
+    </motion.div>
   );
 }

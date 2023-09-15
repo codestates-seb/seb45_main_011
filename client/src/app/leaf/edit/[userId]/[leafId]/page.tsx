@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 
 import { useQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
 
 import { getLeafByLeafId } from '@/api/leaf';
 
@@ -15,6 +16,8 @@ import Screws from '@/components/common/Screws';
 import LeafForm from '@/components/common/LeafForm';
 
 import { LeafDataInfo } from '@/types/data';
+
+import { MOUNT_ANIMATION_VALUES } from '@/constants/values';
 
 interface EditLeafProps {
   params: { userId: string; leafId: string };
@@ -47,7 +50,11 @@ export default function EditLeaf({ params }: EditLeafProps) {
   if (isError) return <div>error</div>;
 
   return (
-    <div className="flex justify-center items-center pt-[120px]">
+    <motion.div
+      variants={MOUNT_ANIMATION_VALUES}
+      initial="initial"
+      animate="animate"
+      className="flex justify-center items-center pt-[120px]">
       <div className="relative w-full min-w-[312px] max-w-[540px] h-full mx-4 border-gradient rounded-xl shadow-container">
         <Screws />
         <div className="p-5 h-full">
@@ -62,6 +69,6 @@ export default function EditLeaf({ params }: EditLeafProps) {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

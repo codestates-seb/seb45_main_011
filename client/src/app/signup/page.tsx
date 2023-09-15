@@ -1,5 +1,7 @@
 'use client';
 
+import { motion } from 'framer-motion';
+
 import useSignModalStore from '@/stores/signModalStore';
 
 import AuthEmailModal from '@/components/signup/AuthEmailModal';
@@ -10,11 +12,15 @@ export default function Signup() {
   const currentState = useSignModalStore((state) => state.currentState);
 
   return (
-    <div className="flex flex-col justify-center items-center h-full mx-4">
+    <motion.div
+      initial={{ scale: 0.9, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="flex flex-col justify-center items-center h-full mx-4">
       <SignupIntro />
 
       {currentState === 'AuthEmailModal' && <AuthEmailModal />}
       {currentState === 'Not Code' && <FailureModal />}
-    </div>
+    </motion.div>
   );
 }
