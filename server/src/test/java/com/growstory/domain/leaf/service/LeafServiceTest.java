@@ -18,6 +18,7 @@
 //import org.mockito.Mockito;
 //import org.mockito.junit.jupiter.MockitoExtension;
 //import org.springframework.mock.web.MockMultipartFile;
+//import org.springframework.security.authentication.BadCredentialsException;
 //import org.springframework.web.multipart.MultipartFile;
 //
 //import java.io.FileInputStream;
@@ -178,13 +179,21 @@
 //                    .willReturn(Optional.empty());
 //
 //            // when, then
-//            assertThrows()
-//
+//            BusinessLogicException exception = assertThrows(BusinessLogicException.class,
+//                    () -> leafService.updateLeaf(leafPatchDto, testImage));
+//            assertThat(exception.getExceptionCode().getStatus(), is(404));
+//            assertThat(exception.getExceptionCode().getMessage(), is("Leaf not found"));
 //        }
 //
 //        @Test
 //        @Order(2)
 //        public void 입력받은_사용자와_식물카드의_주인이_다르면() {
+//            given(authUserUtils.getAuthUser())
+//                    .willReturn(account);
+//
+//            given(leafRepository.findById(Mockito.anyLong()))
+//                    .willReturn(Optional.of(leaf.toBuilder().account(account).build()));
+//
 //
 //        }
 //

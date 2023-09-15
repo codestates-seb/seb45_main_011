@@ -530,7 +530,7 @@ public class AccountServiceTest {
         @Test
         @Order(3)
         public void 로그인된_사용자와_입력된_사용자가_다르면_실패() {
-            claims.put("accountId", 999);
+            claims.put("accountId", "999");
 
             given(authentication.getName())
                     .willReturn("SeungTaeLee");
@@ -545,7 +545,7 @@ public class AccountServiceTest {
         @Test
         @Order(4)
         public void 로그인된_사용자가_입력과_동일하면_성공() {
-            claims.put("accountId", 1);
+            claims.put("accountId", "1");
 
             given(authentication.getName())
                     .willReturn("SeungTaeLee");
