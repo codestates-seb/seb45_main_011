@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 
+import { motion } from 'framer-motion';
+
 import { HEADER_LINK_CONTENT } from '@/constants/contents';
 
 interface HeaderLinkProps {
@@ -16,13 +18,13 @@ export default function HeaderLink({
   title,
 }: HeaderLinkProps) {
   return (
-    <div>
+    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
       <Link
         href={location}
-        className={`flex justify-center items-center font-bold border-[3px] rounded-lg ${HEADER_LINK_STYLE[content]} bg-contain bg-center ${HEADER_LINK_BG[content]} px-[10px] py-[3px] text-base whitespace-nowrap hover:scale-105 transition-transform`}>
+        className={`flex justify-center items-center font-bold border-[3px] rounded-lg ${HEADER_LINK_STYLE[content]} bg-contain bg-center ${HEADER_LINK_BG[content]} px-[10px] py-[3px] text-base whitespace-nowrap`}>
         {HEADER_LINK_CONTENT[title]}
       </Link>
-    </div>
+    </motion.div>
   );
 }
 
