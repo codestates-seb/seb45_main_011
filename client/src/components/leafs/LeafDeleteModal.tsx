@@ -34,17 +34,18 @@ export default function LeafDeleteModal({
 
   return (
     <ModalPortal>
-      <Modal className="w-full max-w-[415px] mx-4">
-        <div className="flex flex-col justify-center w-full py-7 px-6 min-w-[352px] ">
-          <p className="text-center font-bold text-[1.45rem] leading-9 text-brown-90 mb-3 break-wrods">
-            정원에 설치한 식물 카드의{' '}
-            <br className='className="hidden max-[405px]:inline' />
-            경우
-            <b className="text-red-50"> 연결이 해제</b>됩니다.
+      <Modal>
+        <div className="flex flex-col justify-center min-w-[312px] py-7 px-6">
+          <p className="text-center font-bold text-[1.3rem] leading-7 text-brown-90 mb-3 mt-1 break-wrods">
+            정원에 설치된 식물 카드는
+            <b className="text-red-50">
+              <br />
+              연결이 해제
+            </b>
+            됩니다.
           </p>
-          <p className="text-center font-bold text-[1.6rem] leading-9 text-brown-70 mb-5 break-words">
-            그래도 <br className="hidden max-[390px]:inline" />
-            삭제하시겠습니까?
+          <p className="text-center font-bold text-[1.3rem] leading-7 text-brown-70 mb-5 break-words">
+            그래도 삭제하시겠습니까?
           </p>
           <div className="flex gap-3 justify-center">
             <CommonButton type="button" size="md" onClick={handleLeafDelete}>
