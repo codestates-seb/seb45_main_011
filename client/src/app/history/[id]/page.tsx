@@ -16,7 +16,7 @@ export default function History({ params }: HistoryProps) {
   const currentState = useSignModalStore((state) => state.currentState);
 
   return (
-    <div className="flex justify-center items-center h-full bg-cover bg-center bg-no-repeat bg-[url('/assets/img/bg_default.png')] pt-[120px]">
+    <div className="flex flex-col justify-center items-center mx-4">
       <HistoryBox paramsId={params.id} />
 
       {currentState === 'ResignModal' && <ResignModal />}

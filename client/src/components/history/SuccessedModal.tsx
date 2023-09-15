@@ -25,16 +25,16 @@ export default function SuccessedModal() {
 
   return (
     <ModalPortal>
-      <Modal className="w-[420px] h-[296px] flex flex-col justify-center items-center">
-        <div className="flex flex-col items-center">
-          <div className="font-bold text-brown-80 text-[28px]">
+      <Modal className="w-full min-w-[312px] max-w-[531px] h-fit flex flex-col justify-center items-center shadow-container">
+        <div className="flex flex-col items-center gap-3 px-5 mt-10 mx-4">
+          <div className="font-bold text-brown-80 text-[28px] break-keep">
             그동안&nbsp;
             <span className="font-bold text-brown-60 text-[28px]">
               Grow&nbsp;
             </span>
             <span className="font-bold text-brown-70 text-[28px]">Story</span>를
           </div>
-          <div className="flex flex-col items-center font-bold text-brown-80 text-[28px]">
+          <div className="flex flex-col items-center font-bold text-brown-80 text-[28px] break-keep">
             <span>이용해 주셔서 감사합니다.</span>
             <span className="mt-7">다음에 또 놀러 오세요!</span>
           </div>
@@ -43,7 +43,7 @@ export default function SuccessedModal() {
               type="button"
               size="md"
               children="닫기"
-              className="w-[96px] h-[52px] text-[24px] mt-7"
+              className="w-[96px] h-[52px] text-[24px] hover:scale-105 transition-transform mb-6"
               onClose={allCloseData}
             />
           </div>
