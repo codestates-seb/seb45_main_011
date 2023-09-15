@@ -2,11 +2,13 @@ package com.growstory.domain.stubdata;
 
 import com.growstory.domain.account.dto.AccountDto;
 import com.growstory.domain.account.entity.Account;
+import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.images.entity.JournalImage;
 import com.growstory.domain.journal.dto.JournalDto;
 import com.growstory.domain.journal.entity.Journal;
 import com.growstory.domain.leaf.dto.LeafDto;
 import com.growstory.domain.leaf.entity.Leaf;
+import com.growstory.domain.likes.entity.BoardLike;
 import com.growstory.domain.plant_object.dto.PlantObjDto;
 import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.plant_object.location.dto.LocationDto;
@@ -366,5 +368,87 @@ public class Stub {
                     .score(0)
                     .build();
         }
+    }
+
+    public static class MockBoardLikes {
+        public static BoardLike getBoardLike1_1() {
+        Account account1 = Account.builder()
+                .accountId(1L).displayName("김별명1").build();
+            return  BoardLike.builder()
+                    .boardLikeId(1L)
+                    .account(account1)
+                    .board(Board.builder().boardId(1L).build())
+                    .build();
+        }
+        public static BoardLike getBoardLike1_2() {
+            Account account1 = Account.builder()
+                    .accountId(2L).displayName("김별명2").build();
+            return  BoardLike.builder()
+                    .boardLikeId(2L)
+                    .account(account1)
+                    .board(Board.builder().boardId(1L).build())
+                    .build();
+        }
+        public static BoardLike getBoardLike1_3() {
+            Account account1 = Account.builder()
+                    .accountId(3L).displayName("김별명3").build();
+            return  BoardLike.builder()
+                    .boardLikeId(3L)
+                    .account(account1)
+                    .board(Board.builder().boardId(1L).build())
+                    .build();
+        }
+
+        public static BoardLike getBoardLike2_1() {
+            Account account1 = Account.builder()
+                    .accountId(1L).displayName("김별명1").build();
+            return  BoardLike.builder()
+                    .boardLikeId(1L)
+                    .account(account1)
+                    .board(Board.builder().boardId(2L).build())
+                    .build();
+        }
+        public static BoardLike getBoardLike2_2() {
+            Account account1 = Account.builder()
+                    .accountId(2L).displayName("김별명2").build();
+            return  BoardLike.builder()
+                    .boardLikeId(2L)
+                    .account(account1)
+                    .board(Board.builder().boardId(2L).build())
+                    .build();
+        }
+
+        public static BoardLike getBoardLike3_1() {
+            Account account1 = Account.builder()
+                    .accountId(1L).displayName("김별명1").build();
+            return  BoardLike.builder()
+                    .boardLikeId(1L)
+                    .account(account1)
+                    .board(Board.builder().boardId(3L).build())
+                    .build();
+        }
+
+        public static List<BoardLike> getBoardLikes1() {
+            List<BoardLike> boardLikes = new ArrayList<>();
+            boardLikes.add(getBoardLike1_1());
+            boardLikes.add(getBoardLike1_2());
+            boardLikes.add(getBoardLike1_3());
+            return boardLikes;
+        }
+
+        public static List<BoardLike> getBoardLikes2() {
+            List<BoardLike> boardLikes = new ArrayList<>();
+            boardLikes.add(getBoardLike2_1());
+            boardLikes.add(getBoardLike2_2());
+            return boardLikes;
+        }
+
+        public static List<BoardLike> getBoardLikes3() {
+            List<BoardLike> boardLikes = new ArrayList<>();
+            boardLikes.add(getBoardLike3_1());
+            return boardLikes;
+        }
+
+
     }
 }

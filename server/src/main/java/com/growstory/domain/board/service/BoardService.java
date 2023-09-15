@@ -4,6 +4,7 @@ import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.board.dto.RequestBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardPageDto;
+import com.growstory.domain.board.dto.ResponseRankingDto;
 import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.board.entity.Board_HashTag;
 import com.growstory.domain.board.repository.BoardHashTagRepository;
@@ -24,13 +25,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional
@@ -221,5 +225,27 @@ public class BoardService {
                 .comments(findComment)
                 .build();
     }
+
+    // 홈페이지 갈 때마다 api 호출이 이루어지는 메소드
+    @Scheduled(cron = "0 0 18 ? * FRI")
+    public List<ResponseRankingDto> findTop3LikedBoards() {
+        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
+        List<Object[]> topBoardsWithLikes = boardRepository.findTop3LikedBoards(sevenDaysAgo);
+        List<ResponseRankingDto> response = topBoardsWithLikes.stream().map(
+                responseRankingDto -> {
+                    Board board = (Board) responseRankingDto[0];
+                    Long LikeCount = (Long) responseRankingDto[1];
+                    return ResponseRankingDto.builder()
+                            .boardId(board.getBoardId())
+                            .title(board.getTitle())
+                            .displayName(board.getAccount().getDisplayName())
+                            .likeNum(Integer.valueOf(String.valueOf(LikeCount)))
+                            .build();
+                    }).limit(3)
+                .collect(Collectors.toList());
+        return response;
+    }
+
+
 }
 
