@@ -83,7 +83,7 @@ export default function Post({ params }: PostProps) {
                   displayName={post.displayName}
                   userId={post.accountId}
                   profileImageUrl={post.profileImageUrl}
-                  grade="브론즈 가드너"
+                  grade={post.grade}
                   usage="post"
                 />
                 <DateAndControl
