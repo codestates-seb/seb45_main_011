@@ -60,11 +60,7 @@ export default function LoginButtion() {
     <>
       {isClient && (
         <div className="flex flex-col gap-4 mt-4">
-          <CommonButton
-            type="submit"
-            size="fix"
-            onGoogle={onGoogleLogin}
-            className="hover:scale-105 transition-transform">
+          <CommonButton type="submit" size="fix" onGoogle={onGoogleLogin}>
             구글로 로그인
           </CommonButton>
 
@@ -72,8 +68,7 @@ export default function LoginButtion() {
             type="button"
             size="fix"
             onEmailSignin={() => getSigninForm(true)}
-            disabled={isGoogleLogin}
-            className="hover:scale-105 transition-transform">
+            disabled={isGoogleLogin}>
             이메일로 로그인
           </CommonButton>
         </div>

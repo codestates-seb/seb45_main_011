@@ -1,6 +1,10 @@
+'use client';
+
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+
 import { twMerge } from 'tailwind-merge';
+import { motion } from 'framer-motion';
 
 import useLeafsStore from '@/stores/leafsStore';
 import useLeafStore from '@/stores/leafStore';
@@ -56,9 +60,11 @@ export default function ShareButton({
 
   if (isLeafs && position === 'top')
     return (
-      <button
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
         className={twMerge(
-          'absolute top-[36px] right-[36px] w-[40px] h-[40px] bg-brown-50 rounded-[50%] border-2 border-brown-70 shadow-outer/down hover:scale-110 transition-transform max-[590px]:hidden',
+          'absolute top-[36px] right-[36px] w-[40px] h-[40px] bg-brown-50 rounded-[50%] border-2 border-brown-70 shadow-outer/down max-[590px]:hidden',
           className,
         )}
         onClick={handleShareUrl}>
@@ -69,7 +75,7 @@ export default function ShareButton({
           height={18}
           alt="공유하기"
         />
-      </button>
+      </motion.button>
     );
   if (isLeafs && position === 'bottom')
     return (
@@ -77,9 +83,7 @@ export default function ShareButton({
         size="md"
         type="button"
         onClick={handleShareUrl}
-        className={
-          'hidden w-fit hover:scale-105 hover:transition-transform max-[590px]:inline'
-        }>
+        className="hidden w-fit max-[590px]:inline">
         공유하기
       </CommonButton>
     );
@@ -98,9 +102,7 @@ export default function ShareButton({
         size="md"
         type="button"
         onClick={handleShareUrl}
-        className={
-          'hidden w-fit hover:scale-105 hover:transition-transform max-[480px]:inline'
-        }>
+        className={'hidden w-fit max-[480px]:inline'}>
         공유하기
       </CommonButton>
     );

@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { postUserInfo } from '@/api/user';
@@ -82,14 +83,14 @@ export default function SigninForm() {
             <CommonButton
               type="submit"
               size="md"
-              className="w-[92px] h-[44px] hover:scale-105 transition-transform"
+              className="w-[92px] h-[44px]"
               disabled={isSubmitting}>
               로그인
             </CommonButton>
             <CommonButton
               type="button"
               size="md"
-              className="w-[161px] h-[44px] hover:scale-105 transition-transform"
+              className="w-[161px] h-[44px]"
               onFind={() => changeState('FindPasswordModal')}>
               비밀번호 찾기
             </CommonButton>

@@ -26,7 +26,7 @@ export default function FailureModal() {
           <CommonButton
             type="button"
             size="md"
-            className="w-[96px] h-[52px] text-[24px] hover:scale-105 transition-transform mb-5"
+            className="w-[96px] h-[52px] text-[24px] mb-5"
             onClose={close}>
             닫기
           </CommonButton>

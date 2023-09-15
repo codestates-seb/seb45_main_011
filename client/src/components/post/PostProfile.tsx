@@ -3,6 +3,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { motion } from 'framer-motion';
+
 interface PostProfileProps {
   userId: number;
   displayName: string;
@@ -22,7 +24,10 @@ export default function PostProfile({
     <Link
       href={`/history/${userId}`}
       className={`flex gap-2 items-center ${PROFILE_STYLE[usage].container}`}>
-      <div className="w-[44px] h-[44px] flex justify-center items-center border-[3px] rounded-[50%] border-brown-50 common-drop-shadow overflow-hidden max-[500px]:w-[38px] max-[500px]:h-[38px]">
+      <motion.div
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="w-[44px] h-[44px] flex justify-center items-center border-[3px] rounded-[50%] border-brown-50 common-drop-shadow overflow-hidden max-[500px]:w-[38px] max-[500px]:h-[38px]">
         <Image
           className=" object-cover"
           src={profileImageUrl || '/assets/img/bg_default_profile.png'}
@@ -30,7 +35,7 @@ export default function PostProfile({
           width={50}
           height={50}
         />
-      </div>
+      </motion.div>
       <div className="flex flex-col gap-1 max-[500px]:gap-1">
         <span className={`${PROFILE_STYLE[usage].displayName} text-brown-80`}>
           {displayName}

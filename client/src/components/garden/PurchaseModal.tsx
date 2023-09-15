@@ -35,11 +35,7 @@ export default function PurchaseModal() {
               <span className="text-[28px] text-red-50">부족합니다!</span>
             </p>
           )}
-          <CommonButton
-            onClose={handleClose}
-            type="button"
-            size="md"
-            className="hover:scale-105 transition-transform">
+          <CommonButton onClose={handleClose} type="button" size="md">
             닫기
           </CommonButton>
         </section>

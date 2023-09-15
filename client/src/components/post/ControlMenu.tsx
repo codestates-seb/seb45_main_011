@@ -3,6 +3,8 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
+import { motion } from 'framer-motion';
+
 import usePostModalStore from '@/stores/postModalStore';
 import usePostStore from '@/stores/postStore';
 import useUserStore from '@/stores/userStore';
@@ -43,7 +45,7 @@ export default function ControlMenu({
 
   return (
     <div
-      className={`absolute group w-[30px] h-[30px] right-0 bg-brown-50 border-2 border-brown-70 rounded-[50%] common-drop-shadow hover:scale-105 hover:transition-transform ${BUTTON_STYLE[usage].container}`}
+      className={`absolute group w-[30px] h-[30px] right-0 bg-brown-50 border-2 border-brown-70 rounded-[50%] common-drop-shadow hover:scale-105 transition-transform ${BUTTON_STYLE[usage].container}`}
       role="button">
       <Image
         className={`absolute top-1/2 -mt-[2.5px] left-1/2 -ml-[10px] ${BUTTON_STYLE[usage].icon}`}
@@ -52,19 +54,21 @@ export default function ControlMenu({
         width={20}
         height={5}></Image>
       <div
-        className={`absolute  -left-[40px] w-[65px] h-[102px] group-hover:block ${BUTTON_STYLE[usage].hiddenContainer}`}>
-        <div
+        className={`absolute -left-[40px] w-[65px] h-[102px] group-hover:block ${BUTTON_STYLE[usage].hiddenContainer}`}>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
           className={`hidden absolute left-0 bottom-0 w-[65px] h-fit group-hover:flex flex-col justify-center items-center border-2 border-brown-70 bg-brown-50 rounded-lg common-drop-shadow text-brown-10 text-[12px] leading-4 font-bold ${BUTTON_STYLE[usage].hiddenBox}`}>
           <button
             className="w-full py-[8px] border-dashed border-b-[1px] border-brown-10"
             onClick={handleEdit}>
             수정하기
           </button>
-
           <button className="w-full py-[8px] pt-[9px]" onClick={handleDelete}>
             삭제하기
           </button>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

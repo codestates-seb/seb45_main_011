@@ -63,7 +63,7 @@ export default function FindPasswordModal() {
           <CommonButton
             type="button"
             size="md"
-            className="w-[96px] h-[52px] text-[24px] mb-8 hover:scale-105 transition-transform"
+            className="w-[96px] h-[52px] text-[24px] mb-8"
             disabled={isSubmitting}
             onCheck={() => {
               handleEmailCheck(userEmail);
@@ -73,7 +73,7 @@ export default function FindPasswordModal() {
           <CommonButton
             type="button"
             size="md"
-            className="w-[96px] h-[52px] text-[24px] hover:scale-105 transition-transform"
+            className="w-[96px] h-[52px] text-[24px]"
             onClose={close}>
             취소
           </CommonButton>

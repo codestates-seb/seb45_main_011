@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
 
 import { getPostByBoardId } from '@/api/board';
 
@@ -26,6 +27,8 @@ import LoadingNotice from '@/components/common/LoadingNotice';
 import ErrorMessage from '@/components/common/ErrorMessage';
 
 import { CommentDataInfo, PostDataInfo } from '@/types/data';
+
+import { MOUNT_ANIMATION_VALUES } from '@/constants/values';
 
 interface PostProps {
   params: { id: string };
@@ -62,9 +65,13 @@ export default function Post({ params }: PostProps) {
   }, [post?.comments]);
 
   return (
-    <main className="px-4 flex justify-center items-center pb-[60px]">
+    <motion.main
+      variants={MOUNT_ANIMATION_VALUES}
+      initial="initial"
+      animate="animate"
+      className="px-4 flex justify-center items-center pb-[60px]">
       <div className="relative w-full max-w-[720px] min-w-[328px] h-[780px] border-gradient rounded-xl shadow-container">
-        <div className="h-full px-2 py-5">
+        <div className="h-full px-5 py-5">
           <Screws />
           {isLoading && (
             <div className="w-full h-full flex justify-center items-center">
@@ -135,6 +142,6 @@ export default function Post({ params }: PostProps) {
         ) : (
           <CommentDeleteModal boardId={String(post?.boardId)} />
         ))}
-    </main>
+    </motion.main>
   );
 }

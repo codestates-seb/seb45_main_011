@@ -1,4 +1,8 @@
+'use client';
+
 import { useRouter } from 'next/navigation';
+
+import { motion } from 'framer-motion';
 
 import useLeafStore from '@/stores/leafStore';
 
@@ -56,11 +60,13 @@ export default function EmptyDiary({
           )}
         </div>
         {isOwner && displayAddButton && (
-          <button
-            className="px-3 py-[6px] mb-2 bg-[url('/assets/img/bg_wood_dark.png')] bg-contain border-2 border-brown-70 rounded-lg shadow-outer/down text-base font-bold text-brown-10 hover:scale-110 transition-transform"
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-3 py-[6px] mb-2 bg-[url('/assets/img/bg_wood_dark.png')] bg-contain border-2 border-brown-70 rounded-lg shadow-outer/down text-base font-bold text-brown-10"
             onClick={info === 'diary' ? addDiary : goToAddPost}>
             작성하기
-          </button>
+          </motion.button>
         )}
       </div>
     </div>

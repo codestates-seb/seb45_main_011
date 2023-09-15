@@ -1,7 +1,13 @@
+'use client';
+
 import Image from 'next/image';
 import { useState } from 'react';
 
+import { motion } from 'framer-motion';
+
 import useEffectOnce from '@/hooks/useEffectOnce';
+
+import { MOUNT_ANIMATION_VALUES } from '@/constants/values';
 
 export default function BoardBanner() {
   const [isSmallView, setIsSmallView] = useState(false);
@@ -22,7 +28,10 @@ export default function BoardBanner() {
   });
 
   return (
-    <div>
+    <motion.div
+      variants={MOUNT_ANIMATION_VALUES}
+      initial="initial"
+      animate="animate">
       <div className="py-[1.375rem] px-[1rem] w-full h-[132px] min-w-[328px] max-w-[720px] flex justify-between items-center gap-4 bg-[url('/assets/img/bg_grass.png')] bg-cover shadow-outer/down border-[6px] border-green-90 rounded-xl mb-2 max-[688px]:py-[1rem] max-[688px]:px-[1rem] max-[432px]:h-[108px]">
         <div className="w-[52px]">
           <Image
@@ -61,6 +70,6 @@ export default function BoardBanner() {
           포인트는 매주 월요일에 지급되며, 이전 랭킹은 초기화 됩니다.
         </p>
       )}
-    </div>
+    </motion.div>
   );
 }

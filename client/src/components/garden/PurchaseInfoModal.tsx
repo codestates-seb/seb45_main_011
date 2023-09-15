@@ -43,18 +43,10 @@ export default function PurchaseInfoModal() {
             구매하시겠습니까?
           </p>
           <div className="flex gap-3">
-            <CommonButton
-              onPurchase={handlePurchase}
-              type="button"
-              size="md"
-              className="hover:scale-105 transition-transform">
+            <CommonButton onPurchase={handlePurchase} type="button" size="md">
               구매
             </CommonButton>
-            <CommonButton
-              onCancel={handleCancel}
-              type="button"
-              size="md"
-              className="hover:scale-105 transition-transform">
+            <CommonButton onCancel={handleCancel} type="button" size="md">
               취소
             </CommonButton>
           </div>

@@ -84,11 +84,11 @@ export default function ImageForm({ token, className }: ImageFormProps) {
           <CommonButton
             type="submit"
             size="sm"
-            children="이미지 등록"
-            className="w-[100px] h-8 mb-3 hover:scale-110 transition-transform"
+            className="w-[100px] h-8 mb-3"
             onSubmit={onImageSubmit}
-            disabled={isDisabled}
-          />
+            disabled={isDisabled}>
+            이미지 등록
+          </CommonButton>
           <p className="text-gray-70 text-xs mb-8">
             2mb 이하의 이미지만 등록이 가능합니다.
           </p>

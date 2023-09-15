@@ -1,5 +1,9 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+
+import { motion } from 'framer-motion';
 
 interface AddLeafButtonProps {
   userId: number;
@@ -8,9 +12,11 @@ interface AddLeafButtonProps {
 export default function AddLeafButton({ userId }: AddLeafButtonProps) {
   return (
     <Link href={`/leaf/add/${userId}`} className="w-full max-w-[200px]">
-      <button
+      <motion.button
         type="button"
-        className="flex justify-center items-center w-full max-w-[200px] h-40 bg-brown-20/70 border-4 border-dashed border-brown-70 rounded-xl shadow-outer/down hover:scale-105 transition-transform">
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="flex justify-center items-center w-full max-w-[200px] h-40 bg-brown-20/70 border-4 border-dashed border-brown-70 rounded-xl shadow-outer/down">
         <div className="w-[36px] h-[36px] overflow-hidden">
           <Image
             src="/assets/img/plus.svg"
@@ -20,7 +26,7 @@ export default function AddLeafButton({ userId }: AddLeafButtonProps) {
             className="object-cover w-[36px] h-[36px]"
           />
         </div>
-      </button>
+      </motion.button>
     </Link>
   );
 }
