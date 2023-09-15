@@ -11,7 +11,7 @@ interface PostCountInfoProps extends DefaultProps {
   commentNum: number | null;
   usage: 'board' | 'post';
   liked?: boolean;
-  boardId?: number;
+  boardId?: string;
 }
 
 export default function PostCountInfo({
@@ -22,7 +22,7 @@ export default function PostCountInfo({
   className,
   boardId,
 }: PostCountInfoProps) {
-  const { mutate: likePost } = useLikePostMutation(boardId as number);
+  const { mutate: likePost } = useLikePostMutation(boardId as string);
 
   return (
     <div className={`flex gap-3 ${className}`}>

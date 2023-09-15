@@ -22,10 +22,19 @@ public enum ExceptionCode {
     LEAF_ALREADY_EXISTS(409, "Leaf already exists"),
 
     JOURNAL_NOT_FOUND(404, "Journal not found"),
-    JOURNAL_NOT_ALLOW(405, "Journal doesn't match the author."),
+    JOURNAL_NOT_ALLOW(405, "Journal doesn't match the author"),
     JOURNAL_EXISTS(409, "Journal already Exists"),
+    JOURNAL_IMG_NOT_FOUND(404, "Journal Image not found"),
 
-    POINT_TYPE_NOT_FOUND(404, "Earn point type not found.");
+    POINT_TYPE_NOT_FOUND(404, "Earn point type not found."),
+
+    PRODUCT_NOT_FOUND(404, "Product not found"),
+    PLANT_OBJ_NOT_FOUND(404, "PlantObj not found"),
+
+    LOCATION_NOT_FOUND(404, "Location not found"),
+    LOCATION_NOT_ALLOW(405, "Location change not allowed"),
+
+    NOT_ENOUGH_POINTS(403, "Not Enough Points");
 
 
     private final int status;

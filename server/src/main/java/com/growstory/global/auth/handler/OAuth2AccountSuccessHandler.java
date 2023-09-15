@@ -2,6 +2,7 @@ package com.growstory.global.auth.handler;
 
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.account.repository.AccountRepository;
+import com.growstory.domain.point.service.PointService;
 import com.growstory.global.auth.jwt.JwtTokenizer;
 import com.growstory.global.auth.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
     private final AccountRepository accountRepository;
+    private final PointService pointService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -42,22 +44,25 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
         String profileImageUrl = (String) oAuth2User.getAttributes().get("picture");
         List<String> authorities = authorityUtils.createRoles(email);
 
-        Account account = accountRepository.save(Account.builder()
+        Account findAccount = accountRepository.findByEmail(email)
+                .orElse(accountRepository.save(Account.builder()
                                 .email(email)
                                 .displayName(name)
                                 .password("")
                                 .profileImageUrl(profileImageUrl)
+                                .point(pointService.createPoint(email))
                                 .roles(authorities)
                                 .build()
-        );
-        redirect(request, response, account, authorities);
+                ));
+
+        redirect(request, response, findAccount, authorities);
     }
 
     private void redirect(HttpServletRequest request, HttpServletResponse response,
                           Account account, List<String> authorities) throws IOException {
 
         // accessToken과 refreshToken 생성
-        String accessToken = delegateAccessToken(account.getEmail(), authorities);
+        String accessToken = delegateAccessToken(account, authorities);
         String refreshToken = delegateRefreshToken(account.getEmail());
 
         //FE 애플리케이션 쪽의 URI 생성.
@@ -68,12 +73,15 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
     }
 
 
-    private String delegateAccessToken(String username, List<String> authorities) {
+    private String delegateAccessToken(Account account, List<String> authorities) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("username", username);
+        claims.put("accountId", account.getAccountId());
+        claims.put("username", account.getEmail());
+        claims.put("displayName", account.getDisplayName());
+        claims.put("profileImageUrl", account.getProfileImageUrl());
         claims.put("roles", authorities);
 
-        String subject = username;
+        String subject = account.getEmail();
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
 
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
@@ -95,6 +103,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
     private Object createURI(String accessToken, String refreshToken, Account account) {
         // HTTP 요청의 쿼리 파라미터나 헤더를 구성하기 위한 Map
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+        queryParams.add("accountId", account.getAccountId().toString());
         queryParams.add("displayName", account.getDisplayName());
         queryParams.add("profileImageUrl", account.getProfileImageUrl());
         queryParams.add("access_token", accessToken);
@@ -104,12 +113,12 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host("localhost")
-//                .port(80)
-                .port(3000)
-                .path("/login")
-//                .host("se-sof.s3-website.ap-northeast-2.amazonaws.com") //"http://seveneleven-stackoverflow-s3.s3-website.ap-northeast-2.amazonaws.com"
-//                .port(requestPort) //S3는 80포트
+//                .host("localhost")
+//                .port(3000)
+                .host("growstory.s3-website.ap-northeast-2.amazonaws.com")
+                .port(80) //S3는 80포트
+                .path("/signin")
+                .queryParam("accountId", account.getAccountId())
                 .queryParams(queryParams)
                 .encode()
                 .build()

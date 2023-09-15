@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+
 import tokens from './src/tokens/tokens';
 
 const { colors, boxShadow } = tokens;
@@ -15,5 +16,4 @@ const config: Config = {
   },
   plugins: [],
 };
-
 export default config;

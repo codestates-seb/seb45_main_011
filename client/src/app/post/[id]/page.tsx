@@ -104,7 +104,7 @@ export default function Post({ params }: PostProps) {
                   likesNum={post.likeNum}
                   commentNum={comments?.length || 0}
                   usage="post"
-                  boardId={post.boardId}
+                  boardId={String(post.boardId)}
                   className="mb-3"
                 />
                 <CommentForm boardId={String(post.boardId)} />

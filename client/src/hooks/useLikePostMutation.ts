@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { likeBoard } from '@/api/board';
 
-const useLikePostMutation = (boardId: number) => {
+const useLikePostMutation = (boardId: string) => {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
