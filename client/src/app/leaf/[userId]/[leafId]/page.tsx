@@ -87,7 +87,13 @@ export default function Leaf({ params }: LeafProps) {
   return (
     <div className="flex justify-center items-center pt-[120px] pb-[100px]">
       <div className="relative w-full min-w-[312px] max-w-[560px] h-[645px] mx-4 border-gradient rounded-xl shadow-container">
-        <ShareButton location="leaf" position="top" className="right-[48px]" />
+        {leaf && (
+          <ShareButton
+            location="leaf"
+            position="top"
+            className="right-[48px]"
+          />
+        )}
         <div className="h-full pl-4 pr-2 py-8 mr-2">
           <Screws />
           {isLoading && (
@@ -128,9 +134,11 @@ export default function Leaf({ params }: LeafProps) {
             </div>
           )}
         </div>
-        <div className="flex justify-center my-6">
-          <ShareButton location="leaf" position="bottom" />
-        </div>
+        {leaf && (
+          <div className="flex justify-center my-6">
+            <ShareButton location="leaf" position="bottom" />
+          </div>
+        )}
       </div>
 
       {isModalOpen &&
