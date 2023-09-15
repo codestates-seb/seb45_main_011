@@ -13,7 +13,7 @@ export default function FailureModal() {
 
   return (
     <ModalPortal>
-      <Modal className="w-full min-w-[312px] max-w-[440px] h-fit flex flex-col justify-center items-center">
+      <Modal className="w-full min-w-[312px] max-w-[440px] h-fit flex flex-col justify-center items-center mx-1">
         <div className="flex flex-col items-center gap-6 px-5 mt-10 mx-4">
           <div className="flex flex-col items-center gap-3">
             <p className="font-bold text-brown-70 text-[28px] text-center break-keep leading-8">

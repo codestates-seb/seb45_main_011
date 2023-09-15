@@ -45,7 +45,7 @@ export default function HistoryBoard({ paramsId }: HistoryBoradProps) {
       {data?.pages.map((page, index) => (
         <div key={index}>
           {page.boardWritten?.length === 0 ? (
-            <div className="mt-3 overflow-hidden">
+            <div className="mt-3  overflow-hidden">
               <EmptyDiary
                 pathUserId={paramsId}
                 userId={userId}
@@ -57,7 +57,7 @@ export default function HistoryBoard({ paramsId }: HistoryBoradProps) {
             <InfiniteScroll
               hasMore={hasNextPage}
               loadMore={() => fetchNextPage()}>
-              <div className="flex flex-wrap gap-x-4 gap-y-9 mb-9 max-[360px]:flex-col justify-center items-center mt-2 ml-[15px]">
+              <div className="flex flex-wrap gap-x-4 gap-y-9 mb-9 max-[470px]:flex-col justify-center items-center mt-2 ml-[15px]">
                 {page.boardWritten?.map((board: any) => (
                   <div
                     key={board.boardId}

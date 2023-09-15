@@ -9,7 +9,7 @@ export default function SuccessedModal() {
 
   return (
     <ModalPortal>
-      <Modal className="min-w-[531px] h-[240px] flex flex-col justify-center items-center">
+      <Modal className="min-w-[531px] h-[240px] flex flex-col justify-center items-center mx-1">
         <div className="flex flex-col items-center gap-6">
           <div className="flex flex-col items-center gap-3">
             <p className="font-bold text-brown-70 text-[24px]">

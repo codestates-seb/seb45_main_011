@@ -46,6 +46,10 @@ export default function SignInput({
             value: 2,
             message: SIGNIN_VAILDATION.nickname,
           },
+          maxLength: {
+            value: 6,
+            message: '6글자 이하의 영문 또는 한글을 입력해야 합니다.',
+          },
         },
       };
     }
