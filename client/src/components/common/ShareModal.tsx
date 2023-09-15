@@ -1,12 +1,13 @@
 import useLeafsStore from '@/stores/leafsStore';
 import useLeafStore from '@/stores/leafStore';
+import useGardenModalStore from '@/stores/gardenModalStore';
 
 import CommonButton from './CommonButton';
 import Modal from './Modal';
 import ModalPortal from './ModalPortal';
 
 interface ShareModalProps {
-  location: 'leafs' | 'leaf';
+  location: 'leafs' | 'leaf' | 'garden';
 }
 export default function ShareModal({ location }: ShareModalProps) {
   const {
@@ -15,6 +16,7 @@ export default function ShareModal({ location }: ShareModalProps) {
   } = useLeafsStore();
   const { modalClose: leafModalClose, setModalCategory: setLeafModalCategory } =
     useLeafStore();
+  const { close: gardenModalClose, changeType } = useGardenModalStore();
 
   const handleModalCancel = () => {
     if (location === 'leafs') {
@@ -24,6 +26,10 @@ export default function ShareModal({ location }: ShareModalProps) {
     if (location === 'leaf') {
       setLeafModalCategory(null);
       leafModalClose();
+    }
+    if (location === 'garden') {
+      changeType(null);
+      gardenModalClose();
     }
   };
   return (

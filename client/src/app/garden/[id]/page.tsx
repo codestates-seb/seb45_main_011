@@ -9,6 +9,8 @@ import useSyncGarden from '@/hooks/useSyncGarden';
 
 import LoadingNotice from '@/components/common/LoadingNotice';
 import ErrorNotice from '@/components/common/ErrorNotice';
+import ShareModal from '@/components/common/ShareModal';
+import ShareButton from '@/components/common/ShareButton';
 import {
   GardenMap,
   GardenSidebar,
@@ -37,6 +39,7 @@ export default function Garden({ params }: GardenProps) {
     if (type === 'purchaseInfo') return <PurchaseInfoModal />;
     if (type === 'purchase') return <PurchaseModal />;
     if (type === 'emptyInventory') return <EmptyInventoryModal />;
+    if (type === 'share') return <ShareModal location="garden" />;
   };
 
   if (isError) return <ErrorNotice isTransparent={false} />;
@@ -57,6 +60,9 @@ export default function Garden({ params }: GardenProps) {
             {isOwner && <GardenSidebar />}
           </>
         )}
+      </div>
+      <div className="pt-6  text-center">
+        <ShareButton location="garden" position="bottom" />
       </div>
       {isOpen && renderModal(type)}
     </div>
