@@ -96,42 +96,42 @@ export default function Leaf({ params }: LeafProps) {
         )}
         <div className="h-full pl-4 pr-2 py-8 mr-2">
           <Screws />
-          {isLoading && (
+          {isLoading ? (
             <div className="w-full h-full flex justify-center items-center">
               <LoadingNotice isTransparent={true} />
             </div>
-          )}
-          {isError && (
+          ) : isError ? (
             <div className="w-full h-full flex justify-center items-center">
               <ErrorMessage />
             </div>
-          )}
-          {leaf && (
-            <div className="h-full overflow-y-scroll scrollbar pr-4">
-              <LeafInfo
-                userId={userId}
-                pathUserId={pathUserId}
-                leafName={leaf?.leafName}
-                imageUrl={leaf?.leafImageUrl}
-                content={leaf?.content}
-                createdAt={leaf?.createdAt}
-              />
-              <LeafDateInfo />
-              {isEmpty ? (
-                <EmptyDiary
-                  pathUserId={pathUserId}
+          ) : (
+            leaf && (
+              <div className="h-full overflow-y-scroll scrollbar pr-4">
+                <LeafInfo
                   userId={userId}
-                  info="diary"
-                  addInfo="addDiary"
-                  className="max-[380px]:w-[240px]"
-                />
-              ) : (
-                <LeafDiary
                   pathUserId={pathUserId}
-                  diaries={diaries as DiaryDataInfo[]}
+                  leafName={leaf?.leafName}
+                  imageUrl={leaf?.leafImageUrl}
+                  content={leaf?.content}
+                  createdAt={leaf?.createdAt}
                 />
-              )}
-            </div>
+                <LeafDateInfo />
+                {isEmpty ? (
+                  <EmptyDiary
+                    pathUserId={pathUserId}
+                    userId={userId}
+                    info="diary"
+                    addInfo="addDiary"
+                    className="max-[380px]:w-[240px]"
+                  />
+                ) : (
+                  <LeafDiary
+                    pathUserId={pathUserId}
+                    diaries={diaries as DiaryDataInfo[]}
+                  />
+                )}
+              </div>
+            )
           )}
         </div>
         {leaf && (
