@@ -144,10 +144,17 @@ export default function DiaryForm({
         </div> */}
 
         <div className="flex justify-center gap-2 mb-2">
-          <CommonButton type="submit" size="sm">
+          <CommonButton
+            type="submit"
+            size="sm"
+            className="hover:scale-105 hover:transition-transform">
             완료
           </CommonButton>
-          <CommonButton type="button" size="sm" onClick={handleModalCancel}>
+          <CommonButton
+            type="button"
+            size="sm"
+            onClick={handleModalCancel}
+            className="hover:scale-105 hover:transition-transform">
             취소
           </CommonButton>
         </div>

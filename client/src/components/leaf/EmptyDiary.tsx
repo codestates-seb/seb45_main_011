@@ -46,7 +46,7 @@ export default function EmptyDiary({
           className,
         )}>
         <div className="flex flex-col gap-2 text-center">
-          <p className="font-bold text-[1.25rem] text-brown-70 break-words px-3 max-[460px]:pt-2 break-keep leading-6">
+          <p className="font-bold text-[1.15rem] text-brown-70 break-words px-3 max-[460px]:pt-2 break-keep leading-6">
             {INFOMATION_TEXT[info]}
           </p>
           {isOwner && addInfo && (
