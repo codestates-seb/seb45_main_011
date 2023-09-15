@@ -54,7 +54,7 @@ public class AccountDto {
     }
 
     @Getter
-    @Builder
+    @Builder(toBuilder = true)
     @NoArgsConstructor
     @AllArgsConstructor
     public static class PasswordVerify {

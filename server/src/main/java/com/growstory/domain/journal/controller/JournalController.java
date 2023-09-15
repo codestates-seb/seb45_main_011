@@ -25,13 +25,13 @@ public class JournalController {
 
     private final JournalService journalService;
 
-    private static final String DEFAULT_URL = "http://localhost8080/v1/leaves";
+    private static final String DEFAULT_URL = "/v1/leaves";
 
-    // leafAuthor와 현재 인증 정보 비교 과정 필요
+    // GET, 특정 식물 관리 카드와 관련된 모든 일지 조회
     @GetMapping("/{leaf-id}/journals")
     public ResponseEntity<SingleResponseDto> getJournals(
-            @RequestParam Long accountId,
-            @Positive  @PathVariable("leaf-id") Long leafId) {
+            @Positive  @PathVariable("leaf-id") Long leafId,
+            @RequestParam Long accountId) {
 
         List<JournalDto.Response> journals = journalService.findAllJournals(accountId, leafId);
 
@@ -41,6 +41,7 @@ public class JournalController {
                 .data(journals).build());
     }
 
+    // POST, 식물 일지를 등록
     @PostMapping("/{leaf-id}/journals")
     public ResponseEntity<HttpStatus> postJournal(@RequestPart JournalDto.LeafAuthor leafAuthor,
                                                   @Positive @PathVariable("leaf-id") Long leafId,
@@ -53,6 +54,7 @@ public class JournalController {
         return ResponseEntity.created(location).build();
     }
 
+    // PATCH, 식물 일지를 수정
     @PatchMapping("/journals/{journal-id}")
     public ResponseEntity<HttpStatus> patchJournal(@RequestPart JournalDto.LeafAuthor leafAuthor,
                                                    @Positive @PathVariable("journal-id") Long journalId,
@@ -64,6 +66,7 @@ public class JournalController {
         return ResponseEntity.noContent().build();
     }
 
+    // DELETE, 식물 일지를 삭제
     @DeleteMapping("/journals/{journal-id}")
     public ResponseEntity<HttpStatus> deleteJournal(
             @RequestBody JournalDto.LeafAuthor leafAuthor,

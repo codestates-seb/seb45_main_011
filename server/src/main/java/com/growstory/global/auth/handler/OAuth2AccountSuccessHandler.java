@@ -88,13 +88,14 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
 //        response.setStatus(HttpStatus.TEMPORARY_REDIRECT.value());
 //        response.setHeader("Location", "http://localhost:8888/v1/accounts/oauth/login");
 
+//        client growstory.com => server api.growstory.com => cookie.setDomain(".growstory.com")
 //        response = addCookies(response, account, accessToken, refreshToken);
 //        HttpSession httpSession = request.getSession(true);
 //        httpSession.setAttribute("accessToken", accessToken);
 //        httpSession.setAttribute("accountId", account.getAccountId());
 
         // 만약 보안성을 추가하려면 토큰과 그 토큰을 가리키는 uuid를 하나 생성해서 account 테이블에 저장한 후
-        // 토큰의 key인 uuid만 queryparm으로 리다이렉트 그 후 client측에서 uuid를 입력으로 유저정보 get 요청
+        // 토큰의 key인 uuid만 queryparam으로 리다이렉트 그 후 client측에서 uuid를 입력으로 유저정보 get 요청
 
         //SimpleUrlAuthenticationSuccessHandler에서 제공하는 sendRedirect() 메서드를 이용해 Frontend 애플리케이션 쪽으로 리다이렉트
         getRedirectStrategy().sendRedirect(request, response, uri);
@@ -131,9 +132,9 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
     private Object createURI(String accessToken, String refreshToken, Account account) {
         return UriComponentsBuilder
                 .newInstance()
-                .scheme("http")
-                .host("localhost")
-                .port(3000)
+                .scheme("https")
+                .host("grow-story.vercel.app")
+//                .port(3000)
 //                .host("growstory.s3-website.ap-northeast-2.amazonaws.com")
 //                .port(80) //S3는 80포트
                 .path("/signin")
