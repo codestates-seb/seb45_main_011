@@ -39,8 +39,6 @@ import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class AccountServiceTest {
-    private static final String ACCOUNT_IMAGE_PROCESS_TYPE = "profiles";
-
     @InjectMocks // @Mock으로 만들어진 객체를 의존성 주입받는 객체
     private AccountService accountService;
     @Mock
@@ -55,7 +53,6 @@ public class AccountServiceTest {
     private AuthUserUtils authUserUtils;
     @Mock
     private static Authentication authentication;
-    private AutoCloseable autoCloseable;
     @Mock
     private AccountRepository accountRepository;
     @Mock
@@ -119,6 +116,8 @@ public class AccountServiceTest {
     @Nested
     class 이미지_수정 {
         // given
+        String s3ImageUrl = "s3/path";
+
         MockMultipartFile testImage = new MockMultipartFile("profileImage",
                 "testImage.jpg",
                 "jpg",
@@ -127,7 +126,6 @@ public class AccountServiceTest {
         Account account = getAccount(1L, "user1@gmail.com", "user1",
                 "user1234", "image/path", Point.builder().build(),
                 List.of("USER"), Account.AccountGrade.GRADE_BRONZE);
-        String s3ImageUrl = "s3/path";
 
         이미지_수정() throws IOException {
         }

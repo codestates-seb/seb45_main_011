@@ -32,7 +32,7 @@ public class AuthUserUtils {
         // 인증된 사용자를 나타내는 인증 객체 반환
         Map<String, Object> principal = (Map<String, Object>) authentication.getPrincipal();
 
-        return accountRepository.findById(Long.valueOf((Integer) principal.get("accountId"))).orElseThrow(() ->
+        return accountRepository.findById(Long.parseLong((String) principal.get("accountId"))).orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_FOUND));
     }
 }

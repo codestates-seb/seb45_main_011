@@ -41,17 +41,13 @@ public class LeafService {
                 .account(findAccount)
                 .build();
 
-        String leafImageUrl = leaf.getLeafImageUrl();
-
-        if (Optional.ofNullable(leafImage).isPresent())
-            leafImageUrl = s3Uploader.uploadImageToS3(leafImage, LEAF_IMAGE_PROCESS_TYPE);
 
         Leaf savedLeaf = leafRepository.save(leaf.toBuilder()
-                        .leafImageUrl(leafImageUrl)
+                        .leafImageUrl(s3Uploader.uploadImageToS3(leafImage, LEAF_IMAGE_PROCESS_TYPE))
                         .build());
 
         findAccount.addLeaf(savedLeaf);
-        updateAccountGrade(findAccount);
+        findAccount.updateGrade(updateAccountGrade(findAccount));
 
         return LeafDto.Response.builder()
                 .leafId(savedLeaf.getLeafId())
@@ -63,12 +59,11 @@ public class LeafService {
         Leaf findLeaf = findVerifiedLeafByAccount(findAccount.getAccountId(), leafPatchDto.getLeafId());
         String leafImageUrl = findLeaf.getLeafImageUrl();
 
-        if (leafPatchDto.getIsImageUpdated()) {
-            Optional.ofNullable(leafImageUrl).ifPresent(imageUrl ->
-                    s3Uploader.deleteImageFromS3(imageUrl, LEAF_IMAGE_PROCESS_TYPE));
+        Optional.ofNullable(leafImageUrl).ifPresent(imageUrl ->
+                s3Uploader.deleteImageFromS3(imageUrl, LEAF_IMAGE_PROCESS_TYPE));
 
+        if (Optional.ofNullable(leafImage).isPresent())
             leafImageUrl = s3Uploader.uploadImageToS3(leafImage, LEAF_IMAGE_PROCESS_TYPE);
-        }
 
         leafRepository.save(findLeaf.toBuilder()
                 .leafName(Optional.ofNullable(leafPatchDto.getLeafName()).orElse(findLeaf.getLeafName()))
@@ -136,14 +131,14 @@ public class LeafService {
         return findLeaf;
     }
 
-    private static void updateAccountGrade(Account findAccount) {
+    public Account.AccountGrade updateAccountGrade(Account findAccount) {
         int leavesNum = findAccount.getLeaves().size();
         if (leavesNum < 50) {
-            findAccount.updateGrade(Account.AccountGrade.GRADE_BRONZE);
+            return Account.AccountGrade.GRADE_BRONZE;
         } else if (leavesNum < 100) {
-            findAccount.updateGrade(Account.AccountGrade.GRADE_SILVER);
+            return Account.AccountGrade.GRADE_SILVER;
         } else {
-            findAccount.updateGrade(Account.AccountGrade.GRADE_GOLD);
+            return Account.AccountGrade.GRADE_GOLD;
         }
     }
 
