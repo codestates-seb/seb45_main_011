@@ -80,7 +80,7 @@ export default function Leaf({
       ) : null}
 
       {location === 'leaf' && pathUserId === userId && (
-        <div className="flex h-full gap-2 absolute right-2.5 top-2.5 z-10">
+        <div className="flex h-full gap-1 absolute right-2.5 top-2.5 z-10">
           <ControlButton usage="edit" handleEdit={navigateToLeafEdit} />
           <ControlButton
             usage="delete"
