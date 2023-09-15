@@ -74,9 +74,11 @@ export default function DiaryForm({
   const handleModalCancel = () => modalClose();
 
   return (
-    <div className="flex flex-col w-full items-center min-w-[531px] h-[698px] px-[3rem]">
+    <div className="w-full min-w-[352px] h-[600px] px-[1rem] py-[1rem] items-center flex flex-col ">
       <PageTitle text="일지 작성하기" className="mt-5 mb-6" />
-      <form onSubmit={handleSubmit(handleSubmitDiary)} className="w-full">
+      <form
+        onSubmit={handleSubmit(handleSubmitDiary)}
+        className="w-full overflow-y-scroll scrollbar">
         <div className="w-full flex flex-col">
           <ImageUpload
             register={register}
@@ -86,22 +88,28 @@ export default function DiaryForm({
             imageUrl={imageUrl}
             setIsImageUpdated={setIsImageUpdated}
           />
-          <div className="w-full flex justify-center gap-2 mb-3">
-            <label className="pt-2 text-xl leading-5 text-brown-80 font-bold">
+          <div className="w-full flex justify-center gap-2 mb-3 pr-4">
+            <label
+              htmlFor="title"
+              className="min-w-[55px] pt-2 text-xl leading-5 text-brown-80 font-bold">
               제목 :{' '}
             </label>
             <TextInput
+              id="title"
               name="title"
               register={register}
               errors={errors}
               required
             />
           </div>
-          <div className="w-full flex justify-center gap-2 mb-3">
-            <label className="pt-2 text-xl leading-5 text-brown-80 font-bold">
+          <div className="w-full flex justify-center gap-2 mb-3 pr-4">
+            <label
+              htmlFor="diary-content"
+              className="min-w-[55px] pt-2 text-xl leading-5 text-brown-80 font-bold">
               내용 :{' '}
             </label>
             <TextArea
+              id="diary-content"
               name="diaryContent"
               register={register}
               errors={errors}
@@ -109,12 +117,15 @@ export default function DiaryForm({
             />
           </div>
         </div>
+
+        {/* 게시글로도 추가하기 
         <div className="mb-[1.625rem] flex justify-center items-center gap-2 ">
           <p className="text-center font-bold text-xl leading-5 text-brown-80">
             게시글로도 작성하기
           </p>
-          <label className="cursor-pointer">
+          <label htmlFor="is-board" className="cursor-pointer">
             <input
+              id={'is-board'}
               {...register('isBoard')}
               className="hidden"
               type="checkbox"
@@ -130,7 +141,7 @@ export default function DiaryForm({
               ) : null}
             </div>
           </label>
-        </div>
+        </div> */}
 
         <div className="flex justify-center gap-2">
           <CommonButton type="submit" size="sm">

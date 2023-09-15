@@ -4,7 +4,7 @@ import { addComment } from '@/api/board';
 import { CommentInputValue } from '@/types/common';
 
 interface useAddCommentMutaionParameters {
-  boardId: number;
+  boardId: string;
 }
 const useAddCommentMutation = ({ boardId }: useAddCommentMutaionParameters) => {
   const queryClient = useQueryClient();
@@ -13,7 +13,7 @@ const useAddCommentMutation = ({ boardId }: useAddCommentMutaionParameters) => {
     mutationFn: ({ comment }: CommentInputValue) =>
       addComment(comment, boardId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['post', Number(boardId)] });
+      queryClient.invalidateQueries({ queryKey: ['post', boardId] });
     },
   });
 

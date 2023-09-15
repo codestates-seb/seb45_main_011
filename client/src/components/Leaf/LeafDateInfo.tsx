@@ -13,7 +13,7 @@ export default function LeafDateInfo() {
       <p className="mb-2 font-bold text-sm leading-4 text-brown-70">
         키우기 시작한 지 :{' '}
         <b className="text-[1rem] font-bold leading-4 text-brown-80">
-          {daysSinceStart}일 째
+          {(daysSinceStart as number) + 1}일 째
         </b>
       </p>
       <p className="mb-6 font-bold text-sm leading-4 text-brown-70">

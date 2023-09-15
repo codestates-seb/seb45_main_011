@@ -13,7 +13,7 @@ import { CommentInputValue } from '@/types/common';
 
 interface CommentProps {
   comment: CommentDataInfo | null;
-  boardId: number | null;
+  boardId: string | null;
 }
 
 export default function Comment({ comment, boardId }: CommentProps) {
@@ -29,7 +29,7 @@ export default function Comment({ comment, boardId }: CommentProps) {
 
   const { mutate: editComment } = useEditCommentMutation({ boardId, targetId });
 
-  const isEdit = editMode && comment.commentId === targetId;
+  const isEdit = editMode && String(comment.commentId) === targetId;
 
   const submitCommentForm = (data: CommentInputValue) => {
     editComment(data);
@@ -50,8 +50,8 @@ export default function Comment({ comment, boardId }: CommentProps) {
           <DateAndControlSection
             date={new Date(comment?.createdAt)}
             usage="comment"
-            ownerId={comment.accountId}
-            targetId={comment.commentId}
+            ownerId={String(comment.accountId)}
+            targetId={String(comment.commentId)}
           />
         )}
       </div>

@@ -44,7 +44,7 @@ export default function Header() {
           <li
             onMouseOver={() => setIsMenuHover(true)}
             onMouseLeave={() => setIsMenuHover(false)}
-            className="min-[480px]:hidden">
+            className="min-[481px]:hidden">
             <Image
               src="/assets/img/hamburger.svg"
               alt="햄버거 버튼"

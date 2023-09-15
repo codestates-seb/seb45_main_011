@@ -30,7 +30,7 @@ export default function Leaf({
 }: LeafProps) {
   const router = useRouter();
 
-  const { modalOpen, setDeleteTargetId } = useLeafsStore();
+  const { modalOpen, setDeleteTargetId, setModalCategory } = useLeafsStore();
 
   const userId = useUserStore((state) => state.userId);
 
@@ -57,6 +57,7 @@ export default function Leaf({
   ) => {
     e.stopPropagation();
     setDeleteTargetId(leafId);
+    setModalCategory('deleteLeaf');
     modalOpen();
   };
 

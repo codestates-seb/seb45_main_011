@@ -9,7 +9,7 @@ import useAddCommentMutation from '@/hooks/useAddCommentMutation';
 import { CommentInputValue } from '@/types/common';
 
 interface CommentFormProps {
-  boardId: number;
+  boardId: string;
 }
 
 export default function CommentForm({ boardId }: CommentFormProps) {

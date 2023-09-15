@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import CommonButton from '../common/CommonButton';
+import { deleteDiary } from '@/api/leaf';
 
 import useLeafStore from '@/stores/leafStore';
 
-import { deleteDiary } from '@/api/leaf';
+import CommonButton from '../common/CommonButton';
 
 interface DiaryDeleteModalProps {
   deleteTargetId?: string | null;
@@ -37,19 +37,21 @@ export function DiaryDeleteModal({
     mutate();
   };
   return (
-    <div className="flex flex-col justify-center w-full max-w-[515px] h-[300px] px-[4.5rem]">
-      <p className="text-center font-bold text-[1.75rem] leading-9 text-brown-90 mb-10">
-        게시글로 등록한 일지의 경우 <b className="text-red-50">함께 삭제</b>
+    <div className="w-full min-w-[352px] px-[2rem] py-[1.5rem] flex flex-col justify-center">
+      <p className="text-center font-bold text-[1.45rem] leading-9 text-brown-90 mb-3 break-words">
+        게시글로 등록한 일지의 <br className="hidden max-[400px]:inline" />
+        경우 <b className="text-red-50">함께 삭제</b>
         됩니다.
       </p>
-      <p className="text-center font-bold text-[2rem] leading-8 text-brown-70 mb-[2.875rem]">
-        그래도 삭제하시겠습니까?
+      <p className="text-center font-bold text-[1.6rem] leading-8 text-brown-70 mb-6 break-words">
+        그래도 <br className="hidden max-[400px]:inline" />
+        삭제하시겠습니까?
       </p>
-      <div className="flex gap-1 justify-center">
-        <CommonButton type="button" size="lg" onClick={handleDeleteDiary}>
+      <div className="flex gap-3 justify-center">
+        <CommonButton type="button" size="md" onClick={handleDeleteDiary}>
           삭제
         </CommonButton>
-        <CommonButton type="button" size="lg" onClick={handleCancelModal}>
+        <CommonButton type="button" size="md" onClick={handleCancelModal}>
           취소
         </CommonButton>
       </div>
