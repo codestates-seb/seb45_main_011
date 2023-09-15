@@ -34,6 +34,10 @@ export default function getTextInputTypeFormat(name: string) {
           value: 2,
           message: '2글자 이상의 영문 또는 한글을 입력해야 합니다.',
         },
+        maxLength: {
+          value: 6,
+          message: '6글자 이하의 영문 또는 한글을 입력해야 합니다.',
+        },
       },
       placeholder: '닉네임을 입력해주세요.',
     };
