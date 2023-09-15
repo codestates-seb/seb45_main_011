@@ -49,7 +49,7 @@ export default function HistoryComment({ paramsId }: HistoryBoradProps) {
             <InfiniteScroll
               hasMore={hasNextPage}
               loadMore={() => fetchNextPage()}>
-              <div className="flex flex-wrap gap-x-4 gap-y-9 mb-9 max-[360px]:flex-col justify-center items-center mt-2 ml-[15px]">
+              <div className="grid grid-cols-3 gap-4 place-items-center items-start max-[730px]:grid-cols-2 max-[530px]:grid-cols-1 p-2 pb-4">
                 {page.commentWritten?.map((board: any) => (
                   <div
                     key={board.boardId}

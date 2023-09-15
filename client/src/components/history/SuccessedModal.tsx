@@ -25,7 +25,7 @@ export default function SuccessedModal() {
 
   return (
     <ModalPortal>
-      <Modal className="w-full min-w-[312px] max-w-[531px] h-fit flex flex-col justify-center items-center shadow-container">
+      <Modal className="w-full min-w-[312px] max-w-[531px] h-fit flex flex-col justify-center items-center mx-1">
         <div className="flex flex-col items-center gap-3 px-5 mt-10 mx-4">
           <div className="font-bold text-brown-80 text-[28px] break-keep">
             그동안&nbsp;

@@ -9,7 +9,7 @@ export default function ChangeNicknameModal() {
 
   return (
     <ModalPortal>
-      <Modal className="min-w-[440px] h-[200px] flex flex-col justify-center items-center">
+      <Modal className="min-w-[440px] h-[200px] flex flex-col justify-center items-center mx-1">
         <div className="flex flex-col items-center gap-6">
           <div className="flex flex-col items-center gap-3">
             <p className="font-bold text-brown-70 text-[28px]">
