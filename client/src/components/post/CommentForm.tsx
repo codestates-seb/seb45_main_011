@@ -31,7 +31,7 @@ export default function CommentForm({ boardId }: CommentFormProps) {
         {...register('comment')}
       />
       <button
-        className="px-[0.6875rem] py-[0.5625rem]  bg-contain bg-center bg-[url('/assets/img/bg_wood_light.png')] border-[3px] border-brown-50 rounded-xl text-[1rem] leading-[1rem] font-bold text-brown-40 max-[560px]:text-[0.85rem] max-[560px]:px-[0.55rem] max-[560px]:py-[0.5rem]  max-[500px]:text-[0.8rem] max-[500px]:px-[0.4rem]  max-[500px]:py-[0.3rem]"
+        className="px-[0.6875rem] py-[0.5625rem]  bg-contain bg-center bg-[url('/assets/img/bg_wood_light.png')] border-[3px] border-brown-50 rounded-xl text-[1rem] leading-[1rem] font-bold text-brown-40 hover:scale-105 hover:transition-transform max-[560px]:text-[0.85rem] max-[560px]:px-[0.55rem] max-[560px]:py-[0.5rem]  max-[500px]:text-[0.8rem] max-[500px]:px-[0.4rem]  max-[500px]:py-[0.3rem]"
         type="submit">
         등록
       </button>
