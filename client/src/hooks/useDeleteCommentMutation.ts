@@ -3,8 +3,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteComment } from '@/api/board';
 
 interface useDeleteCommentMutaionParameters {
-  targetId: number;
-  boardId: number;
+  targetId: string;
+  boardId: string;
 }
 const useDeleteCommentMutation = ({
   targetId,
@@ -15,7 +15,7 @@ const useDeleteCommentMutation = ({
   const { mutate } = useMutation({
     mutationFn: () => deleteComment(targetId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['post', Number(boardId)] });
+      queryClient.invalidateQueries({ queryKey: ['post', boardId] });
     },
   });
 

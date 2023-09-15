@@ -1,9 +1,12 @@
 import useLeafStore from '@/stores/leafStore';
+
 import DiaryForm from './DiaryForm';
 import { DiaryDeleteModal } from './DiaryDeleteModal';
+import ModalPortal from '../common/ModalPortal';
+import Modal from '../common/Modal';
 
 interface LeafModalProps {
-  modalCategory: 'add' | 'edit' | 'delete' | null;
+  modalCategory: 'add' | 'edit' | 'delete' | 'share' | null;
   leafId: string;
   userId: string;
 }
@@ -16,31 +19,45 @@ export default function LeafModal({
   const { targetDiary } = useLeafStore();
 
   if (modalCategory === 'add')
-    return <DiaryForm leafId={leafId} userId={userId} mode={modalCategory} />;
+    return (
+      <ModalPortal>
+        <Modal className="w-full max-w-[531px] min-w-[312px] mx-4 ">
+          <DiaryForm leafId={leafId} userId={userId} mode={modalCategory} />
+        </Modal>
+      </ModalPortal>
+    );
 
   if (modalCategory === 'edit' && targetDiary) {
     const { journalId, title, content, imageUrl } = targetDiary;
 
     return (
-      <DiaryForm
-        leafId={leafId}
-        userId={userId}
-        diaryId={String(journalId)}
-        title={title}
-        content={content}
-        imageUrl={imageUrl}
-        mode={modalCategory}
-      />
+      <ModalPortal>
+        <Modal className="w-full max-w-[531px] min-w-[312px] mx-4 ">
+          <DiaryForm
+            leafId={leafId}
+            userId={userId}
+            diaryId={String(journalId)}
+            title={title}
+            content={content}
+            imageUrl={imageUrl}
+            mode={modalCategory}
+          />
+        </Modal>
+      </ModalPortal>
     );
   }
 
   if (modalCategory === 'delete' && targetDiary)
     return (
-      <DiaryDeleteModal
-        leafId={leafId}
-        userId={userId}
-        deleteTargetId={String(targetDiary.journalId)}
-      />
+      <ModalPortal>
+        <Modal className="w-full max-w-[415px] min-w-[344px] mx-4">
+          <DiaryDeleteModal
+            leafId={leafId}
+            userId={userId}
+            deleteTargetId={String(targetDiary.journalId)}
+          />
+        </Modal>
+      </ModalPortal>
     );
 
   return null;

@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+
 import useGardenStore from '@/stores/gardenStore';
 import useUserStore from '@/stores/userStore';
 
@@ -5,10 +7,13 @@ import useSaveGarden from './useSaveGarden';
 import usePlants from './usePlants';
 import useSquares from './useSquares';
 import useMouseTrack from './useMouseTrack';
+import useMouseDrag from './useMouseDrag';
 
 import { getInitialMapInfo } from '@/utils/getInitialMapInfo';
 
 const useGardenMap = () => {
+  const gardenMapRef = useRef<HTMLElement>(null);
+
   const {
     point,
     plants,
@@ -28,7 +33,10 @@ const useGardenMap = () => {
 
   const { handlePlants } = usePlants();
   const { handleSquares } = useSquares(uninstallableLocations);
+
   const { targetX, targetY, setMousePosition } = useMouseTrack();
+  const { isDrag, handleDragStart, handleDragEnd, handleDragMove } =
+    useMouseDrag(gardenMapRef);
 
   const handleGarden = (event: React.MouseEvent<HTMLDivElement>) => {
     if (
@@ -73,15 +81,20 @@ const useGardenMap = () => {
   };
 
   return {
+    gardenMapRef,
     point,
     uninstallableLocations,
     installedPlants,
     targetX,
     targetY,
+    isDrag,
     handleGarden,
     handleMouseMove,
     handleSave,
     handleCancel,
+    handleDragStart,
+    handleDragEnd,
+    handleDragMove,
   };
 };
 
