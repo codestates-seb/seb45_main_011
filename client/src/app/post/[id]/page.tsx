@@ -63,7 +63,7 @@ export default function Post({ params }: PostProps) {
 
   return (
     <main className="px-4 flex justify-center items-center pb-[60px]">
-      <div className="relative w-full max-w-[720px] min-w-[328px] h-[780px] border-gradient rounded-xl">
+      <div className="relative w-full max-w-[720px] min-w-[328px] h-[780px] border-gradient rounded-xl shadow-container">
         <div className="h-full px-2 py-5">
           <Screws />
           {isLoading && (
@@ -77,7 +77,7 @@ export default function Post({ params }: PostProps) {
             </div>
           )}
           {post && (
-            <div className="px-4 h-full flex flex-col max-[450px]:pl-2">
+            <div className="px-4 pt-3 h-full flex flex-col max-[450px]:pl-2">
               <PageTitle
                 text={post.title}
                 className="mb-7 break-words max-[500px]:text-lg"

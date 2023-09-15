@@ -22,7 +22,9 @@ export default function DateAndControlSection({
 
   return (
     <div
-      className={`flex items-center pr-11 z-[1] ${SECTION_STYLE[usage].container}`}>
+      className={`flex items-center  z-[1] ${SECTION_STYLE[usage].container} ${
+        isOwner ? 'pr-11' : 'pr-0'
+      }`}>
       <span
         className={`text-sm leading-[0.875rem] font-bold text-brown-80 ${SECTION_STYLE[usage].dayText}`}>
         {formattedDay}
