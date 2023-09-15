@@ -51,13 +51,13 @@ const LOGO_SIZE: Logo = {
     height: 80,
   },
   large: {
-    width: 260,
-    height: 158,
+    width: 216,
+    height: 145,
   },
 };
 
 const LOGO_STYLE = {
   small: 'min-w-[58px]',
   medium: 'min-w-[137px]',
-  large: 'min-w-[260px]',
+  large: 'min-w-[216px]',
 };
