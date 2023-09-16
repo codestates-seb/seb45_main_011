@@ -70,10 +70,13 @@ export default function LeafForm({
           setIsImageUpdated={setIsImageUpdated}
         />
         <div className="w-full flex justify-center gap-2">
-          <label className="pt-2 text-xl leading-5 text-brown-80 font-bold whitespace-nowrap">
+          <label
+            htmlFor="plantName"
+            className="pt-2 text-xl leading-5 text-brown-80 font-bold whitespace-nowrap">
             이름 :
           </label>
           <TextInput
+            id="plantName"
             name="plantName"
             register={register}
             errors={errors}
@@ -81,10 +84,13 @@ export default function LeafForm({
           />
         </div>
         <div className="w-full flex justify-center gap-2 mb-3">
-          <label className="pt-2 text-xl leading-5 text-brown-80 font-bold whitespace-nowrap">
+          <label
+            htmlFor="leafContent"
+            className="pt-2 text-xl leading-5 text-brown-80 font-bold whitespace-nowrap">
             설명 :
           </label>
           <TextArea
+            id="leafContent"
             name="leafContent"
             register={register}
             errors={errors}
