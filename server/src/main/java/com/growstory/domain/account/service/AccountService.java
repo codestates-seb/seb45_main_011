@@ -161,17 +161,17 @@ public class AccountService {
         accountRepository.delete(findAccount);
     }
 
+    public Boolean verifyPassword(AccountDto.PasswordVerify passwordVerifyDto) {
+        Account findAccount = authUserUtils.getAuthUser();
+
+        return passwordEncoder.matches(passwordVerifyDto.getPassword(), findAccount.getPassword());
+    }
+
     private void verifyExistsEmail(String email) {
         Optional<Account> findAccount = accountRepository.findByEmail(email);
 
         if(findAccount.isPresent())
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_ALREADY_EXISTS);
-    }
-
-    public Boolean verifyPassword(AccountDto.PasswordVerify passwordVerifyDto) {
-        Account findAccount = authUserUtils.getAuthUser();
-
-        return passwordEncoder.matches(passwordVerifyDto.getPassword(), findAccount.getPassword());
     }
 
     @Transactional(readOnly = true)
@@ -196,7 +196,7 @@ public class AccountService {
         }
 
         // 사용자가 일치하지 않으면 405 예외 던지기
-        if (Long.valueOf((Integer) claims.get("accountId")) != accountId)
+        if (Long.valueOf((String) claims.get("accountId")) != accountId)
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
     }
 
