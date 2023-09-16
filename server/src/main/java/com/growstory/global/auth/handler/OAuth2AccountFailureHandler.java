@@ -11,9 +11,7 @@ import java.io.IOException;
 public class OAuth2AccountFailureHandler extends SimpleUrlAuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        if (exception instanceof Exception) {
-            System.out.println(exception.getCause());
-            response.sendRedirect("http://localhost");
-        }
+        System.out.println(exception.getMessage());
+        response.sendRedirect("http://localhost");
     }
 }
