@@ -72,6 +72,7 @@ export default function ImageForm({ token, className }: ImageFormProps) {
             alt="profile_img"
             width={100}
             height={100}
+            priority
             onClick={() => imageUploadRef.current?.click()}
           />
           <input
