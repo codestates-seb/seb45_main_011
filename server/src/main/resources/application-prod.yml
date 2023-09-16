@@ -36,7 +36,6 @@ spring:
           google:
             client-id: ${G_CLIENT_ID}
             client-secret: ${G_CLIENT_SECRET}
-            redirect-uri: http://13.209.96.203/login/oauth2/code/google
             scope:
               - email
               - profile
