@@ -13,9 +13,9 @@ export default function FailureModal() {
 
   return (
     <ModalPortal>
-      <Modal className="w-full min-w-[312px] max-w-[440px] h-fit flex flex-col justify-center items-center mx-1">
+      <Modal className="w-full min-w-[312px] max-w-[440px] h-fit flex flex-col justify-center items-center max-[480px]:max-w-[312px]">
         <div className="flex flex-col items-center gap-6 px-5 mt-10 mx-4">
-          <div className="flex flex-col items-center gap-3">
+          <div className="flex flex-col items-center gap-1">
             <p className="font-bold text-brown-70 text-[28px] text-center break-keep leading-8">
               인증에
               <span className="text-red-50"> 실패했습니다.</span>
@@ -28,7 +28,7 @@ export default function FailureModal() {
             <CommonButton
               type="button"
               size="md"
-              className="w-[155px] h-[52px] mb-8 text-[24px]"
+              className="w-[144px] h-[52px] mb-8 text-[24px]"
               onFailure={handleCodeFailure}>
               뒤로 가기
             </CommonButton>

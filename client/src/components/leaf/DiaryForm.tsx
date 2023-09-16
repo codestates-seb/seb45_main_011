@@ -74,7 +74,7 @@ export default function DiaryForm({
   const handleModalCancel = () => modalClose();
 
   return (
-    <div className="w-[440px] max-w-[500px] h-[550px] px-[1.5rem] py-[1rem] items-center flex flex-col max-[480px]:w-[320px]">
+    <div className="w-[440px] max-w-[500px] h-fit px-[1.5rem] py-[1rem] items-center flex flex-col max-[480px]:w-[320px] diary-overflow">
       <PageTitle text="일지 작성하기" className="mt-5 mb-6" />
       <form
         onSubmit={handleSubmit(handleSubmitDiary)}
@@ -88,7 +88,7 @@ export default function DiaryForm({
             imageUrl={imageUrl}
             setIsImageUpdated={setIsImageUpdated}
           />
-          <div className="w-full flex justify-center gap-2 mb-3 pr-6">
+          <div className="w-full flex justify-center gap-2 mb-3">
             <label
               htmlFor="title"
               className="min-w-[55px] pt-2 text-xl leading-5 text-brown-80 font-bold max-[480px]:text-lg max-[480px]:pt-1 max-[480px]:min-w-[48px]">
@@ -102,7 +102,7 @@ export default function DiaryForm({
               required
             />
           </div>
-          <div className="w-full flex justify-center gap-2 mb-1 pr-6">
+          <div className="w-full flex justify-center gap-2 mb-1">
             <label
               htmlFor="diary-content"
               className="min-w-[55px] pt-2 text-xl leading-5 text-brown-80 font-bold max-[480px]:text-lg max-[480px]:pt-1 max-[480px]:min-w-[48px]">
