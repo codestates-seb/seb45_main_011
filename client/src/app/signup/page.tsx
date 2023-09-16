@@ -16,7 +16,7 @@ export default function Signup() {
       initial={{ scale: 0.9, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="flex flex-col justify-center items-center h-full mx-4">
+      className="flex flex-col justify-center items-center h-full mx-4 pb-[40px]">
       <SignupIntro />
 
       {currentState === 'AuthEmailModal' && <AuthEmailModal />}
