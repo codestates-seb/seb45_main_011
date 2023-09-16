@@ -43,8 +43,9 @@ public enum ExceptionCode {
     LOCATION_NOT_FOUND(404, "Location not found"),
     LOCATION_NOT_ALLOW(405, "Location change not allowed"),
 
-    NOT_ENOUGH_POINTS(403, "Not Enough Points");
+    NOT_ENOUGH_POINTS(403, "Not Enough Points"),
 
+    RANK_NOT_FOUND(404, "Rank not found");
 
     private final int status;
     private final String message;

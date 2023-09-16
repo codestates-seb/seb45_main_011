@@ -3,8 +3,8 @@ package com.growstory.domain.board.controller;
 import com.growstory.domain.board.dto.RequestBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardPageDto;
-import com.growstory.domain.board.dto.ResponseRankingDto;
 import com.growstory.domain.board.service.BoardService;
+import com.growstory.domain.rank.board_likes.dto.BoardLikesRankDto;
 import com.growstory.global.constants.HttpStatusCode;
 import com.growstory.global.response.MultiResponseDto;
 import com.growstory.global.response.SingleResponseDto;
@@ -106,7 +106,7 @@ public class BoardController {
 
     @GetMapping("/top-likes")
     public ResponseEntity<SingleResponseDto> getTop3LikedBoardsOfWeek() {
-        List<ResponseRankingDto> response = boardService.findTop3LikedBoards();
+        List<BoardLikesRankDto.Response> response = boardService.findTop3LikedBoards();
 
         return ResponseEntity.ok(SingleResponseDto.builder()
                         .status(HttpStatusCode.OK.getStatusCode())

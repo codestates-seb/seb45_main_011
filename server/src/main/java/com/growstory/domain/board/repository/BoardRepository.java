@@ -23,4 +23,16 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
             "GROUP BY b " +
             "ORDER BY likeCount DESC")
     List<Object[]> findTop3LikedBoards(LocalDateTime sevenDaysAgo);
+
+//    @Query(value = "SELECT * FROM (" +
+//            " SELECT b.*, COUNT(bl.board_id) AS likeCount, " +
+//            " RANK() OVER (ORDER BY COUNT(bl.board_id) DESC) AS ranking " +
+//            " FROM board b " +
+//            " LEFT JOIN board_like bl ON b.board_id = bl.board_id " +
+//            " WHERE b.created_at >= :sevenDaysAgo " +
+//            " GROUP BY b.board_id " +
+//            " ORDER BY likeCount DESC " +
+//            ") AS subquery " +
+//            "WHERE ranking <= 3", nativeQuery = true)
+//    List<Object[]> findTop3LikedBoards(LocalDateTime sevenDaysAgo);
 }
