@@ -13,13 +13,13 @@ export default function FailureModal() {
 
   return (
     <ModalPortal>
-      <Modal className="w-full min-w-[312px] max-w-[480px] h-fit flex flex-col justify-center items-center mx-1">
+      <Modal className="w-full min-w-[312px] max-w-[480px] h-fit flex flex-col justify-center items-center max-[480px]:max-w-[312px]">
         <div className="flex flex-col items-center gap-6 py-10">
           <div className="flex flex-col items-center gap-3 px-5">
-            <p className="font-bold text-brown-70 text-[28px] text-center break-keep leading-8">
+            <p className="font-bold text-brown-70 text-[28px] text-center break-keep leading-8 max-[480px]:text-2xl">
               <b className="text-red-50">등록되지 않은 </b> 이메일입니다.
             </p>
-            <p className="font-bold text-brown-90  text-[28px]">
+            <p className="font-bold text-brown-90 text-[28px] max-[480px]:text-2xl">
               다시 입력해주세요.
             </p>
           </div>
