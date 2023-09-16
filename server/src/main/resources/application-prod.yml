@@ -84,5 +84,9 @@ mail:
   admin:
     address: ${ADMIN_EMAIL}
 
+my:
+  scheduled:
+    cron: 0 0 0 ? * MON
+
 server:
   port: 8080
