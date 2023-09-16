@@ -3,6 +3,8 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
+import { motion } from 'framer-motion';
+
 import useLeafsStore from '@/stores/leafsStore';
 import useUserStore from '@/stores/userStore';
 
@@ -62,8 +64,10 @@ export default function Leaf({
   };
 
   return (
-    <div
-      className="relative flex flex-col items-center w-[200px] h-[205px] gap-2 cursor-pointer bg-transparent hover:scale-105 transition-transform"
+    <motion.div
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      className="relative flex flex-col items-center w-[200px] h-[205px] gap-2 cursor-pointer bg-transparent"
       role="button"
       data-leaf-id={leafId}
       onClick={handleLeafClick}>
@@ -80,11 +84,16 @@ export default function Leaf({
       ) : null}
 
       {location === 'leaf' && pathUserId === userId && (
-        <div className="flex h-full gap-2 absolute right-2.5 top-2.5 z-10">
-          <ControlButton usage="edit" handleEdit={navigateToLeafEdit} />
+        <div className="flex h-full gap-1 absolute right-2.5 top-2.5 z-10">
+          <ControlButton
+            usage="edit"
+            handleEdit={navigateToLeafEdit}
+            className="hover:scale-105 hover:transition-transform"
+          />
           <ControlButton
             usage="delete"
             handleDelete={(event) => openLeafDeleteModal(event, leafId)}
+            className="hover:scale-105 hover:transition-transform"
           />
         </div>
       )}
@@ -101,6 +110,6 @@ export default function Leaf({
       </div>
 
       <LeafName name={name} />
-    </div>
+    </motion.div>
   );
 }

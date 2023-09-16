@@ -37,7 +37,7 @@ export default function DiaryForm({
 
   const {
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     clearErrors,
     handleSubmit,
     setValue,
@@ -74,7 +74,7 @@ export default function DiaryForm({
   const handleModalCancel = () => modalClose();
 
   return (
-    <div className="w-full min-w-[352px] h-[600px] px-[1rem] py-[1rem] items-center flex flex-col ">
+    <div className="w-[440px] max-w-[500px] h-[550px] px-[1.5rem] py-[1rem] items-center flex flex-col max-[480px]:w-[320px]">
       <PageTitle text="일지 작성하기" className="mt-5 mb-6" />
       <form
         onSubmit={handleSubmit(handleSubmitDiary)}
@@ -88,10 +88,10 @@ export default function DiaryForm({
             imageUrl={imageUrl}
             setIsImageUpdated={setIsImageUpdated}
           />
-          <div className="w-full flex justify-center gap-2 mb-3 pr-4">
+          <div className="w-full flex justify-center gap-2 mb-3 pr-6">
             <label
               htmlFor="title"
-              className="min-w-[55px] pt-2 text-xl leading-5 text-brown-80 font-bold">
+              className="min-w-[55px] pt-2 text-xl leading-5 text-brown-80 font-bold max-[480px]:text-lg max-[480px]:pt-1 max-[480px]:min-w-[48px]">
               제목 :{' '}
             </label>
             <TextInput
@@ -102,10 +102,10 @@ export default function DiaryForm({
               required
             />
           </div>
-          <div className="w-full flex justify-center gap-2 mb-3 pr-4">
+          <div className="w-full flex justify-center gap-2 mb-1 pr-6">
             <label
               htmlFor="diary-content"
-              className="min-w-[55px] pt-2 text-xl leading-5 text-brown-80 font-bold">
+              className="min-w-[55px] pt-2 text-xl leading-5 text-brown-80 font-bold max-[480px]:text-lg max-[480px]:pt-1 max-[480px]:min-w-[48px]">
               내용 :{' '}
             </label>
             <TextArea
@@ -143,11 +143,19 @@ export default function DiaryForm({
           </label>
         </div> */}
 
-        <div className="flex justify-center gap-2">
-          <CommonButton type="submit" size="sm">
+        <div className="flex justify-center gap-2 mb-2">
+          <CommonButton
+            type="submit"
+            size="sm"
+            className="hover:scale-105 hover:transition-transform"
+            disabled={isSubmitting}>
             완료
           </CommonButton>
-          <CommonButton type="button" size="sm" onClick={handleModalCancel}>
+          <CommonButton
+            type="button"
+            size="sm"
+            onClick={handleModalCancel}
+            className="hover:scale-105 hover:transition-transform">
             취소
           </CommonButton>
         </div>

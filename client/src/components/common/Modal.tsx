@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect } from 'react';
+
 import { twMerge } from 'tailwind-merge';
+import { motion } from 'framer-motion';
 
 import Screws from './Screws';
 
@@ -46,14 +48,17 @@ export default function Modal({ children, className }: ModalProps) {
         onClick={handleClick}
         className="fixed top-0 left-0 w-screen h-screen bg-black-30/[.9] backdrop-blur-sm z-40"
       />
-      <main
+      <motion.main
+        initial={{ x: '-50%', y: '-50%', scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.3 }}
         className={twMerge(
           `fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-gradient rounded-xl bg-repeat shadow-container z-50`,
           className,
         )}>
         {children}
         <Screws />
-      </main>
+      </motion.main>
     </>
   );
 }

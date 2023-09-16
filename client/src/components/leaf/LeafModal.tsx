@@ -21,7 +21,7 @@ export default function LeafModal({
   if (modalCategory === 'add')
     return (
       <ModalPortal>
-        <Modal className="w-full max-w-[531px] min-w-[312px] mx-4 ">
+        <Modal>
           <DiaryForm leafId={leafId} userId={userId} mode={modalCategory} />
         </Modal>
       </ModalPortal>
@@ -32,7 +32,7 @@ export default function LeafModal({
 
     return (
       <ModalPortal>
-        <Modal className="w-full max-w-[531px] min-w-[312px] mx-4 ">
+        <Modal>
           <DiaryForm
             leafId={leafId}
             userId={userId}
@@ -50,7 +50,7 @@ export default function LeafModal({
   if (modalCategory === 'delete' && targetDiary)
     return (
       <ModalPortal>
-        <Modal className="w-full max-w-[415px] min-w-[344px] mx-4">
+        <Modal>
           <DiaryDeleteModal
             leafId={leafId}
             userId={userId}

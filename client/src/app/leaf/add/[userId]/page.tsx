@@ -2,6 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 
+import { motion } from 'framer-motion';
+
 import useUserStore from '@/stores/userStore';
 
 import useEffectOnce from '@/hooks/useEffectOnce';
@@ -9,6 +11,8 @@ import useEffectOnce from '@/hooks/useEffectOnce';
 import PageTitle from '@/components/common/PageTitle';
 import Screws from '@/components/common/Screws';
 import LeafForm from '@/components/common/LeafForm';
+
+import { MOUNT_ANIMATION_VALUES } from '@/constants/values';
 
 interface AddLeafProps {
   params: { userId: string };
@@ -26,7 +30,11 @@ export default function AddLeaf({ params }: AddLeafProps) {
   });
 
   return (
-    <div className="flex justify-center items-center pt-[120px] pb-[60px]">
+    <motion.div
+      variants={MOUNT_ANIMATION_VALUES}
+      initial="initial"
+      animate="animate"
+      className="flex justify-center items-center pt-[120px] pb-[60px]">
       <div className="relative w-full min-w-[312px] max-w-[540px] h-full mx-4 border-gradient rounded-xl shadow-container">
         <Screws />
         <div className="p-5 h-full">
@@ -36,6 +44,6 @@ export default function AddLeaf({ params }: AddLeafProps) {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

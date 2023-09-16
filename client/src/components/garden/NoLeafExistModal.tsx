@@ -2,6 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 
+import { motion } from 'framer-motion';
+
 import useGardenModalStore from '@/stores/gardenModalStore';
 import useUserStore from '@/stores/userStore';
 
@@ -35,11 +37,13 @@ export default function NoLeafExistModal() {
               식물 카드 생성
             </CommonButton>
           </section>
-          <button
+          <motion.button
             onClick={() => close()}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             className={`w-fit mx-auto px-[14px] py-[14px] border-[3px] border-brown-40 rounded-lg bg-contain bg-repeat bg-[url('/assets/img/bg_wood_light.png')] text-brown-40 font-bold text-xl leading-3 shadow-outer/down`}>
             닫기
-          </button>
+          </motion.button>
         </div>
       </Modal>
     </ModalPortal>

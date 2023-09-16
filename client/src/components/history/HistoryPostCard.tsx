@@ -1,3 +1,5 @@
+import { motion } from 'framer-motion';
+
 interface HistoryPostCardProps {
   imageUrl: string;
   title: string;
@@ -12,7 +14,10 @@ export default function HistoryPostCard({
   comment,
 }: HistoryPostCardProps) {
   return (
-    <div className="flex flex-col items-center justify-center w-[200px] h-[175px] rounded-lg border-2 border-brown-50 bg-brown-10 shadow-outer/down">
+    <motion.div
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      className="flex flex-col items-center justify-center w-[200px] h-[175px] rounded-lg border-2 border-brown-50 bg-brown-10 shadow-outer/down">
       <div className="w-[121px] h-[92px] rounded-lg mb-2 mx-auto border-2 border-brown-40 ">
         <img
           src={imageUrl || '/assets/img/bg_default_post.png'}
@@ -22,7 +27,7 @@ export default function HistoryPostCard({
       </div>
 
       <div className="w-[180px] mb-1">
-        <p className="text-sm leading-[0.875rem] text-brown-80 font-bold text-ellipsis overflow-hidden whitespace-nowrap mb-1 px-5 max-[360px]:text-center">
+        <p className="text-sm leading-[0.875rem] text-brown-80 font-bold text-ellipsis overflow-hidden whitespace-nowrap mb-1 px-5 text-center">
           {title}
         </p>
       </div>
@@ -38,6 +43,6 @@ export default function HistoryPostCard({
           <div>{comment}</div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

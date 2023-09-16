@@ -22,7 +22,7 @@ export default function NicknameForm({ token }: Token) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     watch,
     reset,
     setValue,
@@ -68,7 +68,8 @@ export default function NicknameForm({ token }: Token) {
             <CommonButton
               type="submit"
               size="sm"
-              className="w-[52px] h-8 ml-2 hover:scale-110 transition-transform">
+              className="w-[52px] h-8 ml-2"
+              disabled={isSubmitting}>
               변경
             </CommonButton>
           </div>

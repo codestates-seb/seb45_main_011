@@ -3,6 +3,15 @@
 @tailwind utilities;
 
 @layer utilities {
+  .bg-gradient {
+    background: linear-gradient(
+      180deg,
+      #63a44a 25.73%,
+      #4d6338 50.49%,
+      #3b241b 100%
+    );
+  }
+
   .border-gradient {
     border: 8px solid transparent;
     background-image: url('/assets/img/bg_wood_yellow.png'),

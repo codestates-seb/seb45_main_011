@@ -33,30 +33,30 @@ export default function HistoryBox({ paramsId }: HistoryProps) {
   return (
     <>
       {isClient && (
-        <div className="relative flex flex-col items-center justify-center bg-[url('/assets/img/bg_wood_yellow.png')] w-full min-w-[312px] max-w-[715px] h-full max-[360px]:h-[633px] rounded-[12px] border-8 border-border-30 shadow-outer/down shadow-container border-gradient">
-          <div className="w-full flex justify-end gap-3 mt-3 mr-7 mb-4 max-[360px]:flex max-[360px]:justify-center max-[360px]:items-center max-[360px]:mr-0">
-            {isOwner && <UserButton />}
-          </div>
-
-          <div className="mb-5 min-[360px]:flex justify-center items-center ml-2 mt-4">
-            <UserInfo paramsId={paramsId} />
-          </div>
-
-          {isOwner && (
-            <div className="mt-4 w-[92%] max-[360px]:w-[80%]">
-              <Dropdown />
+        <div className="relative bg-[url('/assets/img/bg_wood_yellow.png')] rounded-[12px] border-8 border-border-30 shadow-outer/down shadow-container border-gradient">
+          <div className="flex flex-col items-center justify-center max-w-[715px] max-h-[633px] p-4">
+            <div className="w-full flex justify-end gap-3 mr-1 mb-4 max-[530px]:flex max-[530px]:justify-center max-[530px]:items-center">
+              {isOwner && <UserButton />}
             </div>
-          )}
 
-          {(userId || paramsId) && (
-            <div className="flex flex-col items-start overflow-hidden">
-              <div className="w-[650px] mt-3 overflow-x-hidden overflow-y-scroll scrollbar min-[360px]:mx-3">
+            <div className="mb-5 min-[360px]:flex justify-center items-center ml-2 mt-4">
+              <UserInfo paramsId={paramsId} />
+            </div>
+
+            {isOwner && (
+              <div className="my-4 w-[92%] max-[360px]:w-[80%]">
+                <Dropdown />
+              </div>
+            )}
+
+            {(userId || paramsId) && (
+              <div className="h-[404px] px-5 overflow-y-scroll scrollbar">
                 {isBoardWritten && <HistoryBoard paramsId={id} />}
                 {isOwner && isBoardLike && <HistoryLikes paramsId={id} />}
                 {isOwner && isComment && <HistoryComment paramsId={id} />}
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       )}
     </>

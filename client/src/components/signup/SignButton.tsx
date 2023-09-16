@@ -29,7 +29,7 @@ export default function SignButton() {
         type="button"
         size="fix"
         onEmailSignup={() => getSignupForm(!isEmailSignup)}
-        className="mt-2 hover:scale-105 transition-transform">
+        className="mt-2">
         이메일로 회원가입
       </CommonButton>
     </>

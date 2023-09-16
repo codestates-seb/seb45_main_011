@@ -13,7 +13,11 @@ import CommonButton from '../common/CommonButton';
 import { SignFormValue } from '@/types/common';
 
 export default function AuthEmailModal() {
-  const { register, watch } = useForm<SignFormValue>();
+  const {
+    register,
+    watch,
+    formState: { isSubmitting },
+  } = useForm<SignFormValue>();
 
   const { close, changeState } = useSignModalStore();
   const code = useSignStore((state) => state.code);
@@ -49,14 +53,15 @@ export default function AuthEmailModal() {
           <CommonButton
             type="button"
             size="md"
-            className="w-[96px] h-[52px] text-[24px] hover:scale-105 transition-transform"
+            className="w-[96px] h-[52px] text-[24px]"
+            disabled={isSubmitting}
             onCheck={handleCodeCheck}>
             완료
           </CommonButton>
           <CommonButton
             type="button"
             size="md"
-            className="w-[96px] h-[52px] text-[24px] hover:scale-105 transition-transform"
+            className="w-[96px] h-[52px] text-[24px]"
             onClose={close}>
             취소
           </CommonButton>

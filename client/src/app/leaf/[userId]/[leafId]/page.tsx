@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { useQueries } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
 
 import { getDiariesByLeafAndUserId, getLeafByLeafId } from '@/api/leaf';
 
@@ -24,6 +25,8 @@ import ErrorMessage from '@/components/common/ErrorMessage';
 import ShareModal from '@/components/common/ShareModal';
 
 import { DiaryDataInfo, LeafDataInfo } from '@/types/data';
+
+import { MOUNT_ANIMATION_VALUES } from '@/constants/values';
 
 interface LeafProps {
   params: { leafId: string; userId: string };
@@ -85,51 +88,64 @@ export default function Leaf({ params }: LeafProps) {
   }, [diaries]);
 
   return (
-    <div className="flex justify-center items-center pt-[120px] pb-[100px]">
+    <motion.div
+      variants={MOUNT_ANIMATION_VALUES}
+      initial="initial"
+      animate="animate"
+      className="flex justify-center items-center pt-[120px] pb-[100px]">
       <div className="relative w-full min-w-[312px] max-w-[560px] h-[645px] mx-4 border-gradient rounded-xl shadow-container">
-        <ShareButton location="leaf" position="top" />
-        <div className="h-full pl-4 pr-1 py-8 mr-2">
+        {leaf && (
+          <ShareButton
+            location="leaf"
+            position="top"
+            className="right-[48px]"
+          />
+        )}
+        <div className="h-full pl-4 pr-2 py-8 mr-2">
           <Screws />
-          {isLoading && (
+          {isLoading ? (
             <div className="w-full h-full flex justify-center items-center">
               <LoadingNotice isTransparent={true} />
             </div>
-          )}
-          {isError && (
+          ) : isError ? (
             <div className="w-full h-full flex justify-center items-center">
               <ErrorMessage />
             </div>
-          )}
-          {leaf && (
-            <div className="h-full overflow-y-scroll scrollbar">
-              <LeafInfo
-                userId={userId}
-                pathUserId={pathUserId}
-                leafName={leaf?.leafName}
-                imageUrl={leaf?.leafImageUrl}
-                content={leaf?.content}
-                createdAt={leaf?.createdAt}
-              />
-              <LeafDateInfo />
-              {isEmpty ? (
-                <EmptyDiary
-                  pathUserId={pathUserId}
+          ) : (
+            leaf && (
+              <div className="h-full overflow-y-scroll scrollbar pr-4">
+                <LeafInfo
                   userId={userId}
-                  info="diary"
-                  addInfo="addDiary"
-                />
-              ) : (
-                <LeafDiary
                   pathUserId={pathUserId}
-                  diaries={diaries as DiaryDataInfo[]}
+                  leafName={leaf?.leafName}
+                  imageUrl={leaf?.leafImageUrl}
+                  content={leaf?.content}
+                  createdAt={leaf?.createdAt}
                 />
-              )}
-            </div>
+                <LeafDateInfo />
+                {isEmpty ? (
+                  <EmptyDiary
+                    pathUserId={pathUserId}
+                    userId={userId}
+                    info="diary"
+                    addInfo="addDiary"
+                    className="max-[380px]:w-[240px]"
+                  />
+                ) : (
+                  <LeafDiary
+                    pathUserId={pathUserId}
+                    diaries={diaries as DiaryDataInfo[]}
+                  />
+                )}
+              </div>
+            )
           )}
         </div>
-        <div className="flex justify-center my-6">
-          <ShareButton location="leafs" position="bottom" />
-        </div>
+        {leaf && (
+          <div className="flex justify-center my-6">
+            <ShareButton location="leaf" position="bottom" />
+          </div>
+        )}
       </div>
 
       {isModalOpen &&
@@ -143,6 +159,6 @@ export default function Leaf({ params }: LeafProps) {
             userId={userId}
           />
         ))}
-    </div>
+    </motion.div>
   );
 }

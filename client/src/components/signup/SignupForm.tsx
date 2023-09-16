@@ -20,7 +20,7 @@ export default function SignupForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     watch,
     reset,
   } = useForm<SignFormValue>();
@@ -79,8 +79,8 @@ export default function SignupForm() {
                 handleValidateEmail();
                 sendCodeWithEmail(email);
               }}
-              disabled={successedCode}
-              className="mb-3 hover:scale-105 transition-transform">
+              className="mb-3"
+              disabled={successedCode}>
               {successedCode ? '인증 완료!' : '이메일 인증하기'}
             </CommonButton>
           </div>
@@ -112,7 +112,8 @@ export default function SignupForm() {
             <CommonButton
               type="submit"
               size="md"
-              className="w-[121px] h-[44px] hover:scale-105 transition-transform">
+              className="w-[121px] h-[44px]"
+              disabled={isSubmitting}>
               회원 가입
             </CommonButton>
           </div>

@@ -2,6 +2,8 @@
 
 import Image from 'next/image';
 
+import { motion } from 'framer-motion';
+
 import useLikePostMutation from '@/hooks/useLikePostMutation';
 
 import { DefaultProps } from '@/types/common';
@@ -27,8 +29,10 @@ export default function PostCountInfo({
   return (
     <div className={`flex gap-3 ${className}`}>
       {usage === 'post' ? (
-        <span
-          className="flex gap-[0.375rem]"
+        <motion.span
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="flex gap-[0.375rem] ml-[2px]"
           role="button"
           onClick={() => {
             likePost();
@@ -49,7 +53,7 @@ export default function PostCountInfo({
             />
           )}
           {likesNum}
-        </span>
+        </motion.span>
       ) : (
         <span className="flex gap-[0.375rem]">
           <Image
