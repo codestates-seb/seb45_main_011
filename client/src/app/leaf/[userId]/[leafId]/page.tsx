@@ -93,7 +93,7 @@ export default function Leaf({ params }: LeafProps) {
       initial="initial"
       animate="animate"
       className="flex justify-center items-center pt-[120px] pb-[100px]">
-      <div className="relative w-full min-w-[312px] max-w-[560px] h-[645px] mx-4 border-gradient rounded-xl shadow-container">
+      <div className="relative w-full min-w-[312px] max-w-[560px] h-[680px] mx-4 border-gradient rounded-xl shadow-container">
         {leaf && (
           <ShareButton
             location="leaf"
@@ -113,7 +113,7 @@ export default function Leaf({ params }: LeafProps) {
             </div>
           ) : (
             leaf && (
-              <div className="h-full overflow-y-scroll scrollbar pr-4">
+              <div className="h-full overflow-y-scroll scrollbar pr-2">
                 <LeafInfo
                   userId={userId}
                   pathUserId={pathUserId}

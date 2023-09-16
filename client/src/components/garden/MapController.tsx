@@ -1,6 +1,7 @@
 'use client';
 
 import { twMerge } from 'tailwind-merge';
+import { motion } from 'framer-motion';
 
 import { DefaultProps } from '@/types/common';
 
@@ -37,12 +38,14 @@ export default function MapController({
     <section className={twMerge('absolute w-[76px] h-[76px]', className)}>
       {CONTROLLER_DIRECTIONS.map((direction) => {
         return (
-          <button
+          <motion.button
             key={direction}
             onClick={() => handleClick(direction)}
             type="button"
             title={`${CONTROLLER_TITLES[direction]}으로 이동`}
-            className={`absolute w-6 h-6 bg-contain bg-center shadow-controller hover:scale-[1.15] transition-transform ${CONTROLLER_STYLE[direction]}`}
+            whileHover={{ scale: 1.15 }}
+            whileTap={{ scale: 0.95 }}
+            className={`absolute w-6 h-6 bg-contain bg-center shadow-controller ${CONTROLLER_STYLE[direction]}`}
           />
         );
       })}

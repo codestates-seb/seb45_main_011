@@ -34,7 +34,8 @@ export default function ServiceInfo({ order }: ServiceInfoProps) {
               <Image
                 src="/assets/img/temporal_img.png"
                 alt="서비스 동작 이미지"
-                fill={true}
+                fill
+                sizes="100%"
                 className="mt-5 object-contain"
               />
             </div>

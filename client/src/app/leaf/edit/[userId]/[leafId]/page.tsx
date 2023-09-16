@@ -54,7 +54,7 @@ export default function EditLeaf({ params }: EditLeafProps) {
       variants={MOUNT_ANIMATION_VALUES}
       initial="initial"
       animate="animate"
-      className="flex justify-center items-center pt-[120px]">
+      className="flex justify-center items-center pt-[120px] pb-[60px]">
       <div className="relative w-full min-w-[312px] max-w-[540px] h-full mx-4 border-gradient rounded-xl shadow-container">
         <Screws />
         <div className="p-5 h-full">

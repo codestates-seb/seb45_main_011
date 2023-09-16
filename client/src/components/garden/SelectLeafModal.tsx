@@ -66,9 +66,8 @@ export default function SelectLeafModal() {
 
   return (
     <ModalPortal>
-      <Modal>
-        <div
-          className={`flex flex-col gap-7 w-full min-w-[312px] max-w-[512px] pt-10 pb-8`}>
+      <Modal className="w-full min-w-[312px] max-w-[531px] max-[572px]:max-w-[312px]">
+        <div className={`flex flex-col gap-7 pt-10 pb-8`}>
           {isLoading && (
             <LoadingNotice
               isTransparent={true}
@@ -79,7 +78,7 @@ export default function SelectLeafModal() {
             <>
               {leaves && leaves.length > 0 ? (
                 <>
-                  <section className="flex gap-5 flex-wrap justify-start max-h-[280px] mx-7 overflow-auto scrollbar">
+                  <section className="grid grid-cols-2 gap-4 place-items-center items-start flex-wrap justify-start max-h-[280px] p-2 mx-7 overflow-y-auto scrollbar max-[530px]:grid-cols-1">
                     {leaves &&
                       leaves.map((leaf) => {
                         const { leafId, leafName, leafImageUrl } = leaf;

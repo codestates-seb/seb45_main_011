@@ -14,7 +14,7 @@ export default function Intro() {
   return (
     <div
       className="relative mx-4 mb-4 rounded-xl border-gradient shadow-container"
-      style={{ marginTop: `${isClient && window.innerHeight / 4}px` }}>
+      style={{ marginTop: `${isClient ? window.innerHeight / 4 : 200}px` }}>
       <div className="flex flex-col gap-6 justify-center items-center w-full min-w-[294px] max-w-[440px] h-fit px-10 py-12 max-[480px]:px-8 max-[480px]:py-10">
         <motion.div whileHover={{ scale: 1.05 }}>
           <Logo size="large" />

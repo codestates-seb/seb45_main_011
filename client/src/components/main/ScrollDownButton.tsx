@@ -1,6 +1,8 @@
 import Image from 'next/image';
-import { DefaultProps, addPrefixToHandler } from '@/types/common';
+
 import { twMerge } from 'tailwind-merge';
+
+import { DefaultProps, addPrefixToHandler } from '@/types/common';
 
 interface ScrollDownButtonProps
   extends addPrefixToHandler<any, 'on'>,
@@ -19,10 +21,7 @@ export default function ScrollDownButton({
         alt="아래 스크롤 버튼"
         width={28}
         height={51}
-        className={twMerge(
-          'common-drop-shadow hover:scale-110 hover:transition-transform',
-          className,
-        )}
+        className={twMerge('common-drop-shadow', className)}
       />
     </button>
   );
