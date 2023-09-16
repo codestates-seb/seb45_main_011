@@ -150,6 +150,12 @@ li {
   list-style: none;
 }
 
+img {
+  image-rendering: crisp-edges;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
 @media (max-height: 712px) {
   .diary-overflow {
     height: 480px;
