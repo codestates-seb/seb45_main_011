@@ -36,7 +36,7 @@ spring:
           google:
             client-id: ${G_CLIENT_ID}
             client-secret: ${G_CLIENT_SECRET}
-            redirect-uri: https://grow-story.site/login/oauth2/code/google
+#            redirect-uri: http://grow-story.site/login/oauth2/code/google
             scope:
               - email
               - profile
