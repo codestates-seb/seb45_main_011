@@ -21,7 +21,7 @@ export default function ResignModal() {
     formState: { isSubmitting },
   } = useForm<SignFormValue>();
 
-  const token = useUserStore((state) => state.accessToken);
+  const setAccessToken = useUserStore((state) => state.setAccessToken);
   const { close, changeState } = useSignModalStore();
 
   const userPassword = watch('password');
@@ -30,9 +30,12 @@ export default function ResignModal() {
     if (!userPassword) return;
 
     try {
-      const response = await postUserPassword(userPassword, token);
+      const response = await postUserPassword(userPassword);
       if (response.data.data) {
-        return changeState('ComfirmModal');
+        return (
+          setAccessToken(response.headers?.authorization),
+          changeState('ComfirmModal')
+        );
       }
     } catch (error) {
       console.log(error);
