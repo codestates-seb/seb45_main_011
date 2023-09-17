@@ -1,38 +1,52 @@
 import axios from 'axios';
 
-const url = process.env.NEXT_PUBLIC_API_URL;
+const accessToken =
+  typeof window !== 'undefined'
+    ? JSON.parse(sessionStorage.getItem('user-key') as string).state.accessToken
+    : null;
+
+const refreshToken =
+  typeof window !== 'undefined'
+    ? JSON.parse(sessionStorage.getItem('user-key') as string).state
+        .refreshToken
+    : null;
+
+export const historyAxios = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  headers: {
+    Authorization: accessToken,
+    Refresh: refreshToken,
+  },
+  withCredentials: true,
+});
 
 export const getUserInfo = async (id: string) => {
-  const response = await axios.get(`${url}/accounts/${id}`);
+  const { data } = await historyAxios
+    .get(`/accounts/${id}`)
+    .then((response) => response.data);
 
-  return response;
+  return data;
 };
 
-export const postUserPassword = async (password: string, token: string) => {
-  const response = await axios.post(
-    `${url}/accounts/password/verification`,
-    {
-      password,
-    },
-    {
-      headers: { Authorization: token },
-    },
-  );
+export const postUserPassword = async (password: string) => {
+  const { data } = await historyAxios
+    .post(`/accounts/password/verification`, password)
+    .then((response) => response.data);
 
-  return response;
+  return data;
 };
 
-export const deleteUser = async (token: string) => {
-  const response = await axios.delete(`${url}/accounts`, {
-    headers: { Authorization: token },
-  });
+export const deleteUser = async () => {
+  const { data } = await historyAxios
+    .delete(`/accounts`)
+    .then((response) => response.data);
 
-  return response;
+  return data;
 };
 
 export const getBoardWrittenByPage = async ({ pageParam = 1 }, id: string) => {
   const response = await axios
-    .get(`${url}/accounts/boardWritten/${id}?page=${pageParam}`)
+    .get(`/accounts/boardWritten/${id}?page=${pageParam}`)
     .then((response) => response.data);
 
   return { boardWritten: response.data, pageInfo: response.pageInfo };
@@ -40,7 +54,7 @@ export const getBoardWrittenByPage = async ({ pageParam = 1 }, id: string) => {
 
 export const getBoardLikedByPage = async ({ pageParam = 1 }, id: string) => {
   const response = await axios
-    .get(`${url}/accounts/boardLiked/${id}?page=${pageParam}`)
+    .get(`/accounts/boardLiked/${id}?page=${pageParam}`)
     .then((response) => response.data);
 
   return { boardLiked: response.data, pageInfo: response.pageInfo };
@@ -51,7 +65,7 @@ export const getCommentWrittenByPage = async (
   id: string,
 ) => {
   const response = await axios
-    .get(`${url}/accounts/commentWritten/${id}?page=${pageParam}`)
+    .get(`/accounts/commentWritten/${id}?page=${pageParam}`)
     .then((response) => response.data);
 
   return { commentWritten: response.data, pageInfo: response.pageInfo };

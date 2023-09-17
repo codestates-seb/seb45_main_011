@@ -36,14 +36,16 @@ export default function HistoryComment({ paramsId }: HistoryBoradProps) {
   return (
     <>
       {data?.pages.map((page, index) => (
-        <div key={index} className="max-[700px]:ml-[21px]">
+        <div key={index}>
           {page.commentWritten?.length === 0 ? (
-            <div className="mt-3 overflow-hidden">
+            <div
+              key={index}
+              className="w-[715px] max-[730px]:w-[512px] max-[630px]:w-[220px] flex justify-center items-center ml-4">
               <EmptyDiary
                 pathUserId={paramsId}
                 userId={userId}
                 info="comment"
-                className="max-w-[314px] max-[507px]:mx-3 max-[401px]:w-[214px] text-[15px]"
+                className="max-w-[314px] max-[420px]:w-[214px] text-[15px]"
               />
             </div>
           ) : (

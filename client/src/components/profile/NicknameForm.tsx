@@ -13,11 +13,7 @@ import CommonButton from '../common/CommonButton';
 
 import { InputValues } from '@/types/common';
 
-type Token = {
-  token: string;
-};
-
-export default function NicknameForm({ token }: Token) {
+export default function NicknameForm() {
   const { setDisplayName, displayName } = useUserStore();
   const {
     register,
@@ -29,6 +25,7 @@ export default function NicknameForm({ token }: Token) {
   } = useForm<InputValues>();
 
   const changeState = useSignModalStore((state) => state.changeState);
+  const setAccessToken = useUserStore((state) => state.setAccessToken);
 
   const nickname = watch('nickname');
 
@@ -39,8 +36,14 @@ export default function NicknameForm({ token }: Token) {
   const updateNickName = async () => {
     if (!nickname) return;
 
-    await updateUserNickname(nickname, token);
+    const response = await updateUserNickname(nickname);
     setDisplayName(nickname);
+
+    console.log(response);
+
+    if (response.status === 204) {
+      setAccessToken(response.headers?.authorization);
+    }
 
     reset();
     changeState('ChangeNicknameModal');

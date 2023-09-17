@@ -9,15 +9,13 @@ interface UserInfo {
   userId: string;
   displayName: string;
   profileImageUrl: string;
+  isLogin?: boolean;
+  isGoogleLogin?: boolean;
 }
 interface User extends UserInfo {
-  isLogin: boolean;
-  isGoogleLogin: boolean;
-
+  setAccessToken: (accessToken: string) => void;
   setUser: (userInfo: UserInfo) => void;
-
-  setIsLogin: (isLogin: boolean) => void;
-  setIsGoogleLogin: (isGoogleLogin: boolean) => void;
+  setGoogleUser: (userInfo: UserInfo) => void;
 
   setProfileImageUrl: (profileImageUrl: string) => void;
   setDisplayName: (displayName: string) => void;
@@ -38,11 +36,8 @@ const useUserStore = create(
       displayName: '',
       profileImageUrl: '',
 
-      setIsLogin: (isLogin) => {
-        set({ isLogin: isLogin });
-      },
-      setIsGoogleLogin: (isGoogleLogin) => {
-        set({ isGoogleLogin: isGoogleLogin });
+      setAccessToken: (accessToken) => {
+        set({ accessToken });
       },
 
       setUser: (userInfo: UserInfo) => {
@@ -59,6 +54,27 @@ const useUserStore = create(
           userId,
           displayName,
           profileImageUrl,
+          isLogin: true,
+          isGoogleLogin: false,
+        });
+      },
+
+      setGoogleUser: (userInfo: UserInfo) => {
+        const {
+          accessToken,
+          refreshToken,
+          userId,
+          displayName,
+          profileImageUrl,
+        } = userInfo;
+        set({
+          accessToken,
+          refreshToken,
+          userId,
+          displayName,
+          profileImageUrl,
+          isLogin: false,
+          isGoogleLogin: true,
         });
       },
 

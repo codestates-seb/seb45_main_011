@@ -33,13 +33,13 @@ export default function HistoryBox({ paramsId }: HistoryProps) {
   return (
     <>
       {isClient && (
-        <div className="relative bg-[url('/assets/img/bg_wood_yellow.png')] rounded-[12px] border-8 border-border-30 shadow-outer/down shadow-container border-gradient">
-          <div className="flex flex-col items-center justify-center max-w-[715px] max-h-[633px] p-4">
+        <div className="relative bg-[url('/assets/img/bg_wood_yellow.png')] rounded-[12px] border-8 border-border-30 shadow-outer/down shadow-container border-gradient mb-[60px]">
+          <div className="flex flex-col items-center justify-center min-w-[312px] max-w-[715px] max-h-[650px] p-4">
             <div className="w-full flex justify-end gap-3 mr-1 mb-4 max-[530px]:flex max-[530px]:justify-center max-[530px]:items-center">
               {isOwner && <UserButton />}
             </div>
 
-            <div className="mb-5 min-[360px]:flex justify-center items-center ml-2 mt-4">
+            <div className="mb-5 min-[580px]:flex justify-center items-center ml-2 mt-4">
               <UserInfo paramsId={paramsId} />
             </div>
 
@@ -50,7 +50,7 @@ export default function HistoryBox({ paramsId }: HistoryProps) {
             )}
 
             {(userId || paramsId) && (
-              <div className="h-[404px] px-5 overflow-y-scroll scrollbar">
+              <div className="h-full px-5 overflow-y-scroll overflow-x-hidden scrollbar">
                 {isBoardWritten && <HistoryBoard paramsId={id} />}
                 {isOwner && isBoardLike && <HistoryLikes paramsId={id} />}
                 {isOwner && isComment && <HistoryComment paramsId={id} />}

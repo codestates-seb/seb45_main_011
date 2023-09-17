@@ -17,10 +17,9 @@ export default function LoginButtion() {
   const router = useRouter();
 
   const getSigninForm = useSignStore((state) => state.getSigninForm);
-  const { isGoogleLogin, setIsGoogleLogin, setUser } = useUserStore();
+  const { isGoogleLogin, setGoogleUser, isLogin } = useUserStore();
 
   const onGoogleLogin = () => {
-    setIsGoogleLogin(true);
     router.push(`${googleOauth}`);
   };
 
@@ -44,7 +43,7 @@ export default function LoginButtion() {
       displayName &&
       profileImageUrl
     ) {
-      setUser({
+      setGoogleUser({
         accessToken,
         refreshToken,
         userId,
@@ -60,7 +59,12 @@ export default function LoginButtion() {
     <>
       {isClient && (
         <div className="flex flex-col gap-4 mt-4">
-          <CommonButton type="submit" size="fix" onGoogle={onGoogleLogin}>
+          <CommonButton
+            type="submit"
+            size="fix"
+            onGoogle={onGoogleLogin}
+            disabled={isLogin}
+            className="hover:scale-105 transition-transform">
             구글로 로그인
           </CommonButton>
 

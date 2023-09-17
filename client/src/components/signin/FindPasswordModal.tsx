@@ -19,6 +19,7 @@ export default function FindPasswordModal() {
     watch,
     formState: { isSubmitting },
   } = useForm<SignFormValue>();
+
   const { close, changeState } = useSignModalStore();
 
   const userEmail = watch('email');
