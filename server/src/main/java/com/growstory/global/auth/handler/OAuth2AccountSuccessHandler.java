@@ -137,6 +137,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
 //                .port(3000)
 //                .host("growstory.s3-website.ap-northeast-2.amazonaws.com")
 //                .port(80) //S3는 80포트
+                .port(443)
                 .path("/signin")
                 .queryParam("access_token", accessToken)
                 .queryParam("refresh_token", refreshToken)
