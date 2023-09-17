@@ -59,8 +59,7 @@ public class LeafService {
         Leaf findLeaf = findVerifiedLeafByAccount(findAccount.getAccountId(), leafPatchDto.getLeafId());
         String leafImageUrl = findLeaf.getLeafImageUrl();
 
-        Optional.ofNullable(leafImageUrl).ifPresent(imageUrl ->
-                s3Uploader.deleteImageFromS3(imageUrl, LEAF_IMAGE_PROCESS_TYPE));
+        s3Uploader.deleteImageFromS3(leafImageUrl, LEAF_IMAGE_PROCESS_TYPE);
 
         if (Optional.ofNullable(leafImage).isPresent())
             leafImageUrl = s3Uploader.uploadImageToS3(leafImage, LEAF_IMAGE_PROCESS_TYPE);
@@ -81,7 +80,7 @@ public class LeafService {
     }
 
     public LeafDto.Response findLeaf(Long leafId) {
-        return getLeafResponseDto(findVerifiedLeaf(leafId));
+        return getLeafResponseDto(findLeafEntityWithNoAuth(leafId));
     }
 
     public Leaf findLeafEntityWithNoAuth(Long leafId) {
@@ -118,17 +117,11 @@ public class LeafService {
     }
 
     private Leaf findVerifiedLeafByAccount(Long accountId, Long leafId) {
-        Leaf findLeaf = findVerifiedLeaf(leafId);
+        Leaf findLeaf = findLeafEntityWithNoAuth(leafId);
 
         if (!Objects.equals(accountId, findLeaf.getAccount().getAccountId()))
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
         else return findLeaf;
-    }
-
-    private Leaf findVerifiedLeaf(Long leafId) {
-        Leaf findLeaf = leafRepository.findById(leafId).orElseThrow(() ->
-                new BusinessLogicException(ExceptionCode.LEAF_NOT_FOUND));
-        return findLeaf;
     }
 
     public Account.AccountGrade updateAccountGrade(Account findAccount) {

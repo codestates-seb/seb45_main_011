@@ -55,8 +55,10 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.PATCH, "/v1/**").permitAll()
                         .antMatchers(HttpMethod.DELETE, "/v1/**").permitAll()
                         .anyRequest().permitAll())
-                .oauth2Login(oauth2 ->
-                        oauth2.successHandler(new OAuth2AccountSuccessHandler(jwtTokenizer, authorityUtils, accountRepository, pointService, pointRepository)))
+                .oauth2Login(oauth2 -> {
+                    oauth2.failureHandler(new OAuth2AccountFailureHandler());
+                    oauth2.successHandler(new OAuth2AccountSuccessHandler(jwtTokenizer, authorityUtils, accountRepository, pointService, pointRepository));
+                })
                 .build();
     }
 
