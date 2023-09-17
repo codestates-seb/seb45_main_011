@@ -44,9 +44,11 @@ export default function HistoryLikes({ paramsId }: HistoryBoradProps) {
   return (
     <>
       {data?.pages.map((page, index) => (
-        <div key={index} className="max-[700px]:ml-[21px] ">
+        <div key={index}>
           {page?.boardLiked?.length === 0 ? (
-            <div key={index} className="max-[700px]:ml-[21px]">
+            <div
+              key={index}
+              className="w-[715px] max-[730px]:w-[512px] max-[630px]:w-[312px] flex justify-center items-center ml-1">
               <EmptyDiary
                 pathUserId={paramsId}
                 userId={userId}
@@ -58,7 +60,7 @@ export default function HistoryLikes({ paramsId }: HistoryBoradProps) {
             <InfiniteScroll
               hasMore={hasNextPage}
               loadMore={() => fetchNextPage()}>
-              <div className="grid grid-cols-3 gap-4 place-items-center items-start max-[730px]:grid-cols-2 max-[530px]:grid-cols-1 px-2 pb-4 ">
+              <div className="grid grid-cols-3 gap-4 place-items-center items-start max-[730px]:grid-cols-2 max-[530px]:grid-cols-1 px-2 pb-4">
                 {page.boardLiked?.map((board: any) => (
                   <div
                     key={board.boardId}
