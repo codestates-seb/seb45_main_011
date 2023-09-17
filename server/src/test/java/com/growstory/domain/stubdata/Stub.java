@@ -2,11 +2,13 @@ package com.growstory.domain.stubdata;
 
 import com.growstory.domain.account.dto.AccountDto;
 import com.growstory.domain.account.entity.Account;
+import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.images.entity.JournalImage;
 import com.growstory.domain.journal.dto.JournalDto;
 import com.growstory.domain.journal.entity.Journal;
 import com.growstory.domain.leaf.dto.LeafDto;
 import com.growstory.domain.leaf.entity.Leaf;
+import com.growstory.domain.likes.entity.BoardLike;
 import com.growstory.domain.plant_object.dto.PlantObjDto;
 import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.plant_object.location.dto.LocationDto;
@@ -16,14 +18,13 @@ import com.growstory.domain.product.dto.ProductDto;
 import com.growstory.domain.product.entity.Product;
 import org.springframework.http.HttpMethod;
 
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TestStubData {
+public class Stub {
 
     public static class MockAccount {
         private static Map<HttpMethod, Object> stubRequestBody;
@@ -160,25 +161,40 @@ public class TestStubData {
         }
 
         public static PlantObjDto.Response getStubPlantObjResponseDto1() {
+            PlantObjDto.PatchLocation location1 = MockLocation.getStubPatchLocation1();
+            LeafDto.ResponseForGardenInfo leaf1 = MockLeaf.getStubLeafResponseDto();
            return PlantObjDto.Response.builder()
                     .productId(MockAccount.getStubAccount().getAccountId())
                     .plantObjId(MockProduct.getStubProduct1().getProductId())
                     .productName(MockProduct.getStubProduct1().getName())
                     .korName(MockProduct.getStubProduct1().getKorName())
                     .price(MockProduct.getStubProduct1().getPrice())
-//                    .location(MockLocation.getStubLocationResponseDto1())
-//                    .leafDto(MockLeaf.getStubLeafResponseDto())
+                    .location(LocationDto.Response.builder()
+                            .locationId(location1.getLocationDto().getLocationId()) // 1
+                            .x(location1.getLocationDto().getX()) //5
+                            .y(location1.getLocationDto().getY()) //6
+                            .isInstalled(location1.getLocationDto().isInstalled()) //true
+                            .build())
+                    .leafDto(LeafDto.ResponseForGardenInfo.builder()
+                            .id(leaf1.getId())
+                            .build())
                     .imageUrlTable(MockProduct.getStubImageUrlTable1())
                     .build();
         }
         public static PlantObjDto.Response getStubPlantObjResponseDto2() {
+            PlantObjDto.PatchLocation location2 = MockLocation.getStubPatchLocation2();
             return PlantObjDto.Response.builder()
                     .productId(MockAccount.getStubAccount().getAccountId())
                     .plantObjId(MockProduct.getStubProduct2().getProductId())
                     .productName(MockProduct.getStubProduct2().getName())
                     .korName(MockProduct.getStubProduct2().getKorName())
                     .price(MockProduct.getStubProduct2().getPrice())
-//                    .location(MockLocation.getStubLocationResponseDto2())
+                    .location(LocationDto.Response.builder()
+                            .locationId(location2.getLocationDto().getLocationId()) // 2
+                            .x(location2.getLocationDto().getX()) //0
+                            .y(location2.getLocationDto().getY()) //0
+                            .isInstalled(location2.getLocationDto().isInstalled()) //false
+                            .build())
 //                    .leafDto(MockLeaf.getStubLeafResponseDto())
                     .imageUrlTable(MockProduct.getStubImageUrlTable2())
                     .build();
@@ -188,6 +204,18 @@ public class TestStubData {
 
             return List.of(getStubPlantObjResponseDto1(),
                     getStubPlantObjResponseDto2());
+        }
+
+        public static PlantObjDto.GardenInfoResponse getStubGardenInfo() {
+            return PlantObjDto.GardenInfoResponse.builder()
+                    .plantObjs(getStubPlantObjsResponseDtos())
+                    .build();
+        }
+
+        public static PlantObjDto.TradeResponse getStubTradeResponse() {
+            return PlantObjDto.TradeResponse.builder()
+                    .plantObj(getStubPlantObjResponseDto1())
+                    .build();
         }
     }
 
@@ -340,5 +368,87 @@ public class TestStubData {
                     .score(0)
                     .build();
         }
+    }
+
+    public static class MockBoardLikes {
+        public static BoardLike getBoardLike1_1() {
+        Account account1 = Account.builder()
+                .accountId(1L).displayName("김별명1").build();
+            return  BoardLike.builder()
+                    .boardLikeId(1L)
+                    .account(account1)
+                    .board(Board.builder().boardId(1L).build())
+                    .build();
+        }
+        public static BoardLike getBoardLike1_2() {
+            Account account1 = Account.builder()
+                    .accountId(2L).displayName("김별명2").build();
+            return  BoardLike.builder()
+                    .boardLikeId(2L)
+                    .account(account1)
+                    .board(Board.builder().boardId(1L).build())
+                    .build();
+        }
+        public static BoardLike getBoardLike1_3() {
+            Account account1 = Account.builder()
+                    .accountId(3L).displayName("김별명3").build();
+            return  BoardLike.builder()
+                    .boardLikeId(3L)
+                    .account(account1)
+                    .board(Board.builder().boardId(1L).build())
+                    .build();
+        }
+
+        public static BoardLike getBoardLike2_1() {
+            Account account1 = Account.builder()
+                    .accountId(1L).displayName("김별명1").build();
+            return  BoardLike.builder()
+                    .boardLikeId(1L)
+                    .account(account1)
+                    .board(Board.builder().boardId(2L).build())
+                    .build();
+        }
+        public static BoardLike getBoardLike2_2() {
+            Account account1 = Account.builder()
+                    .accountId(2L).displayName("김별명2").build();
+            return  BoardLike.builder()
+                    .boardLikeId(2L)
+                    .account(account1)
+                    .board(Board.builder().boardId(2L).build())
+                    .build();
+        }
+
+        public static BoardLike getBoardLike3_1() {
+            Account account1 = Account.builder()
+                    .accountId(1L).displayName("김별명1").build();
+            return  BoardLike.builder()
+                    .boardLikeId(1L)
+                    .account(account1)
+                    .board(Board.builder().boardId(3L).build())
+                    .build();
+        }
+
+        public static List<BoardLike> getBoardLikes1() {
+            List<BoardLike> boardLikes = new ArrayList<>();
+            boardLikes.add(getBoardLike1_1());
+            boardLikes.add(getBoardLike1_2());
+            boardLikes.add(getBoardLike1_3());
+            return boardLikes;
+        }
+
+        public static List<BoardLike> getBoardLikes2() {
+            List<BoardLike> boardLikes = new ArrayList<>();
+            boardLikes.add(getBoardLike2_1());
+            boardLikes.add(getBoardLike2_2());
+            return boardLikes;
+        }
+
+        public static List<BoardLike> getBoardLikes3() {
+            List<BoardLike> boardLikes = new ArrayList<>();
+            boardLikes.add(getBoardLike3_1());
+            return boardLikes;
+        }
+
+
     }
 }

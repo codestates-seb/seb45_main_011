@@ -36,6 +36,7 @@ spring:
           google:
             client-id: ${G_CLIENT_ID}
             client-secret: ${G_CLIENT_SECRET}
+            redirect-uri: https://grow-story.site/login/oauth2/code/google
             scope:
               - email
               - profile
@@ -84,5 +85,13 @@ mail:
   admin:
     address: ${ADMIN_EMAIL}
 
+my:
+  scheduled:
+    cron: 0 0 0 ? * MON
+
 server:
-  port: 8080
+  port: 443
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-password: gskeystore
+    key-store-type: PKCS12

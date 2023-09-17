@@ -22,6 +22,7 @@ public class PointService {
     private static final int DAILY_LOGIN_POINT = 10; // 일일 로그인시 지급 포인트 (출석 체크 창이나 버튼이 필요, 로그인을 지속하며 날짜가 갱신되었을 때 판별이 어려워보임)
     private static final int JOURNAL_WRITTEN_POINT = 10; // 저널 작성 포인트
 
+
     private final PointRepository pointRepository;
 
     public Point createPoint(String email) {
@@ -59,5 +60,14 @@ public class PointService {
         return pointRepository.save(presentPoint.toBuilder()
                         .score(presentPoint.getScore() + score)
                         .build());
+    }
+
+    public Point updatePoint(Point presentPoint, int updateScore) {
+        if(presentPoint == null)
+            throw new BusinessLogicException(ExceptionCode.POINT_TYPE_NOT_FOUND);
+
+        return pointRepository.save(presentPoint.toBuilder()
+                .score(presentPoint.getScore() + updateScore)
+                .build());
     }
 }

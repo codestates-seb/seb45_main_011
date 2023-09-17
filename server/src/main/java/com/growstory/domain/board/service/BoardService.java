@@ -16,20 +16,29 @@ import com.growstory.domain.hashTag.repository.HashTagRepository;
 import com.growstory.domain.hashTag.service.HashTagService;
 import com.growstory.domain.images.entity.BoardImage;
 import com.growstory.domain.images.service.BoardImageService;
+import com.growstory.domain.rank.board_likes.dto.BoardLikesRankDto;
+import com.growstory.domain.rank.board_likes.entity.BoardLikesRank;
 import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Objects;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -42,6 +51,8 @@ public class BoardService {
     private final HashTagRepository hashTagRepository;
     private final BoardHashTagRepository boardHashtagRepository;
     private final CommentService commentService;
+    @Value("${my.scheduled.cron}")
+    private String cronExpression;
 
 
     public Long createBoard(RequestBoardDto.Post requestBoardDto, MultipartFile image) {
@@ -88,6 +99,7 @@ public class BoardService {
                         .boardId(board.getBoardId())
                         .title(board.getTitle())
                         .content(board.getContent())
+//                        .boardImageUrl(board.getBoardImages()==null? null : board.getBoardImages().get(0).getStoredImagePath())
                         .boardImageUrl(board.getBoardImages()
                                 .stream()
                                 .findFirst()
@@ -208,7 +220,9 @@ public class BoardService {
                 .stream()
                 .findFirst()
                 .orElse(null);        // delete Board Image in S3
-        boardImageService.deleteBoardImage(boardImage);
+
+        if (boardImage != null)
+            boardImageService.deleteBoardImage(boardImage);
 
         List<HashTag> findHashTag = hashTagRepository.findHashtagsByBoardId(boardId);
         hashTagRepository.deleteAll(findHashTag);
@@ -244,5 +258,61 @@ public class BoardService {
 
                 .build();
     }
+
+
+//    @Scheduled(cron = "${my.scheduled.cron}")
+    public List<BoardLikesRankDto.Response> findTop3LikedBoards() {
+        log.info("# Scheduled task findTop3LikedBoards started at {}", LocalDateTime.now());
+        log.info("# and Cron expression is: {}", cronExpression);
+        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
+        List<Object[]> topBoardsWithLikes = boardRepository.findTop3LikedBoards(sevenDaysAgo);
+        List<BoardLikesRankDto.Response> response = topBoardsWithLikes.stream().map(
+                responseRankingDto -> {
+                    Board board = (Board) responseRankingDto[0];
+                    Long LikeCount = (Long) responseRankingDto[1];
+                    return BoardLikesRankDto.Response.builder()
+                            .boardId(board.getBoardId())
+                            .title(board.getTitle())
+                            .displayName(board.getAccount().getDisplayName())
+                            .likeNum(Integer.valueOf(String.valueOf(LikeCount)))
+                            .build();
+                    }).limit(3)
+                .collect(Collectors.toList());
+        return response;
+    }
+
+    // 좋아요 기준 상위 3개의 게시글을 랭킹과 함께 반환 (🆘 추후 리팩토링)
+    public List<BoardLikesRank> findTop3LikedBoardRanks() {
+        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
+        List<Object[]> topBoardsWithLikes = boardRepository.findTop3LikedBoards(sevenDaysAgo);
+
+        // 고유한 '좋아요' 수를 저장하기 위한 Set
+        Set<Long> uniqueLikeCounts = new HashSet<>();
+
+        // 조건에 부합하는 boardLikesRank를 담을 리스트 boardLikesRanks
+        List<BoardLikesRank> boardLikesRanks = new ArrayList<>();
+
+        topBoardsWithLikes.stream()
+                .takeWhile(objects -> {
+                    Long likeCount = (Long) objects[1];
+                    uniqueLikeCounts.add(likeCount);
+                    return uniqueLikeCounts.size() <= 3; // 고유한 '좋아요' 수가 3개 이하일 때까지
+                })
+                .forEach(objects -> {
+                    Board board = (Board) objects[0];
+                    Long likeCount = (Long) objects[1];
+
+                    BoardLikesRank boardLikesRank = BoardLikesRank.builder()
+                            .account(board.getAccount())
+                            .board(board)
+                            .likeNum(likeCount)
+                            .build();
+                    boardLikesRank.updateRank(uniqueLikeCounts.size());
+                    boardLikesRanks.add(boardLikesRank);
+                });
+        return boardLikesRanks;
+    }
+
+
 }
 

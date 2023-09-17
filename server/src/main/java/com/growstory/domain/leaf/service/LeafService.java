@@ -41,17 +41,13 @@ public class LeafService {
                 .account(findAccount)
                 .build();
 
-        String leafImageUrl = leaf.getLeafImageUrl();
-
-        if (Optional.ofNullable(leafImage).isPresent())
-            leafImageUrl = s3Uploader.uploadImageToS3(leafImage, LEAF_IMAGE_PROCESS_TYPE);
 
         Leaf savedLeaf = leafRepository.save(leaf.toBuilder()
-                        .leafImageUrl(leafImageUrl)
+                        .leafImageUrl(s3Uploader.uploadImageToS3(leafImage, LEAF_IMAGE_PROCESS_TYPE))
                         .build());
 
         findAccount.addLeaf(savedLeaf);
-        updateAccountGrade(findAccount);
+        findAccount.updateGrade(updateAccountGrade(findAccount));
 
         return LeafDto.Response.builder()
                 .leafId(savedLeaf.getLeafId())
@@ -63,12 +59,10 @@ public class LeafService {
         Leaf findLeaf = findVerifiedLeafByAccount(findAccount.getAccountId(), leafPatchDto.getLeafId());
         String leafImageUrl = findLeaf.getLeafImageUrl();
 
-        if (leafPatchDto.getIsImageUpdated()) {
-            Optional.ofNullable(leafImageUrl).ifPresent(imageUrl ->
-                    s3Uploader.deleteImageFromS3(imageUrl, LEAF_IMAGE_PROCESS_TYPE));
+        s3Uploader.deleteImageFromS3(leafImageUrl, LEAF_IMAGE_PROCESS_TYPE);
 
+        if (Optional.ofNullable(leafImage).isPresent())
             leafImageUrl = s3Uploader.uploadImageToS3(leafImage, LEAF_IMAGE_PROCESS_TYPE);
-        }
 
         leafRepository.save(findLeaf.toBuilder()
                 .leafName(Optional.ofNullable(leafPatchDto.getLeafName()).orElse(findLeaf.getLeafName()))
@@ -86,7 +80,7 @@ public class LeafService {
     }
 
     public LeafDto.Response findLeaf(Long leafId) {
-        return getLeafResponseDto(findVerifiedLeaf(leafId));
+        return getLeafResponseDto(findLeafEntityWithNoAuth(leafId));
     }
 
     public Leaf findLeafEntityWithNoAuth(Long leafId) {
@@ -123,27 +117,21 @@ public class LeafService {
     }
 
     private Leaf findVerifiedLeafByAccount(Long accountId, Long leafId) {
-        Leaf findLeaf = findVerifiedLeaf(leafId);
+        Leaf findLeaf = findLeafEntityWithNoAuth(leafId);
 
         if (!Objects.equals(accountId, findLeaf.getAccount().getAccountId()))
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
         else return findLeaf;
     }
 
-    private Leaf findVerifiedLeaf(Long leafId) {
-        Leaf findLeaf = leafRepository.findById(leafId).orElseThrow(() ->
-                new BusinessLogicException(ExceptionCode.LEAF_NOT_FOUND));
-        return findLeaf;
-    }
-
-    private static void updateAccountGrade(Account findAccount) {
+    public Account.AccountGrade updateAccountGrade(Account findAccount) {
         int leavesNum = findAccount.getLeaves().size();
         if (leavesNum < 50) {
-            findAccount.updateGrade(Account.AccountGrade.GRADE_BRONZE);
+            return Account.AccountGrade.GRADE_BRONZE;
         } else if (leavesNum < 100) {
-            findAccount.updateGrade(Account.AccountGrade.GRADE_SILVER);
+            return Account.AccountGrade.GRADE_SILVER;
         } else {
-            findAccount.updateGrade(Account.AccountGrade.GRADE_GOLD);
+            return Account.AccountGrade.GRADE_GOLD;
         }
     }
 

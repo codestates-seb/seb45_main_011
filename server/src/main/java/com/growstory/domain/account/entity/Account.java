@@ -19,9 +19,7 @@ import java.util.List;
 @Setter
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder(toBuilder = true)
 public class Account extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -108,15 +106,6 @@ public class Account extends BaseTimeEntity {
         receivingAccountLikes.add(accountLike);
     }
 
-    public Account(Long accountId, String email, String displayName, String password, String profileImageUrl, List<String> roles) {
-        this.accountId = accountId;
-        this.email = email;
-        this.displayName = displayName;
-        this.password = password;
-        this.profileImageUrl = profileImageUrl;
-        this.roles = roles;
-    }
-
     public void updateGrade(AccountGrade accountGrade) {
         this.accountGrade = accountGrade;
     }
@@ -140,5 +129,36 @@ public class Account extends BaseTimeEntity {
 
     public void removePlantObj(PlantObj plantObj) {
         this.plantObjs.remove(plantObj);
+    }
+
+    public Account(Long accountId, String email, String displayName, String password, String profileImageUrl, List<String> roles) {
+        this.accountId = accountId;
+        this.email = email;
+        this.displayName = displayName;
+        this.password = password;
+        this.profileImageUrl = profileImageUrl;
+        this.roles = roles;
+    }
+
+    @Builder(toBuilder = true)
+    public Account(Long accountId, String email, String displayName, String password, String profileImageUrl,
+                   List<Board> boards, List<Leaf> leaves, List<AccountLike> givingAccountLikes,
+                   List<AccountLike> receivingAccountLikes, List<BoardLike> boardLikes, List<Comment> comments,
+                   Point point, List<PlantObj> plantObjs, List<String> roles, AccountGrade accountGrade) {
+        this.accountId = accountId;
+        this.email = email;
+        this.displayName = displayName;
+        this.password = password;
+        this.profileImageUrl = profileImageUrl;
+        this.boards = boards;
+        this.leaves = leaves;
+        this.givingAccountLikes = givingAccountLikes;
+        this.receivingAccountLikes = receivingAccountLikes;
+        this.boardLikes = boardLikes;
+        this.comments = comments;
+        this.point = point;
+        this.plantObjs = plantObjs;
+        this.roles = roles;
+        this.accountGrade = accountGrade;
     }
 }

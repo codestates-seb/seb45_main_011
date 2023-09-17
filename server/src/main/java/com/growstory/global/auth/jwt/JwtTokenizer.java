@@ -70,6 +70,9 @@ public class JwtTokenizer {
                 .setSigningKey(key) // 서명 검증을 위한 key 지정
                 .build()
                 .parseClaimsJws(jws); // 토큰의 유효성 검사
+
+        System.out.println("after:" + claims.getBody().getExpiration());
+
         return claims;
     }
 

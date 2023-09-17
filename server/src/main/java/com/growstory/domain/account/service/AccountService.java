@@ -65,7 +65,6 @@ public class AccountService {
                 .build();
     }
 
-    // 구글 이미지 수정 고치기
     public void updateProfileImage(MultipartFile profileImage) {
         Account findAccount = authUserUtils.getAuthUser();
 
@@ -162,17 +161,17 @@ public class AccountService {
         accountRepository.delete(findAccount);
     }
 
+    public Boolean verifyPassword(AccountDto.PasswordVerify passwordVerifyDto) {
+        Account findAccount = authUserUtils.getAuthUser();
+
+        return passwordEncoder.matches(passwordVerifyDto.getPassword(), findAccount.getPassword());
+    }
+
     private void verifyExistsEmail(String email) {
         Optional<Account> findAccount = accountRepository.findByEmail(email);
 
         if(findAccount.isPresent())
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_ALREADY_EXISTS);
-    }
-
-    public Boolean verifyPassword(AccountDto.PasswordVerify passwordVerifyDto) {
-        Account findAccount = authUserUtils.getAuthUser();
-
-        return passwordEncoder.matches(passwordVerifyDto.getPassword(), findAccount.getPassword());
     }
 
     @Transactional(readOnly = true)
@@ -182,8 +181,14 @@ public class AccountService {
     }
 
     public void isAuthIdMatching(Long accountId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Map<String, Object> claims = (Map<String, Object>) authentication.getPrincipal();
+        Authentication authentication = null;
+        Map<String, Object> claims = null;
+        try {
+            authentication = SecurityContextHolder.getContext().getAuthentication();
+            claims = (Map<String, Object>) authentication.getPrincipal();
+        } catch (Exception e) {
+            throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_FOUND);
+        }
 
         // 사용자가 인증되지 않거나 익명인지 확인하고 그렇다면 401 예외 던지기
         if (authentication.getName() == null || authentication.getName().equals("anonymousUser")) {
@@ -191,7 +196,7 @@ public class AccountService {
         }
 
         // 사용자가 일치하지 않으면 405 예외 던지기
-        if (Long.valueOf((Integer) claims.get("accountId")) != accountId)
+        if (Long.valueOf((String) claims.get("accountId")) != accountId)
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
     }
 

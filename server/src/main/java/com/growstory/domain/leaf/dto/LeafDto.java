@@ -17,6 +17,12 @@ public class LeafDto {
 
         @NotBlank
         private String content;
+
+        @Builder
+        public Post(String leafName, String content) {
+            this.leafName = leafName;
+            this.content = content;
+        }
     }
 
     @Getter
@@ -32,6 +38,14 @@ public class LeafDto {
         private String content;
 
         private Boolean isImageUpdated;
+
+        @Builder
+        public Patch(Long leafId, String leafName, String content, Boolean isImageUpdated) {
+            this.leafId = leafId;
+            this.leafName = leafName;
+            this.content = content;
+            this.isImageUpdated = isImageUpdated;
+        }
     }
 
     @Getter

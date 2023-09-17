@@ -4,13 +4,11 @@ import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.account.service.AccountService;
 import com.growstory.domain.leaf.dto.LeafDto;
 import com.growstory.domain.leaf.entity.Leaf;
-import com.growstory.domain.leaf.mapper.LeafMapper;
 import com.growstory.domain.leaf.service.LeafService;
 import com.growstory.domain.plant_object.dto.PlantObjDto;
 import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.plant_object.location.dto.LocationDto;
 import com.growstory.domain.plant_object.location.entity.Location;
-import com.growstory.domain.plant_object.location.mapper.LocationMapper;
 import com.growstory.domain.plant_object.location.service.LocationService;
 import com.growstory.domain.plant_object.mapper.PlantObjMapper;
 import com.growstory.domain.plant_object.repository.PlantObjRepository;
@@ -18,7 +16,7 @@ import com.growstory.domain.point.entity.Point;
 import com.growstory.domain.product.dto.ProductDto;
 import com.growstory.domain.product.entity.Product;
 import com.growstory.domain.product.service.ProductService;
-import com.growstory.domain.stubdata.TestStubData;
+import com.growstory.domain.stubdata.Stub;
 import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.customUser.annotation.WithMockCustomUser;
 import com.growstory.global.exception.BusinessLogicException;
@@ -30,7 +28,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
@@ -39,7 +36,7 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.*;
 
 
@@ -76,12 +73,12 @@ public class PlantObjServiceTest {
         Long gardenAccountId = 1L;
         Long productId = 1L;
         // 물건을 구입할 계정은 0 포인트를 가지고 있음
-        Account findAccount = TestStubData.MockAccount.getStubAccount();
-        Point mockPoint = TestStubData.MockPoint.getStubPointResponseDtoWithNoScore();
+        Account findAccount = Stub.MockAccount.getStubAccount();
+        Point mockPoint = Stub.MockPoint.getStubPointResponseDtoWithNoScore();
         findAccount.updatePoint(mockPoint);
         // 가격이 500원인 Product
-        Product boughtProduct = TestStubData.MockProduct.getStubProduct1();
-        PlantObj boughtPlantObj = TestStubData.MockPlantObj.getStubPlantObj1();
+        Product boughtProduct = Stub.MockProduct.getStubProduct1();
+        PlantObj boughtPlantObj = Stub.MockPlantObj.getStubPlantObj1();
         // 스텁 데이터
         given(authUserUtils.getAuthUser()).willReturn(findAccount);
         given(productService.findVerifiedProduct(Mockito.anyLong()))
@@ -107,12 +104,12 @@ public class PlantObjServiceTest {
         Long gardenAccountId = 1L;
         Long productId = 1L;
             // 물건을 구입할 계정은 500 포인트를 가지고 있음
-        Account findAccount = TestStubData.MockAccount.getStubAccount();
-        Point mockPoint = TestStubData.MockPoint.getStubPointResponseDtoWith500Score();
+        Account findAccount = Stub.MockAccount.getStubAccount();
+        Point mockPoint = Stub.MockPoint.getStubPointResponseDtoWith500Score();
         findAccount.updatePoint(mockPoint);
             // 가격이 500원인 Product
-        Product boughtProduct = TestStubData.MockProduct.getStubProduct1();
-        PlantObj boughtPlantObj = TestStubData.MockPlantObj.getStubPlantObj1();
+        Product boughtProduct = Stub.MockProduct.getStubProduct1();
+        PlantObj boughtPlantObj = Stub.MockPlantObj.getStubPlantObj1();
 
             // Mock 리턴
         willDoNothing().given(accountService).isAuthIdMatching(Mockito.anyLong());
@@ -140,11 +137,11 @@ public class PlantObjServiceTest {
 
         Long accountId = 1L;
         Long plantObjId = 1L;
-        Account findAccount = TestStubData.MockAccount.getStubAccount();
+        Account findAccount = Stub.MockAccount.getStubAccount();
             // 0 Point 매핑 (이미 물건을 구입 했다고 가정)
-        Point point = TestStubData.MockPoint.getStubPointResponseDtoWithNoScore();
+        Point point = Stub.MockPoint.getStubPointResponseDtoWithNoScore();
         findAccount.updatePoint(point);
-        PlantObj plantObj = TestStubData.MockPlantObj.getStubPlantObj1();
+        PlantObj plantObj = Stub.MockPlantObj.getStubPlantObj1();
             // findAccount.addPlantObj(plantObj)를 실행하지 않는다.
             // 목 데이터 리턴
         given(authUserUtils.getAuthUser()).willReturn(findAccount);
@@ -165,12 +162,12 @@ public class PlantObjServiceTest {
         willDoNothing().given(accountService).isAuthIdMatching(Mockito.anyLong());
 
         Long accountId = 1L;
-        Account findAccount = TestStubData.MockAccount.getStubAccount();
+        Account findAccount = Stub.MockAccount.getStubAccount();
             // 0 Point 매핑 (이미 물건을 구입 했다고 가정)
-        Point point = TestStubData.MockPoint.getStubPointResponseDtoWithNoScore();
+        Point point = Stub.MockPoint.getStubPointResponseDtoWithNoScore();
         findAccount.updatePoint(point);
-        PlantObj plantObj1 = TestStubData.MockPlantObj.getStubPlantObj1();
-        PlantObj plantObj2 = TestStubData.MockPlantObj.getStubPlantObj2();
+        PlantObj plantObj1 = Stub.MockPlantObj.getStubPlantObj1();
+        PlantObj plantObj2 = Stub.MockPlantObj.getStubPlantObj2();
         findAccount.addPlantObj(plantObj1);
         findAccount.addPlantObj(plantObj2);
             // 목 데이터 리턴
@@ -191,15 +188,15 @@ public class PlantObjServiceTest {
             //정원 소유주 accountId
         Long gardenAccountId = 1L;
             //정원 소유자와 Point 목 데이터 매핑
-        Account findAccount = TestStubData.MockAccount.getStubAccount();
-        Point userPoint = TestStubData.MockPoint.getStubPointResponseDtoWith500Score();
+        Account findAccount = Stub.MockAccount.getStubAccount();
+        Point userPoint = Stub.MockPoint.getStubPointResponseDtoWith500Score();
         findAccount.updatePoint(userPoint);
             //소유 PlantObjs 목 데이터 매핑
-        List<PlantObj> plantObjList = TestStubData.MockPlantObj.getStubPlantObjs();
+        List<PlantObj> plantObjList = Stub.MockPlantObj.getStubPlantObjs();
         plantObjList.stream().forEach(findAccount::addPlantObj);
-        List<PlantObjDto.Response> plantObjResponseList = TestStubData.MockPlantObj.getStubPlantObjsResponseDtos();
+        List<PlantObjDto.Response> plantObjResponseList = Stub.MockPlantObj.getStubPlantObjsResponseDtos();
             //상품 리스트
-        List<ProductDto.Response> products = TestStubData.MockProduct.getStubProductResponses();
+        List<ProductDto.Response> products = Stub.MockProduct.getStubProductResponses();
             //스텁 데이터 동작 지정
         given(accountService.findVerifiedAccount(Mockito.anyLong())).willReturn(findAccount);
         given(productService.findAllProducts()).willReturn(products);
@@ -221,7 +218,7 @@ public class PlantObjServiceTest {
         //given
         willDoNothing().given(accountService).isAuthIdMatching(Mockito.anyLong());
         Long accountId = 1L;
-        List<PlantObjDto.PatchLocation> patchLocations = TestStubData.MockLocation.getStubPatchLocationResponses();
+        List<PlantObjDto.PatchLocation> patchLocations = Stub.MockLocation.getStubPatchLocationResponses();
         patchLocations.add(PlantObjDto.PatchLocation.builder()
                         .plantObjId(3L)
                         .locationDto(LocationDto.Patch.builder()
@@ -241,7 +238,7 @@ public class PlantObjServiceTest {
         //given
         willDoNothing().given(accountService).isAuthIdMatching(Mockito.anyLong());
         Long accountId = 1L;
-        List<PlantObjDto.PatchLocation> patchLocations = TestStubData.MockLocation.getStubPatchLocationResponses();
+        List<PlantObjDto.PatchLocation> patchLocations = Stub.MockLocation.getStubPatchLocationResponses();
         patchLocations.add(PlantObjDto.PatchLocation.builder()
                 .plantObjId(3L)
                 .locationDto(LocationDto.Patch.builder()
@@ -261,7 +258,7 @@ public class PlantObjServiceTest {
         //given
         willDoNothing().given(accountService).isAuthIdMatching(Mockito.anyLong());
         Long accountId = 1L;
-        List<PlantObjDto.PatchLocation> patchLocations = TestStubData.MockLocation.getStubPatchLocationResponses();
+        List<PlantObjDto.PatchLocation> patchLocations = Stub.MockLocation.getStubPatchLocationResponses();
         patchLocations.add(PlantObjDto.PatchLocation.builder()
                 .plantObjId(3L)
                 .locationDto(LocationDto.Patch.builder()
@@ -281,7 +278,7 @@ public class PlantObjServiceTest {
         //given
         willDoNothing().given(accountService).isAuthIdMatching(Mockito.anyLong());
         Long accountId = 1L;
-        List<PlantObjDto.PatchLocation> patchLocations = TestStubData.MockLocation.getStubPatchLocationResponses();
+        List<PlantObjDto.PatchLocation> patchLocations = Stub.MockLocation.getStubPatchLocationResponses();
         patchLocations.add(PlantObjDto.PatchLocation.builder()
                 .plantObjId(3L)
                 .locationDto(LocationDto.Patch.builder()
@@ -301,7 +298,7 @@ public class PlantObjServiceTest {
         //given
         willDoNothing().given(accountService).isAuthIdMatching(Mockito.anyLong());
         Long accountId = 1L;
-        List<PlantObjDto.PatchLocation> patchLocations = TestStubData.MockLocation.getStubPatchLocationResponses();
+        List<PlantObjDto.PatchLocation> patchLocations = Stub.MockLocation.getStubPatchLocationResponses();
         patchLocations.add(PlantObjDto.PatchLocation.builder()
                 .plantObjId(3L)
                 .locationDto(LocationDto.Patch.builder()
@@ -322,10 +319,10 @@ public class PlantObjServiceTest {
         willDoNothing().given(accountService).isAuthIdMatching(Mockito.anyLong());
         Long accountId = 1L;
         List<PlantObjDto.PatchLocation> patchLocations = new ArrayList<>();
-        PlantObjDto.PatchLocation patchLocation = TestStubData.MockLocation.getStubPatchLocation1();
+        PlantObjDto.PatchLocation patchLocation = Stub.MockLocation.getStubPatchLocation1();
         patchLocations.add(patchLocation);
             // PatchLocation 객체에 의해 저장된 Location 엔티티 객체
-        Location savedLocation = TestStubData.MockLocation.getStubLocation();
+        Location savedLocation = Stub.MockLocation.getStubLocation();
         given(locationService.updateLocation(Mockito.any())).willReturn(savedLocation);
         //when
         plantObjService.saveLocation(accountId,patchLocations);
@@ -344,8 +341,8 @@ public class PlantObjServiceTest {
         Long accountId = 1L;
         Long plantObjId = 1L;
         Long leafId = null;
-        PlantObj findPlantObj = TestStubData.MockPlantObj.getStubPlantObj1();
-        findPlantObj.updateLeaf(TestStubData.MockLeaf.getStubLeaf());
+        PlantObj findPlantObj = Stub.MockPlantObj.getStubPlantObj1();
+        findPlantObj.updateLeaf(Stub.MockLeaf.getStubLeaf());
         given(plantObjRepository.findById(Mockito.anyLong())).willReturn(Optional.of(findPlantObj));
         given(plantObjMapper.toPlantObjResponse(Mockito.any(PlantObj.class)))
                 .willReturn(PlantObjDto.Response.builder()
@@ -369,7 +366,8 @@ public class PlantObjServiceTest {
         Long accountId = 1L;
         Long plantObjId = 99L;
         Long leafId = 1L;
-        given(plantObjRepository.findById(Mockito.anyLong())).willReturn(Optional.empty());
+        given(plantObjRepository.findById(Mockito.anyLong()))
+                .willReturn(Optional.empty());
 
         //when
         BusinessLogicException exception = assertThrows(BusinessLogicException.class,
@@ -387,10 +385,10 @@ public class PlantObjServiceTest {
         Long accountId = 1L;
         Long plantObjId = 1L;
         Long leafId = 1L;
-        PlantObj findPlantObj = TestStubData.MockPlantObj.getStubPlantObj1();
-        Leaf findLeaf = TestStubData.MockLeaf.getStubLeaf();
+        PlantObj findPlantObj = Stub.MockPlantObj.getStubPlantObj1();
+        Leaf findLeaf = Stub.MockLeaf.getStubLeaf();
         findPlantObj.updateLeaf(findLeaf);
-        LeafDto.ResponseForGardenInfo leafResponseDto = TestStubData.MockLeaf.getStubLeafResponseDto();
+        LeafDto.ResponseForGardenInfo leafResponseDto = Stub.MockLeaf.getStubLeafResponseDto();
         given(plantObjRepository.findById(Mockito.anyLong())).willReturn(Optional.of(findPlantObj));
         given(leafService.findLeafEntityBy(leafId)).willReturn(findLeaf);
         given(plantObjMapper.toPlantObjResponse(Mockito.any(PlantObj.class)))
