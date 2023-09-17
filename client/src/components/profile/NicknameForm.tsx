@@ -39,8 +39,6 @@ export default function NicknameForm() {
     const response = await updateUserNickname(nickname);
     setDisplayName(nickname);
 
-    console.log(response);
-
     if (response.status === 204) {
       setAccessToken(response.headers?.authorization);
     }

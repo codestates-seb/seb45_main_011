@@ -29,13 +29,10 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
 
   useEffect(() => {
     const getHistoryData = async () => {
-      try {
-        const response = await getUserInfo(id);
+      const response = await getUserInfo(id);
+      console.log(response);
 
-        setHistoryUser(response.data.data);
-      } catch (error) {
-        console.error(error);
-      }
+      setHistoryUser(response.data);
     };
 
     getHistoryData();
@@ -61,7 +58,7 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
           <div className="flex items-center justify-center gap-2">
             <img src="/assets/img/point.svg" />
             <p className="text-xl font-bold text-brown-10">
-              {point.toLocaleString()}
+              {point?.toLocaleString()}
             </p>
           </div>
         </div>

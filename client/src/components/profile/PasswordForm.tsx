@@ -35,21 +35,14 @@ export default function PasswordForm() {
       return;
     }
 
-    try {
-      const response = await updateUserPassword(
-        presentPassword,
-        changedPassword,
-      );
+    const response = await updateUserPassword(presentPassword, changedPassword);
 
-      if (response.status === 204) {
-        setAccessToken(response.headers?.authorization);
-      }
-
-      reset();
-      changeState('ChangePasswordModal');
-    } catch (error) {
-      console.log(error);
+    if (response.status === 204) {
+      setAccessToken(response.headers?.authorization);
     }
+
+    reset();
+    changeState('ChangePasswordModal');
   };
 
   return (

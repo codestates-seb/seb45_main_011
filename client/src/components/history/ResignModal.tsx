@@ -29,16 +29,13 @@ export default function ResignModal() {
   const handlePasswordCheck = async () => {
     if (!userPassword) return;
 
-    try {
-      const response = await postUserPassword(userPassword);
-      if (response.data.data) {
-        return (
-          setAccessToken(response.headers?.authorization),
-          changeState('ComfirmModal')
-        );
-      }
-    } catch (error) {
-      console.log(error);
+    const response = await postUserPassword(userPassword);
+
+    if (response) {
+      return (
+        changeState('ComfirmModal'),
+        setAccessToken(response.headers?.authorization)
+      );
     }
 
     return changeState('FailureModal');

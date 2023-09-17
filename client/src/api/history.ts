@@ -21,31 +21,30 @@ export const historyAxios = axios.create({
 });
 
 export const getUserInfo = async (id: string) => {
-  const { data } = await historyAxios
-    .get(`/accounts/${id}`)
-    .then((response) => response.data);
+  const { data } = await historyAxios.get(`/accounts/${id}`);
 
   return data;
 };
 
 export const postUserPassword = async (password: string) => {
-  const { data } = await historyAxios
-    .post(`/accounts/password/verification`, password)
-    .then((response) => response.data);
+  const { data, headers } = await historyAxios.post(
+    `/accounts/password/verification`,
+    {
+      password,
+    },
+  );
 
-  return data;
+  return { data, headers };
 };
 
 export const deleteUser = async () => {
-  const { data } = await historyAxios
-    .delete(`/accounts`)
-    .then((response) => response.data);
+  const { status } = await historyAxios.delete(`/accounts`);
 
-  return data;
+  return status;
 };
 
 export const getBoardWrittenByPage = async ({ pageParam = 1 }, id: string) => {
-  const response = await axios
+  const response = await historyAxios
     .get(`/accounts/boardWritten/${id}?page=${pageParam}`)
     .then((response) => response.data);
 
@@ -53,7 +52,7 @@ export const getBoardWrittenByPage = async ({ pageParam = 1 }, id: string) => {
 };
 
 export const getBoardLikedByPage = async ({ pageParam = 1 }, id: string) => {
-  const response = await axios
+  const response = await historyAxios
     .get(`/accounts/boardLiked/${id}?page=${pageParam}`)
     .then((response) => response.data);
 
@@ -64,7 +63,7 @@ export const getCommentWrittenByPage = async (
   { pageParam = 1 },
   id: string,
 ) => {
-  const response = await axios
+  const response = await historyAxios
     .get(`/accounts/commentWritten/${id}?page=${pageParam}`)
     .then((response) => response.data);
 

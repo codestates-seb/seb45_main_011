@@ -21,24 +21,29 @@ export const historyAxios = axios.create({
 });
 
 export const updateUserNickname = async (displayName: string) => {
-  const { data } = await historyAxios.patch(
+  const { data, headers, status } = await historyAxios.patch(
     `/accounts/displayname`,
-    displayName,
+    {
+      displayName,
+    },
   );
 
-  return data;
+  return { data, headers, status };
 };
 
 export const updateUserPassword = async (
   presentPassword: string,
   changedPassword: string,
 ) => {
-  const { data } = await historyAxios.patch(`/accounts/password`, {
-    presentPassword,
-    changedPassword,
-  });
+  const { data, headers, status } = await historyAxios.patch(
+    `/accounts/password`,
+    {
+      presentPassword,
+      changedPassword,
+    },
+  );
 
-  return data;
+  return { data, headers, status };
 };
 
 export const updateUserProfileImage = async (file: File) => {

@@ -10,18 +10,13 @@ import ModalPortal from '../common/ModalPortal';
 import CommonButton from '../common/CommonButton';
 
 export default function ComfirmModal() {
-  const token = useUserStore((state) => state.accessToken);
   const { close, changeState } = useSignModalStore();
 
   const hanldeDeleteUser = async () => {
-    try {
-      const response = await deleteUser(token);
+    const response = await deleteUser();
 
-      if (response.status === 204) {
-        return changeState('SuccessedModal');
-      }
-    } catch (error) {
-      console.log(error);
+    if (response === 204) {
+      return changeState('SuccessedModal');
     }
   };
 
