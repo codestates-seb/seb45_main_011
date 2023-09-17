@@ -16,6 +16,7 @@ public class CommentDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Post {
+
         @NotBlank
         private String content;
 

@@ -47,15 +47,10 @@ public class BoardService {
     public Long createBoard(RequestBoardDto.Post requestBoardDto, MultipartFile image) {
         Account findAccount = authUserUtils.getAuthUser();
 
+        Board saveBoard = boardRepository.save(requestBoardDto.toEntity(findAccount));
 
-        Board board = Board.builder()
-                .title(requestBoardDto.getTitle())
-                .content(requestBoardDto.getContent())
-                .account(findAccount)
-                .build();
-
-        Board saveBoard = boardRepository.save(board);
         // 입력 받은 이미지가 있을 경우 saveBoardImage 메서드 호출
+        // TODO: BoardImageService 에서 S3에 image 업로드와 DB에 저장을 같이 하고 있는데 분리하는 게 좋은가? 고민해보기
         if (image != null) {
             // Upload image in S3 && save image in Board_Image
             boardImageService.saveBoardImage(image, saveBoard);
@@ -64,10 +59,12 @@ public class BoardService {
         // Save HashTags
         if (requestBoardDto.getHashTags() != null) {
             for (String tag : requestBoardDto.getHashTags()) {
+
+                // TODO: BoardService에서 태그 이름으로 DB에 이미 존재하는 지 검증 후 없을경우에만 해시 태그 저장만 하도록 수정해야함.
                 HashTag hashTag = hashTagService.createHashTagIfNotExist(tag);
 
                 Board_HashTag boardHashtag = new Board_HashTag();
-                boardHashtag.addBoard(board);
+                boardHashtag.addBoard(saveBoard);
                 boardHashtag.addHashTag(hashTag);
 
                 boardHashtagRepository.save(boardHashtag);
@@ -79,9 +76,8 @@ public class BoardService {
     public ResponseBoardDto getBoard(Long boardId) {
         Account findAccount = authUserUtils.getAuthUser();
         Board findBoard = findVerifiedBoard(boardId);
-//        BoardImage findBoardImage = boardImageService.verifyExistBoardImage(boardId);
         List<ResponseHashTagDto> findHashTag = hashTagService.getHashTagList(boardId);
-        List<ResponseCommentDto> findComment = commentService.getCommentList(boardId);
+        List<ResponseCommentDto> findComment = commentService.getCommentListByBoardId(boardId);
 
         return getResponseBoardDto(findAccount, findBoard, findHashTag, findComment);
     }
@@ -158,6 +154,7 @@ public class BoardService {
             }
         }
 
+        // TODO: isImageUpdate: false 이미지 삭제 안됨
 //        if (requestBoardDto.isImageUpdate() && boardImage != null) {
 //            boardImageService.deleteBoardImage(boardImage);
 //            findBoard.getBoardImages().clear();
@@ -235,12 +232,16 @@ public class BoardService {
                 .likeNum(findBoard.getBoardLikes().size())
                 .createAt(findBoard.getCreatedAt())
                 .modifiedAt(findBoard.getModifiedAt())
+
                 .accountId(findBoard.getAccount().getAccountId())
                 .displayName(findBoard.getAccount().getDisplayName())
                 .profileImageUrl(findBoard.getAccount().getProfileImageUrl())
                 .grade(findBoard.getAccount().getAccountGrade().getStepDescription())
+
                 .hashTags(findHashTag)
+
                 .comments(findComment)
+
                 .build();
     }
 }

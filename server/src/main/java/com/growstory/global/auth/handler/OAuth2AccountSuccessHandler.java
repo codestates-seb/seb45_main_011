@@ -117,7 +117,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
     private Object createURI(String accessToken, String refreshToken, Account account) {
         return UriComponentsBuilder
                 .newInstance()
-                .scheme("http")
+                .scheme("https")
                 .host("localhost")
                 .port(3000)
 //                .host("growstory.s3-website.ap-northeast-2.amazonaws.com")

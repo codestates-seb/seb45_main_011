@@ -1,5 +1,7 @@
 package com.growstory.domain.board.dto;
 
+import com.growstory.domain.account.entity.Account;
+import com.growstory.domain.board.entity.Board;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,6 +32,14 @@ public class RequestBoardDto {
             this.title = title;
             this.content = content;
             this.hashTags = hashTags;
+        }
+
+        public Board toEntity(Account account) {
+            return Board.builder()
+                    .title(title)
+                    .content(content)
+                    .account(account)
+                    .build();
         }
     }
 
