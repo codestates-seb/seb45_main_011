@@ -87,4 +87,7 @@ mail:
 
 server:
   port: 8080
-  forward-headers-strategy: native
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-password: gskeystore
+    key-store-type: PKCS12
