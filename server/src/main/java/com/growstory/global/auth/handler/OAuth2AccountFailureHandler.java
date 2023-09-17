@@ -16,6 +16,6 @@ public class OAuth2AccountFailureHandler extends SimpleUrlAuthenticationFailureH
         log.error(request.getRequestURI());
         log.error(exception.getMessage());
         log.error(String.valueOf(exception.getCause()));
-        response.sendRedirect("http://localhost");
+        response.sendRedirect("https://grow-story.vercel.app/error");
     }
 }
