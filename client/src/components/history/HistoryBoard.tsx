@@ -49,20 +49,20 @@ export default function HistoryBoard({ paramsId }: HistoryBoradProps) {
           {page?.boardWritten?.length === 0 ? (
             <div
               key={index}
-              className="w-[715px] max-[730px]:w-[512px] max-[630px]:w-[220px] flex justify-center items-center ml-4">
+              className="w-[715px] max-[730px]:w-[512px] max-[630px]:w-[312px] flex justify-center items-center ml-1">
               <EmptyDiary
                 pathUserId={paramsId}
                 userId={userId}
                 info="board"
                 addInfo="addBoard"
-                className="max-w-[314px] max-[507px]:mx-3 max-[401px]:w-[214px] text-[15px]"
+                className="max-w-[314px] max-[507px]:mx-3 max-[430px]:w-[214px] text-[13px]"
               />
             </div>
           ) : (
             <InfiniteScroll
               hasMore={hasNextPage}
               loadMore={() => fetchNextPage()}>
-              <div className="grid grid-cols-3 gap-4 place-items-center items-start max-[730px]:grid-cols-2 max-[530px]:grid-cols-1 px-2 pb-4">
+              <div className="grid grid-cols-3 gap-4 place-items-center items-start max-[730px]:grid-cols-2 max-[530px]:grid-cols-1 pb-4">
                 {page.boardWritten?.map((board: any) => (
                   <div
                     key={board.boardId}
