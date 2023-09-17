@@ -129,6 +129,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
 
         return refreshToken;
     }
+
     private Object createURI(String accessToken, String refreshToken, Account account) {
         return UriComponentsBuilder
                 .newInstance()
