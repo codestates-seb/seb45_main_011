@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import useSignModalStore from '@/stores/signModalStore';
 
 import ResignModal from '@/components/history/ResignModal';
-import ComfirmModal from '@/components/history/ComfirmModal';
+import ConfirmModal from '@/components/history/ConfirmModal';
 import SuccessedModal from '@/components/history/SuccessedModal';
 import FailureModal from '@/components/history/FailureModal';
 import HistoryBox from '@/components/history/HistoryBox';
@@ -28,7 +28,7 @@ export default function History({ params }: HistoryProps) {
       <HistoryBox paramsId={params.id} />
 
       {currentState === 'ResignModal' && <ResignModal />}
-      {currentState === 'ComfirmModal' && <ComfirmModal />}
+      {currentState === 'ConfirmModal' && <ConfirmModal />}
       {currentState === 'FailureModal' && <FailureModal />}
       {currentState === 'SuccessedModal' && <SuccessedModal />}
     </motion.div>
