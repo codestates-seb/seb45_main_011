@@ -48,7 +48,7 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
           alt="profile_img"
         />
       )}
-      <div className="flex flex-col justify-center items-center mb-4 gap-2">
+      <div className="flex flex-col justify-center items-center mb-6 gap-2">
         <div className="text-2xl font-bold text-brown-80">{displayName}</div>
         <p className="font-bold text-brown-70">{grade}</p>
       </div>
@@ -68,14 +68,14 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
               type="button"
               size="lg"
               children="정원 구경하기"
-              className="w-[203px] h-[52px]"
+              className="w-[196px] h-[52px] text-[22px] px-4"
               onGoToGarden={() => router.push(`/garden/${id}`)}
             />
             <CommonButton
               type="button"
               size="lg"
               children="식물 카드 열람"
-              className="w-[213px] h-[52px] max-[580px]:w-[203px] text-[20.5px] hover:scale-105 transition-transform"
+              className="w-[196px] h-[52px] text-[22px] px-4"
               onGoToLeafs={() => router.push(`/leafs/${id}`)}
             />
           </div>
@@ -83,7 +83,7 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
             type="button"
             size="lg"
             children="작성한 게시글"
-            className="w-[203px] h-[52px] text-brown-50 border-brown-50 bg-[url('/assets/img/bg_wood_light.png')] mt-6 cursor-default max-[580px]:mt-3 hover:scale-105 transition-transform"
+            className="w-[203px] h-[52px] text-brown-50 border-brown-50 bg-[url('/assets/img/bg_wood_light.png')] mt-6 cursor-default max-[580px]:mt-3"
           />
         </>
       )}

@@ -29,7 +29,7 @@ export default function TextArea({
       <textarea
         id={id}
         required={required}
-        className={`w-full border-2 bg-white-10 border-brown-70 p-3 rounded-lg shadow-outer/down text-xs leading-3 placeholder:text-gray-50 focus:outline-0 resize-none ${TEXTAREA_SIZE[name]}`}
+        className={`w-full border-2 bg-white-10 border-brown-70 p-3 rounded-lg shadow-outer/down text-xs leading-4 placeholder:text-gray-50 focus:outline-0 resize-none ${TEXTAREA_SIZE[name]}`}
         placeholder={TypeFormat?.placeholder}
         {...register(name, TypeFormat?.validationSchema)}
       />

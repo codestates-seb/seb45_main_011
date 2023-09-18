@@ -34,7 +34,7 @@ export default function HistoryBox({ paramsId }: HistoryProps) {
     <>
       {isClient && (
         <div className="relative bg-[url('/assets/img/bg_wood_yellow.png')] rounded-[12px] border-8 border-border-30 shadow-outer/down shadow-container border-gradient mb-[60px]">
-          <div className="flex flex-col items-center justify-center max-[730px]:w-[512px] max-[530px]:w-[412px] max-[430px]:w-[312px] min-w-[312px] max-w-[715px] max-h-[650px] p-4">
+          <div className="flex flex-col items-center justify-center mb-2 max-[730px]:w-[512px] max-[530px]:w-[412px] max-[430px]:w-[312px] min-w-[312px] max-w-[715px] max-h-[650px] p-4 pt-9">
             <div className="w-full flex justify-end gap-3 mr-1 mb-4 max-[530px]:flex max-[530px]:justify-center max-[530px]:items-center">
               {isOwner && <UserButton />}
             </div>
@@ -44,13 +44,13 @@ export default function HistoryBox({ paramsId }: HistoryProps) {
             </div>
 
             {isOwner && (
-              <div className="z-50 my-4 w-[91%] max-[360px]:w-[80%]">
+              <div className="z-30 my-4 w-[91%] max-[360px]:w-[80%]">
                 <Dropdown />
               </div>
             )}
 
             {(userId || paramsId) && (
-              <div className="h-full ml-3 px-5 overflow-y-scroll overflow-x-hidden scrollbar">
+              <div className="h-full min-h-[200px] pt-1 px-2 overflow-y-scroll overflow-x-hidden scrollbar">
                 {isBoardWritten && <HistoryBoard paramsId={id} />}
                 {isOwner && isBoardLike && <HistoryLikes paramsId={id} />}
                 {isOwner && isComment && <HistoryComment paramsId={id} />}

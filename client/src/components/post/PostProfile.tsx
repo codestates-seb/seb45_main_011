@@ -29,11 +29,12 @@ export default function PostProfile({
         whileTap={{ scale: 0.95 }}
         className="w-[44px] h-[44px] flex justify-center items-center border-[3px] rounded-[50%] border-brown-50 common-drop-shadow overflow-hidden max-[500px]:w-[38px] max-[500px]:h-[38px]">
         <Image
-          className=" object-cover"
+          className="h-full bg-brown-20 object-cover object-center"
           src={profileImageUrl || '/assets/img/bg_default_profile.png'}
           alt={`${displayName}의 프로필 사진`}
           width={50}
           height={50}
+          style={{ width: 50, height: 50 }}
         />
       </motion.div>
       <div className="flex flex-col gap-1 max-[500px]:gap-1">

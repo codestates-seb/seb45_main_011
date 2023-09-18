@@ -101,3 +101,13 @@ export const DOMAIN = {
   domain: 'grow-story.vercel.app',
   domain_kor: '그로우 스토리',
 } as const;
+
+export const FOOTER_LINK = {
+  team: 'https://github.com/codestates-seb/seb45_main_011',
+  dogyeong: 'https://github.com/Dokyung-Hwang',
+  minseok: 'https://github.com/nalsae',
+  dohyeong: 'https://github.com/dohyoungK',
+  seungtae: 'https://github.com/NtoZero',
+  hanbin: 'https://github.com/hanbinchoi',
+  doyeon: 'https://github.com/shimdokite',
+};

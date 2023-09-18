@@ -13,7 +13,7 @@ export default function Dropdown() {
   const { setIsOpen, isOpen, ref } = useDetectClose(false);
 
   return (
-    <div className="absolute">
+    <div className="absolute left-6">
       <div className="relative bottom-8">
         <div
           className="flex items-center w-[168px] h-[36px] rounded-lg border-2 border-brown-70 bg-white-10 shadow-outer/down cursor-pointer"

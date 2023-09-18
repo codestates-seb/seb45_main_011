@@ -8,9 +8,10 @@ export default function CommentProfileImage() {
       <Image
         src={profileImageUrl || '/assets/img/bg_default_profile.png'}
         alt="profile_img"
-        className={`w-11 h-11 object-cover object-center `}
+        className="h-full bg-brown-20 object-cover object-center"
         width={44}
         height={44}
+        style={{ width: 44, height: 44 }}
       />
     </div>
   );

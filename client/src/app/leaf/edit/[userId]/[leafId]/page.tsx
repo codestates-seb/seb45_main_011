@@ -14,6 +14,7 @@ import useEffectOnce from '@/hooks/useEffectOnce';
 import PageTitle from '@/components/common/PageTitle';
 import Screws from '@/components/common/Screws';
 import LeafForm from '@/components/common/LeafForm';
+import Footer from '@/components/common/Footer';
 
 import { LeafDataInfo } from '@/types/data';
 
@@ -50,25 +51,28 @@ export default function EditLeaf({ params }: EditLeafProps) {
   if (isError) return <div>error</div>;
 
   return (
-    <motion.div
-      variants={MOUNT_ANIMATION_VALUES}
-      initial="initial"
-      animate="animate"
-      className="flex justify-center items-center pt-[120px] pb-[60px]">
-      <div className="relative w-full min-w-[312px] max-w-[540px] h-full mx-4 border-gradient rounded-xl shadow-container">
-        <Screws />
-        <div className="p-5 h-full">
-          <div className="w-full h-full flex flex-col items-center overflow-y-scroll scrollbar">
-            <PageTitle text="식물 카드 수정" className="mt-3 mb-6" />
-            <LeafForm
-              leaf={leaf}
-              leafId={leafId}
-              userId={pathUserId}
-              mode="edit"
-            />
+    <>
+      <motion.div
+        variants={MOUNT_ANIMATION_VALUES}
+        initial="initial"
+        animate="animate"
+        className="flex justify-center items-center h-auto min-h-full pt-[120px] pb-[343px]">
+        <div className="relative w-full min-w-[312px] max-w-[540px] h-full mx-4 border-gradient rounded-xl shadow-container">
+          <Screws />
+          <div className="p-5 h-full">
+            <div className="w-full h-full flex flex-col items-center overflow-y-scroll scrollbar">
+              <PageTitle text="식물 카드 수정" className="mt-3 mb-6" />
+              <LeafForm
+                leaf={leaf}
+                leafId={leafId}
+                userId={pathUserId}
+                mode="edit"
+              />
+            </div>
           </div>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+      <Footer />
+    </>
   );
 }

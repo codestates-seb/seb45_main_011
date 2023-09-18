@@ -68,7 +68,12 @@ export default function Comment({ comment, boardId }: CommentProps) {
             <input
               autoFocus={true}
               className="w-full px-[0.875rem] py-[0.75rem] bg-brown-10 border-2 border-brown-50 rounded-xl text-black-50 text-xs left-3 common-drop-shadow outline-none max-[500px]:py-[0.5rem]  max-[500px]:text-[0.5rem]"
-              {...register('comment')}
+              {...register('comment', {
+                maxLength: {
+                  value: 200,
+                  message: '최대 200자를 넘을 수 없습니다.',
+                },
+              })}
             />
             {isEdit && (
               <div className="flex p-2 justify-end gap-2">

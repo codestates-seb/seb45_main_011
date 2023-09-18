@@ -160,3 +160,11 @@ export interface PostDataInfo {
   liked: boolean;
   grade: string;
 }
+
+export interface BoardRankDataInfo {
+  rank: number;
+  boardId: number;
+  title: string;
+  displayName: string;
+  likeNum: number;
+}

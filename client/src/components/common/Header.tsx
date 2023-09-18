@@ -42,7 +42,7 @@ export default function Header() {
         border-b-[8px] 
         border-border-10
         shadow-outer/down 
-        z-20
+        z-30
         ">
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Logo size="small" className="mt-[2px]" />
@@ -105,7 +105,7 @@ export default function Header() {
               <Image
                 src={profileImageUrl || '/assets/img/bg_default_profile.png'}
                 alt="프로필 이미지"
-                className={`w-9 h-9 rounded-[50%] border-brown-50 border-[3px] cursor-pointer hover:scale-110 transition-transform`}
+                className={`w-9 h-9 rounded-[50%] border-brown-50 border-[3px] bg-brown-20 cursor-pointer object-cover object-center hover:scale-110 transition-transform`}
                 width={36}
                 height={36}
               />
