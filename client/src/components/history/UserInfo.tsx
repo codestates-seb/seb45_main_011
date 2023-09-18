@@ -30,7 +30,6 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
   useEffect(() => {
     const getHistoryData = async () => {
       const response = await getUserInfo(id);
-      console.log(response);
 
       setHistoryUser(response.data);
     };
