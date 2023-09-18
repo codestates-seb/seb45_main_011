@@ -44,7 +44,7 @@ export default function HistoryBox({ paramsId }: HistoryProps) {
             </div>
 
             {isOwner && (
-              <div className="my-4 w-[91%] max-[360px]:w-[80%]">
+              <div className="z-50 my-4 w-[91%] max-[360px]:w-[80%]">
                 <Dropdown />
               </div>
             )}
