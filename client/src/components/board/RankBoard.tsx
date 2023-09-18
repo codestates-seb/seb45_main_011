@@ -44,6 +44,7 @@ const renderMedal = (rank: number) => {
 
 export default function RankBoard() {
   const { boardRank } = useBoardStore();
+
   return (
     <motion.div
       variants={MOUNT_ANIMATION_VALUES}
@@ -53,14 +54,14 @@ export default function RankBoard() {
       <h2 className="text-2xl leading-6 text-brown-10 font-bold max-[604px]:text-xl">
         이주의 좋아요 순위
       </h2>
-      <div className="py-3 w-full max-w-[720px] flex flex-col items-center gap-2 text-base leading-4 text-brown-10 font-normal whitespace-nowrap overflow-x-hidden max-[604px]:text-xs max-[604px]:gap-0 max-[604px]:pt-3">
+      <div className="py-3 w-full max-w-[720px] flex flex-col items-center gap-2 text-base leading-4 text-brown-10 font-normal whitespace-nowrap overflow-x-hidden max-[604px]:text-xs max-[604px]:gap-1 max-[604px]:pt-3">
         {boardRank.map((board) => {
           return (
             <Link
               href={`/post/${board.boardId}`}
-              className="w-full max-w-[360px] overflow-hidden px-2">
+              className="w-full h-fit max-w-[360px] overflow-hidden px-2">
               <div className="flex gap-3 items-center max-[604px]:gap-2 hover:scale-105 hover:transition-transform hover:text-yellow-30">
-                {renderMedal(1)}
+                {renderMedal(board.rank)}
                 <p className="whitespace-nowrap text-ellipsis overflow-hidden break-words">
                   {`${board.displayName} 님의 ${board.title}`}
                 </p>
