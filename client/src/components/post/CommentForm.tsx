@@ -35,7 +35,12 @@ export default function CommentForm({ boardId }: CommentFormProps) {
         className="px-[1.125rem] w-full py-[0.6875rem] h-[36px] flex-1 rounded-[50px] text-[0.875rem] leading-[0.875rem] font-normal focus:outline-none shadow-outer/down max-[560px]:px-[0.8rem] max-[560px]:py-[0.4rem] max-[560px]:h-[32px] max-[500px]:text-[0.7rem] "
         placeholder="댓글을 입력하세요."
         required
-        {...register('comment')}
+        {...register('comment', {
+          maxLength: {
+            value: 200,
+            message: '최대 200자를 넘을 수 없습니다.',
+          },
+        })}
       />
       <motion.button
         whileHover={{ scale: 1.05 }}

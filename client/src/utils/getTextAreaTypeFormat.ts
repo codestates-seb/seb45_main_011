@@ -23,9 +23,14 @@ export default function getTextAreaTypeFormat(name: string) {
           value: 2,
           message: '2글자 이상의 영문 또는 한글을 입력해야 합니다.',
         },
+        maxLength: {
+          value: 500,
+          message: '최대 500자를 넘을 수 없습니다.',
+        },
       },
       placeholder: '내용을 입력해주세요.',
     };
   }
+
   return null;
 }

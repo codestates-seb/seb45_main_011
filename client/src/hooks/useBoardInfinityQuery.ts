@@ -2,16 +2,11 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { getBoardsByPageNum } from '@/api/board';
 
+import useBoardStore from '@/stores/boardStore';
+
+import useEffectOnce from './useEffectOnce';
+
 export default function useBoardInfinityQuery() {
-  // const { data, fetchNextPage, hasNextPage } = useInfiniteQuery(
-  //   ['page'],
-  //   fetchTodos,
-  //   {
-  //     getNextPageParam: (lastPage, allPosts) => {
-  //       return lastPage.cursor + 1;
-  //     },
-  //   },
-  // );
   const { data, fetchNextPage, hasNextPage, isLoading, isError } =
     useInfiniteQuery(
       ['page'],
@@ -26,6 +21,17 @@ export default function useBoardInfinityQuery() {
       },
     );
 
-  // return { data: data?.pages, fetchNextPage, hasNextPage };
-  return { data: data?.pages, fetchNextPage, hasNextPage, isLoading, isError };
+  const { setBoardRank } = useBoardStore();
+
+  useEffectOnce(() => {
+    if (data) setBoardRank(data.pages[0].rank);
+  });
+
+  return {
+    data: data?.pages,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    isError,
+  };
 }

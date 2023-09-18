@@ -25,9 +25,11 @@ export async function getBoardsByPageNum({ pageParam = 1 }) {
   const res = await commonAxios
     .get(`/boards?page=${pageParam}`)
     .then((res) => res.data);
+
   return {
     boards: res.data,
     pageInfo: res.pageInfo,
+    rank: res.data2,
   };
 }
 
@@ -46,7 +48,6 @@ export async function getBoardsBySearch({
       },
     })
     .then((res) => res.data);
-
   return {
     boards: res.data,
     pageInfo: res.pageInfo,

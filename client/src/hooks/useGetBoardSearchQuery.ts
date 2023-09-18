@@ -7,7 +7,7 @@ export default function useGetSearchBoardQuery(searchKey: string | null) {
     useInfiniteQuery(
       ['search', searchKey],
       ({ pageParam = 1 }) =>
-        getBoardsBySearch({ pageParam, search: searchKey || 'test' }),
+        getBoardsBySearch({ pageParam, search: searchKey || '' }),
       {
         enabled: searchKey !== null,
         getNextPageParam: (lastPage, allPosts) => {
@@ -18,5 +18,12 @@ export default function useGetSearchBoardQuery(searchKey: string | null) {
         },
       },
     );
-  return { data: data?.pages, fetchNextPage, hasNextPage, isLoading, isError };
+
+  return {
+    data: data?.pages,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    isError,
+  };
 }
