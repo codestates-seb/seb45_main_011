@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 
 import useClient from '@/hooks/useClient';
+import useUserStore from '@/stores/userStore';
 
 import Header from '@/components/common/Header';
 import LoadingNotice from '@/components/common/LoadingNotice';
@@ -15,6 +16,8 @@ import { getScrollTop } from '@/utils/getScrollTop';
 
 export default function Home() {
   const isClient = useClient();
+
+  const { isLogin, isGoogleLogin } = useUserStore();
 
   const handleClick = () => {
     const top = getScrollTop(window.innerWidth);
@@ -53,7 +56,7 @@ export default function Home() {
                   opacity: { duration: 1 },
                 }}
                 style={{
-                  marginTop: `${isClient && window.innerHeight / 7}px`,
+                  marginTop: `${isClient && window.innerHeight / 8}px`,
                   marginBottom: `${isClient && window.innerHeight / 7}px`,
                 }}>
                 <ScrollDownButton onClick={handleClick} />
@@ -65,16 +68,18 @@ export default function Home() {
                   <ServiceInfo key={index} order={index} />
                 ))}
               </div>
-              <motion.section
-                initial={{ y: 100, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
-                whileTap={{ scale: 0.95, transition: { duration: 0.2 } }}
-                transition={{ ease: 'easeInOut', duration: 1 }}>
-                <div className="flex justify-center w-full max-w-[459px] h-fit mx-auto">
-                  <MainSignupBanner />
-                </div>
-              </motion.section>
+              {!(isLogin || isGoogleLogin) && (
+                <motion.section
+                  initial={{ y: 100, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+                  whileTap={{ scale: 0.95, transition: { duration: 0.2 } }}
+                  transition={{ ease: 'easeInOut', duration: 1 }}>
+                  <div className="flex justify-center w-full max-w-[459px] h-fit mx-auto">
+                    <MainSignupBanner />
+                  </div>
+                </motion.section>
+              )}
             </div>
           </>
         )}
