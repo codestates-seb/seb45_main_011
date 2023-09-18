@@ -216,6 +216,7 @@ public class BoardService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
     }
 
+    // TODO: 게스트 유저에 대한 게시판 상세 조회 기능 추가 해야함
     private static ResponseBoardDto getResponseBoardDto(Account findAccount, Board findBoard, List<ResponseHashTagDto> findHashTag, List<ResponseCommentDto> findComment) {
         return ResponseBoardDto.builder()
                 .boardId(findBoard.getBoardId())
