@@ -148,40 +148,20 @@ public class BoardService {
                 .stream()
                 .findFirst()
                 .orElse(null);
-        // image가 있을 경우 S3에 저장된 image Object 삭제 + Board_Image(DB) 저장
+
+
+
+        // TODO:
+        //  isImageUpdate = true => 기존 이미지를 삭제하고 싶을 때
+        //  isImageUpdate = false => 기존 이미지를 유지하고 싶을 때, 이미지 없어야 됨.
+        if (requestBoardDto.isImageUpdate() && boardImage != null) {
+            boardImageService.deleteBoardImage(boardImage);
+            findBoard.getBoardImages().clear();
+        }
+
         if (image != null) {
-            if (boardImage != null) {
-                boardImageService.deleteBoardImage(boardImage);
-                findBoard.getBoardImages().clear();
-            }
             boardImageService.saveBoardImage(image, findBoard);
         }
-        // image가 없을 경우 S3에 저장된 image Object 삭제 + Board_Image(DB) 삭제
-        // isImageUpdate = true => 기존 이미지를 삭제하고 싶을 때
-        // isImageUpdate = false => 기존 이미지를 유지하고 싶을 때
-        else {
-            if (requestBoardDto.isImageUpdate() && boardImage != null) {
-                boardImageService.deleteBoardImage(boardImage);
-                findBoard.getBoardImages().clear();
-            }
-        }
-
-        // TODO: isImageUpdate: false 이미지 삭제 안됨
-//        if (requestBoardDto.isImageUpdate() && boardImage != null) {
-//            boardImageService.deleteBoardImage(boardImage);
-//            findBoard.getBoardImages().clear();
-//        }
-//
-//        if (image != null) {
-//            boardImageService.saveBoardImage(image, findBoard);
-//        }
-
-
-
-
-        // 1. 이미지를 유지하고 싶은 경우
-        // 2. 이미지를 삭제하고 싶은 경우
-        // 3. 이미지를 변경하고 싶은 경우
 
         // title, content 더티 체킹
         findBoard.update(requestBoardDto);
@@ -312,7 +292,5 @@ public class BoardService {
                 });
         return boardLikesRanks;
     }
-
-
 }
 
