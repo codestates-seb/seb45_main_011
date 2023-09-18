@@ -11,7 +11,7 @@ import LoadingNotice from '../common/LoadingNotice';
 import ErrorMessage from '../common/ErrorMessage';
 
 export default function PostList() {
-  const searchKey = useBoardStore((state) => state.searchKey);
+  const { searchKey } = useBoardStore();
 
   const {
     data: allBoards,
