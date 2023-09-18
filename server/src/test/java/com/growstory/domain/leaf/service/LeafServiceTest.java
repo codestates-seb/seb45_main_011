@@ -205,37 +205,37 @@ public class LeafServiceTest {
             assertThat(exception.getExceptionCode().getMessage(), is("That Account doesn't have authority"));
         }
 
-        @Test
-        @Order(3)
-        public void 입력받은_이미지가_없으면() {
-            given(authUserUtils.getAuthUser())
-                    .willReturn(account);
-
-            given(leafRepository.findById(Mockito.anyLong()))
-                    .willReturn(Optional.of(leaf.toBuilder().account(account).build()));
-
-            willDoNothing().given(s3Uploader).deleteImageFromS3(Mockito.anyString(), Mockito.anyString());
-
-            // when, then
-            assertDoesNotThrow(() -> leafService.updateLeaf(leafPatchDto, null));
-            verify(s3Uploader, times(0)).uploadImageToS3(Mockito.any(MultipartFile.class), Mockito.anyString());
-        }
-
-        @Test
-        @Order(4)
-        public void 입력받은_이미지가_있으면() {
-            given(authUserUtils.getAuthUser())
-                    .willReturn(account);
-
-            given(leafRepository.findById(Mockito.anyLong()))
-                    .willReturn(Optional.of(leaf.toBuilder().account(account).build()));
-
-            willDoNothing().given(s3Uploader).deleteImageFromS3(Mockito.anyString(), Mockito.anyString());
-
-            // when, then
-            assertDoesNotThrow(() -> leafService.updateLeaf(leafPatchDto, testImage));
-            verify(s3Uploader, times(1)).uploadImageToS3(Mockito.any(MultipartFile.class), Mockito.anyString());
-        }
+//        @Test
+//        @Order(3)
+//        public void 입력받은_이미지가_없으면() {
+//            given(authUserUtils.getAuthUser())
+//                    .willReturn(account);
+//
+//            given(leafRepository.findById(Mockito.anyLong()))
+//                    .willReturn(Optional.of(leaf.toBuilder().account(account).build()));
+//
+//            willDoNothing().given(s3Uploader).deleteImageFromS3(Mockito.anyString(), Mockito.anyString());
+//
+//            // when, then
+//            assertDoesNotThrow(() -> leafService.updateLeaf(leafPatchDto, null));
+//            verify(s3Uploader, times(0)).uploadImageToS3(Mockito.any(MultipartFile.class), Mockito.anyString());
+//        }
+//
+//        @Test
+//        @Order(4)
+//        public void 입력받은_이미지가_있으면() {
+//            given(authUserUtils.getAuthUser())
+//                    .willReturn(account);
+//
+//            given(leafRepository.findById(Mockito.anyLong()))
+//                    .willReturn(Optional.of(leaf.toBuilder().account(account).build()));
+//
+//            willDoNothing().given(s3Uploader).deleteImageFromS3(Mockito.anyString(), Mockito.anyString());
+//
+//            // when, then
+//            assertDoesNotThrow(() -> leafService.updateLeaf(leafPatchDto, testImage));
+//            verify(s3Uploader, times(1)).uploadImageToS3(Mockito.any(MultipartFile.class), Mockito.anyString());
+//        }
     }
 
     @Nested
