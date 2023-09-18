@@ -29,13 +29,10 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
 
   useEffect(() => {
     const getHistoryData = async () => {
-      try {
-        const response = await getUserInfo(id);
+      const response = await getUserInfo(id);
+      console.log(response);
 
-        setHistoryUser(response.data.data);
-      } catch (error) {
-        console.error(error);
-      }
+      setHistoryUser(response.data);
     };
 
     getHistoryData();
@@ -61,13 +58,13 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
           <div className="flex items-center justify-center gap-2">
             <img src="/assets/img/point.svg" />
             <p className="text-xl font-bold text-brown-10">
-              {point.toLocaleString()}
+              {point?.toLocaleString()}
             </p>
           </div>
         </div>
       ) : (
         <>
-          <div className="flex justify-center gap-3 max-[360px]:flex-col items-center">
+          <div className="flex justify-center gap-3 max-[580px]:flex-col items-center">
             <CommonButton
               type="button"
               size="lg"
@@ -79,16 +76,16 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
               type="button"
               size="lg"
               children="식물 카드 열람"
-              className="w-[213px] h-[52px] max-[360px]:w-[203px] text-[22.5px]"
+              className="w-[213px] h-[52px] max-[580px]:w-[203px] text-[22.5px] hover:scale-105 transition-transform"
               onGoToLeafs={() => router.push(`/leafs/${id}`)}
             />
           </div>
           <CommonButton
             type="button"
             size="lg"
-            className="w-[203px] h-[52px] text-brown-50 border-brown-50 bg-[url('/assets/img/bg_wood_light.png')] mt-6 cursor-default max-[360px]:mt-3">
-            작성한 게시글
-          </CommonButton>
+            children="작성한 게시글"
+            className="w-[203px] h-[52px] text-brown-50 border-brown-50 bg-[url('/assets/img/bg_wood_light.png')] mt-6 cursor-default max-[580px]:mt-3 hover:scale-105 transition-transform"
+          />
         </>
       )}
     </div>

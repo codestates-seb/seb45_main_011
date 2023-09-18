@@ -29,8 +29,8 @@ export default function SigninForm() {
   const router = useRouter();
 
   const changeState = useSignModalStore((state) => state.changeState);
+  const setUser = useUserStore((state) => state.setUser);
   const { getSigninForm, getSignupForm } = useSignStore();
-  const { setIsLogin, setUser } = useUserStore();
 
   const onLogin: SubmitHandler<SignFormValue> = async ({
     email,
@@ -45,7 +45,6 @@ export default function SigninForm() {
       const displayName = decodeURIComponent(response.data.displayName);
       const profileImageUrl = response.data.profileImageUrl;
 
-      setIsLogin(true);
       setUser({
         userId,
         accessToken,
