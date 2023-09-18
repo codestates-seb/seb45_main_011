@@ -9,10 +9,10 @@ export default function ChangePasswordModal() {
 
   return (
     <ModalPortal>
-      <Modal className="min-w-[440px] h-[200px] flex flex-col justify-center items-center mx-1">
+      <Modal className="min-w-[312px] h-[200px] flex flex-col justify-center items-center mx-1">
         <div className="flex flex-col items-center gap-6">
           <div className="flex flex-col items-center gap-3">
-            <p className="font-bold text-brown-70 text-[28px]">
+            <p className="font-bold text-brown-70 text-[28px] max-[790px]:text-[22px]">
               비밀번호가 <span className="text-brown-90">변경되었습니다!</span>
             </p>
           </div>

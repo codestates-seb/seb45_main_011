@@ -25,6 +25,7 @@ import HashTags from '@/components/post/HashTags';
 import CommentDeleteModal from '@/components/post/CommentDeleteModal';
 import LoadingNotice from '@/components/common/LoadingNotice';
 import ErrorMessage from '@/components/common/ErrorMessage';
+import Footer from '@/components/common/Footer';
 
 import { CommentDataInfo, PostDataInfo } from '@/types/data';
 
@@ -63,83 +64,86 @@ export default function Post({ params }: PostProps) {
   }, [post?.comments]);
 
   return (
-    <motion.main
-      variants={MOUNT_ANIMATION_VALUES}
-      initial="initial"
-      animate="animate"
-      className="px-4 flex justify-center items-center pb-[60px]">
-      <div className="relative w-full max-w-[720px] min-w-[328px] h-fit border-gradient rounded-xl shadow-container">
-        <div className="h-full px-5 py-5">
-          <Screws />
-          {isLoading && (
-            <div className="w-full h-full flex justify-center items-center">
-              <LoadingNotice isTransparent={true} />
-            </div>
-          )}
-          {isError && (
-            <div className="w-full h-full flex justify-center items-center">
-              <ErrorMessage />
-            </div>
-          )}
-          {post && (
-            <div className="px-4 pt-3 h-full flex flex-col max-[450px]:pl-2">
-              <PageTitle
-                text={post.title}
-                className="mb-7 break-words max-[500px]:text-lg"
-              />
+    <>
+      <motion.main
+        variants={MOUNT_ANIMATION_VALUES}
+        initial="initial"
+        animate="animate"
+        className="px-4 flex justify-center items-center pb-[60px]">
+        <div className="relative w-full max-w-[720px] min-w-[328px] h-fit border-gradient rounded-xl shadow-container">
+          <div className="h-full px-5 py-5">
+            <Screws />
+            {isLoading && (
+              <div className="w-full h-full flex justify-center items-center">
+                <LoadingNotice isTransparent={true} />
+              </div>
+            )}
+            {isError && (
+              <div className="w-full h-full flex justify-center items-center">
+                <ErrorMessage />
+              </div>
+            )}
+            {post && (
+              <div className="px-4 pt-3 h-full flex flex-col max-[450px]:pl-2">
+                <PageTitle
+                  text={post.title}
+                  className="mb-7 break-words max-[500px]:text-lg"
+                />
 
-              <div className="relative w-full flex justify-between items-center mb-4 max-[500px]:items-end">
-                <PostProfile
-                  displayName={post.displayName}
-                  userId={post.accountId}
-                  profileImageUrl={post.profileImageUrl}
-                  grade={post.grade}
-                  usage="post"
-                />
-                <DateAndControl
-                  date={new Date(post.createAt)}
-                  usage="post"
-                  isOwner={isOwner}
-                  ownerId={String(post.accountId)}
-                  targetId={String(post.boardId)}
-                />
-              </div>
-              <div className="pr-6 h-fit max-h-[600px] w-full flex flex-col overflow-y-scroll scrollbar max-[500px]:pr-5 max-[500px]:max-h-[400px]">
-                <div className="px-[1.875rem] py-[1.625rem] w-full bg-brown-10 border-2 border-brown-50 rounded-lg mb-8 common-drop-shadow ">
-                  <PostImage src={post.boardImageUrl} />
-                  <PostContent content={post.content} />
-                  <HashTags hashTags={post.hashTags} />
+                <div className="relative w-full flex justify-between items-center mb-4 max-[500px]:items-end">
+                  <PostProfile
+                    displayName={post.displayName}
+                    userId={post.accountId}
+                    profileImageUrl={post.profileImageUrl}
+                    grade={post.grade}
+                    usage="post"
+                  />
+                  <DateAndControl
+                    date={new Date(post.createAt)}
+                    usage="post"
+                    isOwner={isOwner}
+                    ownerId={String(post.accountId)}
+                    targetId={String(post.boardId)}
+                  />
                 </div>
-                <PostCountInfo
-                  liked={post.liked}
-                  likesNum={post.likeNum}
-                  commentNum={comments?.length || 0}
-                  usage="post"
-                  boardId={String(post.boardId)}
-                  className="mb-3"
-                />
-                <CommentForm boardId={String(post.boardId)} />
-                <ul>
-                  {comments?.map((comment: CommentDataInfo) => (
-                    <Comment
-                      key={comment.commentId}
-                      comment={comment}
-                      boardId={String(post.boardId)}
-                    />
-                  ))}
-                </ul>
+                <div className="pr-6 h-fit max-h-[600px] w-full flex flex-col overflow-y-scroll scrollbar max-[500px]:pr-5 max-[500px]:max-h-[400px]">
+                  <div className="px-[1.875rem] py-[1.625rem] w-full bg-brown-10 border-2 border-brown-50 rounded-lg mb-8 common-drop-shadow ">
+                    <PostImage src={post.boardImageUrl} />
+                    <PostContent content={post.content} />
+                    <HashTags hashTags={post.hashTags} />
+                  </div>
+                  <PostCountInfo
+                    liked={post.liked}
+                    likesNum={post.likeNum}
+                    commentNum={comments?.length || 0}
+                    usage="post"
+                    boardId={String(post.boardId)}
+                    className="mb-3"
+                  />
+                  <CommentForm boardId={String(post.boardId)} />
+                  <ul>
+                    {comments?.map((comment: CommentDataInfo) => (
+                      <Comment
+                        key={comment.commentId}
+                        comment={comment}
+                        boardId={String(post.boardId)}
+                      />
+                    ))}
+                  </ul>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
-      {isOpen &&
-        post &&
-        (type === 'post' ? (
-          <PostDeleteModal />
-        ) : (
-          <CommentDeleteModal boardId={String(post?.boardId)} />
-        ))}
-    </motion.main>
+        {isOpen &&
+          post &&
+          (type === 'post' ? (
+            <PostDeleteModal />
+          ) : (
+            <CommentDeleteModal boardId={String(post?.boardId)} />
+          ))}
+      </motion.main>
+      <Footer />
+    </>
   );
 }
