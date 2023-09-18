@@ -295,7 +295,7 @@ public class BoardService {
                 .takeWhile(objects -> {
                     Long likeCount = (Long) objects[1];
                     uniqueLikeCounts.add(likeCount);
-                    return uniqueLikeCounts.size() <= 3; // 고유한 '좋아요' 수가 3개 이하일 때까지
+                    return (uniqueLikeCounts.size() <= 3); // 고유한 '좋아요' 수가 3개 이하일 때까지
                 })
                 .forEach(objects -> {
                     Board board = (Board) objects[0];

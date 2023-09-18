@@ -5,8 +5,10 @@ import com.growstory.domain.board.dto.ResponseBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardPageDto;
 import com.growstory.domain.board.service.BoardService;
 import com.growstory.domain.rank.board_likes.dto.BoardLikesRankDto;
+import com.growstory.domain.rank.board_likes.service.BoardLikesRankService;
 import com.growstory.global.constants.HttpStatusCode;
 import com.growstory.global.response.MultiResponseDto;
+import com.growstory.global.response.MultiResponseDto2;
 import com.growstory.global.response.SingleResponseDto;
 import com.growstory.global.utils.UriCreator;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,6 +32,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+    private final BoardLikesRankService boardLikesRankService;
     private final static String BOARD_DEFAULT_URL = "/v1/boards";
 
 
@@ -60,27 +63,34 @@ public class BoardController {
 
     @Operation(summary = "Get Boards API", description = "전체 게시판 조회 기능")
     @GetMapping
-    public ResponseEntity<MultiResponseDto<ResponseBoardPageDto>> getBoards(@Positive @RequestParam(defaultValue = "1") int page,
+    public ResponseEntity<MultiResponseDto2<ResponseBoardPageDto, BoardLikesRankDto.Response>> getBoards(@Positive @RequestParam(defaultValue = "1") int page,
                                                                             @Positive @RequestParam(defaultValue = "12") int size) {
         Page<ResponseBoardPageDto> responseBoardDtos = boardService.findBoards(page - 1, size);
+        List<BoardLikesRankDto.Response> responseBoardRankList = boardLikesRankService.findAllBoardLikesRanks();
 
-        return ResponseEntity.ok(MultiResponseDto.<ResponseBoardPageDto>builder()
+
+        return ResponseEntity.ok(MultiResponseDto2.<ResponseBoardPageDto, BoardLikesRankDto.Response>builder()
                 .status(HttpStatusCode.OK.getStatusCode())
                 .message(HttpStatusCode.OK.getMessage())
-                .data(responseBoardDtos.getContent()).page(responseBoardDtos).build());
+                .data(responseBoardDtos.getContent())
+                .data2(responseBoardRankList)
+                .page(responseBoardDtos).build());
     }
 
     @Operation(summary = "Get Boards by keyword API", description = "키워드를 기준으로 전체 게시판 조회")
     @GetMapping("/keyword")
-    public ResponseEntity<MultiResponseDto<ResponseBoardPageDto>> getBoardsByKeyword(@Positive @RequestParam(defaultValue = "1") int page,
-                                                                                     @Positive @RequestParam(defaultValue = "12") int size,
-                                                                                     @RequestParam("keyword") String keyword) {
+    public ResponseEntity<MultiResponseDto2<ResponseBoardPageDto, BoardLikesRankDto.Response>> getBoardsByKeyword(@Positive @RequestParam(defaultValue = "1") int page,
+                                                                   @Positive @RequestParam(defaultValue = "12") int size,
+                                                                   @RequestParam("keyword") String keyword) {
         Page<ResponseBoardPageDto> responseBoardDtos = boardService.findBoardsByKeyword(page - 1, size, keyword);
+        List<BoardLikesRankDto.Response> responseBoardRankList = boardLikesRankService.findAllBoardLikesRanks();
 
-        return ResponseEntity.ok(MultiResponseDto.<ResponseBoardPageDto>builder()
+        return ResponseEntity.ok(MultiResponseDto2.<ResponseBoardPageDto, BoardLikesRankDto.Response>builder()
                 .status(HttpStatusCode.OK.getStatusCode())
                 .message(HttpStatusCode.OK.getMessage())
-                .data(responseBoardDtos.getContent()).page(responseBoardDtos).build());
+                .data(responseBoardDtos.getContent())
+                .data2(responseBoardRankList)
+                .page(responseBoardDtos).build());
     }
 
 
