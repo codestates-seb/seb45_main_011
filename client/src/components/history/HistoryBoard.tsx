@@ -49,7 +49,7 @@ export default function HistoryBoard({ paramsId }: HistoryBoradProps) {
           {page?.boardWritten?.length === 0 ? (
             <div
               key={index}
-              className="w-[715px] my-6 max-[730px]:w-[512px] max-[630px]:w-[312px] flex justify-center items-center ml-1">
+              className="w-[715px] my-4 max-[730px]:w-[512px] max-[630px]:w-[312px] flex justify-center items-center ml-1">
               <EmptyDiary
                 pathUserId={paramsId}
                 userId={userId}
@@ -86,12 +86,12 @@ export default function HistoryBoard({ paramsId }: HistoryBoradProps) {
         </div>
       ))}
       {isLoading && (
-        <div className="w-[715px] max-[730px]:w-[512px] max-[630px]:w-[312px] flex justify-center items-center">
+        <div className="w-[715px] py-6 max-[730px]:w-[512px] max-[630px]:w-[312px] flex justify-center items-center">
           <LoadingMessage />
         </div>
       )}
       {isError && (
-        <div className="w-[715px] max-[730px]:w-[512px] max-[630px]:w-[312px] flex justify-center items-center">
+        <div className="w-[715px] py-6 max-[730px]:w-[512px] max-[630px]:w-[312px] flex justify-center items-center">
           <ErrorMessage />
         </div>
       )}
