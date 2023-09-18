@@ -21,6 +21,7 @@ import LoadingNotice from '@/components/common/LoadingNotice';
 import ErrorMessage from '@/components/common/ErrorMessage';
 import ShareButton from '@/components/common/ShareButton';
 import ShareModal from '@/components/common/ShareModal';
+import Footer from '@/components/common/Footer';
 
 import { LeafsDataInfo } from '@/types/data';
 
@@ -55,66 +56,69 @@ export default function Leafs({ params }: LeafsProps) {
   });
 
   return (
-    <motion.div
-      variants={MOUNT_ANIMATION_VALUES}
-      initial="initial"
-      animate="animate"
-      className="flex justify-center items-center pt-[120px] pb-[60px]">
-      <div className="relative w-full min-w-[312px] max-w-[732px] h-[528px] mx-4 border-gradient rounded-xl shadow-container">
-        {leafs && <ShareButton location="leafs" position="top" />}
+    <>
+      <motion.div
+        variants={MOUNT_ANIMATION_VALUES}
+        initial="initial"
+        animate="animate"
+        className="flex justify-center items-center pt-[120px] pb-[60px]">
+        <div className="relative w-full min-w-[312px] max-w-[732px] h-[528px] mx-4 border-gradient rounded-xl shadow-container">
+          {leafs && <ShareButton location="leafs" position="top" />}
 
-        <Screws />
-        {isLoading && (
-          <div className="w-full h-full flex justify-center items-center">
-            <LoadingNotice isTransparent={true} />
-          </div>
-        )}
-        {isError && (
-          <div className="w-full h-full flex justify-center items-center">
-            <ErrorMessage />
-          </div>
-        )}
-        {leafs && (
-          <div className="pt-7 pb-4 pl-6 pr-5 flex flex-col gap-5">
-            <PageTitle
-              text={
-                pathUserId === userId
-                  ? '내 식물 카드'
-                  : `${leafs[0].displayName} 님의 식물 카드`
-              }
-            />
-            <div className="pt-2 pb-2 pl-2 pr-4 w-full h-[404px] overflow-y-scroll scrollbar grid grid-cols-3 gap-4 place-items-center items-start max-[730px]:grid-cols-2 max-[530px]:grid-cols-1">
-              {userId === pathUserId && <AddLeafButton userId={+userId} />}
-              {leafs?.map((leaf) => {
-                const { leafId, leafName, leafImageUrl } = leaf;
-
-                return (
-                  <Leaf
-                    key={leafId}
-                    location="leaf"
-                    name={leafName}
-                    imageUrl={leafImageUrl}
-                    leafId={String(leafId)}
-                    pathUserId={pathUserId}
-                  />
-                );
-              })}
+          <Screws />
+          {isLoading && (
+            <div className="w-full h-full flex justify-center items-center">
+              <LoadingNotice isTransparent={true} />
             </div>
-            {leafs && (
-              <div className="flex justify-center mt-6">
-                <ShareButton location="leafs" position="bottom" />
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+          )}
+          {isError && (
+            <div className="w-full h-full flex justify-center items-center">
+              <ErrorMessage />
+            </div>
+          )}
+          {leafs && (
+            <div className="pt-7 pb-4 pl-6 pr-5 flex flex-col gap-5">
+              <PageTitle
+                text={
+                  pathUserId === userId
+                    ? '내 식물 카드'
+                    : `${leafs[0].displayName} 님의 식물 카드`
+                }
+              />
+              <div className="pt-2 pb-2 pl-2 pr-4 w-full h-[404px] overflow-y-scroll scrollbar grid grid-cols-3 gap-4 place-items-center items-start max-[730px]:grid-cols-2 max-[530px]:grid-cols-1">
+                {userId === pathUserId && <AddLeafButton userId={+userId} />}
+                {leafs?.map((leaf) => {
+                  const { leafId, leafName, leafImageUrl } = leaf;
 
-      {isModalOpen &&
-        (modalCategory === 'deleteLeaf' ? (
-          <LeafDeleteModal pathUserId={pathUserId} userId={userId} />
-        ) : (
-          <ShareModal location="leafs" />
-        ))}
-    </motion.div>
+                  return (
+                    <Leaf
+                      key={leafId}
+                      location="leaf"
+                      name={leafName}
+                      imageUrl={leafImageUrl}
+                      leafId={String(leafId)}
+                      pathUserId={pathUserId}
+                    />
+                  );
+                })}
+              </div>
+              {leafs && (
+                <div className="flex justify-center mt-6">
+                  <ShareButton location="leafs" position="bottom" />
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {isModalOpen &&
+          (modalCategory === 'deleteLeaf' ? (
+            <LeafDeleteModal pathUserId={pathUserId} userId={userId} />
+          ) : (
+            <ShareModal location="leafs" />
+          ))}
+      </motion.div>
+      <Footer />
+    </>
   );
 }
