@@ -448,7 +448,52 @@ public class Stub {
             boardLikes.add(getBoardLike3_1());
             return boardLikes;
         }
+    }
 
+    public static class MockBoard {
+
+        public static Board getMockBoard1() {
+            return Board.builder()
+                    .account(Account.builder().accountId(1L).displayName("김별명1").build())
+                    .boardId(1L)
+                    .title("제목1")
+                    .content("내용1")
+                    .build();
+        }
+
+        public static Board getMockBoard2() {
+            return Board.builder()
+                    .account(Account.builder().accountId(2L).displayName("김별명2").build())
+                    .boardId(2L)
+                    .title("제목2")
+                    .content("내용2")
+                    .build();
+        }
+
+        public static Board getMockBoard3() {
+            return Board.builder()
+                    .account(Account.builder().accountId(3L).displayName("김별명3").build())
+                    .boardId(3L)
+                    .title("제목3")
+                    .content("내용3")
+                    .build();
+        }
+        public static Board getMockBoard4() {
+            return Board.builder()
+                    .account(Account.builder().accountId(4L).displayName("김별명4").build())
+                    .boardId(4L)
+                    .title("제목4")
+                    .content("내용4")
+                    .build();
+        }
+        public static Board getMockBoard5() {
+            return Board.builder()
+                    .account(Account.builder().accountId(5L).displayName("김별명5").build())
+                    .boardId(5L)
+                    .title("제목4")
+                    .content("내용4")
+                    .build();
+        }
 
     }
 }
