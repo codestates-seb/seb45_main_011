@@ -298,7 +298,9 @@ public class BoardService {
                 .takeWhile(objects -> {
                     Long likeCount = (Long) objects[1];
                     uniqueLikeCounts.add(likeCount);
-                    return (uniqueLikeCounts.size() <= 3); // 고유한 '좋아요' 수가 3개 이하일 때까지
+                    return uniqueLikeCounts.size() <= 3 // 고유한 '좋아요' 수가 3개 이하이면서
+                            // 또한, 게시글이 3개 이하이면서 마지막 두 게시글의 랭킹이 같을 때까지
+                            && checkSameLikesCondition(boardLikesRanks);
                 })
                 .forEach(objects -> {
                     Board board = (Board) objects[0];
@@ -312,7 +314,21 @@ public class BoardService {
                     boardLikesRank.updateRank(uniqueLikeCounts.size());
                     boardLikesRanks.add(boardLikesRank);
                 });
+
+        // 게시글이 4개 이상일 때 마지막 두 게시글의 랭킹이 다르면 마지막 요소를 제거
+        checkSameLikesCondition(boardLikesRanks);
         return boardLikesRanks;
+    }
+
+    private boolean checkSameLikesCondition(List<BoardLikesRank> boardLikesRanks) {
+        int boardSize = boardLikesRanks.size();
+        if(boardSize>=4 &&
+                (boardLikesRanks.get(boardSize-1).getRankStatus().getRank() !=
+                        boardLikesRanks.get(boardSize-2).getRankStatus().getRank())) {
+            boardLikesRanks.remove(boardLikesRanks.get(boardSize-1));
+            return false;
+        }
+        return true;
     }
 
 
