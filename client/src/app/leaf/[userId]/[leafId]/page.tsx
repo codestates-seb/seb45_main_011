@@ -94,7 +94,7 @@ export default function Leaf({ params }: LeafProps) {
         variants={MOUNT_ANIMATION_VALUES}
         initial="initial"
         animate="animate"
-        className="flex justify-center items-center pt-[120px] pb-[100px]">
+        className="flex justify-center items-center h-auto min-h-full pt-[120px] pb-[343px]">
         <div className="relative w-full min-w-[312px] max-w-[560px] h-[680px] mx-4 border-gradient rounded-xl shadow-container">
           {leaf && (
             <ShareButton

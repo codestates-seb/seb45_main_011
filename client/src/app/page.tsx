@@ -63,7 +63,7 @@ export default function Home() {
                 <ScrollDownButton onClick={handleClick} />
               </motion.div>
             </main>
-            <div className="bg-gradient pb-[120px]">
+            <div className="bg-gradient h-auto min-h-full pb-[343px]">
               <div className="flex flex-col items-center gap-[400px] pb-[200px] mt-[120px] mx-4">
                 {Array.from({ length: 3 }).map((_, index) => (
                   <ServiceInfo key={index} order={index} />

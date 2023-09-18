@@ -47,7 +47,7 @@ export default function Garden({ params }: GardenProps) {
 
   return (
     <>
-      <div className="mx-auto pb-10">
+      <div className="h-auto min-h-full pb-[343px] mx-auto">
         <div className="flex justify-center items-end mx-4 max-[984px]:flex-col max-[984px]:items-center max-[786px]:items-stretch">
           {isLoading ? (
             <LoadingNotice

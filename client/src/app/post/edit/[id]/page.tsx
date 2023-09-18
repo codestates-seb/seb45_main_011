@@ -37,7 +37,7 @@ export default function EditPost({ params }: EditPostProps) {
         variants={MOUNT_ANIMATION_VALUES}
         initial="initial"
         animate="animate"
-        className="pb-[60px]">
+        className="h-auto min-h-full pb-[343px]">
         <div className="relative flex flex-col items-center min-w-[328px] max-w-[531px] mx-auto border-gradient rounded-xl bg-repeat shadow-container max-[563px]:mx-4">
           {isLoading ? (
             <LoadingNotice
