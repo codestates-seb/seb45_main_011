@@ -72,7 +72,7 @@ export default function Leaf({
       data-leaf-id={leafId}
       onClick={handleLeafClick}>
       {location === 'garden' && selectedLeafId === leafId ? (
-        <div className="absolute flex justify-center items-center w-full h-full border-4 border-dashed border-brown-70 rounded-lg shadow-outer/down bg-brown-20 bg-opacity-[76%]">
+        <div className="absolute flex justify-center items-center w-full h-full border-4 border-dashed border-brown-70 rounded-lg shadow-outer/down bg-brown-20 bg-opacity-[76%] z-30">
           <Image
             src={'/assets/icon/checked.svg'}
             alt="로고"
@@ -84,7 +84,7 @@ export default function Leaf({
       ) : null}
 
       {location === 'leaf' && pathUserId === userId && (
-        <div className="flex h-full gap-1 absolute right-2.5 top-2.5 z-10">
+        <div className="flex h-full gap-1 absolute right-2.5 top-2.5 z-20">
           <ControlButton
             usage="edit"
             handleEdit={navigateToLeafEdit}
@@ -99,13 +99,13 @@ export default function Leaf({
       )}
       <div
         data-leaf-id={leafId}
-        className="w-[200px] h-[160px] rounded-xl border-2 border-brown-50 shadow-outer/down overflow-hidden">
+        className="w-[200px] h-[160px] rounded-xl border-2 border-brown-50 shadow-outer/down overflow-hidden z-10">
         <Image
           src={imageUrl || ''}
           alt={name}
           width={210}
           height={170}
-          className=" object-cover w-[200px] h-[160px]"
+          className="object-cover w-[200px] h-[160px] z-10 bg-brown-20"
         />
       </div>
 

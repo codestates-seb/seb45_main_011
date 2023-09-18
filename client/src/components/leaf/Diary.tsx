@@ -71,20 +71,20 @@ export default function Diary({
           <p className="w-2/3 text-[0.875rem] font-bold text-brown-80 text-ellipsis overflow-hidden whitespace-nowrap break-all leading-7 ">
             {title}
           </p>
-          <div className="flex gap-3 pr-7">
+          <div className="flex gap-3 pr-1">
             <div className="rounded-lg w-[156px] h-[81px] overflow-hidden border-2 border-brown-40">
               <Image
                 src={imageUrl || '/assets/img/bg_default_post.png'}
                 alt=""
                 width={116}
                 height={91}
-                className="object-cover w-[106px] h-[81px]"
+                className="object-cover w-[106px] h-[81px] bg-brown-20"
               />
             </div>
 
             <textarea
               readOnly
-              className="w-full h-[81px] font-normal text-xs bg-transparent resize-none overflow-y-scroll scrollbar focus:outline-none"
+              className="w-full h-[81px] font-normal text-xs bg-transparent resize-none overflow-y-scroll scrollbar focus:outline-none leading-4"
               value={content}
             />
           </div>

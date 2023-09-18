@@ -26,7 +26,7 @@ const useEditPost = (postId: string) => {
     }: EditPostParameters) =>
       editPost(formValues, tags, isImageUpdated, postId),
     onSuccess: () => {
-      queryClient.invalidateQueries(['post']);
+      queryClient.invalidateQueries(['edit', postId]);
       router.push(`/post/${postId}`);
     },
   });

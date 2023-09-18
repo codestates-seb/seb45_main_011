@@ -152,7 +152,6 @@ li {
 
 img {
   image-rendering: crisp-edges;
-  transform: translateZ(0);
   backface-visibility: hidden;
 }
 

@@ -44,13 +44,13 @@ export default function HistoryBox({ paramsId }: HistoryProps) {
             </div>
 
             {isOwner && (
-              <div className="z-50 my-4 w-[91%] max-[360px]:w-[80%]">
+              <div className="z-30 my-4 w-[91%] max-[360px]:w-[80%]">
                 <Dropdown />
               </div>
             )}
 
             {(userId || paramsId) && (
-              <div className="h-full ml-3 px-5 overflow-y-scroll overflow-x-hidden scrollbar">
+              <div className="h-full ml-3 pt-1 px-5 overflow-y-scroll overflow-x-hidden scrollbar">
                 {isBoardWritten && <HistoryBoard paramsId={id} />}
                 {isOwner && isBoardLike && <HistoryLikes paramsId={id} />}
                 {isOwner && isComment && <HistoryComment paramsId={id} />}

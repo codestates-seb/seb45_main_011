@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
+import useUserStore from '@/stores/userStore';
 import useSignModalStore from '@/stores/signModalStore';
 
 import CommonButton from '../common/CommonButton';
@@ -9,10 +10,11 @@ import CommonButton from '../common/CommonButton';
 export default function UserButton() {
   const router = useRouter();
 
+  const { isGoogleLogin } = useUserStore();
   const changeState = useSignModalStore((state) => state.changeState);
 
   const handleResignModal = () => {
-    changeState('ResignModal');
+    isGoogleLogin ? changeState('ConfirmModal') : changeState('ResignModal');
   };
 
   return (
@@ -29,7 +31,7 @@ export default function UserButton() {
         size="md"
         className="w-[121px] h-[44px]"
         onOpen={() => handleResignModal()}>
-        회원 탈퇴
+        {isGoogleLogin ? '연결 해제' : '회원 탈퇴'}
       </CommonButton>
     </>
   );

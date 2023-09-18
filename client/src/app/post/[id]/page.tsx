@@ -44,8 +44,6 @@ export default function Post({ params }: PostProps) {
   const { userId } = useUserStore();
   const { isOpen, type } = usePostModalStore();
 
-  if (!userId) return router.push('/signin');
-
   const {
     data: post,
     isLoading,
@@ -70,7 +68,7 @@ export default function Post({ params }: PostProps) {
       initial="initial"
       animate="animate"
       className="px-4 flex justify-center items-center pb-[60px]">
-      <div className="relative w-full max-w-[720px] min-w-[328px] h-[780px] border-gradient rounded-xl shadow-container">
+      <div className="relative w-full max-w-[720px] min-w-[328px] h-fit border-gradient rounded-xl shadow-container">
         <div className="h-full px-5 py-5">
           <Screws />
           {isLoading && (
@@ -106,7 +104,7 @@ export default function Post({ params }: PostProps) {
                   targetId={String(post.boardId)}
                 />
               </div>
-              <div className="pr-6 h-full w-full flex flex-col overflow-y-scroll scrollbar max-[500px]:pr-5">
+              <div className="pr-6 h-fit max-h-[600px] w-full flex flex-col overflow-y-scroll scrollbar max-[500px]:pr-5 max-[500px]:max-h-[400px]">
                 <div className="px-[1.875rem] py-[1.625rem] w-full bg-brown-10 border-2 border-brown-50 rounded-lg mb-8 common-drop-shadow ">
                   <PostImage src={post.boardImageUrl} />
                   <PostContent content={post.content} />
