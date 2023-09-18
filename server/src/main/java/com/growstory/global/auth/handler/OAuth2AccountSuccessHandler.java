@@ -104,7 +104,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
 
     private String delegateAccessToken(Account account, List<String> authorities) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("accountId", account.getAccountId());
+        claims.put("accountId", account.getAccountId().toString());
         claims.put("username", account.getEmail());
         claims.put("displayName", account.getDisplayName());
         claims.put("profileImageUrl", account.getProfileImageUrl());
@@ -129,6 +129,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
 
         return refreshToken;
     }
+
     private Object createURI(String accessToken, String refreshToken, Account account) {
         return UriComponentsBuilder
                 .newInstance()
@@ -137,6 +138,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
 //                .port(3000)
 //                .host("growstory.s3-website.ap-northeast-2.amazonaws.com")
 //                .port(80) //S3는 80포트
+                .port(443)
                 .path("/signin")
                 .queryParam("access_token", accessToken)
                 .queryParam("refresh_token", refreshToken)
