@@ -16,6 +16,7 @@ import com.growstory.domain.hashTag.repository.HashTagRepository;
 import com.growstory.domain.hashTag.service.HashTagService;
 import com.growstory.domain.images.entity.BoardImage;
 import com.growstory.domain.images.service.BoardImageService;
+import com.growstory.domain.point.service.PointService;
 import com.growstory.domain.rank.board_likes.dto.BoardLikesRankDto;
 import com.growstory.domain.rank.board_likes.entity.BoardLikesRank;
 import com.growstory.global.auth.utils.AuthUserUtils;
@@ -43,7 +44,6 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 public class BoardService {
-
     private final BoardRepository boardRepository;
     private final HashTagService hashTagService;
     private final BoardImageService boardImageService;
@@ -51,6 +51,8 @@ public class BoardService {
     private final HashTagRepository hashTagRepository;
     private final BoardHashTagRepository boardHashtagRepository;
     private final CommentService commentService;
+    private final PointService pointService;
+
     @Value("${my.scheduled.cron}")
     private String cronExpression;
 
@@ -58,6 +60,7 @@ public class BoardService {
     public Long createBoard(RequestBoardDto.Post requestBoardDto, MultipartFile image) {
         Account findAccount = authUserUtils.getAuthUser();
 
+        pointService.updatePoint(findAccount.getPoint(), "posting");
 
         Board board = Board.builder()
                 .title(requestBoardDto.getTitle())

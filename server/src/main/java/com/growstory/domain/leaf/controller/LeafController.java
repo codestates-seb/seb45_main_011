@@ -39,10 +39,10 @@ public class LeafController {
         return ResponseEntity.created(location).build();
     }
 
-    @Operation(summary = "식물카드 수정", description = "t입력받은 식물 정보로 식물카드 수정")
+    @Operation(summary = "식물카드 수정", description = "입력받은 식물 정보로 식물카드 수정")
     @PatchMapping
-    public ResponseEntity<HttpStatus> patchProfileImage(@Valid @RequestPart LeafDto.Patch leafPatchDto,
-                                                        @RequestPart MultipartFile leafImage) {
+    public ResponseEntity<HttpStatus> patchLeaf(@Valid @RequestPart LeafDto.Patch leafPatchDto,
+                                                        @RequestPart(required = false) MultipartFile leafImage) {
         leafService.updateLeaf(leafPatchDto, leafImage);
 
         return ResponseEntity.noContent().build();
