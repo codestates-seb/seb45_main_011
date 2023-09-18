@@ -8,6 +8,7 @@ import useUserStore from '@/stores/userStore';
 import Header from '@/components/common/Header';
 import LoadingNotice from '@/components/common/LoadingNotice';
 import Intro from '@/components/common/Intro';
+import Footer from '@/components/common/Footer';
 import ServiceInfo from '@/components/main/ServiceInfo';
 import MainSignupBanner from '@/components/main/MainSignupBanner';
 import ScrollDownButton from '@/components/main/ScrollDownButton';
@@ -81,6 +82,7 @@ export default function Home() {
                 </motion.section>
               )}
             </div>
+            <Footer />
           </>
         )}
       </div>
