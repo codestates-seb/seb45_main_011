@@ -1,5 +1,6 @@
 package com.growstory.domain.images.service;
 
+import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.images.entity.BoardImage;
 import com.growstory.domain.images.repository.BoardImageRepository;
 import com.growstory.global.aws.service.S3Uploader;
@@ -21,7 +22,7 @@ public class BoardImageService {
     private final S3Uploader s3Uploader;
     private final BoardImageRepository boardImageRepository;
 
-    public void saveBoardImage(MultipartFile image) {
+    public void saveBoardImage(MultipartFile image, Board board) {
         // Upload Image in AWS-S3
         String boardImageUrl = s3Uploader.uploadImageToS3(image, BOARD_IMAGE_PROCESS_TYPE);
 
@@ -29,9 +30,11 @@ public class BoardImageService {
         BoardImage boardImage = BoardImage.builder()
                 .originName(image.getOriginalFilename())
                 .storedImagePath(boardImageUrl)
+                .board(board)
                 .build();
 
         boardImageRepository.save(boardImage);
+
     }
 
 //    public void modifyBoardImage(long boardImageId, MultipartFile image) {
@@ -41,8 +44,7 @@ public class BoardImageService {
 //
 //    }
 
-    public void deleteBoardImage(long boardId) {
-        BoardImage boardImage = verifyExistBoardImage(boardId);
+    public void deleteBoardImage(BoardImage boardImage) {
         s3Uploader.deleteImageFromS3(boardImage.getStoredImagePath(), BOARD_IMAGE_PROCESS_TYPE);
 //        boardImageRepository.delete(boardImage);
     }
@@ -56,4 +58,8 @@ public class BoardImageService {
 
 
 
+//    @Transactional(readOnly = true)
+//    public BoardImage verifyExistBoardImageByBoardId(Long boardId) {
+//        return boardImageRepository
+//    }
 }

@@ -4,16 +4,19 @@ import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.comment.entity.Comment;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 public class CommentDto {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Post {
+
         @NotBlank
         private String content;
 
@@ -24,11 +27,41 @@ public class CommentDto {
                     .board(board)
                     .build();
         }
+
+        public Post(String content) {
+            this.content = content;
+        }
     }
 
     @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Patch {
         @NotBlank
         private String content;
+
+        public Patch(String content) {
+            this.content = content;
+        }
+    }
+
+
+    @Getter
+    public static class Response {
+        private Long commentId;
+        private Long accountId;
+        private String profileUrl;
+        private String comment;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
+
+        @Builder
+        public Response(Long commentId, Long accountId, String profileUrl, String comment, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+            this.commentId = commentId;
+            this.accountId = accountId;
+            this.profileUrl = profileUrl;
+            this.comment = comment;
+            this.createdAt = createdAt;
+            this.modifiedAt = modifiedAt;
+        }
     }
 }

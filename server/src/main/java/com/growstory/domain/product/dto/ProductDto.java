@@ -1,5 +1,6 @@
 package com.growstory.domain.product.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -8,8 +9,8 @@ import java.util.List;
 
 public class ProductDto {
 
-    @Getter
     @Builder
+    @Getter
     public static class Post {
         @NotNull
         private String name;
@@ -20,14 +21,15 @@ public class ProductDto {
         private ImageUrlTable imageUrlTable;
     }
 
-    @Getter
     @Builder
+    @Getter
     public static class Posts {
         List<ProductDto.Post> products;
     }
 
-    @Getter
     @Builder
+    @AllArgsConstructor
+    @Getter
     public static class Response {
         private long productId;
         private String name;
@@ -37,6 +39,7 @@ public class ProductDto {
     }
 
     @Builder
+    @AllArgsConstructor
     @Getter
     public static class ImageUrlTable {
         private String sm;

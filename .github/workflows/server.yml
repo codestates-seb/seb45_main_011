@@ -78,4 +78,4 @@ jobs:
             sudo docker rm -f server
             sudo docker pull leest/growstory-cicd:${GITHUB_SHA::7}
             sudo docker tag leest/growstory-cicd:${GITHUB_SHA::7} growstory-cicd
-            sudo docker run -d --name server -e TZ=Asia/Seoul -p 8080:8080 growstory-cicd
+            sudo docker run -d --name server -e TZ=Asia/Seoul -p 443:443 growstory-cicd

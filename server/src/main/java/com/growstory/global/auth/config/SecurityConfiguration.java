@@ -1,6 +1,7 @@
 package com.growstory.global.auth.config;
 
 import com.growstory.domain.account.repository.AccountRepository;
+import com.growstory.domain.point.repository.PointRepository;
 import com.growstory.domain.point.service.PointService;
 import com.growstory.global.auth.filter.JwtAuthenticationFilter;
 import com.growstory.global.auth.filter.JwtVerificationFilter;
@@ -30,6 +31,7 @@ public class SecurityConfiguration {
     private final CustomAuthorityUtils authorityUtils;
     private final SecurityCorsConfig corsConfig;
     private final PointService pointService;
+    private final PointRepository pointRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -53,8 +55,10 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.PATCH, "/v1/**").permitAll()
                         .antMatchers(HttpMethod.DELETE, "/v1/**").permitAll()
                         .anyRequest().permitAll())
-                .oauth2Login(oauth2 ->
-                        oauth2.successHandler(new OAuth2AccountSuccessHandler(jwtTokenizer, authorityUtils, accountRepository, pointService)))
+                .oauth2Login(oauth2 -> {
+                    oauth2.failureHandler(new OAuth2AccountFailureHandler());
+                    oauth2.successHandler(new OAuth2AccountSuccessHandler(jwtTokenizer, authorityUtils, accountRepository, pointService, pointRepository));
+                })
                 .build();
     }
 

@@ -1,7 +1,6 @@
 package com.growstory.global.advice;
 
 import com.growstory.global.exception.BusinessLogicException;
-import com.growstory.global.response.ErrorResponder;
 import com.growstory.global.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,13 +8,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
-import java.io.IOException;
 
 @RestControllerAdvice
 public class GlobalExceptionAdvice {
@@ -35,7 +29,7 @@ public class GlobalExceptionAdvice {
 
     @ExceptionHandler(BusinessLogicException.class)
     // BusinessLogicException 처리
-    public ResponseEntity handleBusinessLogicException(BusinessLogicException e) throws IOException {
+    public ResponseEntity handleBusinessLogicException(BusinessLogicException e) {
         final ErrorResponse errorResponse = ErrorResponse.of(e.getExceptionCode());
 
 //        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getResponse();

@@ -10,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -36,6 +35,7 @@ public class PlantObjDto {
     @NoArgsConstructor
     @Builder
     public static class PatchLocation {
+       @NotBlank
        private Long plantObjId;
        @NotBlank
        private LocationDto.Patch locationDto;
@@ -44,7 +44,6 @@ public class PlantObjDto {
 
     @Getter
     @AllArgsConstructor
-    @NoArgsConstructor
     @Builder
     public static class Response {
         private long productId;
@@ -59,7 +58,7 @@ public class PlantObjDto {
 
     @Getter
     @Builder
-    public static class Trade {
+    public static class TradeResponse {
         private PlantObjDto.Response plantObj;
         private PointDto.Response point;
     }
@@ -67,9 +66,10 @@ public class PlantObjDto {
     @Getter
     @Builder
     public static class GardenInfoResponse {
-        private List<ProductDto.Response> products;
+        private String displayName;
         private PointDto.Response point;
         private List<PlantObjDto.Response> plantObjs;
+        private List<ProductDto.Response> products;
 
     }
 }

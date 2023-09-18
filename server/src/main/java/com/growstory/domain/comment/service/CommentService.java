@@ -2,8 +2,9 @@ package com.growstory.domain.comment.service;
 
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.board.entity.Board;
-import com.growstory.domain.board.service.BoardService;
+import com.growstory.domain.board.repository.BoardRepository;
 import com.growstory.domain.comment.dto.CommentDto;
+import com.growstory.domain.comment.dto.ResponseCommentDto;
 import com.growstory.domain.comment.entity.Comment;
 import com.growstory.domain.comment.repository.CommentRepository;
 import com.growstory.global.auth.utils.AuthUserUtils;
@@ -13,9 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -23,43 +24,63 @@ import java.util.Objects;
 public class CommentService {
 
     private final CommentRepository commentRepository;
-    private final BoardService boardService;
+    private final BoardRepository boardRepository;
     private final AuthUserUtils authUserUtils;
 
     public Long saveComment(Long boardId, CommentDto.Post commentDto) {
         Account account = authUserUtils.getAuthUser();
-        Board board = boardService.findVerifiedBoard(boardId);
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
         Comment comment = commentRepository.save(commentDto.toEntity(account, board));
-//        System.out.println("accountcomment" + account.getComments().size());
-//        System.out.println("boardcomment" + account.getComments().size());
 
         return comment.getCommentId();
     }
 
-    public List<Comment> getComments(Long boardId) {
-        return commentRepository.findCommentsByBoard_BoardId(boardId)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
+    public List<ResponseCommentDto> getCommentListByBoardId(Long boardId) {
+        List<Comment> comments = commentRepository.findCommentsByBoard_BoardId(boardId)
+                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
+
+        return getResponseCommentDtoList(comments);
     }
+
+    private static List<ResponseCommentDto> getResponseCommentDtoList(List<Comment> comments) {
+        List<ResponseCommentDto> responseCommentDtoList = comments.stream().map(comment -> ResponseCommentDto.builder()
+                .commentId(comment.getCommentId())
+                .content(comment.getContent())
+                .accountId(comment.getAccount().getAccountId())
+                .displayName(comment.getAccount().getDisplayName())
+                .profileUrl(comment.getAccount().getProfileImageUrl())
+                .grade(comment.getAccount().getAccountGrade().getStepDescription())
+                .commentLikeNum(comment.getCommentLikes().size())
+                .createdAt(comment.getCreatedAt())
+                .modifiedAt(comment.getModifiedAt())
+                .build())
+                .collect(Collectors.toList());
+        return responseCommentDtoList;
+    }
+
 
     public void editComment(Long commentId, CommentDto.Patch commentDto) {
         findCommentsMatchCommentId(commentId);
 
-        Comment comment = verifiedComment(commentId);
+        Comment comment = getVerifiedCommentByCommentId(commentId);
         comment.update(commentDto.getContent());
 
     }
 
     public void deleteComment(Long commentId) {
         findCommentsMatchCommentId(commentId);
-        Comment comment = commentRepository.findById(commentId).get();
-        commentRepository.deleteById(commentId);
+        Comment findComment = getVerifiedCommentByCommentId(commentId);
+//        commentRepository.deleteById(commentId);
+        commentRepository.delete(findComment);
 
-        comment.getAccount().getComments().remove(comment);
-        comment.getBoard().getBoardComments().remove(comment);
-//        System.out.println("accountcomment"+comment.getAccount().getComments().size());
+        // comment 삭제 후 Account, Board 테이블 업데이트
+        findComment.getAccount().getComments().remove(findComment);
+        findComment.getBoard().getBoardComments().remove(findComment);
     }
 
-    // Account의 Comments의 입력받은 CommentId와 일치하는 댓글을 찾는 메서드
+    // 로그인한 사용자가 작성한 댓글인 지 검증하는 메서드
+    // 토큰 값을 통해 인증된 사용자의 commentId와 입력받은 commentId를 대조하여 검증함.
     private void findCommentsMatchCommentId(Long commentId) {
         Account account = authUserUtils.getAuthUser();
 
@@ -73,7 +94,7 @@ public class CommentService {
             throw new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND);
     }
 
-    private Comment verifiedComment(Long commentId) {
+    private Comment getVerifiedCommentByCommentId(Long commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
     }

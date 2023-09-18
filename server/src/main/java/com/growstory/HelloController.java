@@ -58,4 +58,9 @@ public class HelloController {
 
         return new ResponseEntity<>(samples, HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/test")
+    public ResponseEntity healthCheck() {
+        return ResponseEntity.noContent().build();
+    }
 }

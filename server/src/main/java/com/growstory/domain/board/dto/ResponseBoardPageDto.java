@@ -1,6 +1,7 @@
 package com.growstory.domain.board.dto;
 
 
+import com.growstory.domain.rank.board_likes.dto.BoardLikesRankDto;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -18,9 +19,8 @@ public class ResponseBoardPageDto {
 
     private String boardImageUrl;
 
-//    private List<String> boardImageUrlList;
-
     private int likeNum;
 
     private int commentNum;
+
 }
