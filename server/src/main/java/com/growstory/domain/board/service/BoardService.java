@@ -16,6 +16,7 @@ import com.growstory.domain.hashTag.repository.HashTagRepository;
 import com.growstory.domain.hashTag.service.HashTagService;
 import com.growstory.domain.images.entity.BoardImage;
 import com.growstory.domain.images.service.BoardImageService;
+import com.growstory.domain.point.service.PointService;
 import com.growstory.domain.rank.board_likes.dto.BoardLikesRankDto;
 import com.growstory.domain.rank.board_likes.entity.BoardLikesRank;
 import com.growstory.global.auth.utils.AuthUserUtils;
@@ -43,7 +44,6 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 public class BoardService {
-
     private final BoardRepository boardRepository;
     private final HashTagService hashTagService;
     private final BoardImageService boardImageService;
@@ -51,6 +51,8 @@ public class BoardService {
     private final HashTagRepository hashTagRepository;
     private final BoardHashTagRepository boardHashtagRepository;
     private final CommentService commentService;
+    private final PointService pointService;
+
     @Value("${my.scheduled.cron}")
     private String cronExpression;
 
@@ -58,10 +60,10 @@ public class BoardService {
     public Long createBoard(RequestBoardDto.Post requestBoardDto, MultipartFile image) {
         Account findAccount = authUserUtils.getAuthUser();
 
+        pointService.updatePoint(findAccount.getPoint(), "posting");
         Board saveBoard = boardRepository.save(requestBoardDto.toEntity(findAccount));
 
         // 입력 받은 이미지가 있을 경우 saveBoardImage 메서드 호출
-        // TODO: BoardImageService 에서 S3에 image 업로드와 DB에 저장을 같이 하고 있는데 분리하는 게 좋은가? 고민해보기
         if (image != null) {
             // Upload image in S3 && save image in Board_Image
             boardImageService.saveBoardImage(image, saveBoard);
@@ -70,8 +72,6 @@ public class BoardService {
         // Save HashTags
         if (requestBoardDto.getHashTags() != null) {
             for (String tag : requestBoardDto.getHashTags()) {
-
-                // TODO: BoardService에서 태그 이름으로 DB에 이미 존재하는 지 검증 후 없을경우에만 해시 태그 저장만 하도록 수정해야함.
                 HashTag hashTag = hashTagService.createHashTagIfNotExist(tag);
 
                 Board_HashTag boardHashtag = new Board_HashTag();

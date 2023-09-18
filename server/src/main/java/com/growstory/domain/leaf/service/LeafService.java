@@ -59,7 +59,8 @@ public class LeafService {
         Leaf findLeaf = findVerifiedLeafByAccount(findAccount.getAccountId(), leafPatchDto.getLeafId());
         String leafImageUrl = findLeaf.getLeafImageUrl();
 
-        s3Uploader.deleteImageFromS3(leafImageUrl, LEAF_IMAGE_PROCESS_TYPE);
+        if (leafPatchDto.getIsImageUpdated())
+            s3Uploader.deleteImageFromS3(leafImageUrl, LEAF_IMAGE_PROCESS_TYPE);
 
         if (Optional.ofNullable(leafImage).isPresent())
             leafImageUrl = s3Uploader.uploadImageToS3(leafImage, LEAF_IMAGE_PROCESS_TYPE);
@@ -98,8 +99,7 @@ public class LeafService {
         Account findAccount = authUserUtils.getAuthUser();
         Leaf findLeaf = findVerifiedLeafByAccount(findAccount.getAccountId(), leafId);
 
-        Optional.ofNullable(findLeaf.getLeafImageUrl()).ifPresent(leafImageUrl ->
-                s3Uploader.deleteImageFromS3(leafImageUrl, LEAF_IMAGE_PROCESS_TYPE));
+        s3Uploader.deleteImageFromS3(findLeaf.getLeafImageUrl(), LEAF_IMAGE_PROCESS_TYPE);
 
         // 저널 삭제
         findLeaf.getJournals().stream()
