@@ -59,7 +59,8 @@ public class LeafService {
         Leaf findLeaf = findVerifiedLeafByAccount(findAccount.getAccountId(), leafPatchDto.getLeafId());
         String leafImageUrl = findLeaf.getLeafImageUrl();
 
-        s3Uploader.deleteImageFromS3(leafImageUrl, LEAF_IMAGE_PROCESS_TYPE);
+        if (leafPatchDto.getIsImageUpdated())
+            s3Uploader.deleteImageFromS3(leafImageUrl, LEAF_IMAGE_PROCESS_TYPE);
 
         if (Optional.ofNullable(leafImage).isPresent())
             leafImageUrl = s3Uploader.uploadImageToS3(leafImage, LEAF_IMAGE_PROCESS_TYPE);
