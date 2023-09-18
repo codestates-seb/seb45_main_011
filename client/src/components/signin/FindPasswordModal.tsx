@@ -19,6 +19,7 @@ export default function FindPasswordModal() {
     watch,
     formState: { isSubmitting },
   } = useForm<SignFormValue>();
+
   const { close, changeState } = useSignModalStore();
 
   const userEmail = watch('email');
@@ -46,11 +47,11 @@ export default function FindPasswordModal() {
 
   return (
     <ModalPortal>
-      <Modal className="w-full min-w-[312px] max-w-[531px] h-fit flex flex-col justify-center items-center mx-1">
-        <div className="flex flex-col items-center gap-6 px-5 mt-10 mx-4">
-          <div className="flex flex-col items-center gap-3">
+      <Modal className="w-full min-w-[312px] max-w-[531px] h-fit flex flex-col justify-center items-center max-[572px]:max-w-[448px] max-[480px]:max-w-[312px]">
+        <div className="flex flex-col items-center gap-6 px-5 mt-10">
+          <div className="flex flex-col items-center gap-1">
             <p className="font-bold text-brown-70 text-[24px] text-center break-keep leading-8">
-              가입하셨던 이메일을 입력해주시면
+              가입하셨던 이메일로
             </p>
             <p className="font-bold text-brown-70 text-[28px] text-center break-keep leading-8">
               <span className="text-brown-90">임시 비밀번호</span>를
@@ -63,7 +64,7 @@ export default function FindPasswordModal() {
           <CommonButton
             type="button"
             size="md"
-            className="w-[96px] h-[52px] text-[24px] mb-8"
+            className="w-[88px] h-[52px] text-[24px] mb-8"
             disabled={isSubmitting}
             onCheck={() => {
               handleEmailCheck(userEmail);
@@ -73,7 +74,7 @@ export default function FindPasswordModal() {
           <CommonButton
             type="button"
             size="md"
-            className="w-[96px] h-[52px] text-[24px]"
+            className="w-[88px] h-[52px] text-[24px]"
             onClose={close}>
             취소
           </CommonButton>

@@ -1,5 +1,7 @@
 'use client';
 
+import { motion } from 'framer-motion';
+
 import useArchive from '@/hooks/useArchive';
 
 import LeafTag from './LeafTag';
@@ -33,10 +35,13 @@ export default function InstalledPlants({
         const buttonStyle = isEditMode ? 'block' : 'hidden';
 
         return (
-          <div
+          <motion.div
             key={plantObjId}
             data-plant-id={plantObjId}
-            className={`absolute flex flex-col items-center cursor-pointer hover:scale-[1.15] transition-transform ${divStyle}`}
+            className={`absolute flex flex-col items-center cursor-pointer ${divStyle}`}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.1 }}
             style={{
               top: `${location.y * 60}px`,
               left: `${location.x * 60}px`,
@@ -59,7 +64,7 @@ export default function InstalledPlants({
               className={`px-2 py-[6px] border-2 border-brown-40 rounded-2xl bg-contain bg-repeat bg-[url('/assets/img/bg_wood_light.png')] text-brown-40 font-bold text-xs leading-3 shadow-outer/down ${buttonStyle}`}>
               보관
             </button>
-          </div>
+          </motion.div>
         );
       })}
     </>

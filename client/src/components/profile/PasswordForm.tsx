@@ -5,17 +5,14 @@ import { useForm } from 'react-hook-form';
 import { updateUserPassword } from '@/api/profile';
 
 import useSignModalStore from '@/stores/signModalStore';
+import useUserStore from '@/stores/userStore';
 
 import PasswordInput from '../common/PasswordInput';
 import CommonButton from '../common/CommonButton';
 
 import { InputValues } from '@/types/common';
 
-type Token = {
-  token: string;
-};
-
-export default function PasswordForm({ token }: Token) {
+export default function PasswordForm() {
   const {
     register,
     handleSubmit,
@@ -25,6 +22,7 @@ export default function PasswordForm({ token }: Token) {
   } = useForm<InputValues>();
 
   const changeState = useSignModalStore((state) => state.changeState);
+  const setAccessToken = useUserStore((state) => state.setAccessToken);
 
   const presentPassword = watch('password');
   const changedPassword = watch('newPasswordCheck');
@@ -37,14 +35,14 @@ export default function PasswordForm({ token }: Token) {
       return;
     }
 
-    try {
-      await updateUserPassword(presentPassword, changedPassword, token);
+    const response = await updateUserPassword(presentPassword, changedPassword);
 
-      reset();
-      changeState('ChangePasswordModal');
-    } catch (error) {
-      console.log(error);
+    if (response.status === 204) {
+      setAccessToken(response.headers?.authorization);
     }
+
+    reset();
+    changeState('ChangePasswordModal');
   };
 
   return (

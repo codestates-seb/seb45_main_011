@@ -96,3 +96,8 @@ export const INFOMATION_TEXT = {
 
   comment: '댓글을 단 게시글이 없어요 : (',
 } as const;
+
+export const DOMAIN = {
+  domain: 'grow-story.vercel.app',
+  domain_kor: '그로우 스토리',
+} as const;

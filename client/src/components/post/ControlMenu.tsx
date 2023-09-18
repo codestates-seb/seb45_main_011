@@ -54,7 +54,7 @@ export default function ControlMenu({
         width={20}
         height={5}></Image>
       <div
-        className={`absolute -left-[40px] w-[65px] h-[102px] group-hover:block ${BUTTON_STYLE[usage].hiddenContainer}`}>
+        className={`absolute -left-[20px] top-[24px] w-[65px] h-[80px] group-hover:block ${BUTTON_STYLE[usage].hiddenContainer}`}>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

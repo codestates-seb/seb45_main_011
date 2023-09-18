@@ -42,11 +42,7 @@ export const sendTemporaryPasswordByEmail = async (email: string) => {
 };
 
 export const getUsersEmail = async () => {
-  try {
-    const response = await axios.get(`${url}/accounts/all`);
+  const response = await axios.get(`${url}/accounts/all`);
 
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
+  return response;
 };

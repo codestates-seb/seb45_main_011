@@ -44,7 +44,9 @@ export default function Header() {
         shadow-outer/down 
         z-20
         ">
-        <Logo size="small" className="mt-[2px]" />
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <Logo size="small" className="mt-[2px]" />
+        </motion.div>
         <ul className="flex items-center gap-2 max-[480px]:gap-3">
           <li
             onMouseOver={() => setIsMenuHover(true)}

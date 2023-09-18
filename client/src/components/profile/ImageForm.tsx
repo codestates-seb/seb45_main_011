@@ -13,13 +13,10 @@ import CommonButton from '../common/CommonButton';
 
 import { DefaultProps } from '@/types/common';
 
-interface ImageFormProps extends DefaultProps {
-  token: string;
-}
-
-export default function ImageForm({ token, className }: ImageFormProps) {
+export default function ImageForm({ className }: DefaultProps) {
   // const isClient = useClient();
-  const { profileImageUrl, setProfileImageUrl } = useUserStore();
+  const { profileImageUrl, setProfileImageUrl, setAccessToken } =
+    useUserStore();
 
   const [image, setImage] = useState<FileList>();
   const [imageUrl, setImageUrl] = useState(profileImageUrl);
@@ -52,12 +49,16 @@ export default function ImageForm({ token, className }: ImageFormProps) {
     }
   };
 
-  const onImageSubmit = () => {
-    if (image && token && isDisabled) {
-      updateUserProfileImage(image[0], token);
+  const onImageSubmit = async () => {
+    if (image && !isDisabled) {
+      const response = await updateUserProfileImage(image[0]);
 
       setProfileImageUrl(imageUrl);
       setIsDisabled(true);
+
+      if (response.status === 204) {
+        setAccessToken(response.headers?.authorization);
+      }
     }
   };
 
@@ -72,6 +73,7 @@ export default function ImageForm({ token, className }: ImageFormProps) {
             alt="profile_img"
             width={100}
             height={100}
+            priority
             onClick={() => imageUploadRef.current?.click()}
           />
           <input

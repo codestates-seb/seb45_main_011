@@ -36,9 +36,9 @@ export default function AuthEmailModal() {
 
   return (
     <ModalPortal>
-      <Modal className="w-full min-w-[312px] max-w-[531px] h-fit flex flex-col justify-center items-center mx-1">
+      <Modal className="w-full min-w-[312px] max-w-[460px] h-fit flex flex-col justify-center items-center max-[480px]:max-w-[312px]">
         <div className="flex flex-col items-center gap-6 px-5 mt-10 mx-4">
-          <div className="flex flex-col items-center gap-3">
+          <div className="flex flex-col items-center gap-2">
             <p className="font-bold text-brown-70 text-[24px]">
               이메일로 전송된
             </p>
@@ -53,7 +53,7 @@ export default function AuthEmailModal() {
           <CommonButton
             type="button"
             size="md"
-            className="w-[96px] h-[52px] text-[24px]"
+            className="w-[88px] h-[52px] text-[24px]"
             disabled={isSubmitting}
             onCheck={handleCodeCheck}>
             완료
@@ -61,7 +61,7 @@ export default function AuthEmailModal() {
           <CommonButton
             type="button"
             size="md"
-            className="w-[96px] h-[52px] text-[24px]"
+            className="w-[88px] h-[52px] text-[24px]"
             onClose={close}>
             취소
           </CommonButton>

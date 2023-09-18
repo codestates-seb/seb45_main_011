@@ -48,11 +48,11 @@ export default function Diary({
 
   return (
     <li className="w-full">
-      <div className="flex gap-4 pl-4 w-full max-[480px]:flex-col">
+      <div className="flex gap-4 pl-5 w-full max-[480px]:flex-col">
         <span className="font-bold text-[1.5rem] mt-2 text-brown-80 max-[480px]:ml-2 max-[480px]:text-[1.3rem]">
           {month + '/' + day}
         </span>
-        <div className="relative grid grid-cols-1 gap-2 w-full max-w-[380px] h-[150px] p-2 pb-[0.9rem] bg-brown-10 border-2 border-brown-50 rounded-lg shadow-outer/down">
+        <div className="relative grid grid-cols-1 gap-2 w-full max-w-[380px] h-[150px] p-3 pl-4 pb-[0.9rem] bg-brown-10 border-2 border-brown-50 rounded-lg shadow-outer/down">
           {pathUserId === userId && (
             <div className="absolute right-[10px] top-[10px] flex gap-2">
               <ControlButton
