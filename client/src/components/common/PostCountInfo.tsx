@@ -73,6 +73,7 @@ export default function PostCountInfo({
           alt="댓글 개수"
           width={19}
           height={16}
+          style={{ width: 19, height: 16 }}
         />
         {commentNum}
       </span>
