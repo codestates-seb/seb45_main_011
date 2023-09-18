@@ -3,7 +3,6 @@ package com.growstory.domain.comment.service;
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.board.repository.BoardRepository;
-import com.growstory.domain.board.service.BoardService;
 import com.growstory.domain.comment.dto.CommentDto;
 import com.growstory.domain.comment.dto.ResponseCommentDto;
 import com.growstory.domain.comment.entity.Comment;
@@ -37,15 +36,14 @@ public class CommentService {
         return comment.getCommentId();
     }
 
-    public List<Comment> getComments(Long boardId) {
-        return commentRepository.findCommentsByBoard_BoardId(boardId)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
-    }
-
-    public List<ResponseCommentDto> getCommentList(Long boardId) {
+    public List<ResponseCommentDto> getCommentListByBoardId(Long boardId) {
         List<Comment> comments = commentRepository.findCommentsByBoard_BoardId(boardId)
                 .orElseThrow(()-> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
 
+        return getResponseCommentDtoList(comments);
+    }
+
+    private static List<ResponseCommentDto> getResponseCommentDtoList(List<Comment> comments) {
         List<ResponseCommentDto> responseCommentDtoList = comments.stream().map(comment -> ResponseCommentDto.builder()
                 .commentId(comment.getCommentId())
                 .content(comment.getContent())
@@ -58,7 +56,6 @@ public class CommentService {
                 .modifiedAt(comment.getModifiedAt())
                 .build())
                 .collect(Collectors.toList());
-
         return responseCommentDtoList;
     }
 
@@ -66,21 +63,24 @@ public class CommentService {
     public void editComment(Long commentId, CommentDto.Patch commentDto) {
         findCommentsMatchCommentId(commentId);
 
-        Comment comment = verifiedComment(commentId);
+        Comment comment = getVerifiedCommentByCommentId(commentId);
         comment.update(commentDto.getContent());
 
     }
 
     public void deleteComment(Long commentId) {
         findCommentsMatchCommentId(commentId);
-        Comment comment = verifiedComment(commentId);
-        commentRepository.deleteById(commentId);
+        Comment findComment = getVerifiedCommentByCommentId(commentId);
+//        commentRepository.deleteById(commentId);
+        commentRepository.delete(findComment);
 
-        comment.getAccount().getComments().remove(comment);
-        comment.getBoard().getBoardComments().remove(comment);
+        // comment 삭제 후 Account, Board 테이블 업데이트
+        findComment.getAccount().getComments().remove(findComment);
+        findComment.getBoard().getBoardComments().remove(findComment);
     }
 
-    // Account의 Comments의 입력받은 CommentId와 일치하는 댓글을 찾는 메서드
+    // 로그인한 사용자가 작성한 댓글인 지 검증하는 메서드
+    // 토큰 값을 통해 인증된 사용자의 commentId와 입력받은 commentId를 대조하여 검증함.
     private void findCommentsMatchCommentId(Long commentId) {
         Account account = authUserUtils.getAuthUser();
 
@@ -94,7 +94,7 @@ public class CommentService {
             throw new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND);
     }
 
-    private Comment verifiedComment(Long commentId) {
+    private Comment getVerifiedCommentByCommentId(Long commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
     }

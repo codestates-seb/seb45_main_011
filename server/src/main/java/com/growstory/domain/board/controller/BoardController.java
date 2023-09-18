@@ -12,9 +12,11 @@ import com.growstory.global.response.MultiResponseDto2;
 import com.growstory.global.response.SingleResponseDto;
 import com.growstory.global.utils.UriCreator;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,10 +27,11 @@ import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
 
-@RestController
+@Tag(name = "Boards API", description = "게시판 기능")
 @Validated
-@RequestMapping("/v1/boards")
 @RequiredArgsConstructor
+@RequestMapping("/v1/boards")
+@RestController
 public class BoardController {
 
     private final BoardService boardService;
@@ -37,13 +40,13 @@ public class BoardController {
 
 
     @Operation(summary = "Create Board API", description = "게시판 추가 기능")
-    @PostMapping
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<HttpStatus> postBoard(
             @Valid @RequestPart RequestBoardDto.Post requestBoardDto,
             @RequestPart(value = "image", required = false) MultipartFile image) {
         Long boardId = boardService.createBoard(requestBoardDto, image);
 
-        // https://localhost:8888/v1/boards/{boardId}
+        // location(response header): https://{host}:8888/v1/boards/{boardId}
         URI location = UriCreator.createUri(BOARD_DEFAULT_URL, boardId);
 
         return ResponseEntity.created(location).build();
@@ -93,9 +96,11 @@ public class BoardController {
                 .page(responseBoardDtos).build());
     }
 
+    //TODO: 게시글 작성자 이름으로 검색하는 기능
+
 
     @Operation(summary = "Update Board API", description = "게시판 수정 기능")
-    @PatchMapping("/{boardId}")
+    @PatchMapping(value = "/{boardId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<HttpStatus> patchBoard(@Positive @PathVariable("boardId") Long boardId,
                                                  @Valid @RequestPart RequestBoardDto.Patch requestBoardDto,
                                                  @RequestPart(value = "image", required = false) MultipartFile image) {

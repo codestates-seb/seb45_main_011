@@ -5,17 +5,20 @@ import com.growstory.domain.comment.dto.CommentDto;
 import com.growstory.domain.comment.service.CommentService;
 import com.growstory.global.utils.UriCreator;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.net.URI;
 
-@RequestMapping("/v1/comments")
+@Tag(name = "Comments API", description = "댓글 기능")
+@Validated
 @RequiredArgsConstructor
+@RequestMapping("/v1/comments")
 @RestController
 public class CommentController {
 
@@ -27,9 +30,10 @@ public class CommentController {
     @Operation(summary = "Create Comment API", description = "댓글 작성 기능")
     @PostMapping("/boards/{boardId}")
     public ResponseEntity<?> postComment(@Positive @PathVariable("boardId") Long boardId,
-                                                  @Valid @RequestBody CommentDto.Post commentDto) {
+                                         @Valid @RequestBody CommentDto.Post commentDto) {
         Long commentId = commentService.saveComment(boardId, commentDto);
 
+        // Location(response header): https://{host}/v1/comments/boards/{boardId}
         URI location = UriCreator.createUri(COMMENT_DEFAULT_URL,commentId);
 
         return ResponseEntity.created(location).build();
