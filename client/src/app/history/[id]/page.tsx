@@ -26,7 +26,7 @@ export default function History({ params }: HistoryProps) {
         variants={MOUNT_ANIMATION_VALUES}
         initial="initial"
         animate="animate"
-        className="flex flex-col justify-center items-center mx-4 pb-[60px]">
+        className="flex flex-col justify-center items-center h-auto min-h-full pb-[343px] mx-4">
         <HistoryBox paramsId={params.id} />
 
         {currentState === 'ResignModal' && <ResignModal />}

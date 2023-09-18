@@ -48,7 +48,7 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
           alt="profile_img"
         />
       )}
-      <div className="flex flex-col justify-center items-center mb-4 gap-2">
+      <div className="flex flex-col justify-center items-center mb-6 gap-2">
         <div className="text-2xl font-bold text-brown-80">{displayName}</div>
         <p className="font-bold text-brown-70">{grade}</p>
       </div>

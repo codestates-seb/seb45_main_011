@@ -24,7 +24,7 @@ export default function Profile() {
         variants={MOUNT_ANIMATION_VALUES}
         initial="initial"
         animate="animate"
-        className="flex flex-col justify-center items-center mx-4 pb-[60px]">
+        className="flex flex-col justify-center items-center h-auto min-h-full pb-[343px] mx-4">
         <ProfileBox />
 
         {currentState === 'ChangePasswordModal' && <ChangePasswordModal />}

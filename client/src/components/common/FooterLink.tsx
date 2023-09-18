@@ -16,5 +16,11 @@ interface FooterLinkProps {
 }
 
 export default function FooterLink({ repositories, member }: FooterLinkProps) {
-  return <Link href={FOOTER_LINK[repositories]}>{member}</Link>;
+  return (
+    <Link
+      href={FOOTER_LINK[repositories]}
+      className="hover:text-yellow-50 hover:scale-110 transition-all">
+      {member}
+    </Link>
+  );
 }

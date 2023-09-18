@@ -25,8 +25,7 @@ export default function Board() {
 
   return (
     <>
-      {' '}
-      <div className="pt-[120px] pb-[60px] px-4 flex flex-col gap-5 justify-center items-center max-[415px]:gap-4 max-[605px]:pt-[80px] ">
+      <div className="h-auto min-h-full pt-[120px] pb-[343px] px-4 flex flex-col gap-5 justify-center items-center max-[415px]:gap-4 max-[605px]:pt-[80px] ">
         <RankBoard />
         <BoardBanner />
         <motion.div

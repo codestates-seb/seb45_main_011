@@ -11,6 +11,8 @@ import { getPostByBoardId } from '@/api/board';
 import usePostModalStore from '@/stores/postModalStore';
 import useUserStore from '@/stores/userStore';
 
+import useEffectOnce from '@/hooks/useEffectOnce';
+
 import PostDeleteModal from '@/components/post/PostDeleteModal';
 import PageTitle from '@/components/common/PageTitle';
 import PostCountInfo from '@/components/common/PostCountInfo';
@@ -59,6 +61,10 @@ export default function Post({ params }: PostProps) {
 
   const isOwner = userId === String(post?.accountId);
 
+  useEffectOnce(() => {
+    window.scrollTo(0, 0);
+  });
+
   useEffect(() => {
     if (post?.comments) setComments(post?.comments);
   }, [post?.comments]);
@@ -69,17 +75,17 @@ export default function Post({ params }: PostProps) {
         variants={MOUNT_ANIMATION_VALUES}
         initial="initial"
         animate="animate"
-        className="px-4 flex justify-center items-center pb-[60px]">
+        className="flex justify-center items-center h-auto min-h-full pb-[343px] px-4">
         <div className="relative w-full max-w-[720px] min-w-[328px] h-fit border-gradient rounded-xl shadow-container">
           <div className="h-full px-5 py-5">
             <Screws />
             {isLoading && (
-              <div className="w-full h-full flex justify-center items-center">
+              <div className="w-full min-h-[494px] h-full flex justify-center items-center">
                 <LoadingNotice isTransparent={true} />
               </div>
             )}
             {isError && (
-              <div className="w-full h-full flex justify-center items-center">
+              <div className="w-full min-h-[494px] h-full flex justify-center items-center">
                 <ErrorMessage />
               </div>
             )}
