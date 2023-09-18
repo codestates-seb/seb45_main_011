@@ -20,11 +20,13 @@ interface EditPostProps {
 }
 
 export default function EditPost({ params }: EditPostProps) {
+  const postId = params.id;
+
   const {
     data: post,
     isLoading,
     isError,
-  } = useQuery<RawPostInfo>(['post'], () => findPostById(params.id));
+  } = useQuery<RawPostInfo>(['edit', postId], () => findPostById(params.id));
 
   if (isError) return <ErrorNotice isTransparent={false} className="mx-auto" />;
 

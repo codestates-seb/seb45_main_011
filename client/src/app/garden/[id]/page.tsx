@@ -42,8 +42,6 @@ export default function Garden({ params }: GardenProps) {
     if (type === 'share') return <ShareModal location="garden" />;
   };
 
-  if (isError) return <ErrorNotice isTransparent={false} />;
-
   const isOwner = userId === params.id;
 
   return (
@@ -52,7 +50,12 @@ export default function Garden({ params }: GardenProps) {
         {isLoading ? (
           <LoadingNotice
             isTransparent={false}
-            className={`flex justify-center items-center min-[984px]:w-[736px] min-[984px]:h-[544px] max-[984px]:w-[736px] max-[984px]:h-[544px] max-[782px]:w-full max-[420px]:h-[384px]`}
+            className={`flex justify-center items-center shadow-container min-[984px]:w-[736px] min-[984px]:h-[544px] max-[984px]:w-[736px] max-[984px]:h-[544px] max-[782px]:w-full max-[420px]:h-[384px]`}
+          />
+        ) : isError ? (
+          <ErrorNotice
+            isTransparent={false}
+            className={`flex justify-center items-center shadow-container min-[984px]:w-[736px] min-[984px]:h-[544px] max-[984px]:w-[736px] max-[984px]:h-[544px] max-[782px]:w-full max-[420px]:h-[384px]`}
           />
         ) : (
           <>

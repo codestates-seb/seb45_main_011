@@ -33,7 +33,7 @@ export default function ResignModal() {
 
     if (response) {
       return (
-        changeState('ComfirmModal'),
+        changeState('ConfirmModal'),
         setAccessToken(response.headers?.authorization)
       );
     }

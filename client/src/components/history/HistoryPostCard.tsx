@@ -19,11 +19,11 @@ export default function HistoryPostCard({
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       className="flex flex-col items-center justify-center w-[200px] h-[175px] rounded-lg border-2 border-brown-50 bg-brown-10 shadow-outer/down">
-      <div className="w-[121px] h-[92px] rounded-lg mb-2 mx-auto border-2 border-brown-40 ">
+      <div className="w-[121px] h-[92px] mb-2 mx-auto">
         {imageUrl ? (
           <Image
             src={imageUrl}
-            className="object-cover object-center w-full h-full"
+            className="object-cover object-center w-full h-full border-2 border-brown-40 rounded-lg bg-brown-20"
             width={117}
             height={88}
             alt="post_image"
@@ -31,7 +31,7 @@ export default function HistoryPostCard({
         ) : (
           <Image
             src={'/assets/img/bg_default_post.png'}
-            className="object-cover object-center w-full h-full"
+            className="object-cover object-center w-full h-full border-2 border-brown-40 rounded-lg bg-brown-20"
             width={117}
             height={88}
             alt="post_image"
