@@ -4,13 +4,11 @@ import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.board.dto.RequestBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardPageDto;
-import com.growstory.domain.board.dto.ResponseRankingDto;
 import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.board.entity.Board_HashTag;
 import com.growstory.domain.board.repository.BoardHashTagRepository;
 import com.growstory.domain.board.repository.BoardRepository;
 import com.growstory.domain.comment.dto.ResponseCommentDto;
-import com.growstory.domain.comment.repository.CommentRepository;
 import com.growstory.domain.comment.service.CommentService;
 import com.growstory.domain.hashTag.dto.ResponseHashTagDto;
 import com.growstory.domain.hashTag.entity.HashTag;
@@ -18,10 +16,14 @@ import com.growstory.domain.hashTag.repository.HashTagRepository;
 import com.growstory.domain.hashTag.service.HashTagService;
 import com.growstory.domain.images.entity.BoardImage;
 import com.growstory.domain.images.service.BoardImageService;
+import com.growstory.domain.rank.board_likes.dto.BoardLikesRankDto;
+import com.growstory.domain.rank.board_likes.entity.BoardLikesRank;
 import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -31,11 +33,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -48,6 +51,8 @@ public class BoardService {
     private final HashTagRepository hashTagRepository;
     private final BoardHashTagRepository boardHashtagRepository;
     private final CommentService commentService;
+    @Value("${my.scheduled.cron}")
+    private String cronExpression;
 
 
     public Long createBoard(RequestBoardDto.Post requestBoardDto, MultipartFile image) {
@@ -253,16 +258,18 @@ public class BoardService {
                 .build();
     }
 
-    // 홈페이지 갈 때마다 api 호출이 이루어지는 메소드
-    @Scheduled(cron = "0 0 18 ? * FRI")
-    public List<ResponseRankingDto> findTop3LikedBoards() {
+
+//    @Scheduled(cron = "${my.scheduled.cron}")
+    public List<BoardLikesRankDto.Response> findTop3LikedBoards() {
+        log.info("# Scheduled task findTop3LikedBoards started at {}", LocalDateTime.now());
+        log.info("# and Cron expression is: {}", cronExpression);
         LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
         List<Object[]> topBoardsWithLikes = boardRepository.findTop3LikedBoards(sevenDaysAgo);
-        List<ResponseRankingDto> response = topBoardsWithLikes.stream().map(
+        List<BoardLikesRankDto.Response> response = topBoardsWithLikes.stream().map(
                 responseRankingDto -> {
                     Board board = (Board) responseRankingDto[0];
                     Long LikeCount = (Long) responseRankingDto[1];
-                    return ResponseRankingDto.builder()
+                    return BoardLikesRankDto.Response.builder()
                             .boardId(board.getBoardId())
                             .title(board.getTitle())
                             .displayName(board.getAccount().getDisplayName())
@@ -271,6 +278,38 @@ public class BoardService {
                     }).limit(3)
                 .collect(Collectors.toList());
         return response;
+    }
+
+    // 좋아요 기준 상위 3개의 게시글을 랭킹과 함께 반환 (🆘 추후 리팩토링)
+    public List<BoardLikesRank> findTop3LikedBoardRanks() {
+        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
+        List<Object[]> topBoardsWithLikes = boardRepository.findTop3LikedBoards(sevenDaysAgo);
+
+        // 고유한 '좋아요' 수를 저장하기 위한 Set
+        Set<Long> uniqueLikeCounts = new HashSet<>();
+
+        // 조건에 부합하는 boardLikesRank를 담을 리스트 boardLikesRanks
+        List<BoardLikesRank> boardLikesRanks = new ArrayList<>();
+
+        topBoardsWithLikes.stream()
+                .takeWhile(objects -> {
+                    Long likeCount = (Long) objects[1];
+                    uniqueLikeCounts.add(likeCount);
+                    return uniqueLikeCounts.size() <= 3; // 고유한 '좋아요' 수가 3개 이하일 때까지
+                })
+                .forEach(objects -> {
+                    Board board = (Board) objects[0];
+                    Long likeCount = (Long) objects[1];
+
+                    BoardLikesRank boardLikesRank = BoardLikesRank.builder()
+                            .account(board.getAccount())
+                            .board(board)
+                            .likeNum(likeCount)
+                            .build();
+                    boardLikesRank.updateRank(uniqueLikeCounts.size());
+                    boardLikesRanks.add(boardLikesRank);
+                });
+        return boardLikesRanks;
     }
 
 
