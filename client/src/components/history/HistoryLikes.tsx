@@ -68,7 +68,9 @@ export default function HistoryLikes({ paramsId }: HistoryBoradProps) {
                     className="cursor-pointer">
                     <HistoryPostCard
                       imageUrl={
-                        board.imageUrls || '/assets/img/bg_default_post.png'
+                        board.imageUrls.length === 0
+                          ? '/assets/img/bg_default_post.png'
+                          : board.imageUrls[0]
                       }
                       title={board.title}
                       likes={likesAmount(board.likes)}
@@ -82,12 +84,12 @@ export default function HistoryLikes({ paramsId }: HistoryBoradProps) {
         </div>
       ))}
       {isLoading && (
-        <div className="flex justify-center items-center">
+        <div className="w-[715px] max-[730px]:w-[512px] max-[630px]:w-[312px] flex justify-center items-center">
           <LoadingMessage />
         </div>
       )}
       {isError && (
-        <div className="flex justify-center items-center">
+        <div className="w-[715px] max-[730px]:w-[512px] max-[630px]:w-[312px] flex justify-center items-center">
           <ErrorMessage />
         </div>
       )}
