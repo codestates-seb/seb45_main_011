@@ -1,4 +1,27 @@
+import type { Metadata } from 'next';
+
 import Header from '@/components/common/Header';
+
+export const metadata: Metadata = {
+  title: '정보 수정 - Grow Story',
+  description: '나만의 정원을 꾸며 보세요!',
+  applicationName: 'Grow Story',
+  keywords: [
+    '식물',
+    '반려 식물',
+    '식집사',
+    '식물 커뮤니티',
+    '커뮤니티',
+    '정원',
+    '정원 꾸미기',
+    '꾸미기',
+  ],
+  openGraph: {
+    title: '정보 수정 - Grow Story',
+    images: '/assets/img/bg_default_post.png',
+    description: '나만의 정원을 꾸며보세요!',
+  },
+};
 
 export default function ProfileLayout({
   children,
