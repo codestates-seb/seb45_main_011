@@ -49,7 +49,7 @@ export default function RankBoard() {
       variants={MOUNT_ANIMATION_VALUES}
       initial="initial"
       animate="animate"
-      className="py-10 w-[448px] h-[228px] flex flex-col items-center bg-contain bg-center bg-no-repeat bg-[url('/assets/img/bg_board_lg.png')] drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] scale-100 max-[604px]:w-[313px] max-[604px]:-mb-3 max-[604px]:px-6 max-[604px]:py-[55px]">
+      className="py-10 w-[448px] h-[228px] flex flex-col items-center bg-contain bg-center bg-no-repeat bg-[url('/assets/img/bg_board_lg.png')] drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] scale-100 max-[604px]:w-[313px] max-[604px]:-mb-3 max-[604px]:px-6 max-[604px]:py-[60px]">
       <h2 className="text-2xl leading-6 text-brown-10 font-bold max-[604px]:text-xl">
         이주의 좋아요 순위
       </h2>
@@ -59,7 +59,7 @@ export default function RankBoard() {
             <Link
               href={`/post/${board.boardId}`}
               className="w-full max-w-[360px] overflow-hidden px-2">
-              <div className="flex gap-3 items-center max-[604px]:gap-2 hover:scale-105 hover:transition-transform hover:text-brown-30">
+              <div className="flex gap-3 items-center max-[604px]:gap-2 hover:scale-105 hover:transition-transform hover:text-yellow-30">
                 {renderMedal(1)}
                 <p className="whitespace-nowrap text-ellipsis overflow-hidden break-words">
                   {`${board.displayName} 님의 ${board.title}`}
