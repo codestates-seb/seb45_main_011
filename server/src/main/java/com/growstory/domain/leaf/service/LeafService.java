@@ -98,8 +98,7 @@ public class LeafService {
         Account findAccount = authUserUtils.getAuthUser();
         Leaf findLeaf = findVerifiedLeafByAccount(findAccount.getAccountId(), leafId);
 
-        Optional.ofNullable(findLeaf.getLeafImageUrl()).ifPresent(leafImageUrl ->
-                s3Uploader.deleteImageFromS3(leafImageUrl, LEAF_IMAGE_PROCESS_TYPE));
+        s3Uploader.deleteImageFromS3(findLeaf.getLeafImageUrl(), LEAF_IMAGE_PROCESS_TYPE);
 
         // 저널 삭제
         findLeaf.getJournals().stream()

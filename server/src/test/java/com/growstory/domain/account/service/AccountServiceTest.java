@@ -12,6 +12,7 @@ import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.auth.utils.CustomAuthorityUtils;
 import com.growstory.global.aws.service.S3Uploader;
 import com.growstory.global.exception.BusinessLogicException;
+import com.growstory.global.exception.ExceptionCode;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -498,13 +499,27 @@ public class AccountServiceTest {
 
             given(SecurityContextHolder.getContext().getAuthentication())
                     .willReturn(authentication);
-            given(authentication.getPrincipal())
-                    .willReturn(claims);
         }
 
         @Test
         @Order(1)
+        public void 로그인된_사용자가_없다면_실패() {
+            given(SecurityContextHolder.getContext().getAuthentication())
+                    .willReturn(null);
+
+            //when, then
+            BusinessLogicException exception = assertThrows(BusinessLogicException.class,
+                    () -> accountService.isAuthIdMatching(accountId));
+            assertThat(exception.getExceptionCode().getStatus(), is(404));
+            assertThat(exception.getExceptionCode().getMessage(), is("Account not found"));
+        }
+
+        @Test
+        @Order(2)
         public void 인증되지_않은_사용자라면_실패() {
+            given(authentication.getPrincipal())
+                    .willReturn(claims);
+
             given(authentication.getName())
                     .willReturn(null);
 
@@ -514,9 +529,13 @@ public class AccountServiceTest {
             assertThat(exception.getExceptionCode().getStatus(), is(401));
             assertThat(exception.getExceptionCode().getMessage(), is("Account unauthorized"));
         }
+
         @Test
-        @Order(2)
+        @Order(3)
         public void 익명_사용자라면_실패() {
+            given(authentication.getPrincipal())
+                    .willReturn(claims);
+
             given(authentication.getName())
                     .willReturn("anonymousUser");
 
@@ -528,8 +547,11 @@ public class AccountServiceTest {
         }
 
         @Test
-        @Order(3)
+        @Order(4)
         public void 로그인된_사용자와_입력된_사용자가_다르면_실패() {
+            given(authentication.getPrincipal())
+                    .willReturn(claims);
+
             claims.put("accountId", "999");
 
             given(authentication.getName())
@@ -543,8 +565,11 @@ public class AccountServiceTest {
         }
 
         @Test
-        @Order(4)
+        @Order(5)
         public void 로그인된_사용자가_입력과_동일하면_성공() {
+            given(authentication.getPrincipal())
+                    .willReturn(claims);
+
             claims.put("accountId", "1");
 
             given(authentication.getName())
