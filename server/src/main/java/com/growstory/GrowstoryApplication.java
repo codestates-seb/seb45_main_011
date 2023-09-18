@@ -15,8 +15,3 @@ public class GrowstoryApplication {
 	}
 
 }
-
-/*
-TODO:
- 엔티티 생성 및 연관 관계 매핑
-*/

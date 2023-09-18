@@ -7,5 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
+
+    // boardId에 해당하는 모든 comments를 조회하는 메서드
     Optional<List<Comment>> findCommentsByBoard_BoardId(Long boardId);
 }

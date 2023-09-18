@@ -61,14 +61,8 @@ public class BoardService {
         Account findAccount = authUserUtils.getAuthUser();
 
         pointService.updatePoint(findAccount.getPoint(), "posting");
+        Board saveBoard = boardRepository.save(requestBoardDto.toEntity(findAccount));
 
-        Board board = Board.builder()
-                .title(requestBoardDto.getTitle())
-                .content(requestBoardDto.getContent())
-                .account(findAccount)
-                .build();
-
-        Board saveBoard = boardRepository.save(board);
         // 입력 받은 이미지가 있을 경우 saveBoardImage 메서드 호출
         if (image != null) {
             // Upload image in S3 && save image in Board_Image
@@ -81,7 +75,7 @@ public class BoardService {
                 HashTag hashTag = hashTagService.createHashTagIfNotExist(tag);
 
                 Board_HashTag boardHashtag = new Board_HashTag();
-                boardHashtag.addBoard(board);
+                boardHashtag.addBoard(saveBoard);
                 boardHashtag.addHashTag(hashTag);
 
                 boardHashtagRepository.save(boardHashtag);
@@ -93,9 +87,8 @@ public class BoardService {
     public ResponseBoardDto getBoard(Long boardId) {
         Account findAccount = authUserUtils.getAuthUser();
         Board findBoard = findVerifiedBoard(boardId);
-//        BoardImage findBoardImage = boardImageService.verifyExistBoardImage(boardId);
         List<ResponseHashTagDto> findHashTag = hashTagService.getHashTagList(boardId);
-        List<ResponseCommentDto> findComment = commentService.getCommentList(boardId);
+        List<ResponseCommentDto> findComment = commentService.getCommentListByBoardId(boardId);
 
         return getResponseBoardDto(findAccount, findBoard, findHashTag, findComment);
     }
@@ -155,39 +148,20 @@ public class BoardService {
                 .stream()
                 .findFirst()
                 .orElse(null);
-        // image가 있을 경우 S3에 저장된 image Object 삭제 + Board_Image(DB) 저장
+
+
+
+        // TODO:
+        //  isImageUpdate = true => 기존 이미지를 삭제하고 싶을 때
+        //  isImageUpdate = false => 기존 이미지를 유지하고 싶을 때, 이미지 없어야 됨.
+        if (requestBoardDto.isImageUpdate() && boardImage != null) {
+            boardImageService.deleteBoardImage(boardImage);
+            findBoard.getBoardImages().clear();
+        }
+
         if (image != null) {
-            if (boardImage != null) {
-                boardImageService.deleteBoardImage(boardImage);
-                findBoard.getBoardImages().clear();
-            }
             boardImageService.saveBoardImage(image, findBoard);
         }
-        // image가 없을 경우 S3에 저장된 image Object 삭제 + Board_Image(DB) 삭제
-        // isImageUpdate = true => 기존 이미지를 삭제하고 싶을 때
-        // isImageUpdate = false => 기존 이미지를 유지하고 싶을 때
-        else {
-            if (requestBoardDto.isImageUpdate() && boardImage != null) {
-                boardImageService.deleteBoardImage(boardImage);
-                findBoard.getBoardImages().clear();
-            }
-        }
-
-//        if (requestBoardDto.isImageUpdate() && boardImage != null) {
-//            boardImageService.deleteBoardImage(boardImage);
-//            findBoard.getBoardImages().clear();
-//        }
-//
-//        if (image != null) {
-//            boardImageService.saveBoardImage(image, findBoard);
-//        }
-
-
-
-
-        // 1. 이미지를 유지하고 싶은 경우
-        // 2. 이미지를 삭제하고 싶은 경우
-        // 3. 이미지를 변경하고 싶은 경우
 
         // title, content 더티 체킹
         findBoard.update(requestBoardDto);
@@ -252,12 +226,16 @@ public class BoardService {
                 .likeNum(findBoard.getBoardLikes().size())
                 .createAt(findBoard.getCreatedAt())
                 .modifiedAt(findBoard.getModifiedAt())
+
                 .accountId(findBoard.getAccount().getAccountId())
                 .displayName(findBoard.getAccount().getDisplayName())
                 .profileImageUrl(findBoard.getAccount().getProfileImageUrl())
                 .grade(findBoard.getAccount().getAccountGrade().getStepDescription())
+
                 .hashTags(findHashTag)
+
                 .comments(findComment)
+
                 .build();
     }
 
