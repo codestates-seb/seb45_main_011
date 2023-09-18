@@ -3,11 +3,10 @@ package com.growstory.global.email.service;
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.account.repository.AccountRepository;
 import com.growstory.global.email.dto.EmailDto;
-import com.growstory.global.exception.BusinessLogicException;
-import com.growstory.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -23,6 +22,7 @@ public class EmailService {
     private final JavaMailSender mailSender;
     private final SpringTemplateEngine templateEngine;
     private final AccountRepository accountRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public EmailDto.SignUpResponse sendAuthCodeMail(EmailDto.Post emailPostDto) {
         String authCode = getAuthCode();
@@ -60,8 +60,9 @@ public class EmailService {
                 throw new RuntimeException(e);
             }
 
+            // password encode 필요
             accountRepository.save(findAccount.toBuilder()
-                    .password(password)
+                    .password(passwordEncoder.encode(password))
                     .build());
         });
 

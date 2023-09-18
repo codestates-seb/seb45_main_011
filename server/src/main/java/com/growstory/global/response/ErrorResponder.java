@@ -15,4 +15,12 @@ public class ErrorResponder {
         response.setStatus(status.value());
         response.getWriter().write(gson.toJson(errorResponse, ErrorResponse.class));
     }
+
+    public static void sendErrorResponse(HttpServletResponse response, int status, String message) throws IOException {
+        Gson gson = new Gson();
+        ErrorResponse errorResponse = ErrorResponse.of(HttpStatus.valueOf(status), message);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setStatus(status);
+        response.getWriter().write(gson.toJson(errorResponse, ErrorResponse.class));
+    }
 }

@@ -27,11 +27,14 @@ public class GlobalExceptionAdvice {
         return ErrorResponse.of(e.getConstraintViolations());
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(BusinessLogicException.class)
     // BusinessLogicException 처리
     public ResponseEntity handleBusinessLogicException(BusinessLogicException e) {
-        final ErrorResponse response = ErrorResponse.of(e.getExceptionCode());
+        final ErrorResponse errorResponse = ErrorResponse.of(e.getExceptionCode());
 
-        return new ResponseEntity(response, HttpStatus.valueOf(e.getExceptionCode().getStatus()));
+//        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getResponse();
+//        ErrorResponder.sendErrorResponse(response, e.getExceptionCode().getStatus() ,e.getExceptionCode().getMessage());
+
+        return new ResponseEntity(errorResponse, HttpStatus.valueOf(e.getExceptionCode().getStatus()));
     }
 }

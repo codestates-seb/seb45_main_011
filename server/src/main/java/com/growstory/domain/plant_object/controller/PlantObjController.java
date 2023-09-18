@@ -4,11 +4,14 @@ import com.growstory.domain.plant_object.dto.PlantObjDto;
 import com.growstory.domain.plant_object.service.PlantObjService;
 import com.growstory.domain.point.dto.PointDto;
 import com.growstory.global.response.SingleResponseDto;
+import com.growstory.global.utils.UriCreator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.constraints.Positive;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -18,11 +21,12 @@ public class PlantObjController {
 
     private final PlantObjService plantObjService;
 
+    private final String GARDEN_DEFAULT_URL = "/v1/gardens";
+
 
     public PlantObjController(PlantObjService plantObjService) {
         this.plantObjService = plantObjService;
     }
-
     // GET : 정원 페이지의 모든 관련 정보 조회
     @GetMapping("/{account-id}")
     public ResponseEntity<SingleResponseDto> getGardenInfo(@Positive @PathVariable("account-id")Long accountId) {
@@ -40,12 +44,17 @@ public class PlantObjController {
     @PostMapping("/{account-id}/purchase")
     public ResponseEntity<SingleResponseDto> postPurchaseObj(@Positive @PathVariable("account-id") Long accountId,
                                                       @RequestParam("product-id") Long productId) {
-        PlantObjDto.Response plantObj = plantObjService.buyProduct(accountId, productId);
+        PlantObjDto.TradeResponse plantObj = plantObjService.buyProduct(accountId, productId);
 
-        return ResponseEntity.ok().body(SingleResponseDto.builder()
+        URI location = UriComponentsBuilder.newInstance()
+                .path(GARDEN_DEFAULT_URL+ "/{account-id}" + "/purchase")
+                .buildAndExpand(accountId)
+                .toUri();
+
+        return ResponseEntity.created(location).body(SingleResponseDto.builder()
                         .data(plantObj)
-                        .status(HttpStatus.OK.value())
-                        .message(HttpStatus.OK.getReasonPhrase())
+                        .status(HttpStatus.CREATED.value())
+                        .message(HttpStatus.CREATED.getReasonPhrase())
                         .build());
     }
 
@@ -62,7 +71,7 @@ public class PlantObjController {
                 .build());
     }
 
-    // POST : 오브젝트 배치 (편집 완료)
+    // PATCH : 오브젝트 배치 (편집 완료)
     @PatchMapping("/{account-id}/location")
     public ResponseEntity<SingleResponseDto> patchLocations(@Positive @PathVariable("account-id") Long accountId,
                                                     @RequestBody List<PlantObjDto.PatchLocation> patchObjLocations) {
