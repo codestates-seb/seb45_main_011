@@ -104,7 +104,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
 
     private String delegateAccessToken(Account account, List<String> authorities) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("accountId", account.getAccountId());
+        claims.put("accountId", account.getAccountId().toString());
         claims.put("username", account.getEmail());
         claims.put("displayName", account.getDisplayName());
         claims.put("profileImageUrl", account.getProfileImageUrl());
@@ -129,6 +129,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
 
         return refreshToken;
     }
+
     private Object createURI(String accessToken, String refreshToken, Account account) {
         return UriComponentsBuilder
                 .newInstance()

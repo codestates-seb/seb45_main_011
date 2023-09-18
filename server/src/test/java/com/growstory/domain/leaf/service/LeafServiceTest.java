@@ -2,10 +2,13 @@ package com.growstory.domain.leaf.service;
 
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.account.service.AccountService;
+import com.growstory.domain.images.entity.JournalImage;
 import com.growstory.domain.images.service.JournalImageService;
+import com.growstory.domain.journal.entity.Journal;
 import com.growstory.domain.leaf.dto.LeafDto;
 import com.growstory.domain.leaf.entity.Leaf;
 import com.growstory.domain.leaf.repository.LeafRepository;
+import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.point.entity.Point;
 import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.aws.service.S3Uploader;
@@ -25,6 +28,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -329,8 +333,54 @@ public class LeafServiceTest {
 
     @Nested
     class 식물카드_삭제 {
+        // given
+        Long leafId = 1L;
 
-//        @Test
+        Account account = getAccount(1L, "user1@gmail.com", "user1",
+                "user1234", "image/path", Point.builder().build(),
+                List.of("USER"), Account.AccountGrade.GRADE_BRONZE);
+
+        Leaf leaf = getLeaf(leafId, "식물1", "본문1", "s3ImageUrl");
+
+        Journal journal1 = Journal.builder().journalImage(JournalImage.builder().build()).build();
+        Journal journal2 = Journal.builder().build();
+
+        PlantObj plantObj = PlantObj.builder().build();
+
+        @BeforeEach
+        private void init() {
+            given(authUserUtils.getAuthUser())
+                    .willReturn(account.toBuilder().leaves(new ArrayList<>(List.of(leaf))).build());
+
+            willDoNothing().given(journalImageService).deleteJournalImageWithS3(Mockito.any(JournalImage.class), Mockito.anyString());
+        }
+
+        @Test
+        public void 연결된_plantObj가_없으면(){
+            given(leafRepository.findById(Mockito.anyLong()))
+                    .willReturn(Optional.of(leaf.toBuilder()
+                            .account(account)
+                            .journals(new ArrayList<>(List.of(journal1, journal2)))
+                            .build()));
+
+            // when, then
+            assertDoesNotThrow(() -> leafService.deleteLeaf(leafId));
+        }
+
+        @Test
+        public void 연결된_plantObj가_있으면(){
+            given(leafRepository.findById(Mockito.anyLong()))
+                    .willReturn(Optional.of(leaf.toBuilder()
+                            .account(account)
+                            .journals(new ArrayList<>(List.of(journal1, journal2)))
+                            .plantObj(plantObj)
+                            .build()));
+            // when
+            leafService.deleteLeaf(leafId);
+
+            // then
+            assertThat(Optional.ofNullable(plantObj.getLeaf()), is(Optional.empty()));
+        }
     }
 
     private static Account getAccount(Long accountId, String email, String displayName, String password,
