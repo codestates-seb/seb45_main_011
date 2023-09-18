@@ -41,7 +41,6 @@ export default function HistoryComment({ paramsId }: HistoryBoradProps) {
             <div
               key={index}
               className="w-[715px] max-[730px]:w-[512px] max-[630px]:w-[312px] flex justify-center items-center ml-1">
-              {' '}
               <EmptyDiary
                 pathUserId={paramsId}
                 userId={userId}
@@ -61,7 +60,9 @@ export default function HistoryComment({ paramsId }: HistoryBoradProps) {
                     className="cursor-pointer">
                     <HistoryPostCard
                       imageUrl={
-                        board.imageUrls || '/assets/img/bg_default_post.png'
+                        board.imageUrls.length === 0
+                          ? '/assets/img/bg_default_post.png'
+                          : board.imageUrls[0]
                       }
                       title={board.title}
                       likes={
@@ -77,12 +78,12 @@ export default function HistoryComment({ paramsId }: HistoryBoradProps) {
         </div>
       ))}
       {isLoading && (
-        <div className="flex justify-center items-center">
+        <div className="w-[715px] max-[730px]:w-[512px] max-[630px]:w-[312px] flex justify-center items-center">
           <LoadingMessage />
         </div>
       )}
       {isError && (
-        <div className="flex justify-center items-center">
+        <div className="w-[715px] max-[730px]:w-[512px] max-[630px]:w-[312px] flex justify-center items-center">
           <ErrorMessage />
         </div>
       )}

@@ -24,7 +24,7 @@ const usePlantCard = () => {
       const item = shop.find(({ productId }) => productId === Number(targetId));
 
       if (item) {
-        const isPurchasable = point > item.price;
+        const isPurchasable = point >= item.price;
         const purchaseTarget = { ...item, isPurchasable };
 
         observePurchaseTarget(purchaseTarget);

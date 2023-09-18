@@ -30,7 +30,6 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
   useEffect(() => {
     const getHistoryData = async () => {
       const response = await getUserInfo(id);
-      console.log(response);
 
       setHistoryUser(response.data);
     };
@@ -76,7 +75,7 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
               type="button"
               size="lg"
               children="식물 카드 열람"
-              className="w-[213px] h-[52px] max-[580px]:w-[203px] text-[22.5px] hover:scale-105 transition-transform"
+              className="w-[213px] h-[52px] max-[580px]:w-[203px] text-[20.5px] hover:scale-105 transition-transform"
               onGoToLeafs={() => router.push(`/leafs/${id}`)}
             />
           </div>
