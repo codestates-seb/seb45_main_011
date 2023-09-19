@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @AutoConfigureMockMvc
 class BoardControllerTest {
 
+    // CICD plz
     @Autowired
     private MockMvc mockMvc;
 
