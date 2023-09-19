@@ -42,7 +42,9 @@ export default function SigninForm() {
       const userId = String(response.data.accountId);
       const accessToken = response.headers.authorization;
       const refreshToken = response.headers.refresh;
-      const displayName = decodeURIComponent(response.data.displayName);
+      const displayName = decodeURIComponent(
+        response.data.displayName,
+      ).replaceAll('+', ' ');
       const profileImageUrl = response.data.profileImageUrl;
 
       setUser({
