@@ -3,7 +3,6 @@ import InfiniteScroll from 'react-infinite-scroller';
 import useBoardStore from '@/stores/boardStore';
 
 import useBoardInfinityQuery from '@/hooks/useBoardInfinityQuery';
-import useGetSearchBoardQuery from '@/hooks/useGetBoardSearchQuery';
 
 import PostCard from './PostCard';
 import EmptySearch from './EmptySearch';
@@ -19,7 +18,7 @@ export default function PostList() {
     hasNextPage,
     isLoading,
     isError,
-  } = searchKey ? useGetSearchBoardQuery(searchKey) : useBoardInfinityQuery();
+  } = useBoardInfinityQuery();
 
   const boards = allBoards?.map((boards) => boards.boards).flat();
 
