@@ -1,6 +1,4 @@
-'use client';
-
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Image from 'next/image';
 
 import FooterLink from './FooterLink';
@@ -8,21 +6,20 @@ import FooterLink from './FooterLink';
 import { FOOTER_LINK } from '@/constants/contents';
 
 export default function Footer() {
-  const router = useRouter();
-
   return (
     <footer
       className="relative w-full h-fit flex flex-col justify-center items-center bg-brown-90 border-t-[8px] 
     border-border-10 -translate-y-full">
-      <Image
-        role="button"
-        src="/assets/img/footer_github.png"
-        width={32}
-        height={32}
-        alt="github_logo"
-        className="w-8 h-8 mt-7 mb-6 hover:scale-110 transition-transform"
-        onClick={() => router.push(FOOTER_LINK.team)}
-      />
+      <Link href={FOOTER_LINK.team} target="_blank" rel="noreferrer noopener">
+        <Image
+          role="button"
+          src="/assets/img/footer_github.png"
+          width={32}
+          height={32}
+          alt="github_logo"
+          className="w-8 h-8 mt-7 mb-6 hover:scale-110 transition-transform"
+        />
+      </Link>
 
       <div className="flex justify-center items-center">
         <span className="flex justify-center items-center text-[8px] text-brown-20 leading-[8px] font-bold px-[6px] py-1 border-[1px] border-brown-70 rounded bg-cover bg-center bg-no-repeat bg-[url('/assets/img/bg_wood_dark.png')] mr-3">
