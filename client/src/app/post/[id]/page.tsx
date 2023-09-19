@@ -47,6 +47,8 @@ export default function Post({ params }: PostProps) {
   const { userId } = useUserStore();
   const { isOpen, type } = usePostModalStore();
 
+  useEffectOnce(() => router.refresh());
+
   const {
     data: post,
     isLoading,
