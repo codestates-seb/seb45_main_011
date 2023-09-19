@@ -1,6 +1,6 @@
 'use client';
 
-import { FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
+import { FieldErrors, UseFormRegister } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import { twMerge } from 'tailwind-merge';
 
