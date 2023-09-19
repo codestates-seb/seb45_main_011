@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 
 import useUserStore from '@/stores/userStore';
+import useBoardStore from '@/stores/boardStore';
 
 import CommonButton from '@/components/common/CommonButton';
 import Footer from '@/components/common/Footer';
@@ -12,11 +13,14 @@ import BoardBanner from '@/components/board/BoardBanner';
 import BoardSearchForm from '@/components/board/BoardSearchForm';
 import RankBoard from '@/components/board/RankBoard';
 import PostList from '@/components/board/PostList';
+import SearchList from '@/components/board/SearchList';
 
 export default function Board() {
   const router = useRouter();
 
   const userId = useUserStore((state) => state.userId);
+
+  const { searchKey } = useBoardStore();
 
   const navigateToAddPost = () => {
     if (userId !== null) return router.push('/post/add');
@@ -40,7 +44,7 @@ export default function Board() {
                 글 쓰기
               </CommonButton>
             </div>
-            <PostList />
+            {searchKey ? <SearchList /> : <PostList />}
           </div>
         </motion.div>
       </div>

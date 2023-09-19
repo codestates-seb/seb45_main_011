@@ -42,7 +42,7 @@ export default function Header() {
         border-b-[8px] 
         border-border-10
         shadow-outer/down 
-        z-30
+        z-50
         ">
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Logo size="small" className="mt-[2px]" />
