@@ -21,7 +21,7 @@ jobs:
       G_CLIENT_ID: ${{secrets.G_CLIENT_ID}}
       G_CLIENT_SECRET: ${{secrets.G_CLIENT_SECRET}}
       JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
-      KEY_STORE_PASSWORD: ${{KEY_STORE_PASSWORD}}
+      KEY_STORE_PASSWORD: ${{secrets.KEY_STORE_PASSWORD}}
       working-directory: ./server
 
     steps:
@@ -56,7 +56,7 @@ jobs:
           --build-arg G_CLIENT_ID="${{env.G_CLIENT_ID}}" \
           --build-arg G_CLIENT_SECRET="${{env.G_CLIENT_SECRET}}" \
           --build-arg JWT_SECRET_KEY="${{env.JWT_SECRET_KEY}}" \
-          --build-arg JWT_SECRET_KEY="${{env.KEY_STORE_PASSWORD}}" \
+          --build-arg KEY_STORE_PASSWORD="${{env.KEY_STORE_PASSWORD}}" \
           -t growstory-cicd . 
           docker tag growstory-cicd dokyung94/growstory-cicd:${GITHUB_SHA::7}
           docker push dokyung94/growstory-cicd:${GITHUB_SHA::7}
