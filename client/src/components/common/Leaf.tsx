@@ -105,7 +105,7 @@ export default function Leaf({
           alt={name}
           width={210}
           height={170}
-          className="object-cover w-[200px] h-[160px] z-10 bg-brown-20"
+          className="object-cover w-full h-full z-10 bg-brown-20 isolate"
         />
       </div>
 

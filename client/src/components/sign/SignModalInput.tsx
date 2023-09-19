@@ -60,7 +60,7 @@ export default function SignModalInput({
       <input
         type={type}
         autoComplete="off"
-        className={`w-full max-w-[300px] pl-4 py-[10px] font-normal text-[12px] border-2 border-brown-70 rounded-[50px] bg-[center_left_12px] bg-no-repeat leading-[12px] outline-none shadow-outer/down`}
+        className={`w-full max-w-[300px] pl-4 py-[10px] font-normal text-[12px] border-2 border-brown-70 rounded-[50px] bg-[center_left_12px] bg-no-repeat leading-[12px] outline-none shadow-outer/down max-[705px]:py-[6px]`}
         placeholder={SIGNIN_REQUIRE[type]}
         required
         {...register(type, registerFormat?.validation)}

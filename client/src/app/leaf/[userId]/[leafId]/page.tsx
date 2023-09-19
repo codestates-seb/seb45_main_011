@@ -115,7 +115,7 @@ export default function Leaf({ params }: LeafProps) {
               </div>
             ) : (
               leaf && (
-                <div className="h-full overflow-y-scroll scrollbar pr-2">
+                <div className="h-full">
                   <LeafInfo
                     userId={userId}
                     pathUserId={pathUserId}

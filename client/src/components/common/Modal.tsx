@@ -46,7 +46,7 @@ export default function Modal({ children, className }: ModalProps) {
       <div
         aria-hidden
         onClick={handleClick}
-        className="fixed top-0 left-0 w-screen h-screen bg-black-30/[.9] backdrop-blur-sm z-40"
+        className="fixed top-0 left-0 w-screen h-screen bg-black-30/[.9] backdrop-blur-sm z-50"
       />
       <motion.main
         initial={{ x: '-50%', y: '-50%', scale: 0.9, opacity: 0 }}

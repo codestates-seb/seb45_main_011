@@ -23,7 +23,7 @@ export default function AddLeafButton({ userId }: AddLeafButtonProps) {
             alt="식물카드 추가"
             width={40}
             height={40}
-            className="object-cover w-[36px] h-[36px]"
+            className="object-cover w-[36px] h-[36px] isolate"
           />
         </div>
       </motion.button>

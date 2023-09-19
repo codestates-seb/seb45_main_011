@@ -78,7 +78,7 @@ export default function Diary({
                 alt=""
                 width={116}
                 height={91}
-                className="object-cover w-[106px] h-[81px] bg-brown-20"
+                className="object-cover w-[106px] h-[81px] bg-brown-20 isolate"
               />
             </div>
 

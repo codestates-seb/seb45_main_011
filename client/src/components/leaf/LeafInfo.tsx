@@ -38,13 +38,13 @@ export default function LeafInfo({
   return (
     <div className="flex flex-col items-center">
       <PageTitle className="mb-5" text={leafName} />
-      <div className="w-[232px] h-[180px] mb-2 border-2 border-brown-50 rounded-lg overflow-hidden shadow-outer/down">
+      <div className="w-[232px] h-[180px] mb-2 bg-brown-20 border-2 border-brown-50 rounded-lg overflow-hidden shadow-outer/down">
         <Image
           src={imageUrl}
           alt={leafName || ''}
           width={242}
           height={190}
-          className="object-cover w-[232px] h-[180px]"
+          className="object-cover w-[232px] h-[180px] isolate"
         />
       </div>
       <p className="p-[10px] mb-5 max-w-[232px] w-full bg-brown-10 border-2 border-brown-50 rounded-lg text-xs font-normal text-black-50 text-center shadow-outer/down">
