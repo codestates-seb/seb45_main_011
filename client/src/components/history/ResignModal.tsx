@@ -43,9 +43,9 @@ export default function ResignModal() {
 
   return (
     <ModalPortal>
-      <Modal className=" min-w-[312px] h-fit flex flex-col justify-center items-center mx-1">
+      <Modal className="min-w-[312px] h-fit flex flex-col justify-center items-center mx-1">
         <div className="flex flex-col items-center gap-4 px-5 mt-10 mx-4">
-          <div className="flex flex-col items-center leading-8  text-[22px] max-[705px]:text-[18px]">
+          <div className="flex flex-col items-center leading-8 text-[22px] max-[705px]:text-[18px]">
             <p className="font-bold text-brown-70 text-center break-keep  ">
               탈퇴하시려면
             </p>
