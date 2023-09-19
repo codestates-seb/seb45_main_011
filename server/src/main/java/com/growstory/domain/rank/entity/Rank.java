@@ -2,14 +2,16 @@ package com.growstory.domain.rank.entity;
 
 import com.growstory.domain.account.entity.Account;
 import com.growstory.global.audit.BaseTimeEntity;
+import com.growstory.global.exception.BusinessLogicException;
+import com.growstory.global.exception.ExceptionCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@MappedSuperclass
 @NoArgsConstructor
 @Getter
+@MappedSuperclass
 public abstract class Rank extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +46,28 @@ public abstract class Rank extends BaseTimeEntity {
         RankStatus(String status, int rank) {
             this.status = status;
             this.rank = rank;
+        }
+    }
+
+    public void updateRank(int rank) {
+        switch (rank) {
+            case 1 :
+                updateRank(RankStatus.RANK_NO_1);
+                break;
+            case 2 :
+                updateRank(RankStatus.RANK_NO_2);
+                break;
+            case 3 :
+                updateRank(RankStatus.RANK_NO_3);
+                break;
+            case 4 :
+                updateRank(RankStatus.RANK_NO_4);
+                break;
+            case 5 :
+                updateRank(RankStatus.RANK_NO_5);
+                break;
+            default:
+                throw new BusinessLogicException(ExceptionCode.RANK_NOT_FOUND);
         }
     }
 }

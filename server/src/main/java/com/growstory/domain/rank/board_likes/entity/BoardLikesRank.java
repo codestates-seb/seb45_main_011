@@ -43,24 +43,6 @@ public class BoardLikesRank extends Rank {
     }
 
     public void updateRank(int rank) {
-        switch (rank) {
-            case 1 :
-                super.updateRank(RankStatus.RANK_NO_1);
-                break;
-            case 2 :
-                super.updateRank(RankStatus.RANK_NO_2);
-                break;
-            case 3 :
-                super.updateRank(RankStatus.RANK_NO_3);
-                break;
-            case 4 :
-                super.updateRank(RankStatus.RANK_NO_4);
-                break;
-            case 5 :
-                super.updateRank(RankStatus.RANK_NO_5);
-                break;
-            default:
-                throw new BusinessLogicException(ExceptionCode.RANK_NOT_FOUND);
-        }
+        super.updateRank(rank);
     }
 }
