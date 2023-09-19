@@ -28,15 +28,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -153,8 +150,8 @@ public class BoardService {
 
         // TODO:
         //  isImageUpdate = true => 기존 이미지를 삭제하고 싶을 때
-        //  isImageUpdate = false => 기존 이미지를 유지하고 싶을 때, 이미지 없어야 됨.
-        if (requestBoardDto.isImageUpdate() && boardImage != null) {
+        //  isImageUpdate = false => 기존 이미지를 유지하고 싶을 때, 입력받은 이미지 없어야 됨.
+        if (requestBoardDto.getIsImageUpdated() && boardImage != null) {
             boardImageService.deleteBoardImage(boardImage);
             findBoard.getBoardImages().clear();
         }
