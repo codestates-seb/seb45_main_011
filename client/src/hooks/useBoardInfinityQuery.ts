@@ -1,10 +1,10 @@
+import { useEffect } from 'react';
+
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { getBoardsByPageNum } from '@/api/board';
 
 import useBoardStore from '@/stores/boardStore';
-
-import useEffectOnce from './useEffectOnce';
 
 export default function useBoardInfinityQuery() {
   const { data, fetchNextPage, hasNextPage, isLoading, isError } =
@@ -23,9 +23,9 @@ export default function useBoardInfinityQuery() {
 
   const { setBoardRank } = useBoardStore();
 
-  useEffectOnce(() => {
+  useEffect(() => {
     if (data) setBoardRank(data.pages[0].rank);
-  });
+  }, [data]);
 
   return {
     data: data?.pages,
