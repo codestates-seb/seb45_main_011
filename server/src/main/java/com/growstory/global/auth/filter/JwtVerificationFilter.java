@@ -69,8 +69,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         // 이걸 저장할 때 설정
         Date accessTokenExpiration = new Date((Long) accessTokenClaims.get("exp") * 1000L);
         Date refreshTokenExpiration = new Date((Long) refreshTokenClaims.get("exp") * 1000L);
-        System.out.println("before:" + accessTokenExpiration);
-        System.out.println("before:" + refreshTokenExpiration);
+//        System.out.println("before:" + accessTokenExpiration);
+//        System.out.println("before:" + refreshTokenExpiration);
         Date now = new Date();
 
         // accessToken 만료시간이 지금보다 이전이면(accessToken 만료 O), refreshToken 만료시간이 지금보다 이후라면(refreshToken 만료 X)
@@ -88,7 +88,6 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             Map<String,Object> recreatedAccessTokenClaims = verifyJws(accessToken); // JWT 검증
             verifyJws(refreshToken);
             setAuthenticationToContext(recreatedAccessTokenClaims);
-
         //jwt 검증에 실패할 경우 발생하는 예외를 HttpServletRequest의 속성(Attribute)으로 추가
         } catch (SignatureException se) {
             request.setAttribute("exception", se);

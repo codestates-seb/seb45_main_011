@@ -24,6 +24,7 @@ public class EmailService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
+    // 부하 테스트 때 비동기 처리
     public EmailDto.SignUpResponse sendAuthCodeMail(EmailDto.Post emailPostDto) {
         String authCode = getAuthCode();
         MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -74,7 +75,7 @@ public class EmailService {
     // 인증 번호 겸 임시 비밀번호
     private String getAuthCode() {
         Random random = new Random();
-        StringBuffer authCode = new StringBuffer();
+        StringBuilder authCode = new StringBuilder();
 
         for (int i = 0; i < 8; i++) {
             int index = random.nextInt(4);
