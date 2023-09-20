@@ -55,9 +55,10 @@ export default function RankBoard() {
         이주의 좋아요 순위
       </h2>
       <div className="py-5 w-full max-w-[720px] flex flex-col items-center gap-2 text-base leading-4 text-brown-10 font-normal whitespace-nowrap overflow-x-hidden max-[604px]:text-xs max-[604px]:gap-1 max-[604px]:pt-1">
-        {boardRank.map((board) => {
+        {boardRank.slice(0, 3).map((board) => {
           return (
             <Link
+              key={board.boardId}
               href={`/post/${board.boardId}`}
               className="w-full h-fit max-w-[360px] overflow-hidden px-2">
               <div className="h-[24px] flex gap-3 items-center max-[604px]:gap-2 hover:scale-105 hover:transition-transform hover:text-yellow-30">
