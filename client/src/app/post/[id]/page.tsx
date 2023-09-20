@@ -47,8 +47,6 @@ export default function Post({ params }: PostProps) {
   const { userId } = useUserStore();
   const { isOpen, type } = usePostModalStore();
 
-  useEffectOnce(() => router.refresh());
-
   const {
     data: post,
     isLoading,
@@ -65,6 +63,8 @@ export default function Post({ params }: PostProps) {
 
   useEffectOnce(() => {
     window.scrollTo(0, 0);
+    if (!userId) return router.push('/signin');
+    return router.refresh();
   });
 
   useEffect(() => {
