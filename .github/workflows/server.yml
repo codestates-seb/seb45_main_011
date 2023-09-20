@@ -4,8 +4,6 @@ on:
   push:
     branches: [ main ]
 
-permissions: write-all
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -37,14 +35,6 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
         working-directory: ${{ env.working-directory }}
-
-      - name: Setup MySQL
-        uses: samin/mysql-action@v1
-        with:
-          character set server: 'utf8'
-          mysql database: ${{env.RDS_ENDPOINT}}
-          mysql user: ${{env.MYSQL_USER}}
-          mysql password: ${{env.MYSQL_PASSWORD}}
 
       - name: Build with Gradle
         run: ./gradlew build
