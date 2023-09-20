@@ -17,7 +17,7 @@ export default function ServiceInfo({ order }: ServiceInfoProps) {
   const { section, infoContainer, leftInfo, rightInfo, bottomInfo } =
     useServiceInfoAnimation(order);
 
-  const { title, sideContents, bottomContents, style } =
+  const { title, sideContents, bottomContents, style, gifUrl } =
     SERVICE_INFO_VALUES[order];
 
   return (
@@ -32,11 +32,11 @@ export default function ServiceInfo({ order }: ServiceInfoProps) {
             <PageTitle text={title} className="px-5 py-2" />
             <div className="relative w-full aspect-video">
               <Image
-                src="/assets/img/temporal_img.png"
+                src={gifUrl}
                 alt="서비스 동작 이미지"
                 fill
                 sizes="100%"
-                className="mt-5 object-contain"
+                className="mt-5 rounded-lg object-center object-cover shadow-outer/down"
               />
             </div>
           </div>
@@ -105,6 +105,7 @@ const SERVICE_INFO_VALUES = [
       left: 'top-[170px] -left-[173px]',
       right: 'bottom-[68px] -right-[175px]',
     },
+    gifUrl: `${process.env.NEXT_PUBLIC_IMAGE_URL}/main/garden.gif`,
   },
   {
     title: '모여라 식집사들!',
@@ -153,6 +154,7 @@ const SERVICE_INFO_VALUES = [
       left: 'bottom-[98px] -left-[163px]',
       right: 'top-[154px] -right-[172px]',
     },
+    gifUrl: `${process.env.NEXT_PUBLIC_IMAGE_URL}/main/community.gif`,
   },
   {
     title: '손쉬운 식물 관리!',
@@ -197,5 +199,6 @@ const SERVICE_INFO_VALUES = [
       left: 'top-[155px] -left-[147px]',
       right: 'bottom-[95px] -right-[129px]',
     },
+    gifUrl: `${process.env.NEXT_PUBLIC_IMAGE_URL}/main/card.gif`,
   },
 ];

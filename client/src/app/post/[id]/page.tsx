@@ -47,24 +47,19 @@ export default function Post({ params }: PostProps) {
   const { userId } = useUserStore();
   const { isOpen, type } = usePostModalStore();
 
-  useEffectOnce(() => router.refresh());
-
   const {
     data: post,
     isLoading,
     isError,
-  } = useQuery<PostDataInfo>(
-    ['post', boardId],
-    () => getPostByBoardId(boardId),
-    {
-      enabled: !!userId,
-    },
+  } = useQuery<PostDataInfo>(['post', boardId], () =>
+    getPostByBoardId(boardId),
   );
 
   const isOwner = userId === String(post?.accountId);
 
   useEffectOnce(() => {
     window.scrollTo(0, 0);
+    return router.refresh();
   });
 
   useEffect(() => {
@@ -128,7 +123,8 @@ export default function Post({ params }: PostProps) {
                     boardId={String(post.boardId)}
                     className="mb-3"
                   />
-                  <CommentForm boardId={String(post.boardId)} />
+                  {userId && <CommentForm boardId={String(post.boardId)} />}
+
                   <ul>
                     {comments?.map((comment: CommentDataInfo) => (
                       <Comment
