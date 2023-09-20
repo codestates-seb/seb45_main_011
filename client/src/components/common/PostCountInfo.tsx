@@ -1,8 +1,11 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import { motion } from 'framer-motion';
+
+import useUserStore from '@/stores/userStore';
 
 import useLikePostMutation from '@/hooks/useLikePostMutation';
 
@@ -24,6 +27,10 @@ export default function PostCountInfo({
   className,
   boardId,
 }: PostCountInfoProps) {
+  const router = useRouter();
+
+  const { userId } = useUserStore();
+
   const { mutate: likePost } = useLikePostMutation(boardId as string);
 
   return (
@@ -35,7 +42,11 @@ export default function PostCountInfo({
           className="flex gap-[0.375rem] ml-[2px]"
           role="button"
           onClick={() => {
-            likePost();
+            if (!userId) {
+              alert('로그인이 필요한 기능입니다.');
+              return router.push('/signin');
+            }
+            return likePost();
           }}>
           {liked ? (
             <Image
