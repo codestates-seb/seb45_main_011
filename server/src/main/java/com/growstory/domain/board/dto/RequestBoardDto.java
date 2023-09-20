@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 
@@ -58,14 +59,17 @@ public class RequestBoardDto {
         @Nullable
         private List<String> hashTags;
 
-        private boolean isImageUpdate;
+        @NotNull
+        private Boolean isImageUpdated;
+        // TODO: Lombok getter 명명 규칙
+
 
         @Builder
-        public Patch(@Nullable String title, @Nullable String content, @Nullable List<String> hashTags, boolean isImageUpdate) {
+        public Patch(@Nullable String title, @Nullable String content, @Nullable List<String> hashTags, boolean isImageUpdated) {
             this.title = title;
             this.content = content;
             this.hashTags = hashTags;
-            this.isImageUpdate = isImageUpdate;
+            this.isImageUpdated = isImageUpdated;
         }
     }
 }
