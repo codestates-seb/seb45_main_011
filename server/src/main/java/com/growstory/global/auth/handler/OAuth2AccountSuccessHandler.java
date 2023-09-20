@@ -134,7 +134,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("https")
-                .host("grow-story.vercel.app")
+                .host("growstory.vercel.app")
 //                .port(3000)
 //                .host("growstory.s3-website.ap-northeast-2.amazonaws.com")
 //                .port(80) //S3는 80포트
