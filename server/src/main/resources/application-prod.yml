@@ -87,7 +87,7 @@ mail:
 
 my:
   scheduled:
-    cron: 0 0 0 ? * MON
+    cron: 0 0 1 ? * MON
 
 server:
   port: 443
