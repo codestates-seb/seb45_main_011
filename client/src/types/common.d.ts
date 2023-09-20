@@ -8,29 +8,20 @@ export type addPrefixToHandler<T, P extends string> = {
     : never]: React.MouseEventHandler<HTMLButtonElement>;
 };
 
-export type LeafType = {
-  id: number;
-  name: string;
-  date: string;
-  imgUrl: string;
-  diary: DiaryInfo[] | null;
-};
-
 export type PlantInfo = {
+  productId: number;
+  plantObjId?: number;
   name: string;
   korName: string;
-  imageUrl: string;
+  imageUrlTable: {
+    sm: string;
+    lg: string;
+  };
   price: number;
+  isPurchasable?: boolean;
 };
 
-export interface DiaryInfo {
-  id: number;
-  date: string;
-  imgUrl: string;
-  title: string;
-  content: string;
-}
-type InputValues = {
+export type InputValues = {
   plantName: string;
   title: string;
   nickname: string;
@@ -40,4 +31,62 @@ type InputValues = {
   leafContent: string;
   diaryContent: string;
   hashTag: string;
+  image: FileList;
+  fieldState: string;
+  isBoard: boolean;
+};
+
+export type SignFormValue = {
+  email: string;
+  nickname: string;
+  password: string;
+  passwordCheck: string;
+  code: string;
+  onLogin: () => void;
+};
+
+export type UserData = {
+  accountId: number;
+  displayName: string;
+  email: string;
+  grade: string;
+  point: number;
+  profileImageUrl: string | null;
+};
+
+export type SearchValues = {
+  search: string;
+};
+
+export type CommentInputValue = {
+  comment: string;
+};
+
+export interface HistoryBoradProps {
+  paramsId: string;
+}
+
+export enum PageType {
+  Main,
+  Signup,
+  Signin,
+  Garden,
+  Board,
+  Leaf,
+  Leafs,
+  History,
+}
+
+export type ContextType = {
+  garden?: string;
+  leaf?: string;
+  leafId?: string;
+  leafs?: string;
+  history?: string;
+  slug?: string;
+};
+
+export type Post = {
+  slug: string;
+  title: string;
 };
