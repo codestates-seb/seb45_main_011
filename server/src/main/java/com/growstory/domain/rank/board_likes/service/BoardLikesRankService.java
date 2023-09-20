@@ -56,12 +56,10 @@ public class BoardLikesRankService {
         boardLikesRanks
                 .forEach(rankService::compensateWeeklyPoints);
 
-        // 이전 주의 랭킹 삭제 및 이번 주 랭킹 저장 (🆘 추후 리팩토링 필요, ♻️ 배치 사용?)
-        //TODO: 리팩토링 :: delete -> update ? 단, 동점자 고려 해야함.
+        // 이전 주의 랭킹 삭제 및 이번 주 랭킹 저장
         repository.deleteAll();
         List<BoardLikesRank> newBoardLikesRanks = boardService.findTop3LikedBoardRanks();
         repository.saveAll(newBoardLikesRanks);
-
     }
 
     // 이전 게시글 좋아요 랭킹을 이력 테이블로서 저장

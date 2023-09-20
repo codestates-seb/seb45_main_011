@@ -82,12 +82,12 @@ public class BoardService {
     }
 //
     public ResponseBoardDto getBoard(Long boardId) {
-        Account findAccount = authUserUtils.getAuthUser();
+//        Account findAccount = authUserUtils.getAuthUser();
         Board findBoard = findVerifiedBoard(boardId);
         List<ResponseHashTagDto> findHashTag = hashTagService.getHashTagList(boardId);
         List<ResponseCommentDto> findComment = commentService.getCommentListByBoardId(boardId);
 
-        return getResponseBoardDto(findAccount, findBoard, findHashTag, findComment);
+        return getResponseBoardDto(findBoard, findHashTag, findComment);
     }
 
     public Page<ResponseBoardPageDto> findBoards(int page, int size) {
@@ -213,14 +213,24 @@ public class BoardService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
     }
 
-    // TODO: 게스트 유저에 대한 게시판 상세 조회 기능 추가 해야함
-    private static ResponseBoardDto getResponseBoardDto(Account findAccount, Board findBoard, List<ResponseHashTagDto> findHashTag, List<ResponseCommentDto> findComment) {
+    private ResponseBoardDto getResponseBoardDto(Board findBoard, List<ResponseHashTagDto> findHashTag, List<ResponseCommentDto> findComment) {
+        boolean isLiked = false;
+        if ("USER".equals(authUserUtils.verifyAuthUser())) {
+            Account findAccount = authUserUtils.getAuthUser();
+            isLiked = findBoard.getBoardLikes().stream()
+                    .anyMatch(boardLike -> boardLike.getAccount().getAccountId() == findAccount.getAccountId());
+        }
+
+        if ("GUEST".equals(authUserUtils.verifyAuthUser())) {
+            isLiked = false; //TODO: 프런트 측과 나중에 상의
+        }
+
         return ResponseBoardDto.builder()
                 .boardId(findBoard.getBoardId())
                 .title(findBoard.getTitle())
                 .content(findBoard.getContent())
                 .boardImageUrl(findBoard.getBoardImages().stream().findFirst().map(BoardImage::getStoredImagePath).orElse(null))
-                .isLiked(findBoard.getBoardLikes().stream().anyMatch(boardLike -> boardLike.getAccount().getAccountId() == findAccount.getAccountId()))
+                .isLiked(isLiked)
                 .likeNum(findBoard.getBoardLikes().size())
                 .createAt(findBoard.getCreatedAt())
                 .modifiedAt(findBoard.getModifiedAt())
@@ -274,7 +284,9 @@ public class BoardService {
                 .takeWhile(objects -> {
                     Long likeCount = (Long) objects[1];
                     uniqueLikeCounts.add(likeCount);
-                    return uniqueLikeCounts.size() <= 3; // 고유한 '좋아요' 수가 3개 이하일 때까지
+                    return uniqueLikeCounts.size() <= 3 // 고유한 '좋아요' 수가 3개 이하이면서
+                            // 또한, 게시글이 3개 이하이면서 마지막 두 게시글의 랭킹이 같을 때까지
+                            && checkSameLikesCondition(boardLikesRanks);
                 })
                 .forEach(objects -> {
                     Board board = (Board) objects[0];
@@ -288,7 +300,23 @@ public class BoardService {
                     boardLikesRank.updateRank(uniqueLikeCounts.size());
                     boardLikesRanks.add(boardLikesRank);
                 });
+
+        // 게시글이 4개 이상일 때 마지막 두 게시글의 랭킹이 다르면 마지막 요소를 제거
+        checkSameLikesCondition(boardLikesRanks);
         return boardLikesRanks;
     }
+
+    private boolean checkSameLikesCondition(List<BoardLikesRank> boardLikesRanks) {
+        int boardSize = boardLikesRanks.size();
+        if(boardSize>=4 &&
+                (boardLikesRanks.get(boardSize-1).getRankStatus().getRank() !=
+                        boardLikesRanks.get(boardSize-2).getRankStatus().getRank())) {
+            boardLikesRanks.remove(boardLikesRanks.get(boardSize-1));
+            return false;
+        }
+        return true;
+    }
+
+
 }
 
