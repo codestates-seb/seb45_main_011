@@ -12,6 +12,8 @@ import HistoryBoard from './HistoryBoard';
 import HistoryLikes from './HistoryLikes';
 import HistoryComment from './HistoryComment';
 
+import { ADMIN_USER_ID } from '@/constants/values';
+
 interface HistoryProps {
   paramsId: string;
 }
@@ -35,9 +37,11 @@ export default function HistoryBox({ paramsId }: HistoryProps) {
       {isClient && (
         <div className="relative bg-[url('/assets/img/bg_wood_yellow.png')] rounded-[12px] border-8 border-border-30 shadow-outer/down shadow-container border-gradient mb-[60px]">
           <div className="flex flex-col items-center justify-center mb-2 max-[730px]:w-[512px] max-[530px]:w-[412px] max-[430px]:w-[312px] min-w-[312px] max-w-[715px] max-h-[650px] p-4 pt-9">
-            <div className="w-full flex justify-end gap-3 mr-1 mb-4 max-[530px]:flex max-[530px]:justify-center max-[530px]:items-center">
-              {isOwner && <UserButton />}
-            </div>
+            {userId !== ADMIN_USER_ID && (
+              <div className="w-full flex justify-end gap-3 mr-1 mb-4 max-[530px]:flex max-[530px]:justify-center max-[530px]:items-center">
+                {isOwner && <UserButton />}
+              </div>
+            )}
 
             <div className="mb-5 min-[580px]:flex justify-center items-center ml-2 mt-4">
               <UserInfo paramsId={paramsId} />
