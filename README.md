@@ -23,7 +23,7 @@
 ## 🚩 프로젝트 개요
 * **프로젝트 명** : Grow Story
 * **진행 기간** : 23.08.24 ~ 23.09.19
-* **서비스 URL** : [🌳 Grow Story 🌳 바로 가기](https://grow-story.vercel.app/)
+* **서비스 URL** : [🌳 Grow Story 🌳 바로 가기](https://growstory.vercel.app/)
 
 <br>
 
