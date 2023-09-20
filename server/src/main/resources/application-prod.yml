@@ -62,7 +62,10 @@ logging:
     org:
       hibernate:
         type:
-          descriptor: trace
+          descriptor: info
+  file:
+    name: server_log
+    path: /home/ssm-user
 
 # swagger
 springdoc:
@@ -87,7 +90,7 @@ mail:
 
 my:
   scheduled:
-    cron: 0 0 1 ? * MON
+    cron: 0 0 0 ? * MON
 
 server:
   port: 443
