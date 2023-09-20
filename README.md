@@ -63,7 +63,7 @@
 
 ## 📜 서비스 매뉴얼
 
-#### [📥 서비스 매뉴얼 다운로드](https://github.com/nalsae/seb45_main_011/files/12662276/Grow.Story.pdf)
+#### [📥 서비스 매뉴얼 다운로드](https://github.com/codestates-seb/seb45_main_011/files/12667869/Grow.Story.pdf)
 
 
 <br>
