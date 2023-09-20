@@ -38,10 +38,6 @@ jobs:
         run: chmod +x gradlew
         working-directory: ${{ env.working-directory }}
 
-      - name: Build with Gradle
-        run: ./gradlew build
-        working-directory: ${{ env.working-directory }}
-
       - name: Setup MySQL
         uses: samin/mysql-action@v1
         with:
@@ -49,6 +45,10 @@ jobs:
           mysql database: ${{env.RDS_ENDPOINT}}
           mysql user: ${{env.MYSQL_USER}}
           mysql password: ${{env.MYSQL_PASSWORD}}
+
+      - name: Build with Gradle
+        run: ./gradlew build
+        working-directory: ${{ env.working-directory }}
 
       - name: Docker build
         run: |
