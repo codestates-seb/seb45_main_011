@@ -10,8 +10,10 @@ import PasswordForm from './PasswordForm';
 import Screws from '../common/Screws';
 import CommonButton from '../common/CommonButton';
 
+import { ADMIN_USER_ID } from '@/constants/values';
+
 export default function ProfileBox() {
-  const { isGoogleLogin } = useUserStore();
+  const { userId, isGoogleLogin } = useUserStore();
   const changeState = useSignModalStore((state) => state.changeState);
 
   const handleResignModal = () => {
@@ -26,13 +28,15 @@ export default function ProfileBox() {
       <div className="w-full flex flex-col items-center mb-4">
         <NicknameForm />
         {!isGoogleLogin && <PasswordForm />}
-        <CommonButton
-          type="button"
-          size="md"
-          onClick={handleResignModal}
-          className="my-3">
-          {isGoogleLogin ? '연결 해제' : '회원 탈퇴'}
-        </CommonButton>
+        {userId !== ADMIN_USER_ID && (
+          <CommonButton
+            type="button"
+            size="md"
+            onClick={handleResignModal}
+            className="my-3">
+            {isGoogleLogin ? '연결 해제' : '회원 탈퇴'}
+          </CommonButton>
+        )}
       </div>
     </div>
   );
