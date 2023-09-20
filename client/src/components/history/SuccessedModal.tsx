@@ -17,7 +17,7 @@ export default function SuccessedModal() {
 
   const allCloseData = () => {
     setClear();
-    sessionStorage.clear();
+    localStorage.clear();
     close();
 
     router.push('/');
