@@ -11,7 +11,10 @@ import javax.persistence.*;
 
 @NoArgsConstructor
 @Getter
-@MappedSuperclass
+@DiscriminatorColumn(name = "DTYPE")
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "ranks")
+@Entity
 public abstract class Rank extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

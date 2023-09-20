@@ -35,4 +35,16 @@ public class AuthUserUtils {
         return accountRepository.findById(Long.parseLong((String) principal.get("accountId"))).orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_FOUND));
     }
+
+    public String verifyAuthUser() {
+        // Spring Security 컨텍스트에서 인증 객체를 가져 온다.
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // 사용자가 인증되지 않거나 익명인지 확인하고 그렇다면 예외 던지기
+        if (authentication.getName() == null || authentication.getName().equals("anonymousUser")) {
+            return "GUEST";
+        }
+
+        return "USER";
+    }
 }
