@@ -4,6 +4,7 @@ import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.account.repository.AccountRepository;
 import com.growstory.global.email.dto.EmailDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -16,10 +17,12 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
-@RequiredArgsConstructor
-@Async
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class EmailService {
     private final JavaMailSender mailSender;
     private final SpringTemplateEngine templateEngine;
@@ -27,51 +30,71 @@ public class EmailService {
     private final PasswordEncoder passwordEncoder;
 
     public EmailDto.SignUpResponse sendAuthCodeMail(EmailDto.Post emailPostDto) {
-        String authCode = getAuthCode();
-        MimeMessage mimeMessage = mailSender.createMimeMessage();
-
         try {
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
-            mimeMessageHelper.setTo(emailPostDto.getEmail()); // 수신 이메일
-            mimeMessageHelper.setSubject("[GrowStory] 회원가입 인증번호 안내"); // 이메일 제목
-            mimeMessageHelper.setText(setContext(authCode, "authCode"), true); // 이메일 본문
-            mailSender.send(mimeMessage);
-        } catch (MessagingException e) {
+            String authCode = getAuthCode();
+
+            CompletableFuture.runAsync(() -> {
+                String finalText = setContext(authCode, "authCode");
+                try {
+                    MimeMessage mimeMessage = mailSender.createMimeMessage();
+                    MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
+
+                    mimeMessageHelper.setTo(emailPostDto.getEmail()); // 수신 이메일
+                    mimeMessageHelper.setSubject("[GrowStory] 회원가입 인증번호 안내"); // 이메일 제목
+                    mimeMessageHelper.setText(finalText, true); // 이메일 본문
+
+                    mailSender.send(mimeMessage);
+                } catch (MessagingException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            return EmailDto.SignUpResponse.builder()
+                    .authCode(authCode)
+                    .build();
+        } catch (Exception e) {
+            // 예외 처리
             throw new RuntimeException(e);
         }
-
-        return EmailDto.SignUpResponse.builder()
-                .authCode(authCode)
-                .build();
     }
 
     public EmailDto.PasswordResponse sendPasswordMail(EmailDto.Post emailPostDto) {
-        Optional<Account> optionalAccount = accountRepository.findByEmail(emailPostDto
-                .getEmail());
-        String password = getAuthCode();
-        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        Optional<Account> optionalAccount = accountRepository.findByEmail(emailPostDto.getEmail());
 
-        optionalAccount.ifPresent(findAccount -> {
+        if (optionalAccount.isEmpty()) {
+            return EmailDto.PasswordResponse.builder()
+                    .isMatched(false)
+                    .build();
+        }
+
+
+        Account findAccount = optionalAccount.get();
+        String password = getAuthCode();
+
+        CompletableFuture.runAsync(() -> {
             try {
+                MimeMessage mimeMessage = mailSender.createMimeMessage();
                 MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
+
                 mimeMessageHelper.setTo(emailPostDto.getEmail()); // 수신 이메일
                 mimeMessageHelper.setSubject("[GrowStory] 임시 비밀번호 안내"); // 이메일 제목
                 mimeMessageHelper.setText(setContext(password, "password"), true); // 이메일 본문
                 mailSender.send(mimeMessage);
+
+                // password encode 필요
+                accountRepository.save(findAccount.toBuilder()
+                        .password(passwordEncoder.encode(password))
+                        .build());
             } catch (MessagingException e) {
                 throw new RuntimeException(e);
             }
-
-            // password encode 필요
-            accountRepository.save(findAccount.toBuilder()
-                    .password(passwordEncoder.encode(password))
-                    .build());
         });
 
         return EmailDto.PasswordResponse.builder()
-                .isMatched(optionalAccount.isPresent())
+                .isMatched(true)
                 .build();
     }
+
 
     // 인증 번호 겸 임시 비밀번호
     private String getAuthCode() {
