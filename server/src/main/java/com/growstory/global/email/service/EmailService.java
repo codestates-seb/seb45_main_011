@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.Random;
 
 @RequiredArgsConstructor
-@Async
+//@Async
 @Service
 public class EmailService {
     private final JavaMailSender mailSender;
