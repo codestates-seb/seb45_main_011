@@ -62,7 +62,10 @@ logging:
     org:
       hibernate:
         type:
-          descriptor: trace
+          descriptor: info
+  file:
+    name: server_log
+    path: /home/ssm-user
 
 # swagger
 springdoc:
@@ -93,5 +96,5 @@ server:
   port: 443
   ssl:
     key-store: classpath:keystore.p12
-    key-store-password: gskeystore
+    key-store-password: ${KEY_STORE_PASSWORD}
     key-store-type: PKCS12

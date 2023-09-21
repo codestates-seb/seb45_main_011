@@ -28,15 +28,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -85,12 +82,12 @@ public class BoardService {
     }
 //
     public ResponseBoardDto getBoard(Long boardId) {
-        Account findAccount = authUserUtils.getAuthUser();
+//        Account findAccount = authUserUtils.getAuthUser();
         Board findBoard = findVerifiedBoard(boardId);
         List<ResponseHashTagDto> findHashTag = hashTagService.getHashTagList(boardId);
         List<ResponseCommentDto> findComment = commentService.getCommentListByBoardId(boardId);
 
-        return getResponseBoardDto(findAccount, findBoard, findHashTag, findComment);
+        return getResponseBoardDto(findBoard, findHashTag, findComment);
     }
 
     public Page<ResponseBoardPageDto> findBoards(int page, int size) {
@@ -153,8 +150,8 @@ public class BoardService {
 
         // TODO:
         //  isImageUpdate = true => 기존 이미지를 삭제하고 싶을 때
-        //  isImageUpdate = false => 기존 이미지를 유지하고 싶을 때, 이미지 없어야 됨.
-        if (requestBoardDto.isImageUpdate() && boardImage != null) {
+        //  isImageUpdate = false => 기존 이미지를 유지하고 싶을 때, 입력받은 이미지 없어야 됨.
+        if (requestBoardDto.getIsImageUpdated() && boardImage != null) {
             boardImageService.deleteBoardImage(boardImage);
             findBoard.getBoardImages().clear();
         }
@@ -216,13 +213,24 @@ public class BoardService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
     }
 
-    private static ResponseBoardDto getResponseBoardDto(Account findAccount, Board findBoard, List<ResponseHashTagDto> findHashTag, List<ResponseCommentDto> findComment) {
+    private ResponseBoardDto getResponseBoardDto(Board findBoard, List<ResponseHashTagDto> findHashTag, List<ResponseCommentDto> findComment) {
+        boolean isLiked = false;
+        if ("USER".equals(authUserUtils.verifyAuthUser())) {
+            Account findAccount = authUserUtils.getAuthUser();
+            isLiked = findBoard.getBoardLikes().stream()
+                    .anyMatch(boardLike -> boardLike.getAccount().getAccountId() == findAccount.getAccountId());
+        }
+
+        if ("GUEST".equals(authUserUtils.verifyAuthUser())) {
+            isLiked = false; //TODO: 프런트 측과 나중에 상의
+        }
+
         return ResponseBoardDto.builder()
                 .boardId(findBoard.getBoardId())
                 .title(findBoard.getTitle())
                 .content(findBoard.getContent())
                 .boardImageUrl(findBoard.getBoardImages().stream().findFirst().map(BoardImage::getStoredImagePath).orElse(null))
-                .isLiked(findBoard.getBoardLikes().stream().anyMatch(boardLike -> boardLike.getAccount().getAccountId() == findAccount.getAccountId()))
+                .isLiked(isLiked)
                 .likeNum(findBoard.getBoardLikes().size())
                 .createAt(findBoard.getCreatedAt())
                 .modifiedAt(findBoard.getModifiedAt())

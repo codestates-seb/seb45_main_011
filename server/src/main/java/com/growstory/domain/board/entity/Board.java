@@ -9,6 +9,7 @@ import com.growstory.domain.comment.entity.Comment;
 import com.growstory.domain.images.entity.BoardImage;
 import com.growstory.domain.leaf.entity.Leaf;
 import com.growstory.domain.likes.entity.BoardLike;
+import com.growstory.domain.rank.board_likes.entity.BoardLikesRank;
 import com.growstory.global.audit.BaseTimeEntity;
 import lombok.*;
 
@@ -48,6 +49,9 @@ public class Board extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Board_HashTag> boardHashTags = new ArrayList<>();
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BoardLikesRank> boardLikesRanks = new ArrayList<>();
 
 
     @Builder
