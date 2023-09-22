@@ -38,14 +38,6 @@ export default function Leafs({ params }: LeafsProps) {
   const { userId } = useUserStore();
   const { isModalOpen, modalCategory } = useLeafsStore();
 
-  const router = useRouter();
-
-  useEffectOnce(() => {
-    if (!userId) {
-      router.push('/signin');
-    }
-  });
-
   const {
     data: leafs,
     isLoading,
@@ -53,7 +45,6 @@ export default function Leafs({ params }: LeafsProps) {
   } = useQuery<LeafsDataInfo[]>({
     queryKey: ['leafs'],
     queryFn: () => getLeafsByUserId(pathUserId),
-    enabled: !!userId,
   });
 
   const { data: user } = useQuery({

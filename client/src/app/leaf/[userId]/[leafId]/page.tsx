@@ -37,8 +37,6 @@ export default function Leaf({ params }: LeafProps) {
   const pathLeafId = params.leafId;
   const pathUserId = params.userId;
 
-  const router = useRouter();
-
   const userId = useUserStore((state) => state.userId);
 
   const isOwner = userId === pathUserId;
@@ -66,12 +64,6 @@ export default function Leaf({ params }: LeafProps) {
   const isError = results.some((result) => result.isError);
 
   const isEmpty = !diaries || diaries?.length === 0;
-
-  useEffectOnce(() => {
-    if (!userId) {
-      router.push('/signin');
-    }
-  });
 
   useEffect(() => {
     if (results) {
