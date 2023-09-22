@@ -1,12 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
-import { useQueries } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-
-import { getLeafsByUserId } from '@/api/leaf';
-import { getUserInfo } from '@/api/history';
 
 import useLeafsStore from '@/stores/leafsStore';
 import useUserStore from '@/stores/userStore';
@@ -22,10 +16,9 @@ import ShareButton from '@/components/common/ShareButton';
 import ShareModal from '@/components/common/ShareModal';
 import Footer from '@/components/common/Footer';
 
-import { LeafsDataInfo } from '@/types/data';
-import { UserData } from '@/types/common';
-
 import { MOUNT_ANIMATION_VALUES } from '@/constants/values';
+import useEffectOnce from '@/hooks/useEffectOnce';
+import useGetLeafsPageQueries from '@/hooks/useGetLeafsPageQueries';
 
 interface LeafsProps {
   params: { id: string };
@@ -35,35 +28,15 @@ export default function Leafs({ params }: LeafsProps) {
   const pathUserId = params.id;
 
   const { userId } = useUserStore();
-  const { isModalOpen, modalCategory } = useLeafsStore();
+  const { isModalOpen, modalCategory, isOwner, setIsOwner } = useLeafsStore();
 
-  const isOwner = userId === pathUserId;
-
-  const [leafs, setLeafs] = useState<LeafsDataInfo[]>();
-  const [user, setUser] = useState<UserData>();
-
-  const results = useQueries({
-    queries: [
-      {
-        queryKey: ['leafs'],
-        queryFn: () => getLeafsByUserId(pathUserId),
-      },
-      {
-        queryKey: ['user'],
-        queryFn: () => getUserInfo(pathUserId),
-      },
-    ],
+  useEffectOnce(() => {
+    if (userId === pathUserId) setIsOwner(true);
   });
 
-  const isLoading = results.some((result) => result.isLoading);
-  const isError = results.some((result) => result.isError);
-
-  useEffect(() => {
-    if (results) {
-      setLeafs(results[0].data);
-      setUser(results[1].data?.data);
-    }
-  }, [results]);
+  const { leafs, user, isLoading, isError } = useGetLeafsPageQueries({
+    pathUserId,
+  });
 
   return (
     <>
@@ -124,7 +97,7 @@ export default function Leafs({ params }: LeafsProps) {
 
         {isModalOpen &&
           (modalCategory === 'deleteLeaf' ? (
-            <LeafDeleteModal isOwner={isOwner} />
+            <LeafDeleteModal />
           ) : (
             <ShareModal location="leafs" />
           ))}

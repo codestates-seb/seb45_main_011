@@ -32,9 +32,8 @@ export default function Leaf({
 }: LeafProps) {
   const router = useRouter();
 
-  const { modalOpen, setDeleteTargetId, setModalCategory } = useLeafsStore();
-
-  const userId = useUserStore((state) => state.userId);
+  const { modalOpen, setDeleteTargetId, setModalCategory, isOwner } =
+    useLeafsStore();
 
   const handleLeafClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (onClick) {
@@ -83,7 +82,7 @@ export default function Leaf({
         </div>
       ) : null}
 
-      {location === 'leaf' && pathUserId === userId && (
+      {location === 'leaf' && isOwner && (
         <div className="flex h-full gap-1 absolute right-2.5 top-2.5 z-20">
           <ControlButton
             usage="edit"

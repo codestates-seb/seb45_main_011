@@ -6,11 +6,9 @@ import CommonButton from '../common/CommonButton';
 import ModalPortal from '../common/ModalPortal';
 import Modal from '../common/Modal';
 
-interface LeafDeleteModalProps {
-  isOwner: boolean;
-}
+export default function LeafDeleteModal() {
+  const { isOwner } = useLeafsStore();
 
-export default function LeafDeleteModal({ isOwner }: LeafDeleteModalProps) {
   if (!isOwner) return null;
 
   const { mutate } = useDeleteLeafMutation();
