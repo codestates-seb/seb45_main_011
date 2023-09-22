@@ -7,15 +7,11 @@ import ModalPortal from '../common/ModalPortal';
 import Modal from '../common/Modal';
 
 interface LeafDeleteModalProps {
-  pathUserId: string;
-  userId: string | null;
+  isOwner: boolean;
 }
 
-export default function LeafDeleteModal({
-  userId,
-  pathUserId,
-}: LeafDeleteModalProps) {
-  if (userId !== pathUserId) return null;
+export default function LeafDeleteModal({ isOwner }: LeafDeleteModalProps) {
+  if (!isOwner) return null;
 
   const { mutate } = useDeleteLeafMutation();
 

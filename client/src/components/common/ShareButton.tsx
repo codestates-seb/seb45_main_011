@@ -26,6 +26,7 @@ export default function ShareButton({
 }: ShareButtonProps) {
   const url = usePathname();
 
+  /** 사용된 장소가 식물 카드 관련 페이지 인지 */
   const isLeafs = location === 'leaf' || location === 'leafs';
 
   const { modalOpen: leafsModalOpen, setModalCategory: setLeafsModalCategory } =

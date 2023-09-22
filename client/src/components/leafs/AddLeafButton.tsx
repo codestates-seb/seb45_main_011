@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 interface AddLeafButtonProps {
-  userId: number;
+  userId: string;
 }
 
 export default function AddLeafButton({ userId }: AddLeafButtonProps) {
