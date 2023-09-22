@@ -29,6 +29,8 @@ export default function Diary({
 
   const userId = useUserStore((state) => state.userId);
 
+  const isOwner = pathUserId === userId;
+
   const { modalOpen, setModalCategory, setTargetDiary } = useLeafStore();
 
   const startDay = new Date(createdAt);
@@ -53,7 +55,7 @@ export default function Diary({
           {month + '/' + day}
         </span>
         <div className="relative grid grid-cols-1 gap-2 w-full max-w-[380px] h-[150px] p-3 pl-4 pb-[0.9rem] bg-brown-10 border-2 border-brown-50 rounded-lg shadow-outer/down">
-          {pathUserId === userId && (
+          {isOwner && (
             <div className="absolute right-[10px] top-[10px] flex gap-2">
               <ControlButton
                 usage="edit"

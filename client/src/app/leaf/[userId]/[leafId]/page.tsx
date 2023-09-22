@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 
 import { useQueries } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
@@ -10,8 +9,6 @@ import { getDiariesByLeafAndUserId, getLeafByLeafId } from '@/api/leaf';
 
 import useLeafStore from '@/stores/leafStore';
 import useUserStore from '@/stores/userStore';
-
-import useEffectOnce from '@/hooks/useEffectOnce';
 
 import Screws from '@/components/common/Screws';
 import LeafInfo from '@/components/leaf/LeafInfo';
@@ -88,13 +85,6 @@ export default function Leaf({ params }: LeafProps) {
         animate="animate"
         className="flex justify-center items-center h-auto min-h-full pt-[120px] pb-[343px]">
         <div className="relative w-full min-w-[312px] max-w-[560px] h-[680px] mx-4 border-gradient rounded-xl shadow-container">
-          {leaf && (
-            <ShareButton
-              location="leaf"
-              position="top"
-              className="right-[48px]"
-            />
-          )}
           <div className="h-full pl-4 pr-2 py-8 mr-2">
             <Screws />
             {isLoading ? (
@@ -107,31 +97,38 @@ export default function Leaf({ params }: LeafProps) {
               </div>
             ) : (
               leaf && (
-                <div className="h-full">
-                  <LeafInfo
-                    userId={userId}
-                    pathUserId={pathUserId}
-                    leafName={leaf?.leafName}
-                    imageUrl={leaf?.leafImageUrl}
-                    content={leaf?.content}
-                    createdAt={leaf?.createdAt}
+                <>
+                  <ShareButton
+                    location="leaf"
+                    position="top"
+                    className="right-[48px]"
                   />
-                  <LeafDateInfo />
-                  {isEmpty ? (
-                    <EmptyDiary
-                      pathUserId={pathUserId}
+                  <div className="h-full">
+                    <LeafInfo
                       userId={userId}
-                      info="diary"
-                      addInfo="addDiary"
-                      className="max-[380px]:w-[240px]"
-                    />
-                  ) : (
-                    <LeafDiary
                       pathUserId={pathUserId}
-                      diaries={diaries as DiaryDataInfo[]}
+                      leafName={leaf?.leafName}
+                      imageUrl={leaf?.leafImageUrl}
+                      content={leaf?.content}
+                      createdAt={leaf?.createdAt}
                     />
-                  )}
-                </div>
+                    <LeafDateInfo />
+                    {isEmpty ? (
+                      <EmptyDiary
+                        pathUserId={pathUserId}
+                        userId={userId}
+                        info="diary"
+                        addInfo="addDiary"
+                        className="max-[380px]:w-[240px]"
+                      />
+                    ) : (
+                      <LeafDiary
+                        pathUserId={pathUserId}
+                        diaries={diaries as DiaryDataInfo[]}
+                      />
+                    )}
+                  </div>
+                </>
               )
             )}
           </div>

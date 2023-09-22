@@ -3,13 +3,13 @@
 import { useRouter } from 'next/navigation';
 
 import { motion } from 'framer-motion';
+import { twMerge } from 'tailwind-merge';
 
 import useLeafStore from '@/stores/leafStore';
 
 import { INFOMATION_TEXT } from '@/constants/contents';
 
 import { DefaultProps } from '@/types/common';
-import { twMerge } from 'tailwind-merge';
 
 interface EmptyDiaryProps extends DefaultProps {
   pathUserId: string;
