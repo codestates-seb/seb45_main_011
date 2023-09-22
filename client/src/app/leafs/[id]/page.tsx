@@ -31,7 +31,8 @@ export default function Leafs({ params }: LeafsProps) {
   const { isModalOpen, modalCategory, isOwner, setIsOwner } = useLeafsStore();
 
   useEffectOnce(() => {
-    if (userId === pathUserId) setIsOwner(true);
+    if (userId === pathUserId) return setIsOwner(true);
+    return setIsOwner(false);
   });
 
   const { leafs, user, isLoading, isError } = useGetLeafsPageQueries({

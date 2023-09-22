@@ -1,10 +1,7 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-
-import { deleteDiary } from '@/api/leaf';
-
 import useLeafStore from '@/stores/leafStore';
 
 import CommonButton from '../common/CommonButton';
+import useDeleteDiaryMutation from '@/hooks/useDeleteDiaryMutaion';
 
 interface DiaryDeleteModalProps {
   deleteTargetId?: string | null;
@@ -19,23 +16,17 @@ export function DiaryDeleteModal({
 }: DiaryDeleteModalProps) {
   if (!deleteTargetId) return null;
 
-  const queryClient = useQueryClient();
-
-  const { mutate } = useMutation({
-    mutationFn: () => deleteDiary({ diaryId: deleteTargetId, userId }),
-    onSuccess: () => {
-      // 성공 후 새로운 쿼리를 다시 가져올 수 있도록 캐시 무효화
-      queryClient.invalidateQueries(['diaries', leafId]);
-    },
-  });
+  const { mutate: deleteDiary } = useDeleteDiaryMutation(leafId);
 
   const modalClose = useLeafStore((state) => state.modalClose);
 
   const handleCancelModal = () => modalClose();
+
   const handleDeleteDiary = () => {
     modalClose();
-    mutate();
+    deleteDiary({ diaryId: deleteTargetId, userId });
   };
+
   return (
     <div className="w-[320px] px-[2rem] py-[1.5rem] flex flex-col justify-center">
       <p className="text-center font-bold text-[1.6rem] leading-8 text-brown-70 mb-1 break-words">

@@ -12,24 +12,18 @@ import { INFOMATION_TEXT } from '@/constants/contents';
 import { DefaultProps } from '@/types/common';
 
 interface EmptyDiaryProps extends DefaultProps {
-  pathUserId: string;
-  userId: string | null;
-
   info: 'diary' | 'board' | 'likes' | 'comment';
   addInfo?: 'addDiary' | 'addBoard';
 }
 
 export default function EmptyDiary({
-  pathUserId,
-  userId,
   info,
   addInfo,
   className,
 }: EmptyDiaryProps) {
-  const isOwner = pathUserId === userId;
   const router = useRouter();
 
-  const { modalOpen, setModalCategory } = useLeafStore();
+  const { modalOpen, setModalCategory, isOwner } = useLeafStore();
 
   const addDiary = () => {
     modalOpen();

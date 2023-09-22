@@ -11,8 +11,6 @@ interface LeafInfoProps {
   leafName: string;
   imageUrl: string;
   content: string;
-  createdAt: string;
-  userId: string | null;
 }
 
 export default function LeafInfo({
@@ -20,14 +18,11 @@ export default function LeafInfo({
   imageUrl,
   content,
   pathUserId,
-  userId,
 }: LeafInfoProps) {
   const router = useRouter();
 
-  const setModalCategory = useLeafStore((state) => state.setModalCategory);
-  const modalOpen = useLeafStore((state) => state.modalOpen);
-
-  const isOwner = userId === pathUserId;
+  const { isOwner, setModalCategory } = useLeafStore();
+  const { modalOpen } = useLeafStore();
 
   const navigateToGarden = () => router.push(`/garden/${pathUserId}`);
 

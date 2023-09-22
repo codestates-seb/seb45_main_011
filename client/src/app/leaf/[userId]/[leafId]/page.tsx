@@ -1,14 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
-import { useQueries } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-
-import { getDiariesByLeafAndUserId, getLeafByLeafId } from '@/api/leaf';
 
 import useLeafStore from '@/stores/leafStore';
 import useUserStore from '@/stores/userStore';
+
+import useEffectOnce from '@/hooks/useEffectOnce';
+import useGetLeafPageQueries from '@/hooks/useGetLeafPageQueries';
 
 import Screws from '@/components/common/Screws';
 import LeafInfo from '@/components/leaf/LeafInfo';
@@ -22,7 +20,7 @@ import ErrorMessage from '@/components/common/ErrorMessage';
 import ShareModal from '@/components/common/ShareModal';
 import Footer from '@/components/common/Footer';
 
-import { DiaryDataInfo, LeafDataInfo } from '@/types/data';
+import { DiaryDataInfo } from '@/types/data';
 
 import { MOUNT_ANIMATION_VALUES } from '@/constants/values';
 
@@ -36,46 +34,17 @@ export default function Leaf({ params }: LeafProps) {
 
   const userId = useUserStore((state) => state.userId);
 
-  const isOwner = userId === pathUserId;
+  const { modalCategory, isModalOpen, isOwner, setIsOwner } = useLeafStore();
 
-  const { modalCategory, isModalOpen, setStartDay, setLastDiaryDay } =
-    useLeafStore();
-
-  const [leaf, setLeaf] = useState<LeafDataInfo>();
-  const [diaries, setDiaries] = useState<DiaryDataInfo[]>();
-
-  const results = useQueries({
-    queries: [
-      {
-        queryKey: ['leaf', pathLeafId],
-        queryFn: () => getLeafByLeafId(pathLeafId),
-      },
-      {
-        queryKey: ['diaries', pathLeafId],
-        queryFn: () => getDiariesByLeafAndUserId(pathLeafId, pathUserId),
-      },
-    ],
+  useEffectOnce(() => {
+    if (userId === pathUserId) return setIsOwner(true);
+    return setIsOwner(false);
   });
 
-  const isLoading = results.some((result) => result.isLoading);
-  const isError = results.some((result) => result.isError);
-
-  const isEmpty = !diaries || diaries?.length === 0;
-
-  useEffect(() => {
-    if (results) {
-      setLeaf(results[0].data);
-      setDiaries(results[1].data);
-    }
-  }, [results]);
-
-  useEffect(() => {
-    if (leaf?.createdAt) setStartDay(new Date(leaf.createdAt));
-  }, [leaf]);
-
-  useEffect(() => {
-    if (!isEmpty) setLastDiaryDay(new Date(diaries[0].createdAt));
-  }, [diaries]);
+  const { leaf, diaries, isLoading, isError, isEmpty } = useGetLeafPageQueries({
+    pathUserId,
+    pathLeafId,
+  });
 
   return (
     <>
@@ -105,27 +74,20 @@ export default function Leaf({ params }: LeafProps) {
                   />
                   <div className="h-full">
                     <LeafInfo
-                      userId={userId}
                       pathUserId={pathUserId}
                       leafName={leaf?.leafName}
                       imageUrl={leaf?.leafImageUrl}
                       content={leaf?.content}
-                      createdAt={leaf?.createdAt}
                     />
                     <LeafDateInfo />
                     {isEmpty ? (
                       <EmptyDiary
-                        pathUserId={pathUserId}
-                        userId={userId}
                         info="diary"
                         addInfo="addDiary"
                         className="max-[380px]:w-[240px]"
                       />
                     ) : (
-                      <LeafDiary
-                        pathUserId={pathUserId}
-                        diaries={diaries as DiaryDataInfo[]}
-                      />
+                      <LeafDiary diaries={diaries as DiaryDataInfo[]} />
                     )}
                   </div>
                 </>
