@@ -130,9 +130,9 @@ public class PlantObjService {
                 .forEach(patchLocationDto -> {
                     LocationDto.Patch locationPatchDto = patchLocationDto.getLocationDto();
                     //프로덕트 id와 로케이션 id가 일치하지 않으면 예외 발생
-                    if(patchLocationDto.getPlantObjId()!=locationPatchDto.getLocationId()) {
-                        throw new BusinessLogicException(ExceptionCode.LOCATION_NOT_ALLOW);
-                    }
+//                    if(patchLocationDto.getPlantObjId()!=locationPatchDto.getLocationId()) {
+//                        throw new BusinessLogicException(ExceptionCode.LOCATION_NOT_ALLOW);
+//                    }
                     if(locationPatchDto.getX()<0 || locationPatchDto.getX()>11 ||
                         locationPatchDto.getY()<0 || locationPatchDto.getY()>7) {
                         throw new BusinessLogicException(ExceptionCode.INVALID_LOCATION);

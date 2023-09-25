@@ -89,6 +89,9 @@ my:
   scheduled:
     cron: 0 0 0 ? * MON
 
+event:
+  key: ${EVENT_KEY}
+
 server:
   port: 443
   ssl:
