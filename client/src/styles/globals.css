@@ -3,9 +3,27 @@
 @tailwind utilities;
 
 @layer utilities {
+  .bg-gradient {
+    background: linear-gradient(
+      180deg,
+      #63a44a 25.73%,
+      #4d6338 50.49%,
+      #3b241b 100%
+    );
+  }
+
   .border-gradient {
     border: 8px solid transparent;
     background-image: url('/assets/img/bg_wood_yellow.png'),
+      linear-gradient(#ec9355, #dc7737);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+  }
+
+  .border-garden {
+    border: 8px solid transparent;
+    background-size: cover;
+    background-image: linear-gradient(#a0b35a, #a0b35a),
       linear-gradient(#ec9355, #dc7737);
     background-origin: border-box;
     background-clip: content-box, border-box;
@@ -15,18 +33,29 @@
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
   }
 
+  .shadow-container {
+    box-shadow:
+      0px 0px 4px 2px rgba(128, 59, 34, 0.45) inset,
+      0px 4px 4px 0px rgba(0, 0, 0, 0.3);
+  }
+
   .scrollbar::-webkit-scrollbar {
     width: 8px;
+    height: 8px;
     background-color: rgba(0, 0, 0, 0);
   }
 
   .scrollbar::-webkit-scrollbar-thumb {
     border-radius: 8px;
     background-color: #a2573b;
-    /* box-shadow 적용 시 잔상이 생기는 이슈가 있어서 일단 제외 */
-    /* box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25); */
   }
-    
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background-color: rgba(0, 0, 0, 0);
+  }
+
   .leaf-tag {
     border: rgba(103, 46, 24, 1) solid 2px;
     border-radius: 8px;
@@ -37,7 +66,7 @@
     position: relative;
     box-shadow: 0px 0px 16px 6px rgba(255, 242, 211, 1);
   }
-  
+
   .leaf-tag:after {
     content: '';
     position: absolute;
@@ -45,14 +74,16 @@
     left: 50%;
     width: 0;
     height: 0;
-    border: 11px solid transparent;
-    border-top-color: rgba(103, 46, 24, 1);
+    border-top: 12px solid transparent;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
     border-bottom: 0;
-    margin-left: -11px;
-    margin-bottom: -11px;
+    border-top-color: rgba(103, 46, 24, 1);
+    margin-left: -7px;
+    margin-bottom: -12px;
     z-index: 2;
   }
-  
+
   .leaf-tag:before {
     content: '';
     position: absolute;
@@ -60,13 +91,53 @@
     left: 50%;
     width: 0;
     height: 0;
-    border: 9px solid transparent;
-    border-top-color: #fbedcc;
+    border-top: 12px solid transparent;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
     border-bottom: 0;
-    margin-left: -9px;
+    border-bottom: 0;
+    border-top-color: #fbedcc;
+    margin-left: -7px;
     margin-bottom: -9px;
     z-index: 3;
   }
+
+  .grid-garden {
+    display: grid;
+    grid-template-columns: repeat(12, 60px);
+    grid-template-rows: repeat(8, 60px);
+  }
+
+  .banner-text-shadow {
+    /* -webkit-text-stroke: 2px #141619; */
+    text-shadow:
+      -2px 0px #141619,
+      0px 4px #141619,
+      2px 0px #141619,
+      0px 0px #141619;
+  }
+
+  .common-drop-shadow {
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  }
+
+  .sizeUpAndDown {
+    animation: sizeUpAndDown 1s ease-in-out infinite;
+  }
+
+  @keyframes sizeUpAndDown {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+}
+
+input:disabled {
+  background-color: #ffffff;
 }
 
 html {
@@ -77,4 +148,19 @@ ul,
 ol,
 li {
   list-style: none;
+}
+
+img {
+  image-rendering: crisp-edges;
+  backface-visibility: hidden;
+}
+
+@media (max-height: 712px) {
+  .diary-overflow {
+    height: 480px;
+  }
+
+  .diary-overflow > form {
+    padding-right: 16px;
+  }
 }

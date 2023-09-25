@@ -62,7 +62,10 @@ logging:
     org:
       hibernate:
         type:
-          descriptor: trace
+          descriptor: info
+  file:
+    name: server_log
+    path: /home/ssm-user
 
 # swagger
 springdoc:
