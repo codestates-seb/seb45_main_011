@@ -21,6 +21,7 @@ jobs:
       G_CLIENT_ID: ${{secrets.G_CLIENT_ID}}
       G_CLIENT_SECRET: ${{secrets.G_CLIENT_SECRET}}
       JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
+      KEY_STORE_PASSWORD: ${{secrets.KEY_STORE_PASSWORD}}
       working-directory: ./server
 
     steps:
@@ -55,9 +56,10 @@ jobs:
           --build-arg G_CLIENT_ID="${{env.G_CLIENT_ID}}" \
           --build-arg G_CLIENT_SECRET="${{env.G_CLIENT_SECRET}}" \
           --build-arg JWT_SECRET_KEY="${{env.JWT_SECRET_KEY}}" \
+          --build-arg KEY_STORE_PASSWORD="${{env.KEY_STORE_PASSWORD}}" \
           -t growstory-cicd . 
-          docker tag growstory-cicd gdh012/growstory-cicd:${GITHUB_SHA::7}
-          docker push gdh012/growstory-cicd:${GITHUB_SHA::7}
+          docker tag growstory-cicd dokyung94/growstory-cicd:${GITHUB_SHA::7}
+          docker push dokyung94/growstory-cicd:${GITHUB_SHA::7}
         working-directory: ${{ env.working-directory }}
 
       - name: Configure AWS credentials
@@ -76,6 +78,6 @@ jobs:
           envs: GITHUB_SHA
           script: |
             sudo docker rm -f server
-            sudo docker pull gdh012/growstory-cicd:${GITHUB_SHA::7}
-            sudo docker tag gdh012/growstory-cicd:${GITHUB_SHA::7} growstory-cicd
+            sudo docker pull dokyung94/growstory-cicd:${GITHUB_SHA::7}
+            sudo docker tag dokyung94/growstory-cicd:${GITHUB_SHA::7} growstory-cicd
             sudo docker run -d --name server -e TZ=Asia/Seoul -p 443:443 growstory-cicd
