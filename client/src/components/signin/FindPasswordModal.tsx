@@ -4,12 +4,10 @@ import { useForm } from 'react-hook-form';
 
 import { getUsersEmail, sendTemporaryPasswordByEmail } from '@/api/user';
 
-import useSignModalStore from '@/stores/signModalStore';
+import useModalStore from '@/stores/modalStore';
 
-import Modal from '../common/Modal';
-import ModalPortal from '../common/ModalPortal';
-import SignModalInput from '../sign/SignModalInput';
-import CommonButton from '../common/CommonButton';
+import { SignModalInput } from '../sign';
+import { CommonButton, Modal, ModalPortal } from '../common';
 
 import { SignFormValue, UserData } from '@/types/common';
 
@@ -20,7 +18,7 @@ export default function FindPasswordModal() {
     formState: { isSubmitting },
   } = useForm<SignFormValue>();
 
-  const { close, changeState } = useSignModalStore();
+  const { close, changeType } = useModalStore();
 
   const userEmail = watch('email');
 
@@ -39,10 +37,10 @@ export default function FindPasswordModal() {
       (current: UserData) => current.email === userEmail,
     );
 
-    if (!existEmail) return changeState('FailureModal');
+    if (!existEmail) return changeType('FailureModal');
 
     postNewPassword(email);
-    return changeState('SuccessedModal');
+    return changeType('SuccessedModal');
   };
 
   return (

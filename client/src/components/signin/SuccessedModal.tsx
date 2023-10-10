@@ -1,11 +1,9 @@
-import useSignModalStore from '@/stores/signModalStore';
+import useModalStore from '@/stores/modalStore';
 
-import CommonButton from '../common/CommonButton';
-import Modal from '../common/Modal';
-import ModalPortal from '../common/ModalPortal';
+import { CommonButton, Modal, ModalPortal } from '../common';
 
 export default function SuccessedModal() {
-  const close = useSignModalStore((state) => state.close);
+  const { close } = useModalStore();
 
   return (
     <ModalPortal>
@@ -24,10 +22,10 @@ export default function SuccessedModal() {
             <CommonButton
               type="button"
               size="sm"
-              children="닫기"
               className="py-2 px-4 text-[20px]"
-              onClose={close}
-            />
+              onClose={close}>
+              닫기
+            </CommonButton>
           </div>
         </div>
       </Modal>

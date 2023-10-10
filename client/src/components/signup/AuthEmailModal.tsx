@@ -2,13 +2,11 @@
 
 import { useForm } from 'react-hook-form';
 
-import useSignModalStore from '@/stores/signModalStore';
+import useModalStore from '@/stores/modalStore';
 import useSignStore from '@/stores/signStore';
 
-import Modal from '../common/Modal';
-import ModalPortal from '../common/ModalPortal';
-import SignModalInput from '../sign/SignModalInput';
-import CommonButton from '../common/CommonButton';
+import { SignModalInput } from '../sign';
+import { CommonButton, Modal, ModalPortal } from '../common';
 
 import { SignFormValue } from '@/types/common';
 
@@ -19,8 +17,8 @@ export default function AuthEmailModal() {
     formState: { isSubmitting },
   } = useForm<SignFormValue>();
 
-  const { close, changeState } = useSignModalStore();
-  const code = useSignStore((state) => state.code);
+  const { close, changeType } = useModalStore();
+  const { code } = useSignStore();
 
   const userCode = watch('code');
 
@@ -28,10 +26,10 @@ export default function AuthEmailModal() {
     if (!userCode) return;
 
     if (userCode === code) {
-      return changeState('Successed');
+      return close();
     }
 
-    return changeState('Not Code');
+    return changeType('FailureModal');
   };
 
   return (

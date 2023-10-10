@@ -1,14 +1,12 @@
-import useSignModalStore from '@/stores/signModalStore';
+import useModalStore from '@/stores/modalStore';
 
-import CommonButton from '../common/CommonButton';
-import Modal from '../common/Modal';
-import ModalPortal from '../common/ModalPortal';
+import { CommonButton, Modal, ModalPortal } from '../common';
 
 export default function FailureModal() {
-  const changeState = useSignModalStore((state) => state.changeState);
+  const { changeType } = useModalStore();
 
   const handleCodeFailure = () => {
-    return changeState('AuthEmailModal');
+    return changeType('AuthEmailModal');
   };
 
   return (
