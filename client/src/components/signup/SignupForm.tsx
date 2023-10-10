@@ -8,6 +8,8 @@ import { postCreateUser, sendCodeByEmail } from '@/api/user';
 import useSignModalStore from '@/stores/signModalStore';
 import useSignStore from '@/stores/signStore';
 
+import useEffectOnce from '@/hooks/useEffectOnce';
+
 import SignInput from '../sign/SignInput';
 import SignPasswordInput from '../sign/SignPasswordInput';
 
@@ -28,7 +30,9 @@ export default function SignupForm() {
   const { changeState, currentState } = useSignModalStore();
   const { setCode, getSigninForm, getSignupForm } = useSignStore();
 
-  const successedCode = currentState === 'Successed';
+  useEffectOnce(() => {
+    changeState('');
+  });
 
   const handleValidateEmail = () => {
     changeState('AuthEmailModal');
@@ -65,6 +69,8 @@ export default function SignupForm() {
       console.error(error);
     }
   };
+
+  const successedCode = currentState === 'Successed';
 
   return (
     <div>
