@@ -36,7 +36,7 @@ export default function ServiceInfo({ order }: ServiceInfoProps) {
                 alt="서비스 동작 이미지"
                 fill
                 sizes="100%"
-                className="mt-5 rounded-lg object-center object-cover shadow-outer/down"
+                className="mt-5 rounded-lg bg-brown-20 object-center object-cover shadow-outer/down"
               />
             </div>
           </div>

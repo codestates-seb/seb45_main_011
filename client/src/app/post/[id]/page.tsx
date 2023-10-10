@@ -13,10 +13,15 @@ import useUserStore from '@/stores/userStore';
 
 import useEffectOnce from '@/hooks/useEffectOnce';
 
+import {
+  PageTitle,
+  PostCountInfo,
+  Screws,
+  LoadingNotice,
+  ErrorMessage,
+  Footer,
+} from '@/components/common';
 import PostDeleteModal from '@/components/post/PostDeleteModal';
-import PageTitle from '@/components/common/PageTitle';
-import PostCountInfo from '@/components/common/PostCountInfo';
-import Screws from '@/components/common/Screws';
 import Comment from '@/components/post/Comment';
 import CommentForm from '@/components/post/CommentForm';
 import PostContent from '@/components/post/PostContent';
@@ -25,9 +30,6 @@ import PostImage from '@/components/post/PostImage';
 import PostProfile from '@/components/post/PostProfile';
 import HashTags from '@/components/post/HashTags';
 import CommentDeleteModal from '@/components/post/CommentDeleteModal';
-import LoadingNotice from '@/components/common/LoadingNotice';
-import ErrorMessage from '@/components/common/ErrorMessage';
-import Footer from '@/components/common/Footer';
 
 import { CommentDataInfo, PostDataInfo } from '@/types/data';
 
