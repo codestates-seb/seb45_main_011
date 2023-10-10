@@ -1,23 +1,24 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { postUserInfo } from '@/api/user';
 
-import useSignModalStore from '@/stores/signModalStore';
+import useModalStore from '@/stores/modalStore';
 import useSignStore from '@/stores/signStore';
 import useUserStore from '@/stores/userStore';
 
-import SignPasswordInput from '../sign/SignPasswordInput';
-import SignInput from '../sign/SignInput';
-
-import CommonButton from '../common/CommonButton';
+import { SignPasswordInput, SignInput } from '../sign';
+import { CommonButton } from '../common';
 
 import { SignFormValue } from '@/types/common';
 
+import { ALERT_TEXT } from '@/constants/contents';
+
 export default function SigninForm() {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -26,11 +27,9 @@ export default function SigninForm() {
     reset,
   } = useForm<SignFormValue>();
 
-  const router = useRouter();
-
-  const changeState = useSignModalStore((state) => state.changeState);
-  const setUser = useUserStore((state) => state.setUser);
+  const { open, changeType } = useModalStore();
   const { getSigninForm, getSignupForm } = useSignStore();
+  const { setEmailUser } = useUserStore();
 
   const onLogin: SubmitHandler<SignFormValue> = async ({
     email,
@@ -40,14 +39,17 @@ export default function SigninForm() {
       const response = await postUserInfo(email, password);
 
       const userId = String(response.data.accountId);
+
       const accessToken = response.headers.authorization;
       const refreshToken = response.headers.refresh;
+
       const displayName = decodeURIComponent(
         response.data.displayName,
       ).replaceAll('+', ' ');
+
       const profileImageUrl = response.data.profileImageUrl;
 
-      setUser({
+      setEmailUser({
         userId,
         accessToken,
         refreshToken,
@@ -62,13 +64,13 @@ export default function SigninForm() {
 
       router.push('/');
     } catch (error) {
-      alert('로그인에 실패했습니다. 다시 시도해 주세요.');
+      alert(ALERT_TEXT.login);
       console.error(error);
     }
   };
 
   return (
-    <div className="flex flex-col items-center gap-5 px-5 mt-3">
+    <section className="flex flex-col items-center gap-5 px-5 mt-3">
       <form onSubmit={handleSubmit(onLogin)}>
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-1">
@@ -92,12 +94,15 @@ export default function SigninForm() {
               type="button"
               size="md"
               className="w-[161px] h-[44px]"
-              onFind={() => changeState('FindPasswordModal')}>
+              onFind={() => {
+                changeType('FindPasswordModal');
+                open();
+              }}>
               비밀번호 찾기
             </CommonButton>
           </div>
         </div>
       </form>
-    </div>
+    </section>
   );
 }

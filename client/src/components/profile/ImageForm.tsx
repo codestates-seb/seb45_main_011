@@ -12,6 +12,7 @@ import useClient from '@/hooks/useClient';
 import CommonButton from '../common/CommonButton';
 
 import { DefaultProps } from '@/types/common';
+import { ALERT_TEXT } from '@/constants/contents';
 
 export default function ImageForm({ className }: DefaultProps) {
   const isClient = useClient();
@@ -32,7 +33,7 @@ export default function ImageForm({ className }: DefaultProps) {
       }
     }
 
-    alert('2mb 이하의 이미지만 등록이 가능합니다.');
+    alert(ALERT_TEXT.image);
     return false;
   };
 

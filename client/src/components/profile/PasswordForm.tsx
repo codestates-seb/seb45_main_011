@@ -11,6 +11,7 @@ import PasswordInput from '../common/PasswordInput';
 import CommonButton from '../common/CommonButton';
 
 import { InputValues } from '@/types/common';
+import { ALERT_TEXT } from '@/constants/contents';
 
 export default function PasswordForm() {
   const {
@@ -31,7 +32,7 @@ export default function PasswordForm() {
     if (!presentPassword && !changedPassword) return;
 
     if (presentPassword === changedPassword) {
-      alert('기존 비밀번호와 동일합니다. 새로운 비밀번호를 입력해 주세요.');
+      alert(ALERT_TEXT.password);
       return;
     }
 
