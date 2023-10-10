@@ -10,6 +10,7 @@ interface SignLinkProps extends DefaultProps {
   type: 'signin' | 'signup';
   route: '/signin' | '/signup';
   text: 'signinText' | 'signupText';
+
   onLinkTo?: () => void;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }

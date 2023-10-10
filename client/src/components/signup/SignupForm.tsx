@@ -1,24 +1,26 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { postCreateUser, sendCodeByEmail } from '@/api/user';
 
-import useSignModalStore from '@/stores/signModalStore';
+import useModalStore from '@/stores/modalStore';
 import useSignStore from '@/stores/signStore';
 
 import useEffectOnce from '@/hooks/useEffectOnce';
 
-import SignInput from '../sign/SignInput';
-import SignPasswordInput from '../sign/SignPasswordInput';
-
-import CommonButton from '../common/CommonButton';
+import { SignInput, SignPasswordInput } from '../sign';
+import { CommonButton } from '../common';
 
 import { SignFormValue } from '@/types/common';
 
 export default function SignupForm() {
   const router = useRouter();
+
+  const [isCode, setIsCode] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -27,18 +29,33 @@ export default function SignupForm() {
     reset,
   } = useForm<SignFormValue>();
 
-  const { changeState, currentState } = useSignModalStore();
+  const { changeType, open, isOpen } = useModalStore();
   const { setCode, getSigninForm, getSignupForm } = useSignStore();
 
+  const email = watch('email');
+
   useEffectOnce(() => {
-    changeState('');
+    changeType(null);
   });
 
-  const handleValidateEmail = () => {
-    changeState('AuthEmailModal');
+  const onValidateEmail = () => {
+    changeType('AuthEmailModal');
   };
 
-  const email = watch('email');
+  const sendCodeWithEmail = async (email: string) => {
+    if (!email || isCode) return;
+
+    try {
+      const response = await sendCodeByEmail(email);
+
+      open();
+
+      setCode(response.data.data.authCode);
+      setIsCode(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const onSignup: SubmitHandler<SignFormValue> = async ({
     email,
@@ -59,21 +76,8 @@ export default function SignupForm() {
     }
   };
 
-  const sendCodeWithEmail = async (email: string) => {
-    if (!email) return;
-
-    try {
-      const response = await sendCodeByEmail(email);
-      setCode(response.data.data.authCode);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const successedCode = currentState === 'Successed';
-
   return (
-    <div>
+    <section>
       <form onSubmit={handleSubmit(onSignup)}>
         <div className="flex flex-col gap-1 w-[300px]">
           <SignInput type="email" register={register} errors={errors} />
@@ -82,12 +86,12 @@ export default function SignupForm() {
               type="button"
               size="sm"
               onOpen={() => {
-                handleValidateEmail();
+                onValidateEmail();
                 sendCodeWithEmail(email);
               }}
               className="mb-3"
-              disabled={successedCode}>
-              {successedCode ? '인증 완료!' : '이메일 인증하기'}
+              disabled={isOpen}>
+              {isCode ? '인증 완료!' : '이메일 인증하기'}
             </CommonButton>
           </div>
 
@@ -95,7 +99,7 @@ export default function SignupForm() {
             type="nickname"
             register={register}
             errors={errors}
-            disabled={!successedCode}
+            disabled={!isCode}
           />
 
           <SignPasswordInput
@@ -103,7 +107,7 @@ export default function SignupForm() {
             register={register}
             errors={errors}
             watch={watch}
-            disabled={!successedCode}
+            disabled={!isCode}
           />
 
           <SignPasswordInput
@@ -111,7 +115,7 @@ export default function SignupForm() {
             register={register}
             errors={errors}
             watch={watch}
-            disabled={!successedCode}
+            disabled={!isCode}
           />
 
           <div className="flex flex-col justify-center items-center gap-3">
@@ -125,6 +129,6 @@ export default function SignupForm() {
           </div>
         </div>
       </form>
-    </div>
+    </section>
   );
 }

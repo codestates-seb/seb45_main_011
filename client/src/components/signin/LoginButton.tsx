@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+
 import { useEffect } from 'react';
 
 import useUserStore from '@/stores/userStore';
@@ -8,33 +9,31 @@ import useSignStore from '@/stores/signStore';
 
 import useClient from '@/hooks/useClient';
 
-import CommonButton from '../common/CommonButton';
+import { CommonButton } from '../common';
 
 export default function LoginButtion() {
   const googleOauth = process.env.NEXT_PUBLIC_GOOGLE_OAUTH_URL;
 
-  const isClient = useClient();
   const router = useRouter();
 
-  const getSigninForm = useSignStore((state) => state.getSigninForm);
-  const { isGoogleLogin, setGoogleUser, isLogin } = useUserStore();
+  const { isGoogleLogin, setGoogleUser, isEmailLogin } = useUserStore();
+  const { getSigninForm } = useSignStore();
 
-  const onGoogleLogin = () => {
-    router.push(`${googleOauth}`);
-  };
+  const isClient = useClient();
 
   useEffect(() => {
     const queryString = window?.location?.search;
     const urlParams = new URLSearchParams(queryString);
 
     const userId = String(urlParams.get('accountId'));
+
     const accessToken = `Bearer ${urlParams.get('access_token')}`;
     const refreshToken = urlParams.get('refresh_token');
-    const username = urlParams.get('displayName');
-    //! profileIamgeUrl
-    const profileImageUrl = urlParams.get('profileIamgeUrl');
 
+    const username = urlParams.get('displayName');
     const displayName = decodeURIComponent(username as string);
+
+    const profileImageUrl = urlParams.get('profileIamgeUrl');
 
     if (
       userId &&
@@ -44,9 +43,9 @@ export default function LoginButtion() {
       profileImageUrl
     ) {
       setGoogleUser({
+        userId,
         accessToken,
         refreshToken,
-        userId,
         displayName,
         profileImageUrl,
       });
@@ -55,6 +54,10 @@ export default function LoginButtion() {
     }
   }, [isGoogleLogin]);
 
+  const onGoogleLogin = () => {
+    router.push(`${googleOauth}`);
+  };
+
   return (
     <>
       {isClient && (
@@ -62,8 +65,8 @@ export default function LoginButtion() {
           <CommonButton
             type="submit"
             size="fix"
-            onGoogle={onGoogleLogin}
-            disabled={isLogin}
+            onGoogle={() => onGoogleLogin()}
+            disabled={isEmailLogin}
             className="hover:scale-105 transition-transform">
             구글로 로그인
           </CommonButton>
