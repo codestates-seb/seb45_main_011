@@ -6,10 +6,9 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 
 import useLeafsStore from '@/stores/leafsStore';
-import useUserStore from '@/stores/userStore';
+import useModalStore from '@/stores/modalStore';
 
-import ControlButton from './ControlButton';
-import LeafName from './LeafName';
+import { ControlButton, LeafName } from '@/components/common';
 
 interface LeafProps {
   location: 'garden' | 'leaf';
@@ -32,15 +31,14 @@ export default function Leaf({
 }: LeafProps) {
   const router = useRouter();
 
-  const { modalOpen, setDeleteTargetId, setModalCategory, isOwner } =
-    useLeafsStore();
+  const { setDeleteTargetId, isOwner } = useLeafsStore();
+  const { open, changeType } = useModalStore();
 
   const handleLeafClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (onClick) {
       onClick(event);
       return null;
     }
-
     if (location === 'leaf') {
       router.push(`/leaf/${pathUserId}/${leafId}`);
       return null;
@@ -58,8 +56,8 @@ export default function Leaf({
   ) => {
     e.stopPropagation();
     setDeleteTargetId(leafId);
-    setModalCategory('deleteLeaf');
-    modalOpen();
+    changeType('deleteLeaf');
+    open();
   };
 
   return (
