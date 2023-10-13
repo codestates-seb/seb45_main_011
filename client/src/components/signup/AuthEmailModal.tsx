@@ -18,7 +18,7 @@ export default function AuthEmailModal() {
   } = useForm<SignFormValue>();
 
   const { close, changeType } = useModalStore();
-  const { code } = useSignStore();
+  const { code, setIsCode } = useSignStore();
 
   const userCode = watch('code');
 
@@ -26,7 +26,7 @@ export default function AuthEmailModal() {
     if (!userCode) return;
 
     if (userCode === code) {
-      return close();
+      return setIsCode(true), close();
     }
 
     return changeType('FailureModal');

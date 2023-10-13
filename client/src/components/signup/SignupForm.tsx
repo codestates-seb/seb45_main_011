@@ -3,6 +3,7 @@
 import { useForm } from 'react-hook-form';
 
 import useModalStore from '@/stores/modalStore';
+import useSignStore from '@/stores/signStore';
 
 import useAuthEmail from '@/hooks/useAuthEmail';
 import useSignup from '@/hooks/useSignup';
@@ -21,19 +22,22 @@ export default function SignupForm() {
     watch,
   } = useForm<SignFormValue>();
 
-  const { changeType, isOpen } = useModalStore();
+  const { changeType, open } = useModalStore();
+  const { isCode, setIsCode } = useSignStore();
 
-  const { sendCodeWithEmail, isCode } = useAuthEmail();
+  const { sendCodeWithEmail } = useAuthEmail();
   const { handleSignup } = useSignup();
 
   useEffectOnce(() => {
     changeType(null);
+    setIsCode(false);
   });
 
   const email = watch('email');
 
   const onValidateEmail = () => {
     changeType('AuthEmailModal');
+    open();
   };
 
   return (
@@ -50,7 +54,7 @@ export default function SignupForm() {
                 sendCodeWithEmail(email);
               }}
               className="mb-3"
-              disabled={isOpen}>
+              disabled={isCode}>
               {isCode ? '인증 완료!' : '이메일 인증하기'}
             </CommonButton>
           </div>

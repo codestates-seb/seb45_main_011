@@ -12,7 +12,7 @@ const useSignup = () => {
 
   const { reset } = useForm<SignFormValue>();
 
-  const { getSigninForm, getSignupForm } = useSignStore();
+  const { getSigninForm, getSignupForm, setIsCode } = useSignStore();
 
   const handleSignup: SubmitHandler<SignFormValue> = async ({
     email,
@@ -26,6 +26,7 @@ const useSignup = () => {
 
       getSigninForm(false);
       getSignupForm(false);
+      setIsCode(false);
 
       router.push('/signin');
     } catch (error) {
