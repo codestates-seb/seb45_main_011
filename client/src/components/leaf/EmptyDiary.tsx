@@ -7,9 +7,10 @@ import { twMerge } from 'tailwind-merge';
 
 import useLeafStore from '@/stores/leafStore';
 
-import { INFOMATION_TEXT } from '@/constants/contents';
-
 import { DefaultProps } from '@/types/common';
+
+import { EMPTY_DIARY_TEXT, INFOMATION_TEXT } from '@/constants/contents';
+import useModalStore from '@/stores/modalStore';
 
 interface EmptyDiaryProps extends DefaultProps {
   info: 'diary' | 'board' | 'likes' | 'comment';
@@ -23,18 +24,19 @@ export default function EmptyDiary({
 }: EmptyDiaryProps) {
   const router = useRouter();
 
-  const { modalOpen, setModalCategory, isOwner } = useLeafStore();
+  const { isOwner } = useLeafStore();
+  const { open, changeType } = useModalStore();
+
+  const displayAddButton = info === 'board' || info === 'diary';
 
   const addDiary = () => {
-    modalOpen();
-    setModalCategory('add');
+    open();
+    changeType('add');
   };
 
   const goToAddPost = () => {
     if (info === 'board') return router.push('/post/add');
   };
-
-  const displayAddButton = info === 'board' || info === 'diary';
 
   return (
     <div className="w-full flex flex-col items-center">
@@ -59,7 +61,7 @@ export default function EmptyDiary({
             whileTap={{ scale: 0.95 }}
             className="px-3 py-[6px] mb-2 bg-[url('/assets/img/bg_wood_dark.png')] bg-contain border-2 border-brown-70 rounded-lg shadow-outer/down text-base font-bold text-brown-10"
             onClick={info === 'diary' ? addDiary : goToAddPost}>
-            작성하기
+            {EMPTY_DIARY_TEXT.button}
           </motion.button>
         )}
       </div>
