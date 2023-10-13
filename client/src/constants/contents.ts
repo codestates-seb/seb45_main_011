@@ -127,3 +127,36 @@ export const LEAF_DELETE_MODAL_TEXT = {
   secondLine: '그래도 삭제하시겠습니까?',
   button: ['삭제', '취소'],
 };
+
+export const DIARY_DELETE_MODAL_TEXT = {
+  firstLine: '선택한 일지를',
+  secondLine: ['삭제', '하시겠습니까?'],
+  button: ['삭제', '취소'],
+};
+
+export const DIARY_FORM_TEXT = {
+  title: '일지 작성하기',
+  firstLabel: '제목 : ',
+  secondLabel: '내용 : ',
+  button: ['완료', '취소'],
+};
+
+export const IMAGE_UPLOAD_TEXT = {
+  fileSizeWarn: '2mb 이하 이미지를 선택해주세요.',
+  noImageUploadError: '이미지를 필수로 등록해야 합니다.',
+  imageUpload: '이미지 등록',
+};
+
+export const EMPTY_DIARY_TEXT = {
+  button: '작성하기',
+};
+
+export const LEAF_DATE_INFO_TEXT = {
+  firstLine: '키우기 시작한 지 : ',
+
+  secondLine: '최근 관리 : ',
+};
+
+export const LEAF_INFO_TEXT = {
+  button: ['정원에 설치하기', '일지 작성'],
+};
