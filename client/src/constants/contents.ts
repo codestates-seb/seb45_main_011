@@ -160,3 +160,7 @@ export const LEAF_DATE_INFO_TEXT = {
 export const LEAF_INFO_TEXT = {
   button: ['정원에 설치하기', '일지 작성'],
 };
+
+export const LEAF_ADD_PAGE_TEXT = {
+  title: '식물 카드 등록',
+};
