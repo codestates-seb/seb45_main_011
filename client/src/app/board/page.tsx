@@ -14,18 +14,21 @@ import BoardSearchForm from '@/components/board/BoardSearchForm';
 import RankBoard from '@/components/board/RankBoard';
 import PostList from '@/components/board/PostList';
 import SearchList from '@/components/board/SearchList';
+import useEffectOnce from '@/hooks/useEffectOnce';
 
 export default function Board() {
   const router = useRouter();
 
   const userId = useUserStore((state) => state.userId);
 
-  const { searchKey } = useBoardStore();
+  const { searchKey, setSearchKey } = useBoardStore();
 
   const navigateToAddPost = () => {
     if (userId !== null) return router.push('/post/add');
     return router.push('/signin');
   };
+
+  useEffectOnce(() => setSearchKey(null));
 
   return (
     <>
