@@ -14,6 +14,8 @@ import CommonButton from './CommonButton';
 
 import { DefaultProps } from '@/types/common';
 
+import { SHARE_URL } from '@/constants/values';
+
 interface ShareButtonProps extends DefaultProps {
   location: 'leafs' | 'leaf' | 'garden';
   position: 'top' | 'bottom';
@@ -38,7 +40,7 @@ export default function ShareButton({
   const { open: gardenModalOpen, changeType } = useGardenModalStore();
 
   const handleShareUrl = () => {
-    const base = 'https://grow-story.vercel.app';
+    const base = SHARE_URL;
     const links = base + url;
 
     navigator.clipboard.writeText(links);
