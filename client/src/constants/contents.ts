@@ -164,3 +164,7 @@ export const LEAF_INFO_TEXT = {
 export const LEAF_ADD_PAGE_TEXT = {
   title: '식물 카드 등록',
 };
+
+export const LEAF_EDIT_PAGE_TEXT = {
+  title: '식물 카드 수정',
+};
