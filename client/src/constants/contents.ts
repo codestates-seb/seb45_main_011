@@ -184,3 +184,8 @@ export const TEXT_INPUT_FORMAT = {
     placeholder: '닉네임을 입력해주세요.',
   },
 };
+
+export const NOT_FOUND_TEXT = {
+  title: 'Not Found',
+  description: ['페이지를 ', '못 찾았어요 : ('],
+};
