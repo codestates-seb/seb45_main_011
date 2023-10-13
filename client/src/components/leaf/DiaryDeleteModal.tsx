@@ -1,10 +1,10 @@
-import useLeafStore from '@/stores/leafStore';
+import { DIARY_DELETE_MODAL_TEXT } from '@/constants/contents';
 
 import useDeleteDiaryMutation from '@/hooks/useDeleteDiaryMutaion';
 
 import { CommonButton } from '../common';
 
-import { DIARY_DELETE_MODAL_TEXT } from '@/constants/contents';
+import useModalStore from '@/stores/modalStore';
 
 interface DiaryDeleteModalProps {
   deleteTargetId?: string | null;
@@ -17,16 +17,16 @@ export default function DiaryDeleteModal({
   leafId,
   deleteTargetId,
 }: DiaryDeleteModalProps) {
-  const modalClose = useLeafStore((state) => state.modalClose);
+  if (!deleteTargetId) return null;
+
+  const { close } = useModalStore();
 
   const { mutate: deleteDiary } = useDeleteDiaryMutation(leafId);
 
-  if (!deleteTargetId) return null;
-
-  const handleCancelModal = () => modalClose();
+  const handleCancelModal = () => close();
 
   const handleDeleteDiary = () => {
-    modalClose();
+    close();
     deleteDiary({ diaryId: deleteTargetId, userId });
   };
 
