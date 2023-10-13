@@ -111,3 +111,13 @@ export const FOOTER_LINK = {
   hanbin: 'https://github.com/hanbinchoi',
   doyeon: 'https://github.com/shimdokite',
 };
+
+export const SHARE_BUTTON_TEXT = {
+  button: '공유하기',
+};
+
+export const SHARE_MODAL_TEXT = {
+  firstLine: ['현재 페이지 주소가', '복사되었습니다.'],
+  secondLine: ['다른 사람에게 ', '공유해보세요!'],
+  button: '확인',
+};

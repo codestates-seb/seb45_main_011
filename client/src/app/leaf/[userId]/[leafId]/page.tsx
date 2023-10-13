@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 
+import useModalStore from '@/stores/modalStore';
 import useLeafStore from '@/stores/leafStore';
 import useUserStore from '@/stores/userStore';
 
@@ -34,7 +35,9 @@ export default function Leaf({ params }: LeafProps) {
 
   const userId = useUserStore((state) => state.userId);
 
-  const { modalCategory, isModalOpen, isOwner, setIsOwner } = useLeafStore();
+  const { isOwner, setIsOwner } = useLeafStore();
+
+  const { type, isOpen } = useModalStore();
 
   useEffectOnce(() => {
     if (userId === pathUserId) return setIsOwner(true);
@@ -101,13 +104,13 @@ export default function Leaf({ params }: LeafProps) {
           )}
         </div>
 
-        {isModalOpen &&
+        {isOpen &&
           isOwner &&
-          (modalCategory === 'share' ? (
+          (type === 'share' ? (
             <ShareModal location="leaf" />
           ) : (
             <LeafModal
-              modalCategory={modalCategory}
+              modalCategory={type}
               leafId={pathLeafId}
               userId={userId}
             />
