@@ -13,8 +13,8 @@ export default function Dropdown() {
   const { setIsOpen, isOpen, ref } = useDetectClose(false);
 
   return (
-    <div className="absolute left-6">
-      <div className="relative bottom-8">
+    <nav className="absolute left-6">
+      <section className="relative bottom-8">
         <div
           className="flex items-center w-[168px] h-[36px] rounded-lg border-2 border-brown-70 bg-white-10 shadow-outer/down cursor-pointer"
           onClick={() => {
@@ -24,11 +24,12 @@ export default function Dropdown() {
           <div className="w-full flex justify-between px-2">
             <div className="flex justify-start">
               {DROPDOWN_OPTIONS.map((list, index) => (
-                <p className="text-xs text-brown-80" key={index}>
+                <p className="text-xs text-brown-80" key={list.title}>
                   {selectOption === list.title && list.selected}
                 </p>
               ))}
             </div>
+
             {isOpen ? (
               <img src="/assets/icon/up.svg" />
             ) : (
@@ -36,6 +37,7 @@ export default function Dropdown() {
             )}
           </div>
         </div>
+
         <Collapse open={isOpen}>
           {isOpen && (
             <div className="flex flex-col w-[168px] h-[92px] mt-1 rounded-lg border-2 border-brown-70 bg-white-10 shadow-outer/down cursor-pointer">
@@ -49,6 +51,7 @@ export default function Dropdown() {
                     작성한 게시글
                   </p>
                 </div>
+
                 <div
                   className=" border-b border-dotted border-brown-50"
                   onClick={() => setSelectOption('boardLiked')}>
@@ -56,6 +59,7 @@ export default function Dropdown() {
                     좋아요를 누른 게시글
                   </p>
                 </div>
+
                 <div
                   onClick={() => {
                     setSelectOption('commentWritten');
@@ -68,7 +72,7 @@ export default function Dropdown() {
             </div>
           )}
         </Collapse>
-      </div>
-    </div>
+      </section>
+    </nav>
   );
 }

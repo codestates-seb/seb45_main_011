@@ -4,13 +4,11 @@ import { useForm } from 'react-hook-form';
 
 import { postUserPassword } from '@/api/history';
 
-import useSignModalStore from '@/stores/signModalStore';
 import useUserStore from '@/stores/userStore';
+import useModalStore from '@/stores/modalStore';
 
-import Modal from '../common/Modal';
-import ModalPortal from '../common/ModalPortal';
-import SignModalInput from '../sign/SignModalInput';
-import CommonButton from '../common/CommonButton';
+import { SignModalInput } from '../sign';
+import { CommonButton, Modal, ModalPortal } from '../common';
 
 import { SignFormValue } from '@/types/common';
 
@@ -21,30 +19,33 @@ export default function ResignModal() {
     formState: { isSubmitting },
   } = useForm<SignFormValue>();
 
-  const setAccessToken = useUserStore((state) => state.setAccessToken);
-  const { close, changeState } = useSignModalStore();
+  const { setAccessToken } = useUserStore();
+  const { close, changeType } = useModalStore();
 
   const userPassword = watch('password');
 
   const handlePasswordCheck = async () => {
     if (!userPassword) return;
+    // console.log(userPassword);
 
+    // 비밀번호 유효성 검사만 맞으면 유저의 비밀번호와 같지 않아도 응답이 200으로 온다
     const response = await postUserPassword(userPassword);
+    // console.log(response);
 
     if (response) {
       return (
-        changeState('ConfirmModal'),
+        changeType('ConfirmModal'),
         setAccessToken(response.headers?.authorization)
       );
     }
 
-    return changeState('FailureModal');
+    return changeType('FailureModal');
   };
 
   return (
     <ModalPortal>
       <Modal className="min-w-[312px] h-fit flex flex-col justify-center items-center mx-1">
-        <div className="flex flex-col items-center gap-4 px-5 mt-10 mx-4">
+        <section className="flex flex-col items-center gap-4 px-5 mt-10 mx-4">
           <div className="flex flex-col items-center leading-8 text-[22px] max-[705px]:text-[18px]">
             <p className="font-bold text-brown-70 text-center break-keep  ">
               탈퇴하시려면
@@ -59,8 +60,10 @@ export default function ResignModal() {
               </div>
             </div>
           </div>
+
           <SignModalInput type="password" register={register} />
-        </div>
+        </section>
+
         <div className="flex gap-4 mt-6 mb-6">
           <CommonButton
             type="button"

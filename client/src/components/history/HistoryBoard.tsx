@@ -1,40 +1,30 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useInfiniteQuery } from '@tanstack/react-query';
 import InfiniteScroll from 'react-infinite-scroller';
-
-import { getBoardWrittenByPage } from '@/api/history';
 
 import useUserStore from '@/stores/userStore';
 
-import EmptyDiary from '../leaf/EmptyDiary';
-import HistoryPostCard from './HistoryPostCard';
+import useHistoryBoard from '@/hooks/useHistoryBoard';
 
-import ErrorMessage from '../common/ErrorMessage';
-import LoadingMessage from '../common/LoadingMessage';
+import { HistoryPostCard } from '.';
+import EmptyDiary from '../leaf/EmptyDiary';
+import { ErrorMessage, LoadingMessage } from '../common';
 
 import { HistoryBoradProps } from '@/types/common';
-import useClient from '@/hooks/useClient';
 
 export default function HistoryBoard({ paramsId }: HistoryBoradProps) {
   const router = useRouter();
-  const isClient = useClient();
-  const userId = useUserStore((state) => state.userId);
 
-  const { data, fetchNextPage, hasNextPage, isLoading, isError } =
-    useInfiniteQuery(
-      ['boardWritten'],
-      ({ pageParam = 1 }) => getBoardWrittenByPage({ pageParam }, paramsId),
+  const { userId } = useUserStore();
 
-      {
-        getNextPageParam: (lastPage) => {
-          return lastPage.pageInfo.page !== lastPage.pageInfo.totalPages
-            ? lastPage.pageInfo.page + 1
-            : undefined;
-        },
-      },
-    );
+  const {
+    data: boards,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    isError,
+  } = useHistoryBoard(paramsId);
 
   const likesAmount = (likes: []) => {
     if (likes?.length === 0) return 0;
@@ -44,10 +34,10 @@ export default function HistoryBoard({ paramsId }: HistoryBoradProps) {
 
   return (
     <>
-      {data?.pages.map((page, index) => (
+      {boards?.map((page, index) => (
         <div key={index}>
           {page?.boardWritten?.length === 0 ? (
-            <div
+            <section
               key={index}
               className="w-[715px] my-4 max-[730px]:w-[512px] max-[630px]:w-[312px] flex justify-center items-center ml-1">
               <EmptyDiary
@@ -57,12 +47,12 @@ export default function HistoryBoard({ paramsId }: HistoryBoradProps) {
                 addInfo="addBoard"
                 className="max-w-[314px] max-[507px]:mx-3 max-[430px]:w-[214px] text-[13px]"
               />
-            </div>
+            </section>
           ) : (
             <InfiniteScroll
               hasMore={hasNextPage}
               loadMore={() => fetchNextPage()}>
-              <div className="grid grid-cols-3 gap-4 place-items-center items-start max-[730px]:grid-cols-2 max-[530px]:grid-cols-1 pb-4">
+              <section className="grid grid-cols-3 gap-4 place-items-center items-start max-[730px]:grid-cols-2 max-[530px]:grid-cols-1 pb-4">
                 {page.boardWritten?.map((board: any) => (
                   <div
                     key={board.boardId}
@@ -80,16 +70,18 @@ export default function HistoryBoard({ paramsId }: HistoryBoradProps) {
                     />
                   </div>
                 ))}
-              </div>
+              </section>
             </InfiniteScroll>
           )}
         </div>
       ))}
+
       {isLoading && (
         <div className="w-[715px] py-6 max-[730px]:w-[512px] max-[630px]:w-[312px] flex justify-center items-center">
           <LoadingMessage />
         </div>
       )}
+
       {isError && (
         <div className="w-[715px] py-6 max-[730px]:w-[512px] max-[630px]:w-[312px] flex justify-center items-center">
           <ErrorMessage />
