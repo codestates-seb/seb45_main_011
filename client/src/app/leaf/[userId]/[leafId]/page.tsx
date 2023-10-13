@@ -9,17 +9,21 @@ import useUserStore from '@/stores/userStore';
 import useEffectOnce from '@/hooks/useEffectOnce';
 import useGetLeafPageQueries from '@/hooks/useGetLeafPageQueries';
 
-import LeafInfo from '@/components/leaf/LeafInfo';
-import LeafDiary from '@/components/leaf/LeafDiary';
-import LeafDateInfo from '@/components/leaf/LeafDateInfo';
-import EmptyDiary from '@/components/leaf/EmptyDiary';
-import LeafModal from '@/components/leaf/LeafModal';
-import ShareButton from '@/components/common/ShareButton';
-import LoadingNotice from '@/components/common/LoadingNotice';
-import ErrorMessage from '@/components/common/ErrorMessage';
-import ShareModal from '@/components/common/ShareModal';
-import Footer from '@/components/common/Footer';
-import Screws from '@/components/common/Screws';
+import {
+  LeafDateInfo,
+  LeafInfo,
+  LeafDiary,
+  EmptyDiary,
+  LeafModal,
+} from '@/components/leaf';
+import {
+  ShareButton,
+  LoadingNotice,
+  ErrorMessage,
+  ShareModal,
+  Footer,
+  Screws,
+} from '@/components/common';
 
 import { DiaryDataInfo } from '@/types/data';
 
@@ -34,19 +38,17 @@ export default function Leaf({ params }: LeafProps) {
   const pathUserId = params.userId;
 
   const userId = useUserStore((state) => state.userId);
-
   const { isOwner, setIsOwner } = useLeafStore();
-
   const { type, isOpen } = useModalStore();
-
-  useEffectOnce(() => {
-    if (userId === pathUserId) return setIsOwner(true);
-    return setIsOwner(false);
-  });
 
   const { leaf, diaries, isLoading, isError, isEmpty } = useGetLeafPageQueries({
     pathUserId,
     pathLeafId,
+  });
+
+  useEffectOnce(() => {
+    if (userId === pathUserId) return setIsOwner(true);
+    return setIsOwner(false);
   });
 
   return (
