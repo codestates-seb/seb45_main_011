@@ -1,8 +1,9 @@
 import Image from 'next/image';
 
 import useLeafStore from '@/stores/leafStore';
+import useModalStore from '@/stores/modalStore';
 
-import ControlButton from '../common/ControlButton';
+import { ControlButton } from '../common';
 
 import { DiaryDataInfo } from '@/types/data';
 
@@ -13,6 +14,9 @@ export default function Diary({
   content,
   title,
 }: DiaryDataInfo) {
+  const { setTargetDiary, isOwner } = useLeafStore();
+  const { open, changeType } = useModalStore();
+
   const diary = {
     journalId,
     createdAt,
@@ -20,23 +24,19 @@ export default function Diary({
     content,
     title,
   };
-
-  const { modalOpen, setModalCategory, setTargetDiary, isOwner } =
-    useLeafStore();
-
   const startDay = new Date(createdAt);
   const [month, day] = [startDay.getMonth() + 1, startDay.getDate()];
 
   const handleEditDiary = () => {
-    modalOpen();
+    open();
     setTargetDiary(diary);
-    setModalCategory('edit');
+    changeType('edit');
   };
 
   const handleDeleteDiary = () => {
-    modalOpen();
+    open();
     setTargetDiary(diary);
-    setModalCategory('delete');
+    changeType('delete');
   };
 
   return (
