@@ -1,7 +1,7 @@
 import useLeafStore from '@/stores/leafStore';
 
 import DiaryForm from './DiaryForm';
-import { DiaryDeleteModal } from './DiaryDeleteModal';
+import DiaryDeleteModal from './DiaryDeleteModal';
 import ModalPortal from '../common/ModalPortal';
 import Modal from '../common/Modal';
 
