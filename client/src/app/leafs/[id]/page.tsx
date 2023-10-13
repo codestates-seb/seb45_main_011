@@ -5,20 +5,23 @@ import { motion } from 'framer-motion';
 import useLeafsStore from '@/stores/leafsStore';
 import useUserStore from '@/stores/userStore';
 
-import Leaf from '@/components/common/Leaf';
-import PageTitle from '@/components/common/PageTitle';
-import Screws from '@/components/common/Screws';
-import AddLeafButton from '@/components/leafs/AddLeafButton';
-import LeafDeleteModal from '@/components/leafs/LeafDeleteModal';
-import LoadingNotice from '@/components/common/LoadingNotice';
-import ErrorMessage from '@/components/common/ErrorMessage';
-import ShareButton from '@/components/common/ShareButton';
-import ShareModal from '@/components/common/ShareModal';
-import Footer from '@/components/common/Footer';
+import useGetLeafsPageQueries from '@/hooks/useGetLeafsPageQueries';
+import useEffectOnce from '@/hooks/useEffectOnce';
+
+import { AddLeafButton, LeafDeleteModal } from '@/components/leafs';
+import {
+  Leaf,
+  PageTitle,
+  Screws,
+  LoadingNotice,
+  ErrorMessage,
+  ShareButton,
+  ShareModal,
+  Footer,
+} from '@/components/common';
 
 import { MOUNT_ANIMATION_VALUES } from '@/constants/values';
-import useEffectOnce from '@/hooks/useEffectOnce';
-import useGetLeafsPageQueries from '@/hooks/useGetLeafsPageQueries';
+import useModalStore from '@/stores/modalStore';
 
 interface LeafsProps {
   params: { id: string };
@@ -28,15 +31,16 @@ export default function Leafs({ params }: LeafsProps) {
   const pathUserId = params.id;
 
   const { userId } = useUserStore();
-  const { isModalOpen, modalCategory, isOwner, setIsOwner } = useLeafsStore();
+  const { isOwner, setIsOwner } = useLeafsStore();
+  const { isOpen, type } = useModalStore();
+
+  const { leafs, user, isLoading, isError } = useGetLeafsPageQueries({
+    pathUserId,
+  });
 
   useEffectOnce(() => {
     if (userId === pathUserId) return setIsOwner(true);
     return setIsOwner(false);
-  });
-
-  const { leafs, user, isLoading, isError } = useGetLeafsPageQueries({
-    pathUserId,
   });
 
   return (
@@ -96,8 +100,8 @@ export default function Leafs({ params }: LeafsProps) {
           )}
         </div>
 
-        {isModalOpen &&
-          (modalCategory === 'deleteLeaf' ? (
+        {isOpen &&
+          (type === 'deleteLeaf' ? (
             <LeafDeleteModal />
           ) : (
             <ShareModal location="leafs" />

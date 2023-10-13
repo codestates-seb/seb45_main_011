@@ -11,9 +11,11 @@ export type GardenType =
   | 'emptyInventory'
   | 'share';
 
-export type ModalType = PostType | GardenType | null;
+export type LeafsType = 'deleteLeaf' | 'share';
 
-export interface GardenModalState {
+export type ModalType = PostType | GardenType | LeafsType | null;
+
+export interface modalState {
   isOpen: boolean;
   type: ModalType;
 
@@ -22,7 +24,7 @@ export interface GardenModalState {
   close: () => void;
 }
 
-const useGardenModalStore = create<GardenModalState>((set) => ({
+const useModalStore = create<modalState>((set) => ({
   isOpen: false,
   type: null,
 
@@ -31,4 +33,4 @@ const useGardenModalStore = create<GardenModalState>((set) => ({
   close: () => set(() => ({ isOpen: false })),
 }));
 
-export default useGardenModalStore;
+export default useModalStore;

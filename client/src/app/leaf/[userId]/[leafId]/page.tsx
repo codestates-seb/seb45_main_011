@@ -8,7 +8,6 @@ import useUserStore from '@/stores/userStore';
 import useEffectOnce from '@/hooks/useEffectOnce';
 import useGetLeafPageQueries from '@/hooks/useGetLeafPageQueries';
 
-import Screws from '@/components/common/Screws';
 import LeafInfo from '@/components/leaf/LeafInfo';
 import LeafDiary from '@/components/leaf/LeafDiary';
 import LeafDateInfo from '@/components/leaf/LeafDateInfo';
@@ -19,6 +18,7 @@ import LoadingNotice from '@/components/common/LoadingNotice';
 import ErrorMessage from '@/components/common/ErrorMessage';
 import ShareModal from '@/components/common/ShareModal';
 import Footer from '@/components/common/Footer';
+import Screws from '@/components/common/Screws';
 
 import { DiaryDataInfo } from '@/types/data';
 
