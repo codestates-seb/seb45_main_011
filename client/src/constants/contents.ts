@@ -121,3 +121,9 @@ export const SHARE_MODAL_TEXT = {
   secondLine: ['다른 사람에게 ', '공유해보세요!'],
   button: '확인',
 };
+
+export const LEAF_DELETE_MODAL_TEXT = {
+  firstLine: ['정원에 설치된 식물 카드는', '연결이 해제', '됩니다.'],
+  secondLine: '그래도 삭제하시겠습니까?',
+  button: ['삭제', '취소'],
+};
