@@ -7,7 +7,7 @@ import useLeafStore from '@/stores/leafStore';
 import useUserStore from '@/stores/userStore';
 
 import useEffectOnce from '@/hooks/useEffectOnce';
-import useGetLeafPageQueries from '@/hooks/useGetLeafPageQueries';
+import useLeafPageQueries from '@/hooks/useLeafPageQueries';
 
 import {
   LeafDateInfo,
@@ -41,7 +41,7 @@ export default function Leaf({ params }: LeafProps) {
   const { isOwner, setIsOwner } = useLeafStore();
   const { type, isOpen } = useModalStore();
 
-  const { leaf, diaries, isLoading, isError, isEmpty } = useGetLeafPageQueries({
+  const { leaf, diaries, isLoading, isError, isEmpty } = useLeafPageQueries({
     pathUserId,
     pathLeafId,
   });

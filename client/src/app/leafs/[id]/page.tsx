@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import useLeafsStore from '@/stores/leafsStore';
 import useUserStore from '@/stores/userStore';
 
-import useGetLeafsPageQueries from '@/hooks/useGetLeafsPageQueries';
+import useLeafsPageQueries from '@/hooks/useLeafsPageQueries';
 import useEffectOnce from '@/hooks/useEffectOnce';
 
 import { AddLeafButton, LeafDeleteModal } from '@/components/leafs';
@@ -34,7 +34,7 @@ export default function Leafs({ params }: LeafsProps) {
   const { isOwner, setIsOwner } = useLeafsStore();
   const { isOpen, type } = useModalStore();
 
-  const { leafs, user, isLoading, isError } = useGetLeafsPageQueries({
+  const { leafs, user, isLoading, isError } = useLeafsPageQueries({
     pathUserId,
   });
 

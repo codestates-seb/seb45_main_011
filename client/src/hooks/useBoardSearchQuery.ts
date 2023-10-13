@@ -2,7 +2,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { getBoardsBySearch } from '@/api/board';
 
-export default function useGetSearchBoardQuery(searchKey: string | null) {
+export default function useBoardSearchQuery(searchKey: string | null) {
   const { data, fetchNextPage, hasNextPage, isLoading, isError } =
     useInfiniteQuery(
       ['search', searchKey],

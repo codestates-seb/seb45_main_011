@@ -10,7 +10,7 @@ interface useGetLeafsPageQueries {
   pathUserId: string;
 }
 
-export default function useGetLeafsPageQueries({
+export default function useLeafsPageQueries({
   pathUserId,
 }: useGetLeafsPageQueries) {
   const results = useQueries({

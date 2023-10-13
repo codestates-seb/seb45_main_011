@@ -13,7 +13,7 @@ interface useGetLeafPageQueries {
   pathLeafId: string;
 }
 
-export default function useGetLeafPageQueries({
+export default function useLeafPageQueries({
   pathUserId,
   pathLeafId,
 }: useGetLeafPageQueries) {
