@@ -1,3 +1,4 @@
+import { TEXT_INPUT_FORMAT } from './../constants/contents';
 /**
  * 입력 필드 유형(`name`)에 따라 유효성 검사 스키마 및 placeholder를 반환합니다.
  *
@@ -10,14 +11,14 @@ export default function getTextInputTypeFormat(name: string) {
       validationSchema: {
         minLength: {
           value: 2,
-          message: '2글자 이상 6글자 이하의 영문 또는 한글을 입력해야 합니다.',
+          message: TEXT_INPUT_FORMAT.plantName.lengthErrorMsg,
         },
         maxLength: {
           value: 6,
-          message: '2글자 이상 6글자 이하의 영문 또는 한글을 입력해야 합니다.',
+          message: TEXT_INPUT_FORMAT.plantName.lengthErrorMsg,
         },
       },
-      placeholder: '식물 이름을 입력해주세요.',
+      placeholder: TEXT_INPUT_FORMAT.plantName.placeholder,
     };
   }
   if (name === 'title') {
@@ -25,14 +26,14 @@ export default function getTextInputTypeFormat(name: string) {
       validationSchema: {
         minLength: {
           value: 2,
-          message: '2글자 이상 20글자 이하의 영문 또는 한글을 입력해야 합니다.',
+          message: TEXT_INPUT_FORMAT.title.lengthErrorMsg,
         },
         maxLength: {
           value: 20,
-          message: '2글자 이상 20글자 이하의 영문 또는 한글을 입력해야 합니다.',
+          message: TEXT_INPUT_FORMAT.title.lengthErrorMsg,
         },
       },
-      placeholder: '제목을 입력해주세요.',
+      placeholder: TEXT_INPUT_FORMAT.title.placeholder,
     };
   }
   if (name === 'nickname') {
@@ -40,14 +41,14 @@ export default function getTextInputTypeFormat(name: string) {
       validationSchema: {
         minLength: {
           value: 2,
-          message: '2글자 이상의 영문 또는 한글을 입력해야 합니다.',
+          message: TEXT_INPUT_FORMAT.nickname.lengthErrorMsg,
         },
         maxLength: {
           value: 6,
-          message: '6글자 이하의 영문 또는 한글을 입력해야 합니다.',
+          message: TEXT_INPUT_FORMAT.nickname.lengthErrorMsg,
         },
       },
-      placeholder: '닉네임을 입력해주세요.',
+      placeholder: TEXT_INPUT_FORMAT.nickname.placeholder,
     };
   }
   return null;

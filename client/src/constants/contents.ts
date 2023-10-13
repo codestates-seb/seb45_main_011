@@ -168,3 +168,19 @@ export const LEAF_ADD_PAGE_TEXT = {
 export const LEAF_EDIT_PAGE_TEXT = {
   title: '식물 카드 수정',
 };
+
+export const TEXT_INPUT_FORMAT = {
+  plantName: {
+    lengthErrorMsg: '2글자 이상 6글자 이하의 영문 또는 한글을 입력해야 합니다.',
+    placeholder: '식물 이름을 입력해주세요.',
+  },
+  title: {
+    lengthErrorMsg:
+      '2글자 이상 20글자 이하의 영문 또는 한글을 입력해야 합니다.',
+    placeholder: '제목을 입력해주세요.',
+  },
+  nickname: {
+    lengthErrorMsg: '2글자 이상 6글자 이하의 영문 또는 한글을 입력해야 합니다.',
+    placeholder: '닉네임을 입력해주세요.',
+  },
+};
