@@ -17,7 +17,9 @@ export type SignType =
   | 'FailureModal'
   | 'AuthEmailModal';
 
-export type ModalType = PostType | GardenType | SignType | null;
+export type HistoryType = 'ResignModal' | 'ConfirmModal';
+
+export type ModalType = PostType | GardenType | SignType | HistoryType | null;
 
 export interface ModalState {
   isOpen: boolean;

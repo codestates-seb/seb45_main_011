@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { useEffect } from 'react';
 
 import { getUserInfo } from '@/api/history';
 
@@ -11,21 +11,22 @@ import useHistoryStore from '@/stores/historyStore';
 
 import useClient from '@/hooks/useClient';
 
-import CommonButton from '../common/CommonButton';
+import { CommonButton } from '../common';
 
 interface HistoryUserProps {
   paramsId: string;
 }
 
 export default function UserInfo({ paramsId }: HistoryUserProps) {
-  const isClient = useClient();
   const router = useRouter();
 
-  const userId = useUserStore((state) => state.userId);
-  const id = paramsId;
-
+  const { userId } = useUserStore();
   const { setHistoryUser, profileImageUrl, displayName, grade, point } =
     useHistoryStore();
+
+  const isClient = useClient();
+
+  const id = paramsId;
 
   useEffect(() => {
     const getHistoryData = async () => {
@@ -38,7 +39,7 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
   }, [id]);
 
   return (
-    <div className="flex flex-col justify-center items-center">
+    <section className="flex flex-col justify-center items-center">
       {isClient && (
         <Image
           src={profileImageUrl || '/assets/img/bg_default_profile.png'}
@@ -48,45 +49,49 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
           alt="profile_img"
         />
       )}
-      <div className="flex flex-col justify-center items-center mb-6 gap-2">
+
+      <section className="flex flex-col justify-center items-center mb-6 gap-2">
         <div className="text-2xl font-bold text-brown-80">{displayName}</div>
         <p className="font-bold text-brown-70">{grade}</p>
-      </div>
+      </section>
+
       {userId === id ? (
-        <div className="flex items-center justify-center bg-[url('/assets/img/bg_board_sm.png')] w-[192px] h-[96px] shadow-outer/down mb-5">
+        <section className="flex items-center justify-center bg-[url('/assets/img/bg_board_sm.png')] w-[192px] h-[96px] shadow-outer/down mb-5">
           <div className="flex items-center justify-center gap-2">
             <img src="/assets/img/point.svg" />
             <p className="text-xl font-bold text-brown-10">
               {point?.toLocaleString()}
             </p>
           </div>
-        </div>
+        </section>
       ) : (
         <>
           <div className="flex justify-center gap-3 max-[580px]:flex-col items-center">
             <CommonButton
               type="button"
               size="lg"
-              children="정원 구경하기"
               className="w-[196px] h-[52px] text-[22px] px-4"
-              onGoToGarden={() => router.push(`/garden/${id}`)}
-            />
+              onGoToGarden={() => router.push(`/garden/${id}`)}>
+              정원 구경하기
+            </CommonButton>
+
             <CommonButton
               type="button"
               size="lg"
-              children="식물 카드 열람"
               className="w-[196px] h-[52px] text-[22px] px-4"
-              onGoToLeafs={() => router.push(`/leafs/${id}`)}
-            />
+              onGoToLeafs={() => router.push(`/leafs/${id}`)}>
+              식물 카드 열람
+            </CommonButton>
           </div>
+
           <CommonButton
             type="button"
             size="lg"
-            children="작성한 게시글"
-            className="w-[203px] h-[52px] text-brown-50 border-brown-50 bg-[url('/assets/img/bg_wood_light.png')] mt-6 cursor-default max-[580px]:mt-3"
-          />
+            className="w-[203px] h-[52px] text-brown-50 border-brown-50 bg-[url('/assets/img/bg_wood_light.png')] mt-6 cursor-default max-[580px]:mt-3">
+            작성한 게시글
+          </CommonButton>
         </>
       )}
-    </div>
+    </section>
   );
 }

@@ -1,18 +1,16 @@
 'use client';
 
-import useSignModalStore from '@/stores/signModalStore';
+import useModalStore from '@/stores/modalStore';
 
-import Modal from '../common/Modal';
-import ModalPortal from '../common/ModalPortal';
-import CommonButton from '../common/CommonButton';
+import { CommonButton, Modal, ModalPortal } from '../common';
 
 export default function FailureModal() {
-  const close = useSignModalStore((state) => state.close);
+  const { close } = useModalStore();
 
   return (
     <ModalPortal>
       <Modal className="w-full min-w-[312px] max-w-[480px] h-fit flex flex-col justify-center items-center mx-1">
-        <div className="flex flex-col items-center gap-6 py-10">
+        <section className="flex flex-col items-center gap-6 py-10">
           <div className="flex flex-col items-center gap-3 px-5">
             <p className="font-bold text-brown-70 text-[28px] text-center break-keep leading-8">
               비밀번호가
@@ -21,7 +19,8 @@ export default function FailureModal() {
               <b className="text-red-50">일치하지 않습니다.</b>
             </p>
           </div>
-        </div>
+        </section>
+
         <div>
           <CommonButton
             type="button"
