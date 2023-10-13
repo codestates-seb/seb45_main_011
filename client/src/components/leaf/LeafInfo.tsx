@@ -2,9 +2,10 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import useLeafStore from '@/stores/leafStore';
+import useModalStore from '@/stores/modalStore';
 
-import PageTitle from '../common/PageTitle';
-import CommonButton from '../common/CommonButton';
+import { PageTitle, CommonButton } from '@/components/common';
+import { LEAF_INFO_TEXT } from '@/constants/contents';
 
 interface LeafInfoProps {
   pathUserId: string;
@@ -21,14 +22,14 @@ export default function LeafInfo({
 }: LeafInfoProps) {
   const router = useRouter();
 
-  const { isOwner, setModalCategory } = useLeafStore();
-  const { modalOpen } = useLeafStore();
+  const { isOwner } = useLeafStore();
+  const { open, changeType } = useModalStore();
 
   const navigateToGarden = () => router.push(`/garden/${pathUserId}`);
 
   const AddDiary = () => {
-    setModalCategory('add');
-    modalOpen();
+    changeType('add');
+    open();
   };
   return (
     <div className="flex flex-col items-center">
@@ -48,10 +49,10 @@ export default function LeafInfo({
       {isOwner && (
         <div className="flex gap-2 mb-3">
           <CommonButton type="button" size="sm" onClick={navigateToGarden}>
-            정원에 설치하기
+            {LEAF_INFO_TEXT.button[0]}
           </CommonButton>
           <CommonButton type="button" size="sm" onClick={AddDiary}>
-            일지 작성
+            {LEAF_INFO_TEXT.button[1]}
           </CommonButton>
         </div>
       )}
