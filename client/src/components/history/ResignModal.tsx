@@ -26,13 +26,10 @@ export default function ResignModal() {
 
   const handlePasswordCheck = async () => {
     if (!userPassword) return;
-    // console.log(userPassword);
 
-    // 비밀번호 유효성 검사만 맞으면 유저의 비밀번호와 같지 않아도 응답이 200으로 온다
     const response = await postUserPassword(userPassword);
-    // console.log(response);
 
-    if (response) {
+    if (response.data.data) {
       return (
         changeType('ConfirmModal'),
         setAccessToken(response.headers?.authorization)
