@@ -1,14 +1,11 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-
-import { postCreateUser, sendCodeByEmail } from '@/api/user';
+import { useForm } from 'react-hook-form';
 
 import useModalStore from '@/stores/modalStore';
-import useSignStore from '@/stores/signStore';
 
+import useAuthEmail from '@/hooks/useAuthEmail';
+import useSignup from '@/hooks/useSignup';
 import useEffectOnce from '@/hooks/useEffectOnce';
 
 import { SignInput, SignPasswordInput } from '../sign';
@@ -17,68 +14,31 @@ import { CommonButton } from '../common';
 import { SignFormValue } from '@/types/common';
 
 export default function SignupForm() {
-  const router = useRouter();
-
-  const [isCode, setIsCode] = useState(false);
-
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     watch,
-    reset,
   } = useForm<SignFormValue>();
 
-  const { changeType, open, isOpen } = useModalStore();
-  const { setCode, getSigninForm, getSignupForm } = useSignStore();
+  const { changeType, isOpen } = useModalStore();
 
-  const email = watch('email');
+  const { sendCodeWithEmail, isCode } = useAuthEmail();
+  const { handleSignup } = useSignup();
 
   useEffectOnce(() => {
     changeType(null);
   });
 
+  const email = watch('email');
+
   const onValidateEmail = () => {
     changeType('AuthEmailModal');
   };
 
-  const sendCodeWithEmail = async (email: string) => {
-    if (!email || isCode) return;
-
-    try {
-      const response = await sendCodeByEmail(email);
-
-      open();
-
-      setCode(response.data.data.authCode);
-      setIsCode(true);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const onSignup: SubmitHandler<SignFormValue> = async ({
-    email,
-    password,
-    nickname,
-  }: SignFormValue) => {
-    try {
-      await postCreateUser(email, password, nickname);
-
-      reset();
-
-      getSigninForm(false);
-      getSignupForm(false);
-
-      router.push('/signin');
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <section>
-      <form onSubmit={handleSubmit(onSignup)}>
+      <form onSubmit={handleSubmit(handleSignup)}>
         <div className="flex flex-col gap-1 w-[300px]">
           <SignInput type="email" register={register} errors={errors} />
           <div className="flex justify-center">
