@@ -1,6 +1,5 @@
 package com.growstory.domain.journal.controller;
 
-import com.growstory.domain.account.service.AccountService;
 import com.growstory.domain.journal.dto.JournalDto;
 import com.growstory.domain.journal.service.JournalService;
 import com.growstory.global.response.SingleResponseDto;
@@ -24,6 +23,7 @@ import java.util.List;
 public class JournalController {
 
     private final JournalService journalService;
+    private final UriCreator uriCreator;
 
     private static final String DEFAULT_URL = "/v1/leaves";
 
@@ -43,13 +43,13 @@ public class JournalController {
 
     // POST, 식물 일지를 등록
     @PostMapping("/{leaf-id}/journals")
-    public ResponseEntity<HttpStatus> postJournal(@RequestPart JournalDto.LeafAuthor leafAuthor,
+    public ResponseEntity<HttpStatus> postJournal(@RequestPart(value = "leafAuthor") JournalDto.LeafAuthor leafAuthor,
                                                   @Positive @PathVariable("leaf-id") Long leafId,
-                                                  @Valid @RequestPart JournalDto.Post postDto,
-                                                  @RequestPart(required = false) MultipartFile image) {
+                                                  @Valid @RequestPart(value = "postDto") JournalDto.Post postDto,
+                                                  @RequestPart(required = false, value = "image") MultipartFile image) {
         JournalDto.Response journal = journalService.createJournal(leafAuthor.getAccountId(), leafId, postDto, image);
 
-        URI location = UriCreator.createUri(DEFAULT_URL, journal.getJournalId());
+        URI location = uriCreator.createUri_Test(DEFAULT_URL, journal.getJournalId());
 
         return ResponseEntity.created(location).build();
     }

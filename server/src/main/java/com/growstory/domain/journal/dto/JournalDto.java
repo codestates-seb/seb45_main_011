@@ -1,8 +1,6 @@
 package com.growstory.domain.journal.dto;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotBlank;
@@ -14,6 +12,9 @@ import java.time.LocalDateTime;
 
 public class JournalDto {
     @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Post {
         @NotBlank
         String title;
@@ -40,6 +41,9 @@ public class JournalDto {
     }
 
     @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class LeafAuthor {
         long accountId;
     }
