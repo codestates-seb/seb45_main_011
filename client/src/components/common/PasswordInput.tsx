@@ -2,6 +2,7 @@
 
 import { ErrorMessage } from '@hookform/error-message';
 import { FieldErrors, UseFormRegister, UseFormWatch } from 'react-hook-form';
+import { twMerge } from 'tailwind-merge';
 
 import { DefaultProps, InputValues } from '@/types/common';
 
@@ -33,33 +34,33 @@ const getTypeFormat = (
   if (name === 'password') {
     return {
       validationSchema: {
-        required: '이 필드는 필수 입력 사항입니다. 반드시 값을 입력해주세요.',
-        validate: (value: string) =>
-          value === password || '비밀번호가 일치하지 않습니다.',
+        required: '이 필드는 필수 입력 사항입니다.',
+        // validate: (value: string) =>
+        //   value === password || '비밀번호가 일치하지 않습니다.',
       },
-      placeholder: '기존 비밀먼호를 입력해주세요.',
+      placeholder: '기존 비밀번호를 입력해주세요.',
     };
   }
   if (name === 'newPassword') {
     return {
       validationSchema: {
-        required: '이 필드는 필수 입력 사항입니다. 반드시 값을 입력해주세요.',
+        required: '이 필드는 필수 입력 사항입니다.',
         pattern: {
           value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,12}$/,
           message: '6-12글자의 영문과 숫자를 함께 사용해야 합니다.',
         },
       },
-      placeholder: '변경할 비밀먼호를 입력해주세요.',
+      placeholder: '새 비밀번호를 입력해주세요.',
     };
   }
   if (name === 'newPasswordCheck' && watch) {
     return {
       validationSchema: {
-        required: '이 필드는 필수 입력 사항입니다. 반드시 값을 입력해주세요.',
+        required: '이 필드는 필수 입력 사항입니다.',
         validate: (value: string) =>
           value === watch('newPassword') || '비밀번호가 일치하지 않습니다.',
       },
-      placeholder: '동일한 비밀먼호를 다시 입력해주세요.',
+      placeholder: '비밀번호를 다시 입력해주세요.',
     };
   }
   return null;
@@ -72,28 +73,38 @@ export default function PasswordInput({
   watch,
   required,
   password,
+  className,
 }: PasswordInputProps) {
   const TypeFormat = getTypeFormat(name, watch, password);
 
   if (TypeFormat === null) return null;
   return (
-    <div>
+    <div
+      className={twMerge(
+        `w-full flex flex-col justify-center ${INPUT_SIZE[name]}`,
+        className,
+      )}>
       <input
+        id={name}
         required={required}
-        className="mb-[8px] w-full bg-white-10 border-2 border-brown-70 p-3 rounded-lg shadow-outer/down text-xs leading-3 placeholder:text-gray-50 focus:outline-0"
+        className="w-full h-[36px] bg-white-10 border-2 border-brown-70 p-3 rounded-lg shadow-outer/down text-xs leading-3 placeholder:text-gray-50 focus:outline-0"
         type="password"
         placeholder={TypeFormat?.placeholder}
         {...register(name, TypeFormat?.validationSchema)}
       />
-      <ErrorMessage
-        errors={errors}
-        name={name}
-        render={({ message }) => (
-          <p className="pl-3 w-full text-[0.6rem] leading-3 text-red-50">
-            {message}
-          </p>
-        )}
-      />
+      <div className="h-[12px] mt-[8px] mb-2 pl-3 w-full text-[0.6rem] leading-3 text-red-50">
+        <ErrorMessage
+          errors={errors}
+          name={name}
+          render={({ message }) => <p>{message}</p>}
+        />
+      </div>
     </div>
   );
 }
+
+const INPUT_SIZE = {
+  password: 'max-w-[248px] ',
+  newPassword: 'max-w-[248px]',
+  newPasswordCheck: 'max-w-[248px]',
+};

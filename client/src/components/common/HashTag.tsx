@@ -10,7 +10,7 @@ export default function HashTag({
   handleDeleteClick: (index: number) => void;
 }) {
   return (
-    <div className="flex items-center gap-2 px-2 py-[7px] bg-[url('/assets/img/bg_wood_dark.png')] bg-contain bg-repeat border-2 border-brown-70 rounded text-xs leading-3 text-brown-10">
+    <div className="flex items-center gap-2 px-2 py-[7px] bg-[url('/assets/img/bg_wood_dark.png')] bg-contain bg-repeat border-2 border-brown-70 rounded text-xs leading-3 text-brown-10 hover:scale-105 transition-transform">
       {tag}
       <Image
         role="button"
