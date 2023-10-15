@@ -46,8 +46,8 @@ public class JournalService {
                 .collect(Collectors.toList());
     }
 
-    public JournalDto.Response createJournal(Long accountId, Long leafId, JournalDto.Post postDto, MultipartFile image) {
-        accountService.isAuthIdMatching(accountId);
+    public JournalDto.Response createJournal(Long leafId, JournalDto.Post postDto, MultipartFile image) {
+        accountService.isAuthIdMatching(postDto.getLeafAuthorId());
         Leaf findLeaf = leafService.findLeafEntityBy(leafId);
         Journal journal = createJournalWithNoImg(findLeaf, postDto);
         //image가 null이거나 비어있을 경우 ResponseDto로 변환하여 반환
@@ -72,9 +72,9 @@ public class JournalService {
                 .build());
     }
 
-    public void updateJournal(Long accountId, Long journalId, JournalDto.Patch patchDto, MultipartFile image) {
+    public void updateJournal(Long journalId, JournalDto.Patch patchDto, MultipartFile image) {
         Journal findJournal = findVerifiedJournalBy(journalId);
-        accountService.isAuthIdMatching(accountId);
+        accountService.isAuthIdMatching(patchDto.getLeafAuthorId());
 
         Optional.ofNullable(patchDto.getTitle())
                 .ifPresent(findJournal::updateTitle);
@@ -84,8 +84,6 @@ public class JournalService {
         updateLoadImage(image, findJournal, JOURNAL_IMAGE_PROCESS_TYPE);
     }
 
-    //TODO: S3Uploader로 빼는 리팩토링 작업? (상위 클래스 Image를 이용한 형변환)
-    // 기존 DB와 S3에 저장된 이미지 정보를 업로드 이미지 여부에 따라 수정
     private void updateLoadImage(MultipartFile image, Journal journal, String type) {
         JournalImage journalImage = journal.getJournalImage();
 

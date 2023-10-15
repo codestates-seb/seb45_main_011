@@ -50,7 +50,6 @@ const tokens = {
   },
   boxShadow: {
     'outer/down': '0px 4px 4px 0px rgba(0,0,0,0.25)',
-    'inner/all': '0px 0px 8px 8px rgba(128, 59, 34, 0.50) inset',
     'inner/top': '2px 2px 4px 0px rgba(0, 0, 0, 0.25) inset',
   },
 };
