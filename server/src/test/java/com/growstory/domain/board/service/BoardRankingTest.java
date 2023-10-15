@@ -2,7 +2,6 @@ package com.growstory.domain.board.service;
 
 import com.growstory.domain.board.repository.BoardHashTagRepository;
 import com.growstory.domain.board.repository.BoardRepository;
-import com.growstory.domain.board.service.BoardService;
 import com.growstory.domain.comment.service.CommentService;
 import com.growstory.domain.hashTag.repository.HashTagRepository;
 import com.growstory.domain.hashTag.service.HashTagService;
@@ -26,7 +25,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-public class BoardRankingServiceTest {
+public class BoardRankingTest {
 
     @InjectMocks
     private BoardService boardService;
@@ -91,7 +90,7 @@ public class BoardRankingServiceTest {
             //then
             assertThat(responses.get(0).getLikeNum(), is(3L));
             assertThat(responses.get(2).getLikeNum(), is(1L));
-            assertThat(responses.get(responses.size()-1).getRankStatus().getRank(), is(3));
+            assertThat(responses.get(responses.size()-1).getRankOrders().getPosition(), is(3));
             assertThat(responses.size(), is(3));
         }
 
@@ -112,7 +111,7 @@ public class BoardRankingServiceTest {
             //then
             assertThat(responses.get(0).getLikeNum(), is(3L));
             assertThat(responses.get(2).getLikeNum(), is(2L));
-            assertThat(responses.get(responses.size()-1).getRankStatus().getRank(), is(2));
+            assertThat(responses.get(responses.size()-1).getRankOrders().getPosition(), is(2));
             assertThat(responses.size(), is(3));
         }
 
@@ -133,8 +132,8 @@ public class BoardRankingServiceTest {
             //then
             assertThat(responses.get(0).getLikeNum(), is(3L));
             assertThat(responses.get(2).getLikeNum(), is(3L));
-            assertThat(responses.get(0).getRankStatus().getRank(), is(1));
-            assertThat(responses.get(responses.size()-1).getRankStatus().getRank(), is(1));
+            assertThat(responses.get(0).getRankOrders().getPosition(), is(1));
+            assertThat(responses.get(responses.size()-1).getRankOrders().getPosition(), is(1));
             assertThat(responses.size(), is(3));
         }
         @Test
@@ -157,8 +156,8 @@ public class BoardRankingServiceTest {
             //then
             assertThat(responses.get(0).getLikeNum(), is(3L));
             assertThat(responses.get(responses.size()-1).getLikeNum(), is(3L));
-            assertThat(responses.get(0).getRankStatus().getRank(), is(1));
-            assertThat(responses.get(responses.size()-1).getRankStatus().getRank(), is(1));
+            assertThat(responses.get(0).getRankOrders().getPosition(), is(1));
+            assertThat(responses.get(responses.size()-1).getRankOrders().getPosition(), is(1));
             assertThat(responses.size(), is(5));
         }
         @Test
@@ -181,8 +180,8 @@ public class BoardRankingServiceTest {
             //then
             assertThat(responses.get(0).getLikeNum(), is(3L));
             assertThat(responses.get(responses.size()-1).getLikeNum(), is(2L));
-            assertThat(responses.get(0).getRankStatus().getRank(), is(1));
-            assertThat(responses.get(responses.size()-1).getRankStatus().getRank(), is(2));
+            assertThat(responses.get(0).getRankOrders().getPosition(), is(1));
+            assertThat(responses.get(responses.size()-1).getRankOrders().getPosition(), is(2));
             assertThat(responses.size(), is(6));
         }
 
