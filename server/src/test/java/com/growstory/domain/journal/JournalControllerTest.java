@@ -81,7 +81,7 @@ public class JournalControllerTest {
     class PostJournalTest {
 
         long leafId;
-        JournalDto.LeafAuthor leafAuthor;
+//        JournalDto.LeafAuthor leafAuthor;
         JournalDto.Post requestDto;
         MockMultipartFile leafAuthorPart;
         MockMultipartFile requestDtoPart;
@@ -91,17 +91,17 @@ public class JournalControllerTest {
         @BeforeEach
         void init() {
             leafId = 1L;
-            leafAuthor = JournalDto.LeafAuthor.builder().accountId(1L).build();
+//            leafAuthor = JournalDto.LeafAuthor.builder().accountId(1L).build();
             requestDto = JournalDto.Post.builder().title("식물 일지 제목").content("내용").build();
 
             // MockMultipartFile 객체화
-            leafAuthorPart = createMockMultipartFile("leafAuthor", gson.toJson(leafAuthor), "application/json");
+//            leafAuthorPart = createMockMultipartFile("leafAuthor", gson.toJson(leafAuthor), "application/json");
             requestDtoPart = createMockMultipartFile("postDto", gson.toJson(requestDto), "application/json");
             imagePart = createImageMockFile("src/test/resources/images/testImage.jpg");
 
             //given
             mockJournalResponse = Stub.MockJournal.getStubJournalResponse1();
-            given(journalService.createJournal(anyLong(), anyLong(), Mockito.any(JournalDto.Post.class), Mockito.any(MultipartFile.class)))
+            given(journalService.createJournal(anyLong(), Mockito.any(JournalDto.Post.class), Mockito.any(MultipartFile.class)))
                     .willReturn(mockJournalResponse);
 
             URI stubUri = URI.create("/v1/leaves/1/journals/1");
@@ -129,7 +129,7 @@ public class JournalControllerTest {
             //when
             ResultActions actions = mockMvc.perform(
                     multipart(DEFAULT_URL + "/{leaf-id}/journals", leafId)
-                            .file(leafAuthorPart)
+//                            .file(leafAuthorPart)
                             .file(requestDtoPart)
                             .file(imagePart)
                             .contentType("multipart/form-data")
@@ -175,7 +175,7 @@ public class JournalControllerTest {
             // when
             ResultActions actions = mockMvc.perform(
                     multipart(DEFAULT_URL + "/{leaf-id}/journals", leafId)
-                            .file(leafAuthorPart)
+//                            .file(leafAuthorPart)
                             .file(requestDtoPart)
                             .file(imagePart) // empty image part
                             .contentType("multipart/form-data")

@@ -20,6 +20,8 @@ public class JournalDto {
         String title;
         @NotBlank
         String content;
+        @NotNull
+        long leafAuthorId;
     }
 
     @Getter
@@ -28,6 +30,8 @@ public class JournalDto {
         String title;
         @Nullable
         String content;
+        @NotNull
+        long leafAuthorId;
     }
 
     @Getter
@@ -40,11 +44,11 @@ public class JournalDto {
         LocalDateTime createdAt;
     }
 
-    @Getter
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class LeafAuthor {
-        long accountId;
-    }
+//    @Getter
+//    @Builder
+//    @NoArgsConstructor
+//    @AllArgsConstructor
+//    public static class LeafAuthor {
+//        long accountId;
+//    }
 }
