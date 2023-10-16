@@ -5,20 +5,18 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 
 import useGardenStore from '@/stores/gardenStore';
-import useGardenModalStore from '@/stores/gardenModalStore';
+import useModalStore from '@/stores/modalStore';
 import useUserStore from '@/stores/userStore';
 
 import useConnectLeaf from '@/hooks/useConnectLeaf';
 
-import ModalPortal from '@/components/common/ModalPortal';
-import Modal from '@/components/common/Modal';
-import CommonButton from '@/components/common/CommonButton';
+import { ModalPortal, Modal, CommonButton } from '@/components/common';
 
 export default function LeafExistModal() {
   const router = useRouter();
 
   const { infoTarget, selectedLeafId, unobserve } = useGardenStore();
-  const { changeType, close } = useGardenModalStore();
+  const { changeType, close } = useModalStore();
   const { userId } = useUserStore();
 
   const { mutate: connectionMutate } = useConnectLeaf();

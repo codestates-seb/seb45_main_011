@@ -1,21 +1,24 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+
 import { useQuery } from '@tanstack/react-query';
 
 import { getLeafsByUserId } from '@/api/leaf';
 
 import useGardenStore from '@/stores/gardenStore';
-import useGardenModalStore from '@/stores/gardenModalStore';
+import useModalStore from '@/stores/modalStore';
 import useUserStore from '@/stores/userStore';
 
 import useConnectLeaf from '@/hooks/useConnectLeaf';
 
-import LoadingNotice from '@/components/common/LoadingNotice';
-import ModalPortal from '@/components/common/ModalPortal';
-import Modal from '@/components/common/Modal';
-import Leaf from '@/components/common/Leaf';
-import CommonButton from '@/components/common/CommonButton';
+import {
+  LoadingNotice,
+  Leaf,
+  ModalPortal,
+  Modal,
+  CommonButton,
+} from '@/components/common';
 
 import { LeafDataInfo } from '@/types/data';
 
@@ -24,7 +27,7 @@ export default function SelectLeafModal() {
 
   const { infoTarget, selectedLeafId, setSelectedLeafId, unobserve } =
     useGardenStore();
-  const { close } = useGardenModalStore();
+  const { close } = useModalStore();
   const { userId } = useUserStore();
 
   const { data: leaves, isLoading } = useQuery<LeafDataInfo[]>(['leaves'], () =>
