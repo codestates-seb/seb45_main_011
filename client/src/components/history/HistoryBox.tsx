@@ -29,9 +29,9 @@ export default function HistoryBox({ paramsId }: HistoryProps) {
   const id = paramsId;
   const isOwner = userId === id;
 
-  const IS_BOARD_WRITTEN = selectOption === 'boardWritten';
-  const IS_BOARD_LIKE = selectOption === 'boardLiked';
-  const IS_COMMENT = selectOption === 'commentWritten';
+  const isBoardWritten = selectOption === 'boardWritten';
+  const isBoardLikes = selectOption === 'boardLiked';
+  const isBoardComments = selectOption === 'commentWritten';
 
   return (
     <>
@@ -56,9 +56,9 @@ export default function HistoryBox({ paramsId }: HistoryProps) {
 
             {(userId || paramsId) && (
               <div className="h-full min-h-[200px] pt-1 px-2 overflow-y-scroll overflow-x-hidden scrollbar">
-                {IS_BOARD_WRITTEN && <HistoryBoard paramsId={id} />}
-                {isOwner && IS_BOARD_LIKE && <HistoryLikes paramsId={id} />}
-                {isOwner && IS_COMMENT && <HistoryComment paramsId={id} />}
+                {isBoardWritten && <HistoryBoard paramsId={id} />}
+                {isOwner && isBoardLikes && <HistoryLikes paramsId={id} />}
+                {isOwner && isBoardComments && <HistoryComment paramsId={id} />}
               </div>
             )}
           </div>
