@@ -222,3 +222,19 @@ export const NO_IMAGE_TEXT = {
 export const POST_COUNT_INFO_TEXT = {
   alert: '로그인이 필요한 기능입니다.',
 };
+
+export const COMMENT = {
+  maxLength: {
+    value: 200,
+    errorMessage: '최대 200자를 넘을 수 없습니다.',
+  },
+};
+
+export const COMMENT_DELETE_MODAL_TEXT = {
+  firstLine: '댓글을',
+  secondLine: ['삭제', '하시겠습니까?'],
+};
+
+export const POST_DELETE_MODAL_TEXT = {
+  firstLine: ['게시글을', '삭제', '하시겠습니까?'],
+};
