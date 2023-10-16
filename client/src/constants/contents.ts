@@ -189,3 +189,36 @@ export const NOT_FOUND_TEXT = {
   title: 'Not Found',
   description: ['페이지를 ', '못 찾았어요 : ('],
 };
+
+export const BOARD_BANNER_TEXT = {
+  firstLine: {
+    big: '좋아요를 많이 받은 1 ~ 3위에게',
+    small: '좋아요 순위에 따라',
+  },
+  secondLine: {
+    big: ['매주 포인트', '를 지급해 드려요!'],
+    small: ['포인트', '를 드려요!'],
+  },
+  thirdLine: '포인트는 매주 월요일에 지급되며, 이전 랭킹은 초기화 됩니다.',
+};
+
+export const BOARD_SEARCH_INPUT_TEXT = {
+  input: {
+    placeholder: '검색어를 입력하세요',
+  },
+};
+
+export const EMPTY_SEARCH_TEXT = '검색 결과가 없습니다 : (';
+
+export const RANK_BOARD_TEXT = {
+  title: '이주의 좋아요 순위',
+};
+
+export const NO_IMAGE_TEXT = {
+  title: 'No Image',
+  description: '이미지를 등록해주세요!',
+};
+
+export const POST_COUNT_INFO_TEXT = {
+  alert: '로그인이 필요한 기능입니다.',
+};
