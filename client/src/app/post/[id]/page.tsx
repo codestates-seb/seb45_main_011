@@ -8,26 +8,30 @@ import { motion } from 'framer-motion';
 
 import { getPostByBoardId } from '@/api/board';
 
-import usePostModalStore from '@/stores/postModalStore';
 import useUserStore from '@/stores/userStore';
+import useModalStore from '@/stores/modalStore';
 
 import useEffectOnce from '@/hooks/useEffectOnce';
 
-import PostDeleteModal from '@/components/post/PostDeleteModal';
-import PageTitle from '@/components/common/PageTitle';
-import PostCountInfo from '@/components/common/PostCountInfo';
-import Screws from '@/components/common/Screws';
-import Comment from '@/components/post/Comment';
-import CommentForm from '@/components/post/CommentForm';
-import PostContent from '@/components/post/PostContent';
-import DateAndControl from '@/components/post/DateAndControlSection';
-import PostImage from '@/components/post/PostImage';
-import PostProfile from '@/components/post/PostProfile';
-import HashTags from '@/components/post/HashTags';
-import CommentDeleteModal from '@/components/post/CommentDeleteModal';
-import LoadingNotice from '@/components/common/LoadingNotice';
-import ErrorMessage from '@/components/common/ErrorMessage';
-import Footer from '@/components/common/Footer';
+import {
+  PostDeleteModal,
+  Comment,
+  CommentForm,
+  PostContent,
+  DateAndControlSection,
+  PostImage,
+  PostProfile,
+  HashTags,
+  CommentDeleteModal,
+} from '@/components/post';
+import {
+  PageTitle,
+  PostCountInfo,
+  Screws,
+  LoadingNotice,
+  ErrorMessage,
+  Footer,
+} from '@/components/common';
 
 import { CommentDataInfo, PostDataInfo } from '@/types/data';
 
@@ -38,14 +42,14 @@ interface PostProps {
 }
 
 export default function Post({ params }: PostProps) {
-  const router = useRouter();
-
   const boardId = params.id;
+
+  const router = useRouter();
 
   const [comments, setComments] = useState<CommentDataInfo[]>();
 
   const { userId } = useUserStore();
-  const { isOpen, type } = usePostModalStore();
+  const { isOpen, type } = useModalStore();
 
   const {
     data: post,
@@ -101,7 +105,7 @@ export default function Post({ params }: PostProps) {
                     grade={post.grade}
                     usage="post"
                   />
-                  <DateAndControl
+                  <DateAndControlSection
                     date={new Date(post.createAt)}
                     usage="post"
                     isOwner={isOwner}

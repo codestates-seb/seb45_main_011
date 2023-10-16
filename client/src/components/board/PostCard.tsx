@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { motion } from 'framer-motion';
 
-import PostCountInfo from '../common/PostCountInfo';
+import { PostCountInfo } from '@/components/common';
 
 interface PostCardProps {
   title: string;
@@ -34,7 +34,6 @@ export default function PostCard({
             alt=""
             width={235}
             height={178}
-            layout="responsive"
           />
         </div>
         <h2 className="text-center text-sm leading-[0.875rem] text-brown-80 font-bold mb-[17px] overflow-hidden whitespace-nowrap text-ellipsis break-words">

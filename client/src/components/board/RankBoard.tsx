@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import useBoardStore from '@/stores/boardStore';
 
 import { MOUNT_ANIMATION_VALUES } from '@/constants/values';
+import { RANK_BOARD_TEXT } from '@/constants/contents';
 
 const renderMedal = (rank: number) => {
   if (rank === 1)
@@ -50,11 +51,11 @@ export default function RankBoard() {
       variants={MOUNT_ANIMATION_VALUES}
       initial="initial"
       animate="animate"
-      className="pt-[60px] w-[448px] h-[268px] flex flex-col items-center bg-contain bg-center bg-no-repeat bg-[url('/assets/img/bg_board_lg.png')] drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] scale-100 max-[604px]:w-[313px] max-[604px]:-mb-3 max-[604px]:px-6 max-[604px]:pt-[78px]">
-      <h2 className="text-2xl leading-6 text-brown-10 font-bold max-[604px]:text-xl">
-        이주의 좋아요 순위
+      className="pt-[64px] w-[448px] h-[268px] flex flex-col items-center bg-contain bg-center bg-no-repeat bg-[url('/assets/img/bg_board_lg.png')] drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] scale-100 max-[604px]:w-[313px] max-[604px]:-mb-12 max-[604px]:px-6 max-[604px]:pt-[78px]">
+      <h2 className="text-2xl leading-6 text-brown-10 font-bold max-[604px]:text-lg">
+        {RANK_BOARD_TEXT.title}
       </h2>
-      <div className="py-5 w-full max-w-[720px] flex flex-col items-center gap-2 text-base leading-4 text-brown-10 font-normal whitespace-nowrap overflow-x-hidden max-[604px]:text-xs max-[604px]:gap-1 max-[604px]:pt-1">
+      <div className="pt-7 pb-5 w-full max-w-[720px] flex flex-col items-center gap-2 text-base leading-4 text-brown-10 font-normal whitespace-nowrap overflow-x-hidden max-[604px]:text-xs max-[604px]:gap-1 max-[604px]:pt-1">
         {boardRank.slice(0, 3).map((board) => {
           return (
             <Link

@@ -33,3 +33,5 @@ export const MOUNT_ANIMATION_VALUES = {
 };
 
 export const ADMIN_USER_ID = '52';
+
+export const SHARE_URL = 'https://growstory.vercel.app';

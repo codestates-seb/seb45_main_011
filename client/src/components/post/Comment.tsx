@@ -1,16 +1,17 @@
 import { useForm } from 'react-hook-form';
 
 import usePostStore from '@/stores/postStore';
+import useUserStore from '@/stores/userStore';
 
 import useEditCommentMutation from '@/hooks/useEditCommentMutation';
 
-import PostProfile from './PostProfile';
-import DateAndControlSection from './DateAndControlSection';
+import { PostProfile, DateAndControlSection } from '@/components/post';
 import CommonButton from '../common/CommonButton';
 
 import { CommentDataInfo } from '@/types/data';
 import { CommentInputValue } from '@/types/common';
-import useUserStore from '@/stores/userStore';
+
+import { COMMENT } from '@/constants/contents';
 
 interface CommentProps {
   comment: CommentDataInfo | null;
@@ -25,10 +26,6 @@ export default function Comment({ comment, boardId }: CommentProps) {
 
   const { mutate: editComment } = useEditCommentMutation({ boardId, targetId });
 
-  const isEdit = editMode && String(comment.commentId) === targetId;
-
-  const isOwner = userId === String(comment.accountId);
-
   const {
     register,
     handleSubmit,
@@ -38,6 +35,10 @@ export default function Comment({ comment, boardId }: CommentProps) {
       comment: comment.content,
     },
   });
+
+  const isEdit = editMode && String(comment.commentId) === targetId;
+
+  const isOwner = userId === String(comment.accountId);
 
   const submitCommentForm = (data: CommentInputValue) => {
     editComment(data);
@@ -70,8 +71,8 @@ export default function Comment({ comment, boardId }: CommentProps) {
               className="w-full px-[0.875rem] py-[0.75rem] bg-brown-10 border-2 border-brown-50 rounded-xl text-black-50 text-xs left-3 common-drop-shadow outline-none max-[500px]:py-[0.5rem]  max-[500px]:text-[0.5rem]"
               {...register('comment', {
                 maxLength: {
-                  value: 200,
-                  message: '최대 200자를 넘을 수 없습니다.',
+                  value: COMMENT.maxLength.value,
+                  message: COMMENT.maxLength.errorMessage,
                 },
               })}
             />

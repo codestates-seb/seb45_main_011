@@ -1,15 +1,11 @@
 import Image from 'next/image';
 
 import useLeafStore from '@/stores/leafStore';
-import useUserStore from '@/stores/userStore';
+import useModalStore from '@/stores/modalStore';
 
-import ControlButton from '../common/ControlButton';
+import { ControlButton } from '../common';
 
 import { DiaryDataInfo } from '@/types/data';
-
-interface DiaryProps extends DiaryDataInfo {
-  pathUserId: string;
-}
 
 export default function Diary({
   journalId,
@@ -17,8 +13,10 @@ export default function Diary({
   imageUrl,
   content,
   title,
-  pathUserId,
-}: DiaryProps) {
+}: DiaryDataInfo) {
+  const { setTargetDiary, isOwner } = useLeafStore();
+  const { open, changeType } = useModalStore();
+
   const diary = {
     journalId,
     createdAt,
@@ -26,24 +24,19 @@ export default function Diary({
     content,
     title,
   };
-
-  const userId = useUserStore((state) => state.userId);
-
-  const { modalOpen, setModalCategory, setTargetDiary } = useLeafStore();
-
   const startDay = new Date(createdAt);
   const [month, day] = [startDay.getMonth() + 1, startDay.getDate()];
 
   const handleEditDiary = () => {
-    modalOpen();
+    open();
     setTargetDiary(diary);
-    setModalCategory('edit');
+    changeType('edit');
   };
 
   const handleDeleteDiary = () => {
-    modalOpen();
+    open();
     setTargetDiary(diary);
-    setModalCategory('delete');
+    changeType('delete');
   };
 
   return (
@@ -53,7 +46,7 @@ export default function Diary({
           {month + '/' + day}
         </span>
         <div className="relative grid grid-cols-1 gap-2 w-full max-w-[380px] h-[150px] p-3 pl-4 pb-[0.9rem] bg-brown-10 border-2 border-brown-50 rounded-lg shadow-outer/down">
-          {pathUserId === userId && (
+          {isOwner && (
             <div className="absolute right-[10px] top-[10px] flex gap-2">
               <ControlButton
                 usage="edit"

@@ -10,6 +10,8 @@ import CommentProfileImage from './CommentProfileImage';
 
 import { CommentInputValue } from '@/types/common';
 
+import { COMMENT } from '@/constants/contents';
+
 interface CommentFormProps {
   boardId: string;
 }
@@ -39,8 +41,8 @@ export default function CommentForm({ boardId }: CommentFormProps) {
         required
         {...register('comment', {
           maxLength: {
-            value: 200,
-            message: '최대 200자를 넘을 수 없습니다.',
+            value: COMMENT.maxLength.value,
+            message: COMMENT.maxLength.errorMessage,
           },
         })}
       />

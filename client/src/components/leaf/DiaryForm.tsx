@@ -1,19 +1,22 @@
 import { useState } from 'react';
 
 import { useForm } from 'react-hook-form';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import ImageUpload from '../common/ImageUpload';
-import PageTitle from '../common/PageTitle';
-import TextInput from '../common/TextInput';
-import TextArea from '../common/TextArea';
-import CommonButton from '../common/CommonButton';
+import useModalStore from '@/stores/modalStore';
 
-import useLeafStore from '@/stores/leafStore';
+import useDiaryFormMutaion from '@/hooks/useDiaryFormMutaion';
 
-import { addDiary, editDiary } from '@/api/leaf';
+import {
+  ImageUpload,
+  PageTitle,
+  TextInput,
+  TextArea,
+  CommonButton,
+} from '@/components/common';
 
 import { InputValues } from '@/types/common';
+
+import { DIARY_FORM_TEXT } from '@/constants/contents';
 
 interface DiaryFormProps {
   imageUrl?: string;
@@ -33,7 +36,11 @@ export default function DiaryForm({
   diaryId,
   mode,
 }: DiaryFormProps) {
-  const queryClient = useQueryClient();
+  const [isImageUpdated, setIsImageUpdated] = useState(false);
+  // const [isChecked, setIsChecked] = useState(false);
+  const { close } = useModalStore();
+
+  const mutate = useDiaryFormMutaion(mode, { userId, leafId, diaryId });
 
   const {
     register,
@@ -48,34 +55,18 @@ export default function DiaryForm({
     },
   });
 
-  const { mutate } = useMutation({
-    mutationFn:
-      mode === 'edit'
-        ? (inputs: InputValues) =>
-            editDiary({ diaryId, inputs, userId, isImageUpdated })
-        : (inputs: InputValues) =>
-            addDiary({ leafId, inputs, isImageUpdated, userId }),
-
-    onSuccess: () => {
-      queryClient.invalidateQueries(['diaries', leafId]);
-    },
-  });
-
-  const [isImageUpdated, setIsImageUpdated] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
-
-  const modalClose = useLeafStore((state) => state.modalClose);
-
   const handleSubmitDiary = (inputs: InputValues) => {
-    mutate(inputs);
-    modalClose();
+    if (mutate) {
+      mutate({ inputs, isImageUpdated });
+      close();
+    }
   };
 
-  const handleModalCancel = () => modalClose();
+  const handleModalCancel = () => close();
 
   return (
     <div className="w-[440px] max-w-[500px] h-fit px-[1.5rem] py-[1rem] items-center flex flex-col max-[480px]:w-[320px] diary-overflow">
-      <PageTitle text="일지 작성하기" className="mt-5 mb-6" />
+      <PageTitle text={DIARY_FORM_TEXT.title} className="mt-5 mb-6" />
       <form
         onSubmit={handleSubmit(handleSubmitDiary)}
         className="w-full overflow-y-scroll scrollbar">
@@ -92,7 +83,7 @@ export default function DiaryForm({
             <label
               htmlFor="title"
               className="min-w-[55px] pt-2 text-xl leading-5 text-brown-80 font-bold max-[480px]:text-lg max-[480px]:pt-1 max-[480px]:min-w-[48px]">
-              제목 :{' '}
+              {DIARY_FORM_TEXT.firstLabel}
             </label>
             <TextInput
               id="title"
@@ -106,7 +97,7 @@ export default function DiaryForm({
             <label
               htmlFor="diary-content"
               className="min-w-[55px] pt-2 text-xl leading-5 text-brown-80 font-bold max-[480px]:text-lg max-[480px]:pt-1 max-[480px]:min-w-[48px]">
-              내용 :{' '}
+              {DIARY_FORM_TEXT.secondLabel}
             </label>
             <TextArea
               id="diary-content"
@@ -149,14 +140,14 @@ export default function DiaryForm({
             size="sm"
             className="hover:scale-105 hover:transition-transform"
             disabled={isSubmitting}>
-            완료
+            {DIARY_FORM_TEXT.button[0]}
           </CommonButton>
           <CommonButton
             type="button"
             size="sm"
             onClick={handleModalCancel}
             className="hover:scale-105 hover:transition-transform">
-            취소
+            {DIARY_FORM_TEXT.button[1]}
           </CommonButton>
         </div>
       </form>
