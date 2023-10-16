@@ -15,12 +15,14 @@ export default function FailureModal() {
         <div className="flex flex-col items-center gap-6 py-10">
           <div className="flex flex-col items-center gap-3 px-5">
             <p className="font-bold text-brown-70 text-[28px] text-center break-keep leading-8 max-[480px]:text-2xl">
-              <b className="text-red-50">등록되지 않은 </b> 이메일입니다.
+              <b className="text-red-50">등록되지 않은&nbsp;</b>
+              &nbsp;이메일입니다.
             </p>
             <p className="font-bold text-brown-90 text-[28px] max-[480px]:text-2xl">
               다시 입력해주세요.
             </p>
           </div>
+
           <div>
             <CommonButton
               type="button"

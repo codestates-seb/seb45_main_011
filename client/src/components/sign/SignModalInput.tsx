@@ -1,4 +1,4 @@
-import { UseFormRegister } from 'react-hook-form';
+import { FieldErrors, UseFormRegister } from 'react-hook-form';
 
 import { SignFormValue } from '@/types/common';
 
@@ -10,13 +10,17 @@ interface SignModalInputProps {
   type: 'code' | 'email' | 'password';
 
   register: UseFormRegister<SignFormValue>;
+  errors: FieldErrors<SignFormValue>;
 }
 
 export default function SignModalInput({
   type,
   register,
+  errors,
 }: SignModalInputProps) {
   const registerFormat = getRegisterByType(type);
+
+  const errorMsg = errors[type]?.message;
 
   return (
     <section>
@@ -28,6 +32,10 @@ export default function SignModalInput({
         required
         {...register(type, registerFormat?.validation)}
       />
+
+      <p className="flex justify-center items-center w-full h-[12px] mt-[8px] px-1 text-[0.6rem] leading-3 text-red-50 tracking-[-0.07em]">
+        {errorMsg}
+      </p>
     </section>
   );
 }

@@ -1,13 +1,11 @@
-import ChangeNicknameModal from './ChangeNicknameModal';
-import ChangePasswordModal from './ChangePasswordModal';
+import ChangeProfileModal from './ChangeProfileModal';
 import ImageForm from './ImageForm';
 import NicknameForm from './NicknameForm';
 import PasswordForm from './PasswordForm';
 import ProfileBox from './ProfileBox';
 
 export {
-  ChangeNicknameModal,
-  ChangePasswordModal,
+  ChangeProfileModal,
   ImageForm,
   NicknameForm,
   PasswordForm,

@@ -23,7 +23,7 @@ export default function SuccessedModal() {
   return (
     <ModalPortal>
       <Modal className="min-w-[312px] h-fit flex flex-col justify-center items-center mx-1">
-        <section className="flex flex-col items-center gap-3 px-6 py-8 text-[22px] max-[705px]:text-[18px]">
+        <div className="flex flex-col items-center gap-3 px-6 py-8 text-[22px] max-[705px]:text-[18px]">
           <div className="font-bold text-brown-80 break-keep">
             그동안&nbsp;
             <span className="font-bold text-brown-60">Grow&nbsp;</span>
@@ -43,7 +43,7 @@ export default function SuccessedModal() {
               닫기
             </CommonButton>
           </div>
-        </section>
+        </div>
       </Modal>
     </ModalPortal>
   );

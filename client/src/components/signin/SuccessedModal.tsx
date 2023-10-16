@@ -18,6 +18,7 @@ export default function SuccessedModal() {
               <span className="text-brown-90">비밀번호를 변경해주세요.</span>
             </p>
           </div>
+
           <div>
             <CommonButton
               type="button"

@@ -17,9 +17,24 @@ export type SignType =
   | 'FailureModal'
   | 'AuthEmailModal';
 
-export type HistoryType = 'ResignModal' | 'ConfirmModal';
+export type HistoryType =
+  | 'ResignModal'
+  | 'ConfirmModal'
+  | 'ResignSuccessedModal'
+  | 'ResignFailureModal';
 
-export type ModalType = PostType | GardenType | SignType | HistoryType | null;
+export type ProfileType =
+  | 'ChangePasswordModal'
+  | 'ChangeNicknameModal'
+  | 'ChangeImageModal';
+
+export type ModalType =
+  | PostType
+  | GardenType
+  | SignType
+  | HistoryType
+  | ProfileType
+  | null;
 
 export interface ModalState {
   isOpen: boolean;

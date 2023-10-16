@@ -39,7 +39,7 @@ export default function getRegisterByType(type: string) {
         },
         maxLength: {
           value: 6,
-          message: '6글자 이하의 영문 또는 한글을 입력해야 합니다.',
+          message: SIGN_VAILDATION.maxLength,
         },
       },
     };
