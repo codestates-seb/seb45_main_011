@@ -13,7 +13,7 @@ export type GardenType =
 
 export type ModalType = PostType | GardenType | null;
 
-export interface GardenModalState {
+export interface ModalState {
   isOpen: boolean;
   type: ModalType;
 
@@ -22,7 +22,7 @@ export interface GardenModalState {
   close: () => void;
 }
 
-const useGardenModalStore = create<GardenModalState>((set) => ({
+const useModalStore = create<ModalState>((set) => ({
   isOpen: false,
   type: null,
 
@@ -31,4 +31,4 @@ const useGardenModalStore = create<GardenModalState>((set) => ({
   close: () => set(() => ({ isOpen: false })),
 }));
 
-export default useGardenModalStore;
+export default useModalStore;
