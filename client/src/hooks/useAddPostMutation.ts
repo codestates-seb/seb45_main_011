@@ -11,7 +11,7 @@ interface AddPostParameters {
   tags: string[];
 }
 
-const useAddPost = () => {
+const useAddPostMutation = () => {
   const router = useRouter();
 
   const { mutate: addPostMutate } = useMutation({
@@ -23,4 +23,4 @@ const useAddPost = () => {
   return { addPostMutate };
 };
 
-export default useAddPost;
+export default useAddPostMutation;
