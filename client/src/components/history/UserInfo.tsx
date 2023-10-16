@@ -1,15 +1,12 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { useEffect } from 'react';
-
-import { getUserInfo } from '@/api/history';
+import { useRouter } from 'next/navigation';
 
 import useUserStore from '@/stores/userStore';
-import useHistoryStore from '@/stores/historyStore';
 
 import useClient from '@/hooks/useClient';
+import useUserInfo from '@/hooks/useUserInfo';
 
 import { CommonButton } from '../common';
 
@@ -18,28 +15,17 @@ interface HistoryUserProps {
 }
 
 export default function UserInfo({ paramsId }: HistoryUserProps) {
+  const id = paramsId;
+
   const router = useRouter();
 
   const { userId } = useUserStore();
-  const { setHistoryUser, profileImageUrl, displayName, grade, point } =
-    useHistoryStore();
 
   const isClient = useClient();
-
-  const id = paramsId;
-
-  useEffect(() => {
-    const getHistoryData = async () => {
-      const response = await getUserInfo(id);
-
-      setHistoryUser(response.data);
-    };
-
-    getHistoryData();
-  }, [id]);
+  const { profileImageUrl, displayName, grade, point } = useUserInfo(id);
 
   return (
-    <section className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center">
       {isClient && (
         <Image
           src={profileImageUrl || '/assets/img/bg_default_profile.png'}
@@ -51,14 +37,19 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
       )}
 
       <section className="flex flex-col justify-center items-center mb-6 gap-2">
-        <div className="text-2xl font-bold text-brown-80">{displayName}</div>
-        <p className="font-bold text-brown-70">{grade}</p>
+        <h3 className="text-2xl font-bold text-brown-80">{displayName}</h3>
+        <h4 className="font-bold text-brown-70">{grade}</h4>
       </section>
 
       {userId === id ? (
         <section className="flex items-center justify-center bg-[url('/assets/img/bg_board_sm.png')] w-[192px] h-[96px] shadow-outer/down mb-5">
           <div className="flex items-center justify-center gap-2">
-            <img src="/assets/img/point.svg" />
+            <Image
+              src="/assets/img/point.svg"
+              alt="point icon"
+              width={24}
+              height={24}
+            />
             <p className="text-xl font-bold text-brown-10">
               {point?.toLocaleString()}
             </p>
@@ -92,6 +83,6 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
           </CommonButton>
         </>
       )}
-    </section>
+    </div>
   );
 }

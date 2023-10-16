@@ -2,16 +2,11 @@
 
 import { useForm } from 'react-hook-form';
 
-import { updateUserPassword } from '@/api/profile';
+import useChangePassword from '@/hooks/useChagnePassword';
 
-import useSignModalStore from '@/stores/signModalStore';
-import useUserStore from '@/stores/userStore';
-
-import PasswordInput from '../common/PasswordInput';
-import CommonButton from '../common/CommonButton';
+import { CommonButton, PasswordInput } from '../common';
 
 import { InputValues } from '@/types/common';
-import { ALERT_TEXT } from '@/constants/contents';
 
 export default function PasswordForm() {
   const {
@@ -19,32 +14,15 @@ export default function PasswordForm() {
     handleSubmit,
     formState: { errors, isSubmitting },
     watch,
-    reset,
   } = useForm<InputValues>();
-
-  const changeState = useSignModalStore((state) => state.changeState);
-  const setAccessToken = useUserStore((state) => state.setAccessToken);
 
   const presentPassword = watch('password');
   const changedPassword = watch('newPasswordCheck');
 
-  const updatePassword = async () => {
-    if (!presentPassword && !changedPassword) return;
-
-    if (presentPassword === changedPassword) {
-      alert(ALERT_TEXT.password);
-      return;
-    }
-
-    const response = await updateUserPassword(presentPassword, changedPassword);
-
-    if (response.status === 204) {
-      setAccessToken(response.headers?.authorization);
-    }
-
-    reset();
-    changeState('ChangePasswordModal');
-  };
+  const { updatePassword } = useChangePassword(
+    presentPassword,
+    changedPassword,
+  );
 
   return (
     <form

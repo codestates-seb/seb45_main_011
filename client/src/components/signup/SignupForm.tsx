@@ -26,25 +26,37 @@ export default function SignupForm() {
   const { isCode, setIsCode } = useSignStore();
 
   const { sendCodeWithEmail } = useAuthEmail();
-  const { handleSignup } = useSignup();
+  const { onSignup } = useSignup();
+
+  const email = watch('email');
+  const password = watch('password');
+  const nickname = watch('nickname');
+
+  const onValidateEmail = () => {
+    if (!email) return;
+
+    changeType('AuthEmailModal');
+    open();
+  };
 
   useEffectOnce(() => {
     changeType(null);
     setIsCode(false);
   });
 
-  const email = watch('email');
-
-  const onValidateEmail = () => {
-    changeType('AuthEmailModal');
-    open();
-  };
-
   return (
     <section>
-      <form onSubmit={handleSubmit(handleSignup)}>
+      <form
+        onSubmit={handleSubmit(() =>
+          onSignup({
+            email,
+            password,
+            nickname,
+          }),
+        )}>
         <div className="flex flex-col gap-1 w-[300px]">
           <SignInput type="email" register={register} errors={errors} />
+
           <div className="flex justify-center">
             <CommonButton
               type="button"

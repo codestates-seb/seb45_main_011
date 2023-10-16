@@ -21,11 +21,14 @@ export default function SigninForm() {
 
   const { open, changeType } = useModalStore();
 
-  const { handleLogin } = useSignin();
+  const { onSiginIn } = useSignin();
+
+  const email = watch('email');
+  const password = watch('password');
 
   return (
     <section className="flex flex-col items-center gap-5 px-5 mt-3">
-      <form onSubmit={handleSubmit(handleLogin)}>
+      <form onSubmit={handleSubmit(() => onSiginIn({ email, password }))}>
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-1">
             <SignInput type="email" register={register} errors={errors} />
@@ -37,6 +40,7 @@ export default function SigninForm() {
               watch={watch}
             />
           </div>
+
           <div className="flex justify-center items-center gap-3">
             <CommonButton
               type="submit"

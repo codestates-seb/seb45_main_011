@@ -1,26 +1,16 @@
 'use client';
 
-import { deleteUser } from '@/api/history';
-
-import useModalStore from '@/stores/modalStore';
+import useDeleteUser from '@/hooks/useDeleteUser';
 
 import { CommonButton, Modal, ModalPortal } from '../common';
 
 export default function ConfirmModal() {
-  const { close, changeType } = useModalStore();
-
-  const hanldeDeleteUser = async () => {
-    const response = await deleteUser();
-
-    if (response === 204) {
-      return changeType('SuccessedModal');
-    }
-  };
+  const { onDeleteUser, close } = useDeleteUser();
 
   return (
     <ModalPortal>
       <Modal className="min-w-[312px] h-fit flex flex-col justify-center items-center mx-1">
-        <section className="px-3 py-9 flex flex-col items-center gap-4">
+        <div className="px-3 py-9 flex flex-col items-center gap-4">
           <div className="text-[22px] font-bold text-brown-90">
             정말&nbsp;
             <span className="text-red-50">탈퇴</span>
@@ -32,7 +22,7 @@ export default function ConfirmModal() {
               type="button"
               size="sm"
               className="py-2 px-4 text-[18px]"
-              onCheck={hanldeDeleteUser}>
+              onCheck={() => onDeleteUser()}>
               네
             </CommonButton>
 
@@ -44,7 +34,7 @@ export default function ConfirmModal() {
               아니오
             </CommonButton>
           </div>
-        </section>
+        </div>
       </Modal>
     </ModalPortal>
   );

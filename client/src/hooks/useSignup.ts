@@ -1,27 +1,25 @@
 import { useRouter } from 'next/navigation';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useMutation } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
 
 import { postCreateUser } from '@/api/user';
 
 import useSignStore from '@/stores/signStore';
 
-import { SignFormValue } from '@/types/common';
+import { SignupFormValue } from '@/types/common';
 
 const useSignup = () => {
   const router = useRouter();
 
-  const { reset } = useForm<SignFormValue>();
+  const { reset } = useForm<SignupFormValue>();
 
   const { getSigninForm, getSignupForm, setIsCode } = useSignStore();
 
-  const handleSignup: SubmitHandler<SignFormValue> = async ({
-    email,
-    password,
-    nickname,
-  }: SignFormValue) => {
-    try {
-      await postCreateUser(email, password, nickname);
+  const { mutate: onSignup } = useMutation({
+    mutationFn: ({ email, password, nickname }: SignupFormValue) =>
+      postCreateUser(email, password, nickname as string),
 
+    onSuccess: () => {
       reset();
 
       getSigninForm(false);
@@ -29,12 +27,10 @@ const useSignup = () => {
       setIsCode(false);
 
       router.push('/signin');
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    },
+  });
 
-  return { handleSignup };
+  return { onSignup };
 };
 
 export default useSignup;
