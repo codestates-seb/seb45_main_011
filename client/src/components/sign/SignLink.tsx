@@ -26,9 +26,9 @@ export default function SignLink({
     <div className={twMerge('text-brown-80', className)} onClick={onLinkTo}>
       <Link href={route}>
         {SIGN_LINK_TO[text]}
-        <div className="inline-block font-bold hover:scale-110 transition-transform">
+        <p className="inline-block font-bold hover:scale-110 transition-transform">
           &nbsp;{SIGN_LINK_TO[type]}
-        </div>
+        </p>
       </Link>
     </div>
   );

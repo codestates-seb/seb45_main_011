@@ -28,7 +28,7 @@ export default function SignInput({
   const errorMsg = errors[type]?.message;
 
   return (
-    <section className="flex flex-col max-[420px]:mx-5">
+    <div className="flex flex-col max-[420px]:mx-5">
       <input
         type={type}
         autoComplete="off"
@@ -42,7 +42,7 @@ export default function SignInput({
       <p className="h-[12px] mt-[8px] pl-[38px] w-full text-[0.6rem] leading-3 text-red-50">
         {errorMsg}
       </p>
-    </section>
+    </div>
   );
 }
 

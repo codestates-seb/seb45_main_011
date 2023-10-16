@@ -21,7 +21,6 @@ export default function HeaderNav({
   const { getSigninForm, getSignupForm } = useSignStore();
 
   const logout = () => {
-    localStorage.clear();
     setClear();
 
     getSigninForm(false);

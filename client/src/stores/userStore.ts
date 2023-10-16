@@ -84,6 +84,7 @@ const useUserStore = create(
       setProfileImageUrl: (profileImageUrl) => {
         set({ profileImageUrl });
       },
+
       setDisplayName: (displayName) => {
         set({ displayName });
       },
@@ -101,6 +102,7 @@ const useUserStore = create(
           profileImageUrl: '/assets/img/bg_default_profile.png',
         }),
     }),
+
     {
       name: StorageKey,
       storage: createJSONStorage(() => localStorage),

@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { Collapse } from '@material-tailwind/react';
 
 import useHistoryStore from '@/stores/historyStore';
@@ -31,9 +32,19 @@ export default function Dropdown() {
             </div>
 
             {isOpen ? (
-              <img src="/assets/icon/up.svg" />
+              <Image
+                src="/assets/icon/up.svg"
+                alt="up button"
+                width={16}
+                height={16}
+              />
             ) : (
-              <img src="/assets/icon/down.svg" />
+              <Image
+                src="/assets/icon/down.svg"
+                alt="down button"
+                width={16}
+                height={16}
+              />
             )}
           </div>
         </div>

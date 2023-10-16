@@ -10,11 +10,9 @@ import getPasswordByType from '@/utils/getPasswordByType';
 
 interface SignPasswordInputProps {
   tag: 'password' | 'passwordCheck';
-
   register: UseFormRegister<SignFormValue>;
   watch: UseFormWatch<SignFormValue>;
   errors: FieldErrors<SignFormValue>;
-
   disabled?: boolean;
 }
 
@@ -30,7 +28,7 @@ export default function SignPasswordInput({
   const errorMsg = errors[tag]?.message;
 
   return (
-    <section className="flex flex-col max-[420px]:mx-5">
+    <div className="flex flex-col max-[420px]:mx-5">
       <input
         type="password"
         className={`pl-9 py-[10px] font-normal text-[12px] border-2 border-brown-70 rounded-lg bg-[center_left_12px] bg-no-repeat ${SIGN_INPUT_BG[tag]} leading-[12px] outline-none shadow-outer/down min-[420px]:min-w-[300px]`}
@@ -43,7 +41,7 @@ export default function SignPasswordInput({
       <div className="h-[12px] mt-[8px] pl-[38px] w-full text-[0.6rem] leading-3 text-red-50">
         {errorMsg}
       </div>
-    </section>
+    </div>
   );
 }
 
