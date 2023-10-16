@@ -1,13 +1,13 @@
 'use client';
 
-import useGardenModalStore from '@/stores/gardenModalStore';
+import useModalStore from '@/stores/modalStore';
 
 import Modal from '@/components/common/Modal';
 import ModalPortal from '@/components/common/ModalPortal';
 import CommonButton from '@/components/common/CommonButton';
 
 export default function EmptyInventoryModal() {
-  const { close } = useGardenModalStore();
+  const { close } = useModalStore();
 
   const handleClose = () => close();
 

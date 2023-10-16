@@ -4,17 +4,15 @@ import { useRouter } from 'next/navigation';
 
 import { motion } from 'framer-motion';
 
-import useGardenModalStore from '@/stores/gardenModalStore';
+import useModalStore from '@/stores/modalStore';
 import useUserStore from '@/stores/userStore';
 
-import ModalPortal from '@/components/common/ModalPortal';
-import Modal from '@/components/common/Modal';
-import CommonButton from '@/components/common/CommonButton';
+import { ModalPortal, Modal, CommonButton } from '@/components/common';
 
 export default function NoLeafExistModal() {
   const router = useRouter();
 
-  const { changeType, close } = useGardenModalStore();
+  const { changeType, close } = useModalStore();
   const { userId } = useUserStore();
 
   const handleConnect = () => changeType('selectLeaf');

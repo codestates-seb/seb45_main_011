@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 
 import useLeafsStore from '@/stores/leafsStore';
 import useLeafStore from '@/stores/leafStore';
-import useGardenModalStore from '@/stores/gardenModalStore';
+import useModalStore from '@/stores/modalStore';
 
 import CommonButton from './CommonButton';
 
@@ -36,7 +36,7 @@ export default function ShareButton({
   const { modalOpen: leafModalOpen, setModalCategory: setLeafModalCategory } =
     useLeafStore();
 
-  const { open: gardenModalOpen, changeType } = useGardenModalStore();
+  const { open, changeType } = useModalStore();
 
   const handleShareUrl = () => {
     const base = SHARE_URL;
@@ -56,7 +56,7 @@ export default function ShareButton({
 
     if (location === 'garden') {
       changeType('share');
-      gardenModalOpen();
+      open();
     }
   };
 

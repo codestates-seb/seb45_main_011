@@ -1,18 +1,16 @@
 'use client';
 
 import useGardenStore from '@/stores/gardenStore';
-import useGardenModalStore from '@/stores/gardenModalStore';
+import useModalStore from '@/stores/modalStore';
 import useUserStore from '@/stores/userStore';
 
 import usePurchasePlant from '@/hooks/usePurchasePlant';
 
-import ModalPortal from '@/components/common/ModalPortal';
-import Modal from '@/components/common/Modal';
-import CommonButton from '@/components/common/CommonButton';
+import { ModalPortal, Modal, CommonButton } from '@/components/common';
 
 export default function PurchaseInfoModal() {
   const { purchaseTarget, unobserve } = useGardenStore();
-  const { changeType, close } = useGardenModalStore();
+  const { changeType, close } = useModalStore();
   const { userId } = useUserStore();
 
   const { mutate: purchaseMutate } = usePurchasePlant();

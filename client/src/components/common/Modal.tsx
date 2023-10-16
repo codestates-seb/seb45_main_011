@@ -8,22 +8,14 @@ import { motion } from 'framer-motion';
 import Screws from './Screws';
 
 import { DefaultProps } from '@/types/common';
-import useGardenModalStore from '@/stores/gardenModalStore';
-import usePostModalStore from '@/stores/postModalStore';
-import useSignModalStore from '@/stores/signModalStore';
-import useLeafStore from '@/stores/leafStore';
-import useLeafsStore from '@/stores/leafsStore';
+import useModalStore from '@/stores/modalStore';
 
 interface ModalProps extends DefaultProps {
   children: React.ReactNode;
 }
 
 export default function Modal({ children, className }: ModalProps) {
-  const { close: gardenModalClose } = useGardenModalStore();
-  const { close: postModalClose } = usePostModalStore();
-  const { close: signModalClose } = useSignModalStore();
-  const { modalClose: leafModalClose } = useLeafStore();
-  const { modalClose: leafsModalClose } = useLeafsStore();
+  const { close } = useModalStore();
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -33,13 +25,7 @@ export default function Modal({ children, className }: ModalProps) {
     };
   }, []);
 
-  const handleClick = () => {
-    gardenModalClose();
-    postModalClose();
-    signModalClose();
-    leafModalClose();
-    leafsModalClose();
-  };
+  const handleClick = () => close();
 
   return (
     <>
