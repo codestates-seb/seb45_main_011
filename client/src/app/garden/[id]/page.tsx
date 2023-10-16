@@ -1,8 +1,6 @@
 'use client';
 
-import useGardenModalStore, {
-  GardenModalType,
-} from '@/stores/gardenModalStore';
+import useModalStore, { ModalType } from '@/stores/modalStore';
 import useUserStore from '@/stores/userStore';
 
 import useSyncGarden from '@/hooks/useSyncGarden';
@@ -28,12 +26,12 @@ interface GardenProps {
 }
 
 export default function Garden({ params }: GardenProps) {
-  const { isOpen, type } = useGardenModalStore();
+  const { isOpen, type } = useModalStore();
   const { userId } = useUserStore();
 
   const { isLoading, isError } = useSyncGarden(params.id);
 
-  const renderModal = (type: GardenModalType) => {
+  const renderModal = (type: ModalType) => {
     if (type === 'leafExist') return <LeafExistModal />;
     if (type === 'noLeafExist') return <NoLeafExistModal />;
     if (type === 'selectLeaf') return <SelectLeafModal />;
