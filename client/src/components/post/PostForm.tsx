@@ -5,8 +5,8 @@ import { useState } from 'react';
 
 import { useForm } from 'react-hook-form';
 
-import useAddPost from '@/hooks/useAddPost';
-import useEditPost from '@/hooks/useEditPost';
+import useAddPostMutation from '@/hooks/useAddPostMutation';
+import useEditPostMutation from '@/hooks/useEditPostMutation';
 import useEffectOnce from '@/hooks/useEffectOnce';
 
 import TextInput from '@/components/common/TextInput';
@@ -30,9 +30,9 @@ export default function PostForm({ post, postId, mode }: PostFormProps) {
   const [isImageUpdated, setIsImageUpdated] = useState(false);
   const [tags, setTags] = useState<string[]>([]);
 
-  const { addPostMutate } = useAddPost();
+  const { addPostMutate } = useAddPostMutation();
 
-  const { editPostMutate } = useEditPost(postId as string);
+  const { editPostMutate } = useEditPostMutation(postId as string);
 
   const {
     register,
