@@ -2,10 +2,9 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 import useBoardStore from '@/stores/boardStore';
 
-import PostCard from './PostCard';
-import EmptySearch from './EmptySearch';
-import LoadingNotice from '../common/LoadingNotice';
-import ErrorMessage from '../common/ErrorMessage';
+import { PostCard, EmptySearch } from '@/components/board';
+import { LoadingNotice, ErrorMessage } from '@/components/common';
+
 import useBoardSearchQuery from '@/hooks/useBoardSearchQuery';
 
 export default function SearchList() {
