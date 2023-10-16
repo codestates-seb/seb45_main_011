@@ -18,7 +18,8 @@ export default function Header() {
   const [isProfileHover, setIsProfileHover] = useState(false);
   const [isMenuHover, setIsMenuHover] = useState(false);
 
-  const { userId, isLogin, isGoogleLogin, profileImageUrl } = useUserStore();
+  const { userId, isEmailLogin, isGoogleLogin, profileImageUrl } =
+    useUserStore();
   const getSigninForm = useSignStore((state) => state.getSigninForm);
 
   const isClient = useClient();
@@ -72,7 +73,7 @@ export default function Header() {
           <li className="max-[480px]:hidden">
             <HeaderLink
               location={
-                isClient && (isLogin || isGoogleLogin)
+                isClient && (isEmailLogin || isGoogleLogin)
                   ? `/garden/${userId}`
                   : '/signin'
               }
@@ -90,7 +91,7 @@ export default function Header() {
           <li className="max-[480px]:hidden">
             <HeaderLink
               location={
-                isClient && (isLogin || isGoogleLogin)
+                isClient && (isEmailLogin || isGoogleLogin)
                   ? `/leafs/${userId}`
                   : '/signin'
               }
@@ -98,7 +99,7 @@ export default function Header() {
               title="leafCard"
             />
           </li>
-          {isClient && (isLogin || isGoogleLogin) ? (
+          {isClient && (isEmailLogin || isGoogleLogin) ? (
             <li
               onMouseOver={() => setIsProfileHover(true)}
               onMouseLeave={() => setIsProfileHover(false)}>
@@ -109,7 +110,7 @@ export default function Header() {
                 width={36}
                 height={36}
               />
-              {isProfileHover && (isLogin || isGoogleLogin) && (
+              {isProfileHover && (isEmailLogin || isGoogleLogin) && (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}

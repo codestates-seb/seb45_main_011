@@ -11,9 +11,32 @@ export type GardenType =
   | 'emptyInventory'
   | 'share';
 
-export type ModalType = PostType | GardenType | null;
+export type SignType =
+  | 'FindPasswordModal'
+  | 'SuccessedModal'
+  | 'FailureModal'
+  | 'AuthEmailModal';
 
-export interface GardenModalState {
+export type HistoryType =
+  | 'ResignModal'
+  | 'ConfirmModal'
+  | 'ResignSuccessedModal'
+  | 'ResignFailureModal';
+
+export type ProfileType =
+  | 'ChangePasswordModal'
+  | 'ChangeNicknameModal'
+  | 'ChangeImageModal';
+
+export type ModalType =
+  | PostType
+  | GardenType
+  | SignType
+  | HistoryType
+  | ProfileType
+  | null;
+
+export interface ModalState {
   isOpen: boolean;
   type: ModalType;
 
@@ -22,7 +45,7 @@ export interface GardenModalState {
   close: () => void;
 }
 
-const useGardenModalStore = create<GardenModalState>((set) => ({
+const useModalStore = create<ModalState>((set) => ({
   isOpen: false,
   type: null,
 
@@ -31,4 +54,4 @@ const useGardenModalStore = create<GardenModalState>((set) => ({
   close: () => set(() => ({ isOpen: false })),
 }));
 
-export default useGardenModalStore;
+export default useModalStore;

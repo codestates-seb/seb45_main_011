@@ -2,14 +2,16 @@
 
 import { motion } from 'framer-motion';
 
-import useSignModalStore from '@/stores/signModalStore';
+import useModalStore, { ModalType } from '@/stores/modalStore';
 
-import ResignModal from '@/components/history/ResignModal';
-import ConfirmModal from '@/components/history/ConfirmModal';
-import SuccessedModal from '@/components/history/SuccessedModal';
-import FailureModal from '@/components/history/FailureModal';
-import HistoryBox from '@/components/history/HistoryBox';
-import Footer from '@/components/common/Footer';
+import {
+  ResignModal,
+  ConfirmModal,
+  SuccessedModal,
+  FailureModal,
+  HistoryBox,
+} from '@/components/history';
+import { Footer } from '@/components/common';
 
 import { MOUNT_ANIMATION_VALUES } from '@/constants/values';
 
@@ -18,7 +20,14 @@ interface HistoryProps {
 }
 
 export default function History({ params }: HistoryProps) {
-  const currentState = useSignModalStore((state) => state.currentState);
+  const { isOpen, type } = useModalStore();
+
+  const renderModal = (type: ModalType) => {
+    if (type === 'ResignModal') return <ResignModal />;
+    if (type === 'ConfirmModal') return <ConfirmModal />;
+    if (type === 'SuccessedModal') return <SuccessedModal />;
+    if (type === 'FailureModal') return <FailureModal />;
+  };
 
   return (
     <>
@@ -29,10 +38,7 @@ export default function History({ params }: HistoryProps) {
         className="flex flex-col justify-center items-center h-auto min-h-full pb-[343px] mx-4">
         <HistoryBox paramsId={params.id} />
 
-        {currentState === 'ResignModal' && <ResignModal />}
-        {currentState === 'ConfirmModal' && <ConfirmModal />}
-        {currentState === 'FailureModal' && <FailureModal />}
-        {currentState === 'SuccessedModal' && <SuccessedModal />}
+        {isOpen && renderModal(type)}
       </motion.div>
       <Footer />
     </>

@@ -17,11 +17,10 @@ export default function HeaderNav({
 }: HeaderNavProps) {
   const router = useRouter();
 
-  const { isLogin, isGoogleLogin, userId, setClear } = useUserStore();
+  const { isEmailLogin, isGoogleLogin, userId, setClear } = useUserStore();
   const { getSigninForm, getSignupForm } = useSignStore();
 
   const logout = () => {
-    localStorage.clear();
     setClear();
 
     getSigninForm(false);
@@ -56,7 +55,9 @@ export default function HeaderNav({
               <div className="w-full flex justify-center items-center border-b border-brown-10 border-dashed py-[8px] border-opacity-80">
                 <Link
                   href={
-                    isLogin || isGoogleLogin ? `/garden/${userId}` : '/signin'
+                    isEmailLogin || isGoogleLogin
+                      ? `/garden/${userId}`
+                      : '/signin'
                   }>
                   정원
                 </Link>
@@ -67,7 +68,9 @@ export default function HeaderNav({
               <div className="flex justify-center py-[8px] cursor-pointer">
                 <Link
                   href={
-                    isLogin || isGoogleLogin ? `/leafs/${userId}` : '/signin'
+                    isEmailLogin || isGoogleLogin
+                      ? `/leafs/${userId}`
+                      : '/signin'
                   }>
                   식물 카드
                 </Link>
