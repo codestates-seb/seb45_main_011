@@ -6,12 +6,11 @@ import { useMutation } from '@tanstack/react-query';
 
 import { deletePost } from '@/api/post';
 
-import usePostModalStore from '@/stores/postModalStore';
-
-import Modal from '@/components/common/Modal';
-import ModalPortal from '@/components/common/ModalPortal';
-import CommonButton from '@/components/common/CommonButton';
 import usePostStore from '@/stores/postStore';
+import useModalStore from '@/stores/modalStore';
+
+import { Modal, ModalPortal, CommonButton } from '@/components/common';
+import { POST_DELETE_MODAL_TEXT } from '@/constants/contents';
 
 interface DeletePostParameters {
   targetId: string;
@@ -20,7 +19,7 @@ interface DeletePostParameters {
 export default function PostDeleteModal() {
   const router = useRouter();
 
-  const { close } = usePostModalStore();
+  const { close } = useModalStore();
   const { targetId } = usePostStore();
 
   if (!targetId) return;
@@ -42,9 +41,12 @@ export default function PostDeleteModal() {
       <Modal>
         <section className="flex flex-col gap-8 items-center w-[320px] py-8">
           <p className="flex flex-col items-center text-3xl font-bold text-brown-80">
-            게시글을
+            {POST_DELETE_MODAL_TEXT.firstLine[0]}
             <span>
-              <span className="text-red-50">삭제</span>하시겠습니까?
+              <span className="text-red-50">
+                {POST_DELETE_MODAL_TEXT.firstLine[1]}
+              </span>
+              {POST_DELETE_MODAL_TEXT.firstLine[2]}
             </span>
           </p>
           <div className="flex gap-3">
