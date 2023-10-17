@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 
 import useModalStore from '@/stores/modalStore';
 
-import useDiaryFormMutaion from '@/hooks/useDiaryFormMutaion';
+import useDiaryFormMutaion from '@/hooks/mutation/useDiaryFormMutaion';
 
 import {
   ImageUpload,

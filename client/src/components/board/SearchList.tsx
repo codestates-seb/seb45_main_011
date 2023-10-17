@@ -5,7 +5,7 @@ import useBoardStore from '@/stores/boardStore';
 import { PostCard, EmptySearch } from '@/components/board';
 import { LoadingNotice, ErrorMessage } from '@/components/common';
 
-import useBoardSearchQuery from '@/hooks/useBoardSearchQuery';
+import useBoardSearchQuery from '@/hooks/query/useBoardSearchQuery';
 
 export default function SearchList() {
   const { searchKey } = useBoardStore();
