@@ -5,8 +5,8 @@ import { useState } from 'react';
 
 import { useForm } from 'react-hook-form';
 
-import useAddPostMutation from '@/hooks/useAddPostMutation';
-import useEditPostMutation from '@/hooks/useEditPostMutation';
+import useAddPostMutation from '@/hooks/mutation/useAddPostMutation';
+import useEditPostMutation from '@/hooks/mutation/useEditPostMutation';
 import useEffectOnce from '@/hooks/useEffectOnce';
 
 import {

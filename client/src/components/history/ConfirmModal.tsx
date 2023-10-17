@@ -1,6 +1,6 @@
 'use client';
 
-import useDeleteUser from '@/hooks/useDeleteUser';
+import useDeleteUser from '@/hooks/mutation/useDeleteUser';
 
 import { CommonButton, Modal, ModalPortal } from '../common';
 

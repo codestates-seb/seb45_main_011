@@ -7,7 +7,7 @@ import useLeafStore from '@/stores/leafStore';
 import useUserStore from '@/stores/userStore';
 
 import useEffectOnce from '@/hooks/useEffectOnce';
-import useLeafPageQueries from '@/hooks/useLeafPageQueries';
+import useLeafPageQueries from '@/hooks/query/useLeafPageQueries';
 
 import {
   LeafDateInfo,

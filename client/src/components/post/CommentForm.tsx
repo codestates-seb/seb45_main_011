@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import { ErrorMessage } from '@hookform/error-message';
 
-import useAddCommentMutation from '@/hooks/useAddCommentMutation';
+import useAddCommentMutation from '@/hooks/mutation/useAddCommentMutation';
 
 import CommentProfileImage from './CommentProfileImage';
 

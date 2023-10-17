@@ -3,7 +3,7 @@
 import usePostStore from '@/stores/postStore';
 import useModalStore from '@/stores/modalStore';
 
-import useDeleteCommentMutation from '@/hooks/useDeleteCommentMutation';
+import useDeleteCommentMutation from '@/hooks/mutation/useDeleteCommentMutation';
 
 import { Modal, ModalPortal, CommonButton } from '@/components/common';
 

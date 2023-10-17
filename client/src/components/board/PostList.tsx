@@ -2,7 +2,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 import useBoardStore from '@/stores/boardStore';
 
-import useBoardInfinityQuery from '@/hooks/useBoardInfinityQuery';
+import useBoardInfinityQuery from '@/hooks/query/useBoardInfinityQuery';
 
 import { PostCard, EmptySearch } from '@/components/board';
 import { LoadingNotice, ErrorMessage } from '@/components/common';
