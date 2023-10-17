@@ -12,7 +12,7 @@ interface ConnectParameters {
   selectedLeafId: string | null;
 }
 
-const useConnectLeaf = () => {
+const useConnectLeafMutation = () => {
   const { plants, setPlants, setSelectedLeafId } = useGardenStore();
 
   const updateGarden = (newPlant: PlantObj) => {
@@ -33,4 +33,4 @@ const useConnectLeaf = () => {
   return { mutate };
 };
 
-export default useConnectLeaf;
+export default useConnectLeafMutation;

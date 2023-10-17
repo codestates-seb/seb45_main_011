@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 import useUserStore from '@/stores/userStore';
 
 import useClient from '@/hooks/useClient';
-import useLikePostMutation from '@/hooks/useLikePostMutation';
+import useLikePostMutation from '@/hooks/mutation/useLikePostMutation';
 
 import { DefaultProps } from '@/types/common';
 import { POST_COUNT_INFO_TEXT } from '@/constants/contents';

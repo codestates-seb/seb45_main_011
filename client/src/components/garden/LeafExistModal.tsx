@@ -8,7 +8,7 @@ import useGardenStore from '@/stores/gardenStore';
 import useModalStore from '@/stores/modalStore';
 import useUserStore from '@/stores/userStore';
 
-import useConnectLeaf from '@/hooks/useConnectLeaf';
+import useConnectLeafMutation from '@/hooks/mutation/useConnectLeafMutation';
 
 import { ModalPortal, Modal, CommonButton } from '@/components/common';
 
@@ -19,7 +19,7 @@ export default function LeafExistModal() {
   const { changeType, close } = useModalStore();
   const { userId } = useUserStore();
 
-  const { mutate: connectionMutate } = useConnectLeaf();
+  const { mutate: connectionMutate } = useConnectLeafMutation();
 
   const handleConnect = () => changeType('selectLeaf');
 

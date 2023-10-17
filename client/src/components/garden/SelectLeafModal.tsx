@@ -10,7 +10,7 @@ import useGardenStore from '@/stores/gardenStore';
 import useModalStore from '@/stores/modalStore';
 import useUserStore from '@/stores/userStore';
 
-import useConnectLeaf from '@/hooks/useConnectLeaf';
+import useConnectLeafMutation from '@/hooks/mutation/useConnectLeafMutation';
 
 import {
   LoadingNotice,
@@ -34,7 +34,7 @@ export default function SelectLeafModal() {
     getLeafsByUserId(userId),
   );
 
-  const { mutate: connectionMutate } = useConnectLeaf();
+  const { mutate: connectionMutate } = useConnectLeafMutation();
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target instanceof HTMLElement) {

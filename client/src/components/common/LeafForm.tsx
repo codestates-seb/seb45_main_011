@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 
 import { useForm } from 'react-hook-form';
 
-import useAddLeafMutaion from '@/hooks/useAddLeafMutaion';
-import useEditLeafMutaion from '@/hooks/useEditLeafMutation';
+import useAddLeafMutaion from '@/hooks/mutation/useAddLeafMutaion';
+import useEditLeafMutaion from '@/hooks/mutation/useEditLeafMutation';
 
 import {
   TextInput,

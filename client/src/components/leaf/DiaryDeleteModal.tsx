@@ -1,6 +1,6 @@
 import { DIARY_DELETE_MODAL_TEXT } from '@/constants/contents';
 
-import useDeleteDiaryMutation from '@/hooks/useDeleteDiaryMutaion';
+import useDeleteDiaryMutation from '@/hooks/mutation/useDeleteDiaryMutaion';
 
 import { CommonButton } from '../common';
 
