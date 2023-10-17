@@ -7,6 +7,7 @@ import { SHARE_MODAL_TEXT } from '@/constants/contents';
 interface ShareModalProps {
   location: 'leafs' | 'leaf' | 'garden';
 }
+  
 export default function ShareModal({ location }: ShareModalProps) {
   const { close, changeType } = useModalStore();
 
@@ -15,6 +16,7 @@ export default function ShareModal({ location }: ShareModalProps) {
     close();
     return;
   };
+    
   return (
     <ModalPortal>
       <Modal>

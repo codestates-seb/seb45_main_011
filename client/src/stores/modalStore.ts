@@ -14,7 +14,7 @@ export type LeafType = 'add' | 'delete' | 'edit' | 'share';
 
 export type ModalType = PostType | GardenType | LeafsType | LeafType | null;
 
-export interface modalState {
+export interface ModalState {
   isOpen: boolean;
   type: ModalType;
 
@@ -23,7 +23,7 @@ export interface modalState {
   close: () => void;
 }
 
-const useModalStore = create<modalState>((set) => ({
+const useModalStore = create<ModalState>((set) => ({
   isOpen: false,
   type: null,
 

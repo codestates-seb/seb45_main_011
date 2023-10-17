@@ -5,19 +5,18 @@ import { useEffect } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { motion } from 'framer-motion';
 
+import useModalStore from '@/stores/modalStore';
+
 import Screws from './Screws';
 
 import { DefaultProps } from '@/types/common';
-import useGardenModalStore from '@/stores/gardenModalStore';
-import useSignModalStore from '@/stores/signModalStore';
 
 interface ModalProps extends DefaultProps {
   children: React.ReactNode;
 }
 
 export default function Modal({ children, className }: ModalProps) {
-  const { close: gardenModalClose } = useGardenModalStore();
-  const { close: signModalClose } = useSignModalStore();
+  const { close } = useModalStore();
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -27,10 +26,7 @@ export default function Modal({ children, className }: ModalProps) {
     };
   }, []);
 
-  const handleClick = () => {
-    gardenModalClose();
-    signModalClose();
-  };
+  const handleClick = () => close();
 
   return (
     <>
