@@ -3,18 +3,19 @@
 import { useRouter } from 'next/navigation';
 
 import useUserStore from '@/stores/userStore';
-import useSignModalStore from '@/stores/signModalStore';
+import useModalStore from '@/stores/modalStore';
 
-import CommonButton from '../common/CommonButton';
+import { CommonButton } from '../common';
 
 export default function UserButton() {
   const router = useRouter();
 
   const { isGoogleLogin } = useUserStore();
-  const changeState = useSignModalStore((state) => state.changeState);
+  const { changeType, open } = useModalStore();
 
   const handleResignModal = () => {
-    isGoogleLogin ? changeState('ConfirmModal') : changeState('ResignModal');
+    open();
+    isGoogleLogin ? changeType('ConfirmModal') : changeType('ResignModal');
   };
 
   return (
@@ -26,6 +27,7 @@ export default function UserButton() {
         onProfile={() => router.push('/profile')}>
         정보 수정
       </CommonButton>
+
       <CommonButton
         type="button"
         size="md"
