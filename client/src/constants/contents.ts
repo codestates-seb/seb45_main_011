@@ -24,7 +24,7 @@ export const CONTROLLER_TITLES = {
   left: '왼쪽',
 };
 
-export const SIGN_REQUIRE = {
+export const SIGNIN_REQUIRE = {
   email: '이메일을 입력해주세요.',
   nickname: '닉네임을 입력해주세요.',
   password: '비밀번호를 입력해주세요.',
@@ -32,10 +32,9 @@ export const SIGN_REQUIRE = {
   code: '인증 번호를 입력해주세요.',
 } as const;
 
-export const SIGN_VAILDATION = {
+export const SIGNIN_VAILDATION = {
   email: '올바른 이메일 형식이 아닙니다.',
   nickname: '2글자 이상의 영문 또는 한글을 사용해야 합니다.',
-  maxLength: '6글자 이하의 영문 또는 한글을 입력해야 합니다.',
   password: '6~12글자의 영문과 숫자를 함께 사용해야 합니다.',
   passwordCheck: '비밀번호가 일치하지 않습니다.',
   code: '올바른 인증 번호 형식이 아닙니다.',
@@ -111,16 +110,4 @@ export const FOOTER_LINK = {
   seungtae: 'https://github.com/NtoZero',
   hanbin: 'https://github.com/hanbinchoi',
   doyeon: 'https://github.com/shimdokite',
-} as const;
-
-export const ALERT_TEXT = {
-  login: '로그인에 실패했습니다. 다시 시도해 주세요.',
-  password: '기존 비밀번호와 동일합니다. 새로운 비밀번호를 입력해 주세요.',
-  image: '2mb 이하의 이미지만 등록이 가능합니다.',
-} as const;
-
-export const PROFILE_MODAL_TEXT = {
-  password: '비밀번호가',
-  nickname: '닉네임이',
-  image: '이미지가',
 };

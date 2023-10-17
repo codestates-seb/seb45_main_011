@@ -1,24 +1,67 @@
 'use client';
 
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 
-import useClient from '@/hooks/useClient';
-import useChangeImage from '@/hooks/useChangeImage';
+import { updateUserProfileImage } from '@/api/profile';
 
-import { CommonButton } from '../common';
+import useUserStore from '@/stores/userStore';
+
+import useClient from '@/hooks/useClient';
+
+import CommonButton from '../common/CommonButton';
 
 import { DefaultProps } from '@/types/common';
 
 export default function ImageForm({ className }: DefaultProps) {
   const isClient = useClient();
-  const {
-    imageUploadRef,
-    imageUrl,
-    isDisabled,
 
-    onImageChange,
-    onImageSubmit,
-  } = useChangeImage();
+  const { profileImageUrl, setProfileImageUrl, setAccessToken } =
+    useUserStore();
+
+  const [image, setImage] = useState<FileList>();
+  const [imageUrl, setImageUrl] = useState(profileImageUrl);
+  const [isDisabled, setIsDisabled] = useState(true);
+
+  const imageUploadRef = useRef<HTMLInputElement | null>(null);
+
+  const checkFileSize = (file: File) => {
+    if (file && file.type.startsWith('image/')) {
+      if (file.size <= 2 * 1024 * 1024) {
+        return true;
+      }
+    }
+
+    alert('2mb 이하의 이미지만 등록이 가능합니다.');
+    return false;
+  };
+
+  const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files;
+
+    if (!file) return;
+
+    if (file[0] && checkFileSize(file[0])) {
+      setImage(file);
+
+      const newFileURL = URL.createObjectURL(file[0]);
+      setImageUrl(newFileURL);
+      setIsDisabled(false);
+    }
+  };
+
+  const onImageSubmit = async () => {
+    if (image && !isDisabled) {
+      const response = await updateUserProfileImage(image[0]);
+
+      setProfileImageUrl(imageUrl);
+      setIsDisabled(true);
+
+      if (response.status === 204) {
+        setAccessToken(response.headers?.authorization);
+      }
+    }
+  };
 
   return (
     <>
@@ -34,7 +77,6 @@ export default function ImageForm({ className }: DefaultProps) {
               priority
               onClick={() => imageUploadRef.current?.click()}
             />
-
             <input
               type="file"
               accept="image/*"
@@ -42,7 +84,6 @@ export default function ImageForm({ className }: DefaultProps) {
               ref={imageUploadRef}
               onChange={onImageChange}
             />
-
             <CommonButton
               type="submit"
               size="sm"
@@ -51,7 +92,6 @@ export default function ImageForm({ className }: DefaultProps) {
               disabled={isDisabled}>
               이미지 등록
             </CommonButton>
-
             <p className="text-gray-70 text-xs mb-8">
               2mb 이하의 이미지만 등록이 가능합니다.
             </p>

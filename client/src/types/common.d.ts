@@ -38,22 +38,11 @@ export type InputValues = {
 
 export type SignFormValue = {
   email: string;
+  nickname: string;
   password: string;
   passwordCheck: string;
-  nickname: string;
   code: string;
   onLogin: () => void;
-};
-
-export type SignupFormValue = {
-  email: string;
-  password: string;
-  nickname: string;
-};
-
-export type SigninFormValue = {
-  email: string;
-  password: string;
 };
 
 export type UserData = {

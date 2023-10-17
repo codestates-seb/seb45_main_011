@@ -1,28 +1,41 @@
 'use client';
 
-import Image from 'next/image';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+
+import { getUserInfo } from '@/api/history';
 
 import useUserStore from '@/stores/userStore';
+import useHistoryStore from '@/stores/historyStore';
 
 import useClient from '@/hooks/useClient';
-import useUserInfo from '@/hooks/useUserInfo';
 
-import { CommonButton } from '../common';
+import CommonButton from '../common/CommonButton';
 
 interface HistoryUserProps {
   paramsId: string;
 }
 
 export default function UserInfo({ paramsId }: HistoryUserProps) {
-  const id = paramsId;
-
+  const isClient = useClient();
   const router = useRouter();
 
-  const { userId } = useUserStore();
+  const userId = useUserStore((state) => state.userId);
+  const id = paramsId;
 
-  const isClient = useClient();
-  const { profileImageUrl, displayName, grade, point } = useUserInfo(id);
+  const { setHistoryUser, profileImageUrl, displayName, grade, point } =
+    useHistoryStore();
+
+  useEffect(() => {
+    const getHistoryData = async () => {
+      const response = await getUserInfo(id);
+
+      setHistoryUser(response.data);
+    };
+
+    getHistoryData();
+  }, [id]);
 
   return (
     <div className="flex flex-col justify-center items-center">
@@ -35,52 +48,43 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
           alt="profile_img"
         />
       )}
-
-      <section className="flex flex-col justify-center items-center mb-6 gap-2">
-        <h3 className="text-2xl font-bold text-brown-80">{displayName}</h3>
-        <h4 className="font-bold text-brown-70">{grade}</h4>
-      </section>
-
+      <div className="flex flex-col justify-center items-center mb-6 gap-2">
+        <div className="text-2xl font-bold text-brown-80">{displayName}</div>
+        <p className="font-bold text-brown-70">{grade}</p>
+      </div>
       {userId === id ? (
-        <section className="flex items-center justify-center bg-[url('/assets/img/bg_board_sm.png')] w-[192px] h-[96px] shadow-outer/down mb-5">
+        <div className="flex items-center justify-center bg-[url('/assets/img/bg_board_sm.png')] w-[192px] h-[96px] shadow-outer/down mb-5">
           <div className="flex items-center justify-center gap-2">
-            <Image
-              src="/assets/img/point.svg"
-              alt="point icon"
-              width={24}
-              height={24}
-            />
+            <img src="/assets/img/point.svg" />
             <p className="text-xl font-bold text-brown-10">
               {point?.toLocaleString()}
             </p>
           </div>
-        </section>
+        </div>
       ) : (
         <>
           <div className="flex justify-center gap-3 max-[580px]:flex-col items-center">
             <CommonButton
               type="button"
               size="lg"
+              children="정원 구경하기"
               className="w-[196px] h-[52px] text-[22px] px-4"
-              onGoToGarden={() => router.push(`/garden/${id}`)}>
-              정원 구경하기
-            </CommonButton>
-
+              onGoToGarden={() => router.push(`/garden/${id}`)}
+            />
             <CommonButton
               type="button"
               size="lg"
+              children="식물 카드 열람"
               className="w-[196px] h-[52px] text-[22px] px-4"
-              onGoToLeafs={() => router.push(`/leafs/${id}`)}>
-              식물 카드 열람
-            </CommonButton>
+              onGoToLeafs={() => router.push(`/leafs/${id}`)}
+            />
           </div>
-
           <CommonButton
             type="button"
             size="lg"
-            className="w-[203px] h-[52px] text-brown-50 border-brown-50 bg-[url('/assets/img/bg_wood_light.png')] mt-6 cursor-default max-[580px]:mt-3">
-            작성한 게시글
-          </CommonButton>
+            children="작성한 게시글"
+            className="w-[203px] h-[52px] text-brown-50 border-brown-50 bg-[url('/assets/img/bg_wood_light.png')] mt-6 cursor-default max-[580px]:mt-3"
+          />
         </>
       )}
     </div>

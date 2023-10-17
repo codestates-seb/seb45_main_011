@@ -2,23 +2,15 @@
 
 import { motion } from 'framer-motion';
 
-import useModalStore, { ModalType } from '@/stores/modalStore';
+import useSignModalStore from '@/stores/signModalStore';
 
-import {
-  SigninIntro,
-  FindPasswordModal,
-  SuccessedModal,
-  FailureModal,
-} from '@/components/signin';
+import SigninIntro from '@/components/signin/SigninIntro';
+import FindPasswordModal from '@/components/signin/FindPasswordModal';
+import SuccessedModal from '@/components/signin/SuccessedModal';
+import FailureModal from '@/components/signin/FailureModal';
 
 export default function Signin() {
-  const { isOpen, type } = useModalStore();
-
-  const renderModal = (type: ModalType) => {
-    if (type === 'FindPasswordModal') return <FindPasswordModal />;
-    if (type === 'SuccessedModal') return <SuccessedModal />;
-    if (type === 'FailureModal') return <FailureModal />;
-  };
+  const currentState = useSignModalStore((state) => state.currentState);
 
   return (
     <motion.div
@@ -28,7 +20,9 @@ export default function Signin() {
       className="flex flex-col justify-center items-center h-full mx-4 pb-[40px]">
       <SigninIntro />
 
-      {isOpen && renderModal(type)}
+      {currentState === 'FindPasswordModal' && <FindPasswordModal />}
+      {currentState === 'SuccessedModal' && <SuccessedModal />}
+      {currentState === 'FailureModal' && <FailureModal />}
     </motion.div>
   );
 }

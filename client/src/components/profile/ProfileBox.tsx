@@ -1,33 +1,33 @@
 'use client';
 
 import useUserStore from '@/stores/userStore';
-import useModalStore from '@/stores/modalStore';
+import useSignModalStore from '@/stores/signModalStore';
 
-import { ImageForm, NicknameForm, PasswordForm } from '.';
+import ImageForm from './ImageForm';
+import NicknameForm from './NicknameForm';
+import PasswordForm from './PasswordForm';
 
-import { Screws, CommonButton } from '../common';
+import Screws from '../common/Screws';
+import CommonButton from '../common/CommonButton';
 
 import { ADMIN_USER_ID } from '@/constants/values';
 
 export default function ProfileBox() {
   const { userId, isGoogleLogin } = useUserStore();
-  const { changeType, open } = useModalStore();
+  const changeState = useSignModalStore((state) => state.changeState);
 
   const handleResignModal = () => {
-    isGoogleLogin ? changeType('ConfirmModal') : changeType('ResignModal');
-    open();
+    isGoogleLogin ? changeState('ConfirmModal') : changeState('ResignModal');
   };
 
   return (
-    <main className="relative flex flex-col items-center justify-center bg-[url('/assets/img/bg_wood_yellow.png')] w-full min-w-[312px] max-w-[560px] h-full rounded-xl shadow-container border-gradient mb-[60px]">
+    <div className="relative flex flex-col items-center justify-center bg-[url('/assets/img/bg_wood_yellow.png')] w-full min-w-[312px] max-w-[560px] h-full rounded-xl shadow-container border-gradient mb-[60px]">
       <Screws />
       <ImageForm className="mt-8" />
 
       <div className="w-full flex flex-col items-center mb-4">
         <NicknameForm />
-
         {!isGoogleLogin && <PasswordForm />}
-
         {userId !== ADMIN_USER_ID && (
           <CommonButton
             type="button"
@@ -38,6 +38,6 @@ export default function ProfileBox() {
           </CommonButton>
         )}
       </div>
-    </main>
+    </div>
   );
 }
