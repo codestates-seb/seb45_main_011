@@ -5,10 +5,11 @@ import { useEffect } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { motion } from 'framer-motion';
 
+import useModalStore from '@/stores/modalStore';
+
 import Screws from './Screws';
 
 import { DefaultProps } from '@/types/common';
-import useModalStore from '@/stores/modalStore';
 
 interface ModalProps extends DefaultProps {
   children: React.ReactNode;

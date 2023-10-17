@@ -2,17 +2,16 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import useLeafStore from '@/stores/leafStore';
+import useModalStore from '@/stores/modalStore';
 
-import PageTitle from '../common/PageTitle';
-import CommonButton from '../common/CommonButton';
+import { PageTitle, CommonButton } from '@/components/common';
+import { LEAF_INFO_TEXT } from '@/constants/contents';
 
 interface LeafInfoProps {
   pathUserId: string;
   leafName: string;
   imageUrl: string;
   content: string;
-  createdAt: string;
-  userId: string | null;
 }
 
 export default function LeafInfo({
@@ -20,20 +19,17 @@ export default function LeafInfo({
   imageUrl,
   content,
   pathUserId,
-  userId,
 }: LeafInfoProps) {
   const router = useRouter();
 
-  const setModalCategory = useLeafStore((state) => state.setModalCategory);
-  const modalOpen = useLeafStore((state) => state.modalOpen);
-
-  const isOwner = userId === pathUserId;
+  const { isOwner } = useLeafStore();
+  const { open, changeType } = useModalStore();
 
   const navigateToGarden = () => router.push(`/garden/${pathUserId}`);
 
   const AddDiary = () => {
-    setModalCategory('add');
-    modalOpen();
+    changeType('add');
+    open();
   };
   return (
     <div className="flex flex-col items-center">
@@ -53,10 +49,10 @@ export default function LeafInfo({
       {isOwner && (
         <div className="flex gap-2 mb-3">
           <CommonButton type="button" size="sm" onClick={navigateToGarden}>
-            정원에 설치하기
+            {LEAF_INFO_TEXT.button[0]}
           </CommonButton>
           <CommonButton type="button" size="sm" onClick={AddDiary}>
-            일지 작성
+            {LEAF_INFO_TEXT.button[1]}
           </CommonButton>
         </div>
       )}

@@ -1,5 +1,6 @@
-import useUserStore from '@/stores/userStore';
 import Image from 'next/image';
+
+import useUserStore from '@/stores/userStore';
 
 export default function CommentProfileImage() {
   const { profileImageUrl } = useUserStore();

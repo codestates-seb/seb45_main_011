@@ -11,6 +11,7 @@ import useClient from '@/hooks/useClient';
 import useLikePostMutation from '@/hooks/useLikePostMutation';
 
 import { DefaultProps } from '@/types/common';
+import { POST_COUNT_INFO_TEXT } from '@/constants/contents';
 
 interface PostCountInfoProps extends DefaultProps {
   likesNum: number;
@@ -46,7 +47,7 @@ export default function PostCountInfo({
           role="button"
           onClick={() => {
             if (isClient && !userId) {
-              alert('로그인이 필요한 기능입니다.');
+              alert(POST_COUNT_INFO_TEXT.alert);
               return router.push('/signin');
             }
             return likePost();

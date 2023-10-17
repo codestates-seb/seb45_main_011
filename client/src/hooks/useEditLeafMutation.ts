@@ -17,11 +17,11 @@ const useEditLeafMutaion = ({
   leafId,
   isImageUpdated,
 }: useEditLeafMutationPatameters) => {
-  const queryClient = useQueryClient();
-
   const router = useRouter();
 
   const { userId } = useUserStore();
+
+  const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
     mutationFn: (inputs: InputValues) =>

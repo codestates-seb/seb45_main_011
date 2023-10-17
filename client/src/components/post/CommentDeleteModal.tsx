@@ -1,13 +1,13 @@
 'use client';
 
 import usePostStore from '@/stores/postStore';
-import usePostModalStore from '@/stores/postModalStore';
+import useModalStore from '@/stores/modalStore';
 
 import useDeleteCommentMutation from '@/hooks/useDeleteCommentMutation';
 
-import Modal from '@/components/common/Modal';
-import ModalPortal from '@/components/common/ModalPortal';
-import CommonButton from '@/components/common/CommonButton';
+import { Modal, ModalPortal, CommonButton } from '@/components/common';
+
+import { COMMENT_DELETE_MODAL_TEXT } from '@/constants/contents';
 
 interface CommentDeleteModalProps {
   boardId: string | null;
@@ -17,7 +17,7 @@ export default function CommentDeleteModal({
   boardId,
 }: CommentDeleteModalProps) {
   const { targetId } = usePostStore();
-  const { close } = usePostModalStore();
+  const { close } = useModalStore();
 
   if (!targetId || !boardId) return null;
 
@@ -26,7 +26,6 @@ export default function CommentDeleteModal({
     boardId,
   });
 
-  // brwon-40 border
   const handleDelete = () => {
     deleteComment();
     close();
@@ -39,9 +38,12 @@ export default function CommentDeleteModal({
       <Modal>
         <section className="flex flex-col gap-8 items-center w-[320px] py-8">
           <p className="text-center text-3xl font-bold text-brown-80">
-            댓글을
+            {COMMENT_DELETE_MODAL_TEXT.firstLine}
             <br />
-            <b className="text-red-50">삭제</b>하시겠습니까?
+            <b className="text-red-50">
+              {COMMENT_DELETE_MODAL_TEXT.secondLine[0]}
+            </b>
+            {COMMENT_DELETE_MODAL_TEXT.secondLine[1]}
           </p>
           <div className="flex gap-3">
             <CommonButton

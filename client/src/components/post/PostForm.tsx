@@ -9,11 +9,13 @@ import useAddPostMutation from '@/hooks/useAddPostMutation';
 import useEditPostMutation from '@/hooks/useEditPostMutation';
 import useEffectOnce from '@/hooks/useEffectOnce';
 
-import TextInput from '@/components/common/TextInput';
-import ImageUpload from '@/components/common/ImageUpload';
-import TextArea from '@/components/common/TextArea';
-import TagInput from '@/components/common/TagInput';
-import CommonButton from '@/components/common/CommonButton';
+import {
+  TextInput,
+  ImageUpload,
+  TextArea,
+  TagInput,
+  CommonButton,
+} from '@/components/common';
 
 import { InputValues } from '@/types/common';
 import { RawPostInfo } from '@/types/data';

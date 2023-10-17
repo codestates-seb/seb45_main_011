@@ -6,10 +6,9 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 
 import useLeafsStore from '@/stores/leafsStore';
-import useUserStore from '@/stores/userStore';
+import useModalStore from '@/stores/modalStore';
 
-import ControlButton from './ControlButton';
-import LeafName from './LeafName';
+import { ControlButton, LeafName } from '@/components/common';
 
 interface LeafProps {
   location: 'garden' | 'leaf';
@@ -32,16 +31,14 @@ export default function Leaf({
 }: LeafProps) {
   const router = useRouter();
 
-  const { modalOpen, setDeleteTargetId, setModalCategory } = useLeafsStore();
-
-  const userId = useUserStore((state) => state.userId);
+  const { setDeleteTargetId, isOwner } = useLeafsStore();
+  const { open, changeType } = useModalStore();
 
   const handleLeafClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (onClick) {
       onClick(event);
       return null;
     }
-
     if (location === 'leaf') {
       router.push(`/leaf/${pathUserId}/${leafId}`);
       return null;
@@ -59,8 +56,8 @@ export default function Leaf({
   ) => {
     e.stopPropagation();
     setDeleteTargetId(leafId);
-    setModalCategory('deleteLeaf');
-    modalOpen();
+    changeType('deleteLeaf');
+    open();
   };
 
   return (
@@ -83,7 +80,7 @@ export default function Leaf({
         </div>
       ) : null}
 
-      {location === 'leaf' && pathUserId === userId && (
+      {location === 'leaf' && isOwner && (
         <div className="flex h-full gap-1 absolute right-2.5 top-2.5 z-20">
           <ControlButton
             usage="edit"

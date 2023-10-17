@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 
 export type PostType = 'post' | 'comment';
-
 export type GardenType =
   | 'leafExist'
   | 'noLeafExist'
@@ -10,8 +9,10 @@ export type GardenType =
   | 'purchase'
   | 'emptyInventory'
   | 'share';
+export type LeafsType = 'deleteLeaf' | 'share';
+export type LeafType = 'add' | 'delete' | 'edit' | 'share';
 
-export type ModalType = PostType | GardenType | null;
+export type ModalType = PostType | GardenType | LeafsType | LeafType | null;
 
 export interface ModalState {
   isOpen: boolean;
