@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import useGardenStore from '@/stores/gardenStore';
 import useUserStore from '@/stores/userStore';
 
-import useSaveGarden from './useSaveGarden';
+import useSaveGarden from './mutation/useSaveGarden';
 import usePlants from './usePlants';
 import useSquares from './useSquares';
 import useMouseTrack from './useMouseTrack';

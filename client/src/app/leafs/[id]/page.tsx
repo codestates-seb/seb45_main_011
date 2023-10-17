@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import useLeafsStore from '@/stores/leafsStore';
 import useUserStore from '@/stores/userStore';
 
-import useLeafsPageQueries from '@/hooks/useLeafsPageQueries';
+import useLeafsPageQueries from '@/hooks/query/useLeafsPageQueries';
 import useEffectOnce from '@/hooks/useEffectOnce';
 
 import { AddLeafButton, LeafDeleteModal } from '@/components/leafs';

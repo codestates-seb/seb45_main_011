@@ -1,7 +1,7 @@
 import useLeafsStore from '@/stores/leafsStore';
 import useModalStore from '@/stores/modalStore';
 
-import useDeleteLeafMutation from '@/hooks/useDeleteLeafMutaion';
+import useDeleteLeafMutation from '@/hooks/mutation/useDeleteLeafMutaion';
 
 import { CommonButton, ModalPortal, Modal } from '@/components/common';
 import { LEAF_DELETE_MODAL_TEXT } from '@/constants/contents';

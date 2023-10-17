@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import usePostStore from '@/stores/postStore';
 import useUserStore from '@/stores/userStore';
 
-import useEditCommentMutation from '@/hooks/useEditCommentMutation';
+import useEditCommentMutation from '@/hooks/mutation/useEditCommentMutation';
 
 import { PostProfile, DateAndControlSection } from '@/components/post';
 import CommonButton from '../common/CommonButton';
