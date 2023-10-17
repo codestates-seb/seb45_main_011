@@ -1,13 +1,15 @@
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 
 // import getMetaData from '@/hooks/useGetMetaData';
 
 import { PageType, Post } from '@/types/common';
 
-type MetaDataProps = {
-  post: Post;
-  page: PageType;
-};
+// import { ContextType, PageType, Post } from '@/types/common';
+
+// type MetaDataProps = {
+//   post: Post;
+//   page: PageType;
+// };
 
 export default function SeoHead({ post, page }: MetaDataProps) {
   const router = useRouter();

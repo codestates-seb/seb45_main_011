@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation';
 
 import { motion } from 'framer-motion';
 
-import usePostModalStore from '@/stores/postModalStore';
 import usePostStore from '@/stores/postStore';
 import useUserStore from '@/stores/userStore';
+import useModalStore from '@/stores/modalStore';
 
 interface ContolMenuProps {
   usage: 'post' | 'comment';
@@ -23,10 +23,9 @@ export default function ControlMenu({
 
   const userId = useUserStore((state) => state.userId);
   const { setEditMode, setTargetId } = usePostStore();
+  const { open, changeType } = useModalStore();
 
   if (userId !== ownerId) return null;
-
-  const { open, setType } = usePostModalStore();
 
   const handleEdit = () => {
     if (usage === 'post') return router.push(`/post/edit/${targetId}`);
@@ -37,9 +36,8 @@ export default function ControlMenu({
   };
 
   const handleDelete = () => {
-    // 삭제 모달
     open();
-    setType(usage);
+    changeType(usage);
     setTargetId(targetId);
   };
 

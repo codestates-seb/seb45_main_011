@@ -13,10 +13,11 @@ interface EditPostParameters {
   postId: string;
 }
 
-const useEditPost = (postId: string) => {
+const useEditPostMutation = (postId: string) => {
   const router = useRouter();
 
   const queryClient = useQueryClient();
+
   const { mutate: editPostMutate } = useMutation({
     mutationFn: ({
       formValues,
@@ -34,4 +35,4 @@ const useEditPost = (postId: string) => {
   return { editPostMutate };
 };
 
-export default useEditPost;
+export default useEditPostMutation;

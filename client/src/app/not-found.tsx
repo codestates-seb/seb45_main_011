@@ -4,10 +4,10 @@ import Image from 'next/image';
 
 import { motion } from 'framer-motion';
 
-import Logo from '@/components/common/Logo';
-import Screws from '@/components/common/Screws';
+import { Logo, Screws } from '@/components/common';
 
 import { MOUNT_ANIMATION_VALUES } from '@/constants/values';
+import { NOT_FOUND_TEXT } from '@/constants/contents';
 
 export default function NotFound() {
   return (
@@ -31,10 +31,11 @@ export default function NotFound() {
               height={60}
             />
             <h1 className="text-[1.5rem] leading-6 font-bold text-yellow-50 max-[360px]:text-sm">
-              Not Found
+              {NOT_FOUND_TEXT.title}
             </h1>
             <p className=" text-xl leading-5 font-bold text-brown-10 max-[360px]:text-sm">
-              페이지를 <b className="text-red-30">못 찾았어요 : (</b>
+              {NOT_FOUND_TEXT.description[0]}
+              <b className="text-red-30">{NOT_FOUND_TEXT.description[1]}</b>
             </p>
           </div>
         </div>

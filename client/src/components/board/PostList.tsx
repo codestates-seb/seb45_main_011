@@ -4,10 +4,8 @@ import useBoardStore from '@/stores/boardStore';
 
 import useBoardInfinityQuery from '@/hooks/useBoardInfinityQuery';
 
-import PostCard from './PostCard';
-import EmptySearch from './EmptySearch';
-import LoadingNotice from '../common/LoadingNotice';
-import ErrorMessage from '../common/ErrorMessage';
+import { PostCard, EmptySearch } from '@/components/board';
+import { LoadingNotice, ErrorMessage } from '@/components/common';
 
 export default function PostList() {
   const { searchKey } = useBoardStore();

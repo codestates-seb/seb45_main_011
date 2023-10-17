@@ -1,7 +1,7 @@
 import { useRouter, useParams } from 'next/navigation';
 
 import useGardenStore from '@/stores/gardenStore';
-import useGardenModalStore from '@/stores/gardenModalStore';
+import useModalStore from '@/stores/modalStore';
 import useUserStore from '@/stores/userStore';
 
 const usePlants = () => {
@@ -16,7 +16,7 @@ const usePlants = () => {
     observeMoveTarget,
     observeInfoTarget,
   } = useGardenStore();
-  const { changeType, open } = useGardenModalStore();
+  const { changeType, open } = useModalStore();
   const { userId } = useUserStore();
 
   const handlePlants = (event: React.MouseEvent<HTMLDivElement>) => {
