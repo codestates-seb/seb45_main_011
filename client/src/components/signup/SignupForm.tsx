@@ -1,73 +1,87 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
-import useModalStore from '@/stores/modalStore';
+import { postCreateUser, sendCodeByEmail } from '@/api/user';
+
+import useSignModalStore from '@/stores/signModalStore';
 import useSignStore from '@/stores/signStore';
 
-import useAuthEmail from '@/hooks/useAuthEmail';
-import useSignup from '@/hooks/useSignup';
-import useEffectOnce from '@/hooks/useEffectOnce';
+import SignInput from '../sign/SignInput';
+import SignPasswordInput from '../sign/SignPasswordInput';
 
-import { SignInput, SignPasswordInput } from '../sign';
-import { CommonButton } from '../common';
+import CommonButton from '../common/CommonButton';
 
 import { SignFormValue } from '@/types/common';
 
 export default function SignupForm() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     watch,
+    reset,
   } = useForm<SignFormValue>();
 
-  const { changeType, open } = useModalStore();
-  const { isCode, setIsCode } = useSignStore();
+  const { changeState, currentState } = useSignModalStore();
+  const { setCode, getSigninForm, getSignupForm } = useSignStore();
 
-  const { sendCodeWithEmail } = useAuthEmail();
-  const { onSignup } = useSignup();
+  const successedCode = currentState === 'Successed';
 
-  const email = watch('email');
-  const password = watch('password');
-  const nickname = watch('nickname');
-
-  const onValidateEmail = () => {
-    if (!email) return;
-
-    changeType('AuthEmailModal');
-    open();
+  const handleValidateEmail = () => {
+    changeState('AuthEmailModal');
   };
 
-  useEffectOnce(() => {
-    changeType(null);
-    setIsCode(false);
-  });
+  const email = watch('email');
+
+  const onSignup: SubmitHandler<SignFormValue> = async ({
+    email,
+    password,
+    nickname,
+  }: SignFormValue) => {
+    try {
+      await postCreateUser(email, password, nickname);
+
+      reset();
+
+      getSigninForm(false);
+      getSignupForm(false);
+
+      router.push('/signin');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const sendCodeWithEmail = async (email: string) => {
+    if (!email) return;
+
+    try {
+      const response = await sendCodeByEmail(email);
+      setCode(response.data.data.authCode);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
-    <section>
-      <form
-        onSubmit={handleSubmit(() =>
-          onSignup({
-            email,
-            password,
-            nickname,
-          }),
-        )}>
+    <div>
+      <form onSubmit={handleSubmit(onSignup)}>
         <div className="flex flex-col gap-1 w-[300px]">
           <SignInput type="email" register={register} errors={errors} />
-
           <div className="flex justify-center">
             <CommonButton
               type="button"
               size="sm"
               onOpen={() => {
-                onValidateEmail();
+                handleValidateEmail();
                 sendCodeWithEmail(email);
               }}
               className="mb-3"
-              disabled={isCode}>
-              {isCode ? '인증 완료!' : '이메일 인증하기'}
+              disabled={successedCode}>
+              {successedCode ? '인증 완료!' : '이메일 인증하기'}
             </CommonButton>
           </div>
 
@@ -75,7 +89,7 @@ export default function SignupForm() {
             type="nickname"
             register={register}
             errors={errors}
-            disabled={!isCode}
+            disabled={!successedCode}
           />
 
           <SignPasswordInput
@@ -83,7 +97,7 @@ export default function SignupForm() {
             register={register}
             errors={errors}
             watch={watch}
-            disabled={!isCode}
+            disabled={!successedCode}
           />
 
           <SignPasswordInput
@@ -91,7 +105,7 @@ export default function SignupForm() {
             register={register}
             errors={errors}
             watch={watch}
-            disabled={!isCode}
+            disabled={!successedCode}
           />
 
           <div className="flex flex-col justify-center items-center gap-3">
@@ -105,6 +119,6 @@ export default function SignupForm() {
           </div>
         </div>
       </form>
-    </section>
+    </div>
   );
 }

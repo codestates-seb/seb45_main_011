@@ -2,17 +2,14 @@
 
 import { motion } from 'framer-motion';
 
-import useModalStore, { ModalType } from '@/stores/modalStore';
+import useSignModalStore from '@/stores/signModalStore';
 
-import { AuthEmailModal, FailureModal, SignupIntro } from '@/components/signup';
+import AuthEmailModal from '@/components/signup/AuthEmailModal';
+import FailureModal from '@/components/signup/FailureModal';
+import SignupIntro from '@/components/signup/SignupIntro';
 
 export default function Signup() {
-  const { isOpen, type } = useModalStore();
-
-  const renderModal = (type: ModalType) => {
-    if (type === 'AuthEmailModal') return <AuthEmailModal />;
-    if (type === 'FailureModal') return <FailureModal />;
-  };
+  const currentState = useSignModalStore((state) => state.currentState);
 
   return (
     <motion.div
@@ -22,7 +19,8 @@ export default function Signup() {
       className="flex flex-col justify-center items-center h-full mx-4 pb-[40px]">
       <SignupIntro />
 
-      {isOpen && renderModal(type)}
+      {currentState === 'AuthEmailModal' && <AuthEmailModal />}
+      {currentState === 'Not Code' && <FailureModal />}
     </motion.div>
   );
 }

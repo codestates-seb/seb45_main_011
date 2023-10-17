@@ -1,30 +1,39 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import InfiniteScroll from 'react-infinite-scroller';
 
-import useHistoryLikes from '@/hooks/useHistoryLikes';
+import { getBoardLikedByPage } from '@/api/history';
 
 import useUserStore from '@/stores/userStore';
 
-import { HistoryPostCard } from '.';
 import EmptyDiary from '../leaf/EmptyDiary';
-import { ErrorMessage, LoadingMessage } from '../common';
+import HistoryPostCard from './HistoryPostCard';
+
+import LoadingMessage from '../common/LoadingMessage';
+import ErrorMessage from '../common/ErrorMessage';
 
 import { HistoryBoradProps } from '@/types/common';
 
 export default function HistoryLikes({ paramsId }: HistoryBoradProps) {
   const router = useRouter();
+  const userId = useUserStore((state) => state.userId);
 
-  const { userId } = useUserStore();
+  const { data, fetchNextPage, hasNextPage, isLoading, isError } =
+    useInfiniteQuery(
+      ['boardLiked'],
+      ({ pageParam = 1 }) => getBoardLikedByPage({ pageParam }, paramsId),
+      {
+        getNextPageParam: (lastPage) => {
+          if (lastPage.pageInfo.totalElement === 0) return;
 
-  const {
-    data: likes,
-    fetchNextPage,
-    hasNextPage,
-    isLoading,
-    isError,
-  } = useHistoryLikes(paramsId);
+          if (lastPage.pageInfo.page !== lastPage.pageInfo.totalPages) {
+            return lastPage.pageInfo.page + 1;
+          }
+        },
+      },
+    );
 
   const likesAmount = (likes: []) => {
     if (likes?.length === 0) return 0;
@@ -34,7 +43,7 @@ export default function HistoryLikes({ paramsId }: HistoryBoradProps) {
 
   return (
     <>
-      {likes?.map((page, index) => (
+      {data?.pages.map((page, index) => (
         <div key={index}>
           {page?.boardLiked?.length === 0 ? (
             <div
@@ -79,7 +88,6 @@ export default function HistoryLikes({ paramsId }: HistoryBoradProps) {
           <LoadingMessage />
         </div>
       )}
-
       {isError && (
         <div className="w-[715px] py-6 max-[730px]:w-[512px] max-[630px]:w-[312px] flex justify-center items-center">
           <ErrorMessage />

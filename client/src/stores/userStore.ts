@@ -6,19 +6,16 @@ const StorageKey = 'user-key';
 interface UserInfo {
   accessToken: string;
   refreshToken: string;
-
   userId: string;
   displayName: string;
   profileImageUrl: string;
-
-  isEmailLogin?: boolean;
+  isLogin?: boolean;
   isGoogleLogin?: boolean;
 }
 interface User extends UserInfo {
   setAccessToken: (accessToken: string) => void;
-
+  setUser: (userInfo: UserInfo) => void;
   setGoogleUser: (userInfo: UserInfo) => void;
-  setEmailUser: (userInfo: UserInfo) => void;
 
   setProfileImageUrl: (profileImageUrl: string) => void;
   setDisplayName: (displayName: string) => void;
@@ -29,7 +26,7 @@ interface User extends UserInfo {
 const useUserStore = create(
   persist<User>(
     (set) => ({
-      isEmailLogin: false,
+      isLogin: false,
       isGoogleLogin: false,
 
       accessToken: '',
@@ -41,6 +38,25 @@ const useUserStore = create(
 
       setAccessToken: (accessToken) => {
         set({ accessToken });
+      },
+
+      setUser: (userInfo: UserInfo) => {
+        const {
+          accessToken,
+          refreshToken,
+          userId,
+          displayName,
+          profileImageUrl,
+        } = userInfo;
+        set({
+          accessToken,
+          refreshToken,
+          userId,
+          displayName,
+          profileImageUrl,
+          isLogin: true,
+          isGoogleLogin: false,
+        });
       },
 
       setGoogleUser: (userInfo: UserInfo) => {
@@ -57,41 +73,21 @@ const useUserStore = create(
           userId,
           displayName,
           profileImageUrl,
-          isEmailLogin: false,
+          isLogin: false,
           isGoogleLogin: true,
-        });
-      },
-
-      setEmailUser: (userInfo: UserInfo) => {
-        const {
-          accessToken,
-          refreshToken,
-          userId,
-          displayName,
-          profileImageUrl,
-        } = userInfo;
-        set({
-          accessToken,
-          refreshToken,
-          userId,
-          displayName,
-          profileImageUrl,
-          isEmailLogin: true,
-          isGoogleLogin: false,
         });
       },
 
       setProfileImageUrl: (profileImageUrl) => {
         set({ profileImageUrl });
       },
-
       setDisplayName: (displayName) => {
         set({ displayName });
       },
 
       setClear: () =>
         set({
-          isEmailLogin: false,
+          isLogin: false,
           isGoogleLogin: false,
 
           accessToken: '',
@@ -102,7 +98,6 @@ const useUserStore = create(
           profileImageUrl: '/assets/img/bg_default_profile.png',
         }),
     }),
-
     {
       name: StorageKey,
       storage: createJSONStorage(() => localStorage),

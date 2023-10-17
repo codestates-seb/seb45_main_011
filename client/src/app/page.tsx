@@ -18,7 +18,7 @@ import { getScrollTop } from '@/utils/getScrollTop';
 export default function Home() {
   const isClient = useClient();
 
-  const { isEmailLogin, isGoogleLogin } = useUserStore();
+  const { isLogin, isGoogleLogin } = useUserStore();
 
   const handleClick = () => {
     const top = getScrollTop(window.innerWidth);
@@ -69,7 +69,7 @@ export default function Home() {
                   <ServiceInfo key={index} order={index} />
                 ))}
               </div>
-              {!(isEmailLogin || isGoogleLogin) && (
+              {!(isLogin || isGoogleLogin) && (
                 <motion.section
                   initial={{ y: 100, opacity: 0 }}
                   whileInView={{ y: 0, opacity: 1 }}

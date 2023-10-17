@@ -10,7 +10,6 @@ interface SignLinkProps extends DefaultProps {
   type: 'signin' | 'signup';
   route: '/signin' | '/signup';
   text: 'signinText' | 'signupText';
-
   onLinkTo?: () => void;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
@@ -26,9 +25,9 @@ export default function SignLink({
     <div className={twMerge('text-brown-80', className)} onClick={onLinkTo}>
       <Link href={route}>
         {SIGN_LINK_TO[text]}
-        <p className="inline-block font-bold hover:scale-110 transition-transform">
+        <div className="inline-block font-bold hover:scale-110 transition-transform">
           &nbsp;{SIGN_LINK_TO[type]}
-        </p>
+        </div>
       </Link>
     </div>
   );

@@ -1,12 +1,14 @@
-import useModalStore from '@/stores/modalStore';
+import useSignModalStore from '@/stores/signModalStore';
 
-import { CommonButton, Modal, ModalPortal } from '../common';
+import CommonButton from '../common/CommonButton';
+import Modal from '../common/Modal';
+import ModalPortal from '../common/ModalPortal';
 
 export default function FailureModal() {
-  const { changeType } = useModalStore();
+  const changeState = useSignModalStore((state) => state.changeState);
 
   const handleCodeFailure = () => {
-    return changeType('AuthEmailModal');
+    return changeState('AuthEmailModal');
   };
 
   return (
@@ -15,14 +17,13 @@ export default function FailureModal() {
         <div className="flex flex-col items-center gap-6 px-5 mt-10 mx-4">
           <div className="flex flex-col items-center gap-1">
             <p className="font-bold text-brown-70 text-[28px] text-center break-keep leading-8">
-              인증에&nbsp;
-              <span className="text-red-50">실패했습니다.</span>
+              인증에
+              <span className="text-red-50"> 실패했습니다.</span>
             </p>
             <p className="font-bold text-brown-90 text-2xl">
               다시 입력해주세요.
             </p>
           </div>
-
           <div>
             <CommonButton
               type="button"

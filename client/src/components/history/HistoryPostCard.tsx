@@ -1,5 +1,5 @@
-import Image from 'next/image';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 interface HistoryPostCardProps {
   imageUrl: string;
@@ -20,13 +20,23 @@ export default function HistoryPostCard({
       whileTap={{ scale: 0.95 }}
       className="flex flex-col items-center justify-center w-[200px] h-[175px] rounded-lg border-2 border-brown-50 bg-brown-10 shadow-outer/down">
       <div className="w-[121px] h-[92px] mb-2 mx-auto">
-        <Image
-          src={imageUrl ? imageUrl : '/assets/img/bg_default_post.png'}
-          className="object-cover object-center w-full h-full border-2 border-brown-40 rounded-lg bg-brown-20"
-          width={117}
-          height={88}
-          alt="post_image"
-        />
+        {imageUrl ? (
+          <Image
+            src={imageUrl}
+            className="object-cover object-center w-full h-full border-2 border-brown-40 rounded-lg bg-brown-20"
+            width={117}
+            height={88}
+            alt="post_image"
+          />
+        ) : (
+          <Image
+            src={'/assets/img/bg_default_post.png'}
+            className="object-cover object-center w-full h-full border-2 border-brown-40 rounded-lg bg-brown-20"
+            width={117}
+            height={88}
+            alt="post_image"
+          />
+        )}
       </div>
 
       <div className="w-[180px] mb-1">
