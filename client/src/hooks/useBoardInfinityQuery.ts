@@ -7,6 +7,8 @@ import { getBoardsByPageNum } from '@/api/board';
 import useBoardStore from '@/stores/boardStore';
 
 export default function useBoardInfinityQuery() {
+  const { setBoardRank } = useBoardStore();
+
   const { data, fetchNextPage, hasNextPage, isLoading, isError } =
     useInfiniteQuery(
       ['page'],
@@ -20,8 +22,6 @@ export default function useBoardInfinityQuery() {
         },
       },
     );
-
-  const { setBoardRank } = useBoardStore();
 
   useEffect(() => {
     if (data) setBoardRank(data.pages[0].rank);

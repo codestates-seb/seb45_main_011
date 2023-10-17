@@ -1,10 +1,10 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { DIARY_DELETE_MODAL_TEXT } from '@/constants/contents';
 
-import { deleteDiary } from '@/api/leaf';
+import useDeleteDiaryMutation from '@/hooks/useDeleteDiaryMutaion';
 
-import useLeafStore from '@/stores/leafStore';
+import { CommonButton } from '../common';
 
-import CommonButton from '../common/CommonButton';
+import useModalStore from '@/stores/modalStore';
 
 interface DiaryDeleteModalProps {
   deleteTargetId?: string | null;
@@ -12,38 +12,33 @@ interface DiaryDeleteModalProps {
   userId: string;
 }
 
-export function DiaryDeleteModal({
+export default function DiaryDeleteModal({
   userId,
   leafId,
   deleteTargetId,
 }: DiaryDeleteModalProps) {
   if (!deleteTargetId) return null;
 
-  const queryClient = useQueryClient();
+  const { close } = useModalStore();
 
-  const { mutate } = useMutation({
-    mutationFn: () => deleteDiary({ diaryId: deleteTargetId, userId }),
-    onSuccess: () => {
-      // 성공 후 새로운 쿼리를 다시 가져올 수 있도록 캐시 무효화
-      queryClient.invalidateQueries(['diaries', leafId]);
-    },
-  });
+  const { mutate: deleteDiary } = useDeleteDiaryMutation(leafId);
 
-  const modalClose = useLeafStore((state) => state.modalClose);
+  const handleCancelModal = () => close();
 
-  const handleCancelModal = () => modalClose();
   const handleDeleteDiary = () => {
-    modalClose();
-    mutate();
+    close();
+    deleteDiary({ diaryId: deleteTargetId, userId });
   };
+
   return (
     <div className="w-[320px] px-[2rem] py-[1.5rem] flex flex-col justify-center">
       <p className="text-center font-bold text-[1.6rem] leading-8 text-brown-70 mb-1 break-words">
-        선택한 일지를
+        {DIARY_DELETE_MODAL_TEXT.firstLine}
       </p>
       <p className="text-center font-bold text-[1.6rem] leading-8 text-brown-90 mb-4 break-words">
         {/* 그래도 <br className="hidden max-[400px]:inline" /> */}
-        <b className="text-red-50">삭제</b>하시겠습니까?
+        <b className="text-red-50">{DIARY_DELETE_MODAL_TEXT.secondLine[0]}</b>
+        {DIARY_DELETE_MODAL_TEXT.secondLine[1]}
       </p>
       <div className="flex gap-3 justify-center">
         <CommonButton
@@ -51,14 +46,14 @@ export function DiaryDeleteModal({
           size="md"
           onClick={handleDeleteDiary}
           className="hover:scale-105 hover:transition-transform">
-          삭제
+          {DIARY_DELETE_MODAL_TEXT.button[0]}
         </CommonButton>
         <CommonButton
           type="button"
           size="md"
           onClick={handleCancelModal}
           className="hover:scale-105 hover:transition-transform">
-          취소
+          {DIARY_DELETE_MODAL_TEXT.button[1]}
         </CommonButton>
       </div>
     </div>

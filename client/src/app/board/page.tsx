@@ -7,20 +7,25 @@ import { motion } from 'framer-motion';
 import useUserStore from '@/stores/userStore';
 import useBoardStore from '@/stores/boardStore';
 
-import CommonButton from '@/components/common/CommonButton';
-import Footer from '@/components/common/Footer';
-import BoardBanner from '@/components/board/BoardBanner';
-import BoardSearchForm from '@/components/board/BoardSearchForm';
-import RankBoard from '@/components/board/RankBoard';
-import PostList from '@/components/board/PostList';
-import SearchList from '@/components/board/SearchList';
+import useEffectOnce from '@/hooks/useEffectOnce';
+
+import {
+  BoardBanner,
+  BoardSearchForm,
+  RankBoard,
+  PostList,
+  SearchList,
+} from '@/components/board';
+import { CommonButton, Footer } from '@/components/common';
 
 export default function Board() {
   const router = useRouter();
 
   const userId = useUserStore((state) => state.userId);
 
-  const { searchKey } = useBoardStore();
+  const { searchKey, setSearchKey } = useBoardStore();
+
+  useEffectOnce(() => setSearchKey(null));
 
   const navigateToAddPost = () => {
     if (userId !== null) return router.push('/post/add');

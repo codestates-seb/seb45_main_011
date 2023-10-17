@@ -6,10 +6,12 @@ import { useForm } from 'react-hook-form';
 import useAddLeafMutaion from '@/hooks/useAddLeafMutaion';
 import useEditLeafMutaion from '@/hooks/useEditLeafMutation';
 
-import TextInput from './TextInput';
-import ImageUpload from './ImageUpload';
-import CommonButton from './CommonButton';
-import TextArea from './TextArea';
+import {
+  TextInput,
+  ImageUpload,
+  CommonButton,
+  TextArea,
+} from '@/components/common';
 
 import { InputValues } from '@/types/common';
 import { LeafDataInfo } from '@/types/data';
@@ -29,13 +31,6 @@ export default function LeafForm({
 }: LeafFormProps) {
   const router = useRouter();
 
-  useEffect(() => {
-    if (leaf) {
-      setValue('plantName', leaf?.leafName);
-      setValue('leafContent', leaf?.content);
-    }
-  }, [leaf]);
-
   const [isImageUpdated, setIsImageUpdated] = useState(false);
 
   const { mutate } =
@@ -50,6 +45,13 @@ export default function LeafForm({
     clearErrors,
     setValue,
   } = useForm<InputValues>();
+
+  useEffect(() => {
+    if (leaf) {
+      setValue('plantName', leaf?.leafName);
+      setValue('leafContent', leaf?.content);
+    }
+  }, [leaf]);
 
   const submitLeaf = (inputs: InputValues) => {
     mutate(inputs);

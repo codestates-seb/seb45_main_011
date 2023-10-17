@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { addComment } from '@/api/board';
+
 import { CommentInputValue } from '@/types/common';
 
 interface useAddCommentMutaionParameters {

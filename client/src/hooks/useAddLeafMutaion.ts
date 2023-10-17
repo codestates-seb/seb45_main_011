@@ -7,11 +7,11 @@ import { addLeaf } from '@/api/leaf';
 import useUserStore from '@/stores/userStore';
 
 const useAddLeafMutaion = () => {
-  const queryClient = useQueryClient();
-
   const router = useRouter();
 
   const { userId } = useUserStore();
+
+  const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
     mutationFn: addLeaf,
