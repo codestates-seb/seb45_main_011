@@ -23,7 +23,6 @@ export const commonAxios = axios.create({
   withCredentials: true,
 });
 
-/** 토큰을 통해 유저의 식물 카드 전체 조회 */
 export async function getLeafsByUserId(userId: string) {
   const { data } = await commonAxios
     .get(`/leaves/account/${userId}`)
@@ -32,7 +31,6 @@ export async function getLeafsByUserId(userId: string) {
   return data;
 }
 
-/** leafId를 통해 해당 식물 카드 상세 조회 */
 export async function getLeafByLeafId(leafId: string) {
   const { data } = await commonAxios
     .get(`/leaves/${leafId}`)
@@ -40,7 +38,6 @@ export async function getLeafByLeafId(leafId: string) {
   return data;
 }
 
-/** leaf 데이터를 입력받아 식물 카드 등록 */
 export async function addLeaf(inputs: InputValues) {
   const formData = convertToFormData({ usage: 'addLeaf', inputs });
 
@@ -53,12 +50,10 @@ export async function addLeaf(inputs: InputValues) {
     .then((res) => res.data);
 }
 
-/** leafId를 통해 식물 카드 삭제 */
 export async function deleteLeaf(leafId: string) {
   return await commonAxios.delete(`/leaves/${leafId}`).then((res) => res.data);
 }
 
-/** leaf data를 입력받아 leafId에 해당하는 식물 카드 수정 */
 export async function editLeaf({
   inputs,
   leafId,
@@ -84,7 +79,6 @@ export async function editLeaf({
     .then((res) => res.data);
 }
 
-/** leafId에 해당하는 다이어리 전체 조회 */
 export async function getDiariesByLeafAndUserId(
   leafId: string,
   userId: string,
@@ -95,7 +89,6 @@ export async function getDiariesByLeafAndUserId(
   return data;
 }
 
-/** leafId를 통해 해당하는 식물 카드에 일지 등록 */
 export async function addDiary({
   leafId,
   inputs,
@@ -124,7 +117,6 @@ export async function addDiary({
     .then((res) => res.data);
 }
 
-/** diary를 입력받아 journalId에 해당하는 journal(diary) 수정 */
 export async function editDiary({
   diaryId,
   inputs,
@@ -153,7 +145,6 @@ export async function editDiary({
     .then((res) => res.data);
 }
 
-// diaryId에 해당하는 diary 삭제
 export async function deleteDiary({
   diaryId,
   userId,
@@ -161,15 +152,12 @@ export async function deleteDiary({
   diaryId: string;
   userId: string;
 }) {
-  const request = JSON.stringify({
-    accountId: userId,
-  });
   return await commonAxios
     .delete(`/leaves/journals/${diaryId}`, {
-      data: request,
       headers: {
         'Content-Type': 'application/json',
       },
+      params: { 'leaf-author-id': userId },
     })
     .then((res) => res.data);
 }

@@ -59,21 +59,14 @@ export default function convertToFormData({
     const postDtoData = JSON.stringify({
       title: inputs.title,
       content: inputs.diaryContent,
+      leafAuthorId: userId,
       isImageUpdated,
     });
 
-    const leafAuthorData = JSON.stringify({
-      accountId: userId,
-    });
-
     const postDtoBlob = new Blob([postDtoData], { type: 'application/json' });
-    const leafAuthorBlob = new Blob([leafAuthorData], {
-      type: 'application/json',
-    });
 
     if (isImageUpdated) formData.append('image', inputs.image[0]);
     formData.append('postDto', postDtoBlob);
-    formData.append('leafAuthor', leafAuthorBlob);
 
     return formData;
   }
@@ -82,20 +75,14 @@ export default function convertToFormData({
     const patchDtoData = JSON.stringify({
       title: inputs.title,
       content: inputs.diaryContent,
+      leafAuthorId: userId,
       isImageUpdated,
-    });
-    const leafAuthorData = JSON.stringify({
-      accountId: userId,
     });
 
     const patchDtoBlob = new Blob([patchDtoData], { type: 'application/json' });
-    const leafAuthorBlob = new Blob([leafAuthorData], {
-      type: 'application/json',
-    });
 
     if (isImageUpdated) formData.append('image', inputs.image[0]);
     formData.append('patchDto', patchDtoBlob);
-    formData.append('leafAuthor', leafAuthorBlob);
 
     return formData;
   }
