@@ -3,12 +3,10 @@
 import { useRouter } from 'next/navigation';
 import InfiniteScroll from 'react-infinite-scroller';
 
-import useHistoryLikes from '@/hooks/useHistoryLikes';
-
-import useUserStore from '@/stores/userStore';
+import useHistoryLikesQuery from '@/hooks/query/useHistoryLikesQuery';
 
 import { HistoryPostCard } from '.';
-import EmptyDiary from '../leaf/EmptyDiary';
+import { EmptyDiary } from '../leaf';
 import { ErrorMessage, LoadingMessage } from '../common';
 
 import { HistoryBoradProps } from '@/types/common';
@@ -16,15 +14,13 @@ import { HistoryBoradProps } from '@/types/common';
 export default function HistoryLikes({ paramsId }: HistoryBoradProps) {
   const router = useRouter();
 
-  const { userId } = useUserStore();
-
   const {
     data: likes,
     fetchNextPage,
     hasNextPage,
     isLoading,
     isError,
-  } = useHistoryLikes(paramsId);
+  } = useHistoryLikesQuery(paramsId);
 
   const likesAmount = (likes: []) => {
     if (likes?.length === 0) return 0;
@@ -41,8 +37,6 @@ export default function HistoryLikes({ paramsId }: HistoryBoradProps) {
               key={index}
               className="w-[715px] my-4 max-[730px]:w-[512px] max-[630px]:w-[312px] flex justify-center items-center ml-1">
               <EmptyDiary
-                pathUserId={paramsId}
-                userId={userId}
                 info="likes"
                 className="max-w-[314px] max-[507px]:mx-3 max-[430px]:w-[214px] text-[13px]"
               />

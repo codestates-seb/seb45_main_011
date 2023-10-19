@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 
-import useResignCheck from '@/hooks/useResignCheck';
+import useResignCheckMutation from '@/hooks/mutation/useResignCheckMutation';
 
 import { SignModalInput } from '../sign';
 import { CommonButton, Modal, ModalPortal } from '../common';
@@ -17,7 +17,7 @@ export default function ResignModal() {
     formState: { errors, isSubmitting },
   } = useForm<SignFormValue>();
 
-  const { onPasswordCheck, close } = useResignCheck();
+  const { mutate: onPasswordCheck, close } = useResignCheckMutation();
 
   const userPassword = watch('password');
 

@@ -1,26 +1,7 @@
-import axios from 'axios';
-
-const accessToken =
-  typeof window !== 'undefined'
-    ? JSON.parse(localStorage.getItem('user-key') as string).state.accessToken
-    : null;
-
-const refreshToken =
-  typeof window !== 'undefined'
-    ? JSON.parse(localStorage.getItem('user-key') as string).state.refreshToken
-    : null;
-
-export const historyAxios = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
-  headers: {
-    Authorization: accessToken,
-    Refresh: refreshToken,
-  },
-  withCredentials: true,
-});
+import { instance } from './axios';
 
 export const updateUserNickname = async (displayName: string) => {
-  const { data, headers, status } = await historyAxios.patch(
+  const { data, headers, status } = await instance.patch(
     `/accounts/displayname`,
     {
       displayName,
@@ -34,13 +15,10 @@ export const updateUserPassword = async (
   presentPassword: string,
   changedPassword: string,
 ) => {
-  const { data, headers, status } = await historyAxios.patch(
-    `/accounts/password`,
-    {
-      presentPassword,
-      changedPassword,
-    },
-  );
+  const { data, headers, status } = await instance.patch(`/accounts/password`, {
+    presentPassword,
+    changedPassword,
+  });
 
   return { data, headers, status };
 };
@@ -53,15 +31,11 @@ export const updateUserProfileImage = async (file: File) => {
   const formData = new FormData();
   formData.append('profileImage', file);
 
-  const response = await historyAxios.patch(
-    `/accounts/profileimage`,
-    formData,
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+  const response = await instance.patch(`/accounts/profileimage`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
     },
-  );
+  });
 
   return response.data;
 };

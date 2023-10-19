@@ -5,8 +5,8 @@ import { useForm } from 'react-hook-form';
 import useModalStore from '@/stores/modalStore';
 import useSignStore from '@/stores/signStore';
 
-import useAuthEmail from '@/hooks/useAuthEmail';
-import useSignup from '@/hooks/useSignup';
+import useAuthEmailMutation from '@/hooks/mutation/useAuthEmailMutation';
+import useSignupMutation from '@/hooks/mutation/useSignupMutation';
 import useEffectOnce from '@/hooks/useEffectOnce';
 
 import { SignInput, SignPasswordInput } from '../sign';
@@ -25,8 +25,8 @@ export default function SignupForm() {
   const { changeType, open } = useModalStore();
   const { isCode, setIsCode } = useSignStore();
 
-  const { sendCodeWithEmail } = useAuthEmail();
-  const { onSignup } = useSignup();
+  const { mutate: sendCodeWithEmail } = useAuthEmailMutation();
+  const { mutate: onSignup } = useSignupMutation();
 
   const email = watch('email');
   const password = watch('password');

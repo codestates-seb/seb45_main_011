@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import useUserStore from '@/stores/userStore';
 
 import useClient from '@/hooks/useClient';
-import useUserInfo from '@/hooks/useUserInfo';
+import useUserInfoQuery from '@/hooks/query/useUserInfoQuery';
 
 import { CommonButton } from '../common';
 
@@ -22,7 +22,7 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
   const { userId } = useUserStore();
 
   const isClient = useClient();
-  const { profileImageUrl, displayName, grade, point } = useUserInfo(id);
+  const { profileImageUrl, displayName, grade, point } = useUserInfoQuery(id);
 
   return (
     <div className="flex flex-col justify-center items-center">
