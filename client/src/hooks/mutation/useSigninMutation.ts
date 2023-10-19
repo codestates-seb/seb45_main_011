@@ -11,7 +11,7 @@ import { SigninFormValue } from '@/types/common';
 
 import { ALERT_TEXT } from '@/constants/contents';
 
-const useSignin = () => {
+const useSigninMutation = () => {
   const router = useRouter();
 
   const { reset } = useForm<SigninFormValue>();
@@ -19,7 +19,7 @@ const useSignin = () => {
   const { setEmailUser } = useUserStore();
   const { getSigninForm, getSignupForm } = useSignStore();
 
-  const { mutate: onSiginIn } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: ({ email, password }: SigninFormValue) =>
       postUserInfo(email, password),
 
@@ -57,7 +57,7 @@ const useSignin = () => {
     },
   });
 
-  return { onSiginIn };
+  return { mutate };
 };
 
-export default useSignin;
+export default useSigninMutation;

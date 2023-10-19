@@ -3,28 +3,24 @@ import { useMutation } from '@tanstack/react-query';
 
 import { updateUserPassword } from '@/api/profile';
 
-import useUserStore from '@/stores/userStore';
 import useModalStore from '@/stores/modalStore';
 
 import { InputValues } from '@/types/common';
 
 import { ALERT_TEXT } from '@/constants/contents';
 
-const useChangePassword = (
+const useChangePasswordMutation = (
   presentPassword: string,
   changedPassword: string,
 ) => {
   const { reset } = useForm<InputValues>();
 
   const { changeType, open } = useModalStore();
-  const { setAccessToken } = useUserStore();
 
-  const { mutate: changePassword } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: () => updateUserPassword(presentPassword, changedPassword),
 
     onSuccess: (data) => {
-      setAccessToken(data.headers?.authorization);
-
       changeType('ChangePasswordModal');
       open();
     },
@@ -38,11 +34,11 @@ const useChangePassword = (
       return;
     }
 
-    changePassword();
+    mutate();
     reset();
   };
 
   return { updatePassword };
 };
 
-export default useChangePassword;
+export default useChangePasswordMutation;

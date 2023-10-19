@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import useChangeNickname from '@/hooks/useChangeNickname';
+import useChangeNicknameMutation from '@/hooks/mutation/useChangeNicknameMutation';
 
 import { CommonButton, TextInput } from '../common';
 
@@ -18,7 +18,7 @@ export default function NicknameForm() {
     setValue,
   } = useForm<InputValues>();
 
-  const { updateNickName, displayName } = useChangeNickname();
+  const { updateNickName, displayName } = useChangeNicknameMutation();
 
   const nickname = watch('nickname');
 

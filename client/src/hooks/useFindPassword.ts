@@ -14,7 +14,7 @@ const useFindPassword = () => {
     queryFn: () => getUsersEmail(),
   });
 
-  const { mutate: temporaryPassword } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: (email: string) => sendTemporaryPasswordByEmail(email),
 
     onSuccess: () => {
@@ -31,7 +31,7 @@ const useFindPassword = () => {
 
     if (!existEmail) return changeType('FailureModal');
 
-    temporaryPassword(userEmail);
+    mutate(userEmail);
     return changeType('SuccessedModal');
   };
 

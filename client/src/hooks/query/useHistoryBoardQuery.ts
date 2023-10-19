@@ -1,12 +1,13 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { getCommentWrittenByPage } from '@/api/history';
+import { getBoardWrittenByPage } from '@/api/history';
 
-const useHistoryComment = (paramsId: string) => {
+const useHistoryBoardQuery = (paramsId: string) => {
   const { data, fetchNextPage, hasNextPage, isLoading, isError } =
     useInfiniteQuery(
-      ['commentWritten'],
-      ({ pageParam = 1 }) => getCommentWrittenByPage({ pageParam }, paramsId),
+      ['boardWritten'],
+      ({ pageParam = 1 }) => getBoardWrittenByPage({ pageParam }, paramsId),
+
       {
         getNextPageParam: (lastPage) => {
           return lastPage.pageInfo.page !== lastPage.pageInfo.totalPages
@@ -25,4 +26,4 @@ const useHistoryComment = (paramsId: string) => {
   };
 };
 
-export default useHistoryComment;
+export default useHistoryBoardQuery;
