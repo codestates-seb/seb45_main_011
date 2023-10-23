@@ -7,7 +7,6 @@ import com.growstory.global.response.MultiResponseDto;
 import com.growstory.global.response.SingleResponseDto;
 import com.growstory.global.utils.UriCreator;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -35,9 +34,9 @@ public class AccountController {
 
     @Operation(summary = "회원가입", description = "사용자 정보를 입력받아 계정 생성")
     @PostMapping("/signup")
-    public ResponseEntity<HttpStatus> postAccount(@Valid @RequestBody AccountDto.Post accountPostDto) {
-        AccountDto.Response accountResponseDto = accountService.createAccount(accountPostDto);
-        URI location = UriCreator.createUri(ACCOUNT_DEFAULT_URL, accountResponseDto.getAccountId());
+    public ResponseEntity<HttpStatus> postAccount(@Valid @RequestBody AccountDto.Post requestDto) {
+        AccountDto.Response responseDto = accountService.createAccount(requestDto);
+        URI location = UriCreator.createUri(ACCOUNT_DEFAULT_URL, responseDto.getAccountId());
 
         return ResponseEntity.created(location).build();
     }
@@ -52,16 +51,16 @@ public class AccountController {
 
     @Operation(summary = "닉네임 수정", description = "입력받은 닉네임으로 정보 수정")
     @PatchMapping("/displayname")
-    public ResponseEntity<HttpStatus> patchDisplayName(@Valid @RequestBody AccountDto.DisplayNamePatch displayNamePatchDto) {
-        accountService.updateDisplayName(displayNamePatchDto);
+    public ResponseEntity<HttpStatus> patchDisplayName(@Valid @RequestBody AccountDto.DisplayNamePatch requestDto) {
+        accountService.updateDisplayName(requestDto);
 
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "비밀번호 수정", description = "입력받은 비밀번호로 정보 수정")
     @PatchMapping("/password")
-    public ResponseEntity<HttpStatus> patchDisplayName(@Valid @RequestBody AccountDto.PasswordPatch passwordPatchDto) {
-        accountService.updatePassword(passwordPatchDto);
+    public ResponseEntity<HttpStatus> patchDisplayName(@Valid @RequestBody AccountDto.PasswordPatch requestDto) {
+        accountService.updatePassword(requestDto);
 
         return ResponseEntity.noContent().build();
     }
@@ -139,8 +138,8 @@ public class AccountController {
 
     @Operation(summary = "비밀번호 검증", description = "회원탈퇴시 비밀번호 검증")
     @PostMapping("/password/verification")
-    public ResponseEntity<SingleResponseDto<Boolean>> verifyPassword(@Valid @RequestBody AccountDto.PasswordVerify passwordVerifyDto) {
-        Boolean isMatched = accountService.verifyPassword(passwordVerifyDto);
+    public ResponseEntity<SingleResponseDto<Boolean>> verifyPassword(@Valid @RequestBody AccountDto.PasswordVerify requestDto) {
+        Boolean isMatched = accountService.verifyPassword(requestDto);
 
         return ResponseEntity.ok(SingleResponseDto.<Boolean>builder()
                 .status(HttpStatusCode.OK.getStatusCode())

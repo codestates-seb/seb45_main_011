@@ -31,9 +31,9 @@ public class LeafController {
 
     @Operation(summary = "식물카드 생성", description = "식물 정보를 입력받아 식물카드 생성")
     @PostMapping
-    public ResponseEntity<HttpStatus> postLeaf(@Valid @RequestPart LeafDto.Post leafPostDto,
+    public ResponseEntity<HttpStatus> postLeaf(@Valid @RequestPart LeafDto.Post requestDto,
                                                @RequestPart MultipartFile leafImage) {
-        LeafDto.Response leafResponseDto = leafService.createLeaf(leafPostDto, leafImage);
+        LeafDto.Response leafResponseDto = leafService.createLeaf(requestDto, leafImage);
         URI location = UriCreator.createUri(LEAF_DEFAUTL_URL, leafResponseDto.getLeafId());
 
         return ResponseEntity.created(location).build();
@@ -41,9 +41,9 @@ public class LeafController {
 
     @Operation(summary = "식물카드 수정", description = "입력받은 식물 정보로 식물카드 수정")
     @PatchMapping
-    public ResponseEntity<HttpStatus> patchLeaf(@Valid @RequestPart LeafDto.Patch leafPatchDto,
+    public ResponseEntity<HttpStatus> patchLeaf(@Valid @RequestPart LeafDto.Patch requestDto,
                                                         @RequestPart(required = false) MultipartFile leafImage) {
-        leafService.updateLeaf(leafPatchDto, leafImage);
+        leafService.updateLeaf(requestDto, leafImage);
 
         return ResponseEntity.noContent().build();
     }

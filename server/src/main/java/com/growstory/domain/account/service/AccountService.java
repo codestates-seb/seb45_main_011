@@ -1,5 +1,6 @@
 package com.growstory.domain.account.service;
 
+import com.growstory.domain.account.constants.Status;
 import com.growstory.domain.account.dto.AccountDto;
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.account.repository.AccountRepository;
@@ -42,20 +43,24 @@ public class AccountService {
     private final S3Uploader s3Uploader;
     private final AuthUserUtils authUserUtils;
 
-    public AccountDto.Response createAccount(AccountDto.Post accountPostDto) {
-        verifyExistsEmail(accountPostDto.getEmail());
+    public AccountDto.Response createAccount(AccountDto.Post requsetDto) {
+        verifyExistsEmail(requsetDto.getEmail());
 
-        String encryptedPassword = passwordEncoder.encode(accountPostDto.getPassword());
-        List<String> roles = authorityUtils.createRoles(accountPostDto.getEmail());
-        Point point = pointService.createPoint(accountPostDto.getEmail());
+        Status status = Status.USER;
+        String encryptedPassword = passwordEncoder.encode(requsetDto.getPassword());
+        List<String> roles = authorityUtils.createRoles(requsetDto.getEmail());
+        Point point = pointService.createPoint(requsetDto.getEmail());
+
+        //TODO: if admin@gmail.com 일때 status.admin 추가
+        if (requsetDto.getEmail().equals("admin@gmail.com")) status = Status.ADMIN;
 
         Account savedAccount = accountRepository.save(Account.builder()
-                .displayName(accountPostDto.getDisplayName())
-                .email(accountPostDto.getEmail())
+                .displayName(requsetDto.getDisplayName())
+                .email(requsetDto.getEmail())
                 .password(encryptedPassword)
                 .point(point)
                 .roles(roles)
-                .accountGrade(Account.AccountGrade.GRADE_BRONZE)
+                .status(status)
                 .build());
 
         point.updateAccount(savedAccount);
@@ -76,20 +81,20 @@ public class AccountService {
                 .build());
     }
 
-    public void updateDisplayName(AccountDto.DisplayNamePatch displayNamePatchDto) {
+    public void updateDisplayName(AccountDto.DisplayNamePatch requestDto) {
         Account findAccount = authUserUtils.getAuthUser();
 
         accountRepository.save(findAccount.toBuilder()
-                .displayName(displayNamePatchDto.getDisplayName())
+                .displayName(requestDto.getDisplayName())
                 .build());
     }
 
-    public void updatePassword(AccountDto.PasswordPatch passwordPatchDto) {
+    public void updatePassword(AccountDto.PasswordPatch requestDto) {
         Account findAccount = authUserUtils.getAuthUser();
 
-        String encryptedChangedPassword = passwordEncoder.encode(passwordPatchDto.getChangedPassword());
+        String encryptedChangedPassword = passwordEncoder.encode(requestDto.getChangedPassword());
 
-        if (!passwordEncoder.matches(passwordPatchDto.getPresentPassword(), findAccount.getPassword()))
+        if (!passwordEncoder.matches(requestDto.getPresentPassword(), findAccount.getPassword()))
             throw new BadCredentialsException("현재 비밀번호가 일치하지 않습니다.");
 
         if (findAccount.getPassword().equals(encryptedChangedPassword))
@@ -144,7 +149,7 @@ public class AccountService {
         Account findAccount = findVerifiedAccount(accountId);
         List<AccountDto.BoardResponse> commentWrittenBoardList = findAccount.getComments().stream()
                 .map(comment -> getBoardResponse(comment.getBoard()))
-                .distinct()
+                .distinct() // 같은 게시글 중복 제거
                 .collect(Collectors.toList());
 
         int startIdx = page * size;
@@ -161,13 +166,13 @@ public class AccountService {
         accountRepository.delete(findAccount);
     }
 
-    public Boolean verifyPassword(AccountDto.PasswordVerify passwordVerifyDto) {
+    public Boolean verifyPassword(AccountDto.PasswordVerify requestDto) {
         Account findAccount = authUserUtils.getAuthUser();
 
-        return passwordEncoder.matches(passwordVerifyDto.getPassword(), findAccount.getPassword());
+        return passwordEncoder.matches(requestDto.getPassword(), findAccount.getPassword());
     }
 
-    private void verifyExistsEmail(String email) {
+    public void verifyExistsEmail(String email) {
         Optional<Account> findAccount = accountRepository.findByEmail(email);
 
         if(findAccount.isPresent())
