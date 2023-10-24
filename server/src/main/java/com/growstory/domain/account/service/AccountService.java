@@ -180,6 +180,7 @@ public class AccountService {
                 new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_FOUND));
     }
 
+    //TODO: 리팩토링 -> AuthUserUtil
     public void isAuthIdMatching(Long accountId) {
         Authentication authentication = null;
         Map<String, Object> claims = null;

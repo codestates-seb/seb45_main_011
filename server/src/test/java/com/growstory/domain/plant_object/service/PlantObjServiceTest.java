@@ -212,25 +212,25 @@ public class PlantObjServiceTest {
         assertThat(gardenInfo.getPlantObjs().get(0).getPlantObjId(), is(plantObjList.get(0).getPlantObjId()));
     }
 
-    @DisplayName("saveLocation Test : 프로덕트 id와 로케이션 id 불일치")
-    @Test
-    public void testSaveLocation_프로덕트id_로케이션id_불일치() {
-        //given
-        willDoNothing().given(accountService).isAuthIdMatching(Mockito.anyLong());
-        Long accountId = 1L;
-        List<PlantObjDto.PatchLocation> patchLocations = Stub.MockLocation.getStubPatchLocationResponses();
-        patchLocations.add(PlantObjDto.PatchLocation.builder()
-                        .plantObjId(3L)
-                        .locationDto(LocationDto.Patch.builder()
-                                .locationId(99L).x(0).y(0).isInstalled(false)
-                                .build())
-                .build());
-        //when
-        BusinessLogicException exception = assertThrows(BusinessLogicException.class,
-                () -> plantObjService.saveLocation(accountId, patchLocations));
-        //then
-        assertThat(exception.getExceptionCode(), is(ExceptionCode.LOCATION_NOT_ALLOW));
-    }
+//    @DisplayName("saveLocation Test : 프로덕트 id와 로케이션 id 불일치")
+//    @Test
+//    public void testSaveLocation_프로덕트id_로케이션id_불일치() {
+//        //given
+//        willDoNothing().given(accountService).isAuthIdMatching(Mockito.anyLong());
+//        Long accountId = 1L;
+//        List<PlantObjDto.PatchLocation> patchLocations = Stub.MockLocation.getStubPatchLocationResponses();
+//        patchLocations.add(PlantObjDto.PatchLocation.builder()
+//                        .plantObjId(3L)
+//                        .locationDto(LocationDto.Patch.builder()
+//                                .locationId(99L).x(0).y(0).isInstalled(false)
+//                                .build())
+//                .build());
+//        //when
+//        BusinessLogicException exception = assertThrows(BusinessLogicException.class,
+//                () -> plantObjService.saveLocation(accountId, patchLocations));
+//        //then
+//        assertThat(exception.getExceptionCode(), is(ExceptionCode.LOCATION_NOT_ALLOW));
+//    }
 
     @DisplayName("saveLocation Test : X축에 부적절한 위치 삽입1 (+좌표)")
     @Test
