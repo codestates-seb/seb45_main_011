@@ -17,5 +17,6 @@ public class LoginDto {
         private String email;
         private String displayName;
         private String profileImageUrl;
+        private String status;
     }
 }

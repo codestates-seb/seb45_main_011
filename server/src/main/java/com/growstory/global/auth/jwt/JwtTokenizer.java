@@ -71,7 +71,7 @@ public class JwtTokenizer {
                 .build()
                 .parseClaimsJws(jws); // 토큰의 유효성 검사
 
-        System.out.println("after:" + claims.getBody().getExpiration());
+//        System.out.println("after:" + claims.getBody().getExpiration());
 
         return claims;
     }
