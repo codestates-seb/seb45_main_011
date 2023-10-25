@@ -1,6 +1,7 @@
 package com.growstory.global.auth.config;
 
 import com.growstory.domain.account.repository.AccountRepository;
+import com.growstory.domain.account.service.AccountService;
 import com.growstory.domain.point.repository.PointRepository;
 import com.growstory.domain.point.service.PointService;
 import com.growstory.global.auth.filter.JwtAuthenticationFilter;
@@ -17,8 +18,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -27,6 +26,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
+    private final AccountService accountService;
     private final AccountRepository accountRepository;
     private final CustomAuthorityUtils authorityUtils;
     private final SecurityCorsConfig corsConfig;
@@ -57,15 +57,19 @@ public class SecurityConfiguration {
                         .anyRequest().permitAll())
                 .oauth2Login(oauth2 -> {
                     oauth2.failureHandler(new OAuth2AccountFailureHandler());
-                    oauth2.successHandler(new OAuth2AccountSuccessHandler(jwtTokenizer, authorityUtils, accountRepository, pointService, pointRepository));
+                    oauth2.successHandler(new OAuth2AccountSuccessHandler(jwtTokenizer, authorityUtils, accountService, accountRepository, pointService, pointRepository));
                 })
                 .build();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
+    // securityConfiguration 내부에서 passwordEncoder를 Bean으로 등록하기 때문에
+    // accountService와 순환참조 발생
+    // 따라서 PasswordEncoderConfig파일을 따로 만들어
+    // 외부에서 passwordEncoder를 Bean으로 등록
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+//    }
 
     public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
         @Override
@@ -76,7 +80,7 @@ public class SecurityConfiguration {
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer); // JwtAuthenticationFilter 객체 생성하며 DI하기
             // AbstractAuthenticationProcessingFilter에서 상속받은 filterProcessurl을 설정 (설정하지 않으면 default 값인 /Login)
             jwtAuthenticationFilter.setFilterProcessesUrl("/v1/accounts/authentication");
-            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new AccountAuthenticationSuccessHandler());
+            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new AccountAuthenticationSuccessHandler(accountRepository, accountService));
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new AccountAuthenticationFailureHandler());
 
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
