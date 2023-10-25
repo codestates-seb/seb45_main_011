@@ -3,6 +3,7 @@ package com.growstory.global.auth.handler;
 import com.growstory.domain.account.constants.Status;
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.account.repository.AccountRepository;
+import com.growstory.domain.account.service.AccountService;
 import com.growstory.domain.point.entity.Point;
 import com.growstory.domain.point.repository.PointRepository;
 import com.growstory.domain.point.service.PointService;
@@ -30,6 +31,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
 
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
+    private final AccountService accountService;
     private final AccountRepository accountRepository;
     private final PointService pointService;
     private final PointRepository pointRepository;
@@ -61,6 +63,8 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
 
             point.updateAccount(savedAccount);
             pointRepository.save(point);
+        } else {
+            accountService.attendanceCheck(optionalAccount.get());
         }
 
         redirect(request, response, optionalAccount.orElse(savedAccount), authorities);
@@ -131,9 +135,6 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
                 .newInstance()
                 .scheme("https")
                 .host("growstory.vercel.app")
-//                .port(3000)
-//                .host("growstory.s3-website.ap-northeast-2.amazonaws.com")
-//                .port(80) //S3는 80포트
                 .port(443)
                 .path("/signin")
                 .queryParam("access_token", accessToken)
