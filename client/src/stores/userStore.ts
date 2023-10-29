@@ -100,7 +100,7 @@ const useUserStore = create(
     }),
     {
       name: StorageKey,
-      storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(() => localStorage),
     },
   ),
 );
