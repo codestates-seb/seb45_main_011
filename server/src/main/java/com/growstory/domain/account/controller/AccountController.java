@@ -41,6 +41,15 @@ public class AccountController {
         return ResponseEntity.created(location).build();
     }
 
+    @Operation(summary = "회원가입", description = "게스트 계정 생성")
+    @PostMapping("/guest")
+    public ResponseEntity<HttpStatus> postAccount() {
+        AccountDto.Response responseDto = accountService.createAccount();
+        URI location = UriCreator.createUri(ACCOUNT_DEFAULT_URL, responseDto.getAccountId());
+
+        return ResponseEntity.created(location).build();
+    }
+
     @Operation(summary = "프로필 사진 수정", description = "입력받은 프로필 사진으로 정보 수정")
     @PatchMapping(value = "/profileimage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<HttpStatus> patchProfileImage(@RequestPart MultipartFile profileImage) {
@@ -152,6 +161,14 @@ public class AccountController {
     @DeleteMapping
     public ResponseEntity<HttpStatus> deleteAccount() {
         accountService.deleteAccount();
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "게스트 회원 탈퇴", description = "게스트 사용자 계정 삭제")
+    @DeleteMapping("/{account-id}")
+    public ResponseEntity<HttpStatus> deleteAccount(@Positive @PathVariable("account-id") Long accountId){
+        accountService.deleteAccount(accountId);
 
         return ResponseEntity.noContent().build();
     }

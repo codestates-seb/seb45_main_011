@@ -23,7 +23,11 @@ public class PointService {
     @Value("${mail.admin.address}")
     private String adminMailAddress;
 
+    @Value("${mail.guest}")
+    private String guest;
+
     private static final int ADMIN_POINT = 100000000;
+    private static final int GUEST_POINT = 10000;
     private static final int REGISTER_POINT = 2500; // 회원 가입시 지급 포인트
     private static final int POSTING_POINT = 30; // 게시글 등록시 지급 포인트
     private static final int DAILY_LOGIN_POINT = 10; // 일일 로그인시 지급 포인트 (출석 체크 창이나 버튼이 필요, 로그인을 지속하며 날짜가 갱신되었을 때 판별이 어려워보임)
@@ -41,6 +45,10 @@ public class PointService {
         if (email.equals(adminMailAddress))
             return Point.builder()
                 .score(ADMIN_POINT)
+                .build();
+        if (email.equals(guest))
+            return Point.builder()
+                .score(GUEST_POINT)
                 .build();
 
         return Point.builder()

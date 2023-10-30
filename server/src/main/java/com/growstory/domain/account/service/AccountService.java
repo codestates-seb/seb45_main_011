@@ -44,20 +44,20 @@ public class AccountService {
     private final S3Uploader s3Uploader;
     private final AuthUserUtils authUserUtils;
 
-    public AccountDto.Response createAccount(AccountDto.Post requsetDto) {
-        verifyExistsEmail(requsetDto.getEmail());
+    public AccountDto.Response createAccount(AccountDto.Post requestDto) {
+        verifyExistsEmail(requestDto.getEmail());
 
         Status status = Status.USER;
-        String encryptedPassword = passwordEncoder.encode(requsetDto.getPassword());
-        List<String> roles = authorityUtils.createRoles(requsetDto.getEmail());
-        Point point = pointService.createPoint(requsetDto.getEmail());
+        String encryptedPassword = passwordEncoder.encode(requestDto.getPassword());
+        List<String> roles = authorityUtils.createRoles(requestDto.getEmail());
+        Point point = pointService.createPoint(requestDto.getEmail());
 
         //TODO: if admin@gmail.com 일때 status.admin 추가
-        if (requsetDto.getEmail().equals("admin@gmail.com")) status = Status.ADMIN;
+        if (requestDto.getEmail().equals("admin@gmail.com")) status = Status.ADMIN;
 
         Account savedAccount = accountRepository.save(Account.builder()
-                .displayName(requsetDto.getDisplayName())
-                .email(requsetDto.getEmail())
+                .displayName(requestDto.getDisplayName())
+                .email(requestDto.getEmail())
                 .password(encryptedPassword)
                 .point(point)
                 .roles(roles)
@@ -68,6 +68,42 @@ public class AccountService {
 
         return AccountDto.Response.builder()
                 .accountId(savedAccount.getAccountId())
+                .build();
+    }
+
+    public AccountDto.Response createAccount() {
+
+        Status status = Status.GUEST_USER;
+        List<String> roles = authorityUtils.createRoles(" ");       // TODO: security 권한(디비에 저장되는지 실험해보기)
+        Point point = pointService.createPoint("guest");
+
+        // 추가: 정원, 식물카드
+        /*
+        [정원]
+        - 보관함에 오브젝트 5개
+
+        [식물 카드]
+        - 식물 카드 2개
+        - 식물 카드 일지 10개
+
+        [포인트 v]
+        포인트 10000
+        */
+
+
+        Account savedAccount = accountRepository.save(Account.builder()
+                .displayName("Guest")
+                .point(point)
+                .roles(roles)
+                .status(status)
+                .build());
+
+        point.updateAccount(savedAccount);
+
+        return AccountDto.Response.builder()
+                .accountId(savedAccount.getAccountId())
+                .displayName("Guest")
+                .status(status.getStepDescription())
                 .build();
     }
 
@@ -163,6 +199,14 @@ public class AccountService {
 
         Optional.ofNullable(findAccount.getProfileImageUrl()).ifPresent(profileImageUrl ->
                 s3Uploader.deleteImageFromS3(profileImageUrl, ACCOUNT_IMAGE_PROCESS_TYPE));
+
+        accountRepository.delete(findAccount);
+    }
+
+
+    // 게스트 용 v1/accounts/{account-id}
+    public void deleteAccount(Long id) {
+        Account findAccount = findVerifiedAccount(id);
 
         accountRepository.delete(findAccount);
     }

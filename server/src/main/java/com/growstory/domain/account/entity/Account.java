@@ -71,6 +71,7 @@ public class Account extends BaseTimeEntity {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlantObj> plantObjs;
 
+    // erd
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
