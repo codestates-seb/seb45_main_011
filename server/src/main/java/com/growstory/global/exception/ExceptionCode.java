@@ -45,7 +45,9 @@ public enum ExceptionCode {
 
     NOT_ENOUGH_POINTS(403, "Not Enough Points"),
 
-    RANK_NOT_FOUND(404, "Rank not found");
+    RANK_NOT_FOUND(404, "Rank not found"),
+
+    BAD_WORD_INCLUDED(406, "Bad word Included");
 
     private final int status;
     private final String message;
