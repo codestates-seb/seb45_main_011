@@ -1,6 +1,7 @@
 package com.growstory.global.advice;
 
 import com.growstory.global.exception.BusinessLogicException;
+import com.growstory.global.exception.ExceptionCode;
 import com.growstory.global.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,10 +31,14 @@ public class GlobalExceptionAdvice {
     @ExceptionHandler(BusinessLogicException.class)
     // BusinessLogicException 처리
     public ResponseEntity handleBusinessLogicException(BusinessLogicException e) {
-        final ErrorResponse errorResponse = ErrorResponse.of(e.getExceptionCode());
+        ErrorResponse response = null;
+        if(!e.getProfanityDto().getBannedWords().isEmpty()) {
+            response = ErrorResponse.of(e.getExceptionCode(), e.getProfanityDto());
+        } else {
+            response = ErrorResponse.of(e.getExceptionCode());
+        }
 
-//        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getResponse();
-//        ErrorResponder.sendErrorResponse(response, e.getExceptionCode().getStatus() ,e.getExceptionCode().getMessage());
+        final ErrorResponse errorResponse = response;
 
         return new ResponseEntity(errorResponse, HttpStatus.valueOf(e.getExceptionCode().getStatus()));
     }

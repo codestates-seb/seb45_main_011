@@ -2,15 +2,12 @@ package com.growstory.domain.plant_object.controller;
 
 import com.google.gson.Gson;
 import com.growstory.domain.plant_object.dto.PlantObjDto;
-import com.growstory.domain.plant_object.location.dto.LocationDto;
 import com.growstory.domain.plant_object.service.PlantObjService;
-import com.growstory.domain.plant_object.service.PlantObjServiceTest;
 import com.growstory.domain.point.dto.PointDto;
 import com.growstory.domain.stubdata.Stub;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,15 +15,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.List;
 
-import static org.hamcrest.Matchers.*;
-import static org.mockito.BDDMockito.*;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.BDDMockito.anyLong;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
