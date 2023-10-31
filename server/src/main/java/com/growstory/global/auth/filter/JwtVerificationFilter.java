@@ -2,9 +2,6 @@ package com.growstory.global.auth.filter;
 
 import com.growstory.global.auth.jwt.JwtTokenizer;
 import com.growstory.global.auth.utils.CustomAuthorityUtils;
-import com.growstory.global.exception.BusinessLogicException;
-import com.growstory.global.exception.ExceptionCode;
-import com.growstory.global.response.ErrorResponder;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.SignatureException;
@@ -12,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.json.BasicJsonParser;
 import org.springframework.boot.json.JsonParser;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

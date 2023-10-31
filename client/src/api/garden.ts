@@ -4,13 +4,12 @@ import { PlantLocation } from '@/types/data';
 
 const accessToken =
   typeof window !== 'undefined'
-    ? JSON.parse(sessionStorage.getItem('user-key') as string).state.accessToken
+    ? JSON.parse(localStorage.getItem('user-key') as string).state.accessToken
     : null;
 
 const refreshToken =
   typeof window !== 'undefined'
-    ? JSON.parse(sessionStorage.getItem('user-key') as string).state
-        .refreshToken
+    ? JSON.parse(localStorage.getItem('user-key') as string).state.refreshToken
     : null;
 
 export const gardenAxios = axios.create({

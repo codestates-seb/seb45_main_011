@@ -1,6 +1,12 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import { motion } from 'framer-motion';
+
+import useUserStore from '@/stores/userStore';
+
+import useClient from '@/hooks/useClient';
 
 import PageTitle from '@/components/common/PageTitle';
 import Screws from '@/components/common/Screws';
@@ -10,6 +16,17 @@ import PostForm from '@/components/post/PostForm';
 import { MOUNT_ANIMATION_VALUES } from '@/constants/values';
 
 export default function AddPost() {
+  const router = useRouter();
+
+  const { userId } = useUserStore();
+
+  const isClient = useClient();
+
+  if (isClient && !userId) {
+    alert('로그인이 필요한 기능입니다.');
+    return router.push('/signin');
+  }
+
   return (
     <>
       <motion.div

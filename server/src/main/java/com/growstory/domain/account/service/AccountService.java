@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -164,6 +165,22 @@ public class AccountService {
                 s3Uploader.deleteImageFromS3(profileImageUrl, ACCOUNT_IMAGE_PROCESS_TYPE));
 
         accountRepository.delete(findAccount);
+    }
+
+    // 출석 체크
+    public void attendanceCheck(Account account) {
+        if (!account.getAttendance()) {
+            account.updatePoint(pointService.updatePoint(account.getPoint(), "login"));
+            account.updateAttendance(true);
+            accountRepository.save(account);
+        }
+    }
+
+    // 자정에 초기화
+    @Scheduled(cron = "0 0 0 * * *")
+    public void attendanceReset() {
+        accountRepository.findAll()
+                .forEach(account -> account.updateAttendance(false));
     }
 
     public Boolean verifyPassword(AccountDto.PasswordVerify requestDto) {

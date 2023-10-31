@@ -43,7 +43,7 @@ public class Account extends BaseTimeEntity {
     @JsonManagedReference
     private List<Board> boards = new ArrayList<>();
 
-    // cascade = 부모를 db에서 delete하면 자식도 지워진다. list에서
+    // cascade = 부모를 db에서 delete하면 자식도 지워진다.
     // orphan = 부모를 db에서 delete하면 자식도 지워진다.
     @OneToMany(mappedBy = "account", orphanRemoval = true)
     private List<Leaf> leaves = new ArrayList<>();
@@ -80,6 +80,9 @@ public class Account extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Status status = Status.USER;
 
+    // 출석 체크
+    private Boolean attendance = false;
+
     public void addLeaf(Leaf leaf) {
         leaves.add(leaf);
     }
@@ -100,6 +103,10 @@ public class Account extends BaseTimeEntity {
         this.point = point;
         if (point.getAccount() != this)
             point.updateAccount(this);
+    }
+
+    public void updateAttendance(Boolean attendance) {
+        this.attendance = attendance;
     }
 
     public void addBoardLike(BoardLike boardLike) {
