@@ -5,7 +5,8 @@ interface NotificationMessageProps {
     | 'reportComment'
     | 'reportPost'
     | 'dailyQuiz'
-    | 'signup';
+    | 'signup'
+    | 'dailyLogin';
   num: Number;
 }
 
@@ -41,6 +42,11 @@ export default function NotificationMessage({
     },
     signup: {
       text: ['회원가입 기념으로', ` ${num} 포인트를 `, '지급해 드렸습니다!'],
+      accentClass: 'text-yellow-50',
+      imgURL: '/assets/img/point.svg',
+    },
+    dailyLogin: {
+      text: ['일일 로그인으로', ` ${num} 포인트 `, '획득'],
       accentClass: 'text-yellow-50',
       imgURL: '/assets/img/point.svg',
     },

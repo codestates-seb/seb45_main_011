@@ -10,6 +10,7 @@ export default function NotificationPanel() {
         <NotificationMessage type="writePost" num={30} />
         <NotificationMessage type="reportComment" num={1} />
         <NotificationMessage type="dailyQuiz" num={10} />
+        <NotificationMessage type="dailyLogin" num={10} />
         <NotificationMessage type="writeDiary" num={10} />
         <NotificationMessage type="signup" num={500} />
         <NotificationMessage type="reportPost" num={2} />
