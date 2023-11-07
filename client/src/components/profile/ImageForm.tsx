@@ -3,7 +3,7 @@
 import Image from 'next/image';
 
 import useClient from '@/hooks/useClient';
-import useChangeImage from '@/hooks/useChangeImage';
+import useChangeImageMutation from '@/hooks/mutation/useChangeImageMutation';
 
 import { CommonButton } from '../common';
 
@@ -18,7 +18,7 @@ export default function ImageForm({ className }: DefaultProps) {
 
     onImageChange,
     onImageSubmit,
-  } = useChangeImage();
+  } = useChangeImageMutation();
 
   return (
     <>

@@ -1,11 +1,11 @@
 'use client';
 
-import useDeleteUser from '@/hooks/mutation/useDeleteUser';
+import useDeleteUserMutation from '@/hooks/mutation/useDeleteUserMutation';
 
 import { CommonButton, Modal, ModalPortal } from '../common';
 
 export default function ConfirmModal() {
-  const { onDeleteUser, close } = useDeleteUser();
+  const { mutate: onDeleteUser, close } = useDeleteUserMutation();
 
   return (
     <ModalPortal>

@@ -10,9 +10,8 @@ import { ALERT_TEXT } from '@/constants/contents';
 
 import isValidFileSize from '@/utils/isValidFileSize';
 
-const useChangeImage = () => {
-  const { profileImageUrl, setProfileImageUrl, setAccessToken } =
-    useUserStore();
+const useChangeImageMutation = () => {
+  const { profileImageUrl, setProfileImageUrl } = useUserStore();
   const { changeType, open } = useModalStore();
 
   const imageUploadRef = useRef<HTMLInputElement | null>(null);
@@ -20,7 +19,7 @@ const useChangeImage = () => {
   const [imageUrl, setImageUrl] = useState(profileImageUrl);
   const [isDisabled, setIsDisabled] = useState(true);
 
-  const { mutate: changeImage } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: (image: FileList) => updateUserProfileImage(image[0]),
 
     onSuccess: (data) => {
@@ -29,8 +28,6 @@ const useChangeImage = () => {
 
       changeType('ChangeImageModal');
       open();
-
-      setAccessToken(data.headers?.authorization);
     },
   });
 
@@ -57,7 +54,7 @@ const useChangeImage = () => {
 
   const onImageSubmit = async () => {
     if (image && !isDisabled) {
-      changeImage(image);
+      mutate(image);
     }
   };
 
@@ -70,4 +67,4 @@ const useChangeImage = () => {
   };
 };
 
-export default useChangeImage;
+export default useChangeImageMutation;

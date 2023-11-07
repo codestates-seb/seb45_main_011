@@ -15,8 +15,6 @@ interface UserInfo {
   isGoogleLogin?: boolean;
 }
 interface User extends UserInfo {
-  setAccessToken: (accessToken: string) => void;
-
   setGoogleUser: (userInfo: UserInfo) => void;
   setEmailUser: (userInfo: UserInfo) => void;
 
@@ -38,10 +36,6 @@ const useUserStore = create(
       userId: '',
       displayName: '',
       profileImageUrl: '',
-
-      setAccessToken: (accessToken) => {
-        set({ accessToken });
-      },
 
       setGoogleUser: (userInfo: UserInfo) => {
         const {

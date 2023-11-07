@@ -4,16 +4,16 @@ import { sendCodeByEmail } from '@/api/user';
 
 import useSignStore from '@/stores/signStore';
 
-const useAuthEmail = () => {
+const useAuthEmailMutation = () => {
   const { setCode, isCode } = useSignStore();
 
-  const { mutate: sendCodeWithEmail } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: (email: string) => sendCodeByEmail(email),
     onSuccess(data) {
       setCode(data.data.data.authCode);
     },
   });
-  return { sendCodeWithEmail, isCode };
+  return { mutate, isCode };
 };
 
-export default useAuthEmail;
+export default useAuthEmailMutation;

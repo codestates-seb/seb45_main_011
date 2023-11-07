@@ -8,18 +8,17 @@ import useModalStore from '@/stores/modalStore';
 
 import { InputValues } from '@/types/common';
 
-const useChangeNickname = () => {
+const useChangeNicknameMutation = () => {
   const { reset } = useForm<InputValues>();
 
-  const { setAccessToken, setDisplayName, displayName } = useUserStore();
+  const { setDisplayName, displayName } = useUserStore();
   const { changeType, open } = useModalStore();
 
-  const { mutate: onChangeNickname } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: (nickname: string) => updateUserNickname(nickname),
 
     onSuccess: (data, nickname) => {
       setDisplayName(nickname);
-      setAccessToken(data.headers?.authorization);
 
       reset();
 
@@ -31,10 +30,10 @@ const useChangeNickname = () => {
   const updateNickName = async (nickname: string) => {
     if (!nickname) return;
 
-    onChangeNickname(nickname);
+    mutate(nickname);
   };
 
   return { updateNickName, displayName };
 };
 
-export default useChangeNickname;
+export default useChangeNicknameMutation;

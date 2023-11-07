@@ -2,7 +2,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { getBoardLikedByPage } from '@/api/history';
 
-const useHistoryLikes = (paramsId: string) => {
+const useHistoryLikesQuery = (paramsId: string) => {
   const { data, fetchNextPage, hasNextPage, isLoading, isError } =
     useInfiniteQuery(
       ['boardLiked'],
@@ -27,4 +27,4 @@ const useHistoryLikes = (paramsId: string) => {
   };
 };
 
-export default useHistoryLikes;
+export default useHistoryLikesQuery;

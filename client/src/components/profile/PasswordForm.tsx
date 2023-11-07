@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 
-import useChangePassword from '@/hooks/useChagnePassword';
+import useChangePasswordMutation from '@/hooks/mutation/useChangePasswordMutation';
 
 import { CommonButton, PasswordInput } from '../common';
 
@@ -19,7 +19,7 @@ export default function PasswordForm() {
   const presentPassword = watch('password');
   const changedPassword = watch('newPasswordCheck');
 
-  const { updatePassword } = useChangePassword(
+  const { updatePassword } = useChangePasswordMutation(
     presentPassword,
     changedPassword,
   );

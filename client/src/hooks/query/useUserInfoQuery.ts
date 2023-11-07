@@ -6,7 +6,7 @@ import { getUserInfo } from '@/api/history';
 
 import useHistoryStore from '@/stores/historyStore';
 
-const useUserInfo = (id: string) => {
+const useUserInfoQuery = (id: string) => {
   const { setHistoryUser, profileImageUrl, displayName, grade, point } =
     useHistoryStore();
 
@@ -19,4 +19,4 @@ const useUserInfo = (id: string) => {
   return { profileImageUrl, displayName, grade, point };
 };
 
-export default useUserInfo;
+export default useUserInfoQuery;
