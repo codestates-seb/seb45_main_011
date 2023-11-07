@@ -16,7 +16,7 @@ import {
   PostList,
   SearchList,
 } from '@/components/board';
-import { CommonButton, Footer } from '@/components/common';
+import { CommonButton, Footer, NotificationButton } from '@/components/common';
 
 export default function Board() {
   const router = useRouter();
@@ -53,6 +53,7 @@ export default function Board() {
           </div>
         </motion.div>
       </div>
+      <NotificationButton />
       <Footer />
     </>
   );
