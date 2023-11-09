@@ -229,8 +229,9 @@ public class AccountService {
         }
 
         // 사용자가 일치하지 않으면 405 예외 던지기
-        if (Long.valueOf((String) claims.get("accountId")) != accountId)
+        if (!(Long.valueOf((String) claims.get("accountId"))).equals(accountId)) {
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
+        }
     }
 
     private static AccountDto.Response getAccountResponse(Account findAccount) {
