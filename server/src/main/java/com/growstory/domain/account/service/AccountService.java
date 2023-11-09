@@ -226,6 +226,7 @@ public class AccountService {
         if (Long.valueOf((String) claims.get("accountId")) != accountId) {
             log.info("##" + claims.get("accountId"));
             log.info("##" + accountId);
+            log.info("##" + (Long.valueOf((String) claims.get("accountId"))!=accountId));
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
         }
     }
