@@ -217,17 +217,17 @@ public class AccountService {
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_FOUND);
         }
 
-        log.info("##" + claims.get("accountId"));
-        log.info("##" + accountId);
-
         // 사용자가 인증되지 않거나 익명인지 확인하고 그렇다면 401 예외 던지기
         if (authentication.getName() == null || authentication.getName().equals("anonymousUser")) {
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_UNAUTHORIZED);
         }
 
         // 사용자가 일치하지 않으면 405 예외 던지기
-        if (Long.valueOf((String) claims.get("accountId")) != accountId)
+        if (Long.valueOf((String) claims.get("accountId")) != accountId) {
+            log.info("##" + claims.get("accountId"));
+            log.info("##" + accountId);
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
+        }
     }
 
     private static AccountDto.Response getAccountResponse(Account findAccount) {
