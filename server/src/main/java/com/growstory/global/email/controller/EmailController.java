@@ -27,10 +27,10 @@ public class EmailController {
 
     @Operation(summary = "회원가입 시 메일 인증", description = "회원가입 시 입력받은 이메일로 메일 전송")
     @PostMapping("/signup")
-    public ResponseEntity<SingleResponseDto<EmailDto.SignUpResponse>> postAuthCodeMail(@Valid @RequestBody EmailDto.Post requestDto) {
+    public ResponseEntity<SingleResponseDto<EmailDto.SignUpResponse>> postAuthCodeMail(@Valid @RequestBody EmailDto.Post emailPostDto) {
         // 인증시 메일 확인 하기
-        accountService.verifyExistsEmail(requestDto.getEmail());
-        EmailDto.SignUpResponse responseDto = emailService.sendAuthCodeMail(requestDto);
+        accountService.verifyExistsEmail(emailPostDto.getEmail());
+        EmailDto.SignUpResponse responseDto = emailService.sendAuthCodeMail(emailPostDto);
 
         return ResponseEntity.ok(SingleResponseDto.<EmailDto.SignUpResponse>builder()
                 .status(HttpStatusCode.OK.getStatusCode())
@@ -41,8 +41,8 @@ public class EmailController {
 
     @Operation(summary = "비밀번호 찾기 시 임시 비밀번호 전송", description = "비밀번호 찾기 시 입력받은 이메일로 임시 비밀번호 전송")
     @PostMapping("/password")
-    public ResponseEntity<SingleResponseDto<EmailDto.PasswordResponse>> postPasswordMail(@Valid @RequestBody EmailDto.Post requestDto) {
-        EmailDto.PasswordResponse responseDto = emailService.sendPasswordMail(requestDto);
+    public ResponseEntity<SingleResponseDto<EmailDto.PasswordResponse>> postPasswordMail(@Valid @RequestBody EmailDto.Post emailPostDto) {
+        EmailDto.PasswordResponse responseDto = emailService.sendPasswordMail(emailPostDto);
 
         return ResponseEntity.ok(SingleResponseDto.<EmailDto.PasswordResponse>builder()
                 .status(HttpStatusCode.OK.getStatusCode())
