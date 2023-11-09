@@ -1,5 +1,6 @@
 package com.growstory.domain.account.service;
 
+import com.growstory.domain.account.constants.AccountGrade;
 import com.growstory.domain.account.constants.Status;
 import com.growstory.domain.account.dto.AccountDto;
 import com.growstory.domain.account.entity.Account;
@@ -61,6 +62,7 @@ public class AccountService {
                 .password(encryptedPassword)
                 .point(point)
                 .roles(roles)
+                .accountGrade(AccountGrade.GRADE_BRONZE)
                 .status(status)
                 .build());
 
