@@ -5,6 +5,8 @@ import com.growstory.domain.account.constants.Status;
 import com.growstory.domain.account.dto.AccountDto;
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.account.repository.AccountRepository;
+import com.growstory.domain.alarm.constants.AlarmType;
+import com.growstory.domain.alarm.service.AlarmService;
 import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.images.entity.BoardImage;
 import com.growstory.domain.point.entity.Point;
@@ -14,8 +16,8 @@ import com.growstory.global.auth.utils.CustomAuthorityUtils;
 import com.growstory.global.aws.service.S3Uploader;
 import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
+import com.growstory.global.sse.service.SseService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -34,7 +36,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Transactional
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AccountService {
@@ -46,6 +47,8 @@ public class AccountService {
     private final PointService pointService;
     private final S3Uploader s3Uploader;
     private final AuthUserUtils authUserUtils;
+    private final SseService sseService;
+    private final AlarmService alarmService;
 
     public AccountDto.Response createAccount(AccountDto.Post requsetDto) {
         verifyExistsEmail(requsetDto.getEmail());
@@ -64,11 +67,12 @@ public class AccountService {
                 .password(encryptedPassword)
                 .point(point)
                 .roles(roles)
-                .accountGrade(AccountGrade.GRADE_BRONZE)
                 .status(status)
+                .accountGrade(AccountGrade.GRADE_BRONZE)
                 .build());
 
         point.updateAccount(savedAccount);
+        alarmService.createAlarm(savedAccount.getAccountId(), AlarmType.SIGN_UP);
 
         return AccountDto.Response.builder()
                 .accountId(savedAccount.getAccountId())
@@ -177,6 +181,8 @@ public class AccountService {
             account.updatePoint(pointService.updatePoint(account.getPoint(), "login"));
             account.updateAttendance(true);
             accountRepository.save(account);
+
+            sseService.notify(account.getAccountId(), AlarmType.DAILY_LOGIN);
         }
     }
 
@@ -224,9 +230,6 @@ public class AccountService {
 
         // 사용자가 일치하지 않으면 405 예외 던지기
         if (!(Long.valueOf((String) claims.get("accountId"))).equals(accountId)) {
-            log.info("##" + claims.get("accountId"));
-            log.info("##" + accountId);
-            log.info("###" + (!(Long.valueOf((String) claims.get("accountId"))).equals(accountId)));
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
         }
     }
