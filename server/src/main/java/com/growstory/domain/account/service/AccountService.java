@@ -15,6 +15,7 @@ import com.growstory.global.aws.service.S3Uploader;
 import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +34,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Transactional
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AccountService {
@@ -214,6 +216,9 @@ public class AccountService {
         } catch (Exception e) {
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_FOUND);
         }
+
+        log.info("##" + claims.get("accountId"));
+        log.info("##" + accountId);
 
         // 사용자가 인증되지 않거나 익명인지 확인하고 그렇다면 401 예외 던지기
         if (authentication.getName() == null || authentication.getName().equals("anonymousUser")) {
