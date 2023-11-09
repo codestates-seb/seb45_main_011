@@ -97,8 +97,8 @@ public class LeafService {
     }
 
     public void deleteLeaf(Long leafId) {
-//        Account findAccount = authUserUtils.getAuthUser();
-        Account findAccount = accountService.findVerifiedAccount(1L);
+        Account findAccount = authUserUtils.getAuthUser();
+
         Leaf findLeaf = findVerifiedLeafByAccount(findAccount.getAccountId(), leafId);
 
         s3Uploader.deleteImageFromS3(findLeaf.getLeafImageUrl(), LEAF_IMAGE_PROCESS_TYPE);

@@ -1,6 +1,7 @@
 package com.growstory.domain.board.service;
 
 import com.growstory.domain.account.entity.Account;
+import com.growstory.domain.alarm.constants.AlarmType;
 import com.growstory.domain.board.dto.RequestBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardPageDto;
@@ -22,6 +23,7 @@ import com.growstory.domain.rank.board_likes.entity.BoardLikesRank;
 import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
+import com.growstory.global.sse.service.SseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,6 +51,7 @@ public class BoardService {
     private final BoardHashTagRepository boardHashtagRepository;
     private final CommentService commentService;
     private final PointService pointService;
+    private final SseService sseService;
 
     @Value("${my.scheduled.cron}")
     private String cronExpression;
@@ -78,6 +81,8 @@ public class BoardService {
                 boardHashtagRepository.save(boardHashtag);
             }
         }
+        sseService.notify(findAccount.getAccountId(), AlarmType.WRITE_POST);
+
         return saveBoard.getBoardId();
     }
 //

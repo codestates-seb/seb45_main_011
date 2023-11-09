@@ -47,7 +47,9 @@ public enum ExceptionCode {
 
     RANK_NOT_FOUND(404, "Rank not found"),
 
-    BAD_WORD_INCLUDED(406, "Bad word Included");
+    BAD_WORD_INCLUDED(406, "Bad word Included"),
+
+    ALARM_NOT_FOUND(404, "Alarm not found");
 
     private final int status;
     private final String message;
