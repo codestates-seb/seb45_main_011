@@ -34,9 +34,10 @@ public class AccountController {
 
     @Operation(summary = "회원가입", description = "사용자 정보를 입력받아 계정 생성")
     @PostMapping("/signup")
-    public ResponseEntity<HttpStatus> postAccount(@Valid @RequestBody AccountDto.Post requestDto) {
-        AccountDto.Response responseDto = accountService.createAccount(requestDto);
+    public ResponseEntity<HttpStatus> postAccount(@Valid @RequestBody AccountDto.Post accountPostDto) {
+        AccountDto.Response responseDto = accountService.createAccount(accountPostDto);
         URI location = UriCreator.createUri(ACCOUNT_DEFAULT_URL, responseDto.getAccountId());
+
 
         return ResponseEntity.created(location).build();
     }
@@ -60,16 +61,16 @@ public class AccountController {
 
     @Operation(summary = "닉네임 수정", description = "입력받은 닉네임으로 정보 수정")
     @PatchMapping("/displayname")
-    public ResponseEntity<HttpStatus> patchDisplayName(@Valid @RequestBody AccountDto.DisplayNamePatch requestDto) {
-        accountService.updateDisplayName(requestDto);
+    public ResponseEntity<HttpStatus> patchDisplayName(@Valid @RequestBody AccountDto.DisplayNamePatch displayNamePatchDto) {
+        accountService.updateDisplayName(displayNamePatchDto);
 
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "비밀번호 수정", description = "입력받은 비밀번호로 정보 수정")
     @PatchMapping("/password")
-    public ResponseEntity<HttpStatus> patchDisplayName(@Valid @RequestBody AccountDto.PasswordPatch requestDto) {
-        accountService.updatePassword(requestDto);
+    public ResponseEntity<HttpStatus> patchDisplayName(@Valid @RequestBody AccountDto.PasswordPatch passwordPatchDto) {
+        accountService.updatePassword(passwordPatchDto);
 
         return ResponseEntity.noContent().build();
     }
@@ -147,8 +148,8 @@ public class AccountController {
 
     @Operation(summary = "비밀번호 검증", description = "회원탈퇴시 비밀번호 검증")
     @PostMapping("/password/verification")
-    public ResponseEntity<SingleResponseDto<Boolean>> verifyPassword(@Valid @RequestBody AccountDto.PasswordVerify requestDto) {
-        Boolean isMatched = accountService.verifyPassword(requestDto);
+    public ResponseEntity<SingleResponseDto<Boolean>> verifyPassword(@Valid @RequestBody AccountDto.PasswordVerify passwordVerifyDto) {
+        Boolean isMatched = accountService.verifyPassword(passwordVerifyDto);
 
         return ResponseEntity.ok(SingleResponseDto.<Boolean>builder()
                 .status(HttpStatusCode.OK.getStatusCode())

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.growstory.domain.account.constants.AccountGrade;
 import com.growstory.domain.account.constants.Status;
+import com.growstory.domain.alarm.entity.Alarm;
 import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.comment.entity.Comment;
 import com.growstory.domain.leaf.entity.Leaf;
@@ -71,7 +72,9 @@ public class Account extends BaseTimeEntity {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlantObj> plantObjs;
 
-    // erd
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Alarm> alarms = new ArrayList<>();
+
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
@@ -94,6 +97,10 @@ public class Account extends BaseTimeEntity {
 
     public void addReceivingAccountLike(AccountLike accountLike) {
         receivingAccountLikes.add(accountLike);
+    }
+
+    public void addAlarm(Alarm alarm) {
+        alarms.add(alarm);
     }
 
     public void updateGrade(AccountGrade accountGrade) {

@@ -1,6 +1,7 @@
 package com.growstory.domain.journal.service;
 
 import com.growstory.domain.account.service.AccountService;
+import com.growstory.domain.alarm.constants.AlarmType;
 import com.growstory.domain.images.entity.JournalImage;
 import com.growstory.domain.images.service.JournalImageService;
 import com.growstory.domain.journal.dto.JournalDto;
@@ -12,6 +13,7 @@ import com.growstory.domain.leaf.service.LeafService;
 import com.growstory.domain.point.service.PointService;
 import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
+import com.growstory.global.sse.service.SseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +35,7 @@ public class JournalService {
     private final JournalMapper journalMapper;
     private final AccountService accountService;
     private final PointService pointService;
+    private final SseService sseService;
 
     private static final String JOURNAL_IMAGE_PROCESS_TYPE = "journal_image";
 
@@ -58,6 +61,7 @@ public class JournalService {
         JournalImage savedJournalImage = journalImageService.createJournalImgWithS3(image, JOURNAL_IMAGE_PROCESS_TYPE, journal);
         //image 정보 Journal에 업데이트
         journal.updateImg(savedJournalImage);
+        sseService.notify(postDto.getLeafAuthorId(), AlarmType.WRITE_DIARY);
 
         return journalMapper.toResponseFrom(journalRepository.save(journal));
     }
