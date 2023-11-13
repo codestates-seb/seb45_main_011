@@ -3,10 +3,13 @@ import { useState } from 'react';
 import NotificationPanel from './NotificationPanel';
 
 import useEffectOnce from '@/hooks/useEffectOnce';
+import useUserStore from '@/stores/userStore';
 
 export default function NotificationButton() {
   const [isClicked, setIsClicked] = useState(false);
   const [hasNonChecked, setHasNonChecked] = useState(true);
+
+  const userId = useUserStore((state) => state.userId);
 
   useEffectOnce(() =>
     window.addEventListener('click', handleButtonClick as any),
@@ -38,6 +41,8 @@ export default function NotificationButton() {
 
     return;
   };
+
+  if (!userId) return;
 
   return (
     <div id="notification" className="fixed right-[16px] bottom-[72px] z-20">

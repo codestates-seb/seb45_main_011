@@ -168,3 +168,10 @@ export interface BoardRankDataInfo {
   displayName: string;
   likeNum: number;
 }
+
+export interface NotificationDataInfo {
+  id: number;
+  type: string;
+  num: number;
+  isShow: boolean;
+}

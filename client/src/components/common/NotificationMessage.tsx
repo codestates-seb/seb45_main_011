@@ -1,4 +1,5 @@
 import { twMerge } from 'tailwind-merge';
+
 import { ControlButton } from '.';
 
 interface NotificationMessageProps {
