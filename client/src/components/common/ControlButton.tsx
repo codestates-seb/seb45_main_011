@@ -7,7 +7,7 @@ import { CONTROL_BUTTON_TITLES } from '@/constants/contents';
 interface ControlButtonProps
   extends addPrefixToHandler<any, 'handle'>,
     DefaultProps {
-  usage: 'edit' | 'delete';
+  usage: 'edit' | 'delete' | 'notificationDelete';
 }
 
 export default function ControlButton({
@@ -16,6 +16,22 @@ export default function ControlButton({
   ...props
 }: ControlButtonProps) {
   const handleClick = Object.values(props)[0];
+
+  if (usage === 'notificationDelete') {
+    return (
+      <button
+        onClick={handleClick}
+        type="button"
+        title={CONTROL_BUTTON_TITLES[usage]}
+        className={twMerge(
+          `w-[12px] h-[12px] border-2 border-brown-70 rounded-full bg-no-repeat bg-center shadow-inner/top bg-red-50
+          absolute top-[3px] right-[3px] flex justify-center items-center`,
+          className,
+        )}>
+        <img src="/assets/icon/delete.svg" alt="" className="w-[4.5px]" />
+      </button>
+    );
+  }
 
   return (
     <button
