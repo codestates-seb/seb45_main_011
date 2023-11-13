@@ -29,6 +29,7 @@ public class AccountDto {
         private String password;
     }
 
+
     @Getter
     @NoArgsConstructor
     public static class DisplayNamePatch {

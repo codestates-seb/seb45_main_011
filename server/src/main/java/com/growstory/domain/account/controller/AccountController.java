@@ -44,11 +44,11 @@ public class AccountController {
 
     @Operation(summary = "회원가입", description = "게스트 계정 생성")
     @PostMapping("/guest")
-    public ResponseEntity<HttpStatus> postAccount() {
+    public ResponseEntity<?> postAccount() {
         AccountDto.Response responseDto = accountService.createAccount();
         URI location = UriCreator.createUri(ACCOUNT_DEFAULT_URL, responseDto.getAccountId());
 
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.created(location).body(responseDto.getEmail());
     }
 
     @Operation(summary = "프로필 사진 수정", description = "입력받은 프로필 사진으로 정보 수정")

@@ -160,7 +160,7 @@ public class PlantObjService {
         return plantObjMapper.toPlantObjResponse(findPlantObj);
     }
 
-    private PlantObj findVerifiedPlantObj (long plantObjId) {
+    public PlantObj findVerifiedPlantObj (long plantObjId) {
         return plantObjRepository.findById(plantObjId).orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.PLANT_OBJ_NOT_FOUND));
     }
