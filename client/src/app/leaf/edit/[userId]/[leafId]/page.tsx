@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import useUserStore from '@/stores/userStore';
 
 import useEffectOnce from '@/hooks/useEffectOnce';
-import useLeafQuery from '@/hooks/useLeafQuery';
+import useLeafQuery from '@/hooks/query/useLeafQuery';
 
 import { PageTitle, Screws, LeafForm, Footer } from '@/components/common';
 
