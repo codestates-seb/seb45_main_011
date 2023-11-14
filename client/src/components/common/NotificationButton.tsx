@@ -48,7 +48,7 @@ export default function NotificationButton() {
     return;
   };
 
-  if (!userId || isLoading) return;
+  if (!userId || isLoading || isError) return;
 
   return (
     <div id="notification" className="fixed right-[16px] bottom-[72px] z-20">
