@@ -1,32 +1,47 @@
 package com.growstory.domain.journal.dto;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
+import com.growstory.global.badwords.dto.TextContainer;
+import lombok.*;
 import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class JournalDto {
     @Getter
-    public static class Post {
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Post implements TextContainer {
         @NotBlank
         String title;
         @NotBlank
         String content;
+        @NotNull
+        long leafAuthorId;
+
+        @Override
+        public String combineText() {
+            StringBuilder sb = new StringBuilder();
+            return sb.append(title+ " ").append(content).toString();
+        }
     }
 
     @Getter
-    public static class Patch {
+    public static class Patch implements TextContainer {
         @Nullable
         String title;
         @Nullable
         String content;
+        @NotNull
+        long leafAuthorId;
+
+        @Override
+        public String combineText() {
+            StringBuilder sb = new StringBuilder();
+            return sb.append(title+ " ").append(content).toString();
+        }
     }
 
     @Getter
@@ -39,8 +54,11 @@ public class JournalDto {
         LocalDateTime createdAt;
     }
 
-    @Getter
-    public static class LeafAuthor {
-        long accountId;
-    }
+//    @Getter
+//    @Builder
+//    @NoArgsConstructor
+//    @AllArgsConstructor
+//    public static class LeafAuthor {
+//        long accountId;
+//    }
 }

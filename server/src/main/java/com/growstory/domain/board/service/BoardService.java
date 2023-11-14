@@ -1,6 +1,7 @@
 package com.growstory.domain.board.service;
 
 import com.growstory.domain.account.entity.Account;
+import com.growstory.domain.alarm.constants.AlarmType;
 import com.growstory.domain.board.dto.RequestBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardPageDto;
@@ -22,6 +23,7 @@ import com.growstory.domain.rank.board_likes.entity.BoardLikesRank;
 import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
+import com.growstory.global.sse.service.SseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,6 +51,7 @@ public class BoardService {
     private final BoardHashTagRepository boardHashtagRepository;
     private final CommentService commentService;
     private final PointService pointService;
+    private final SseService sseService;
 
     @Value("${my.scheduled.cron}")
     private String cronExpression;
@@ -78,6 +81,8 @@ public class BoardService {
                 boardHashtagRepository.save(boardHashtag);
             }
         }
+        sseService.notify(findAccount.getAccountId(), AlarmType.WRITE_POST);
+
         return saveBoard.getBoardId();
     }
 //
@@ -269,7 +274,7 @@ public class BoardService {
         return response;
     }
 
-    // 좋아요 기준 상위 3개의 게시글을 랭킹과 함께 반환 (🆘 추후 리팩토링)
+    // 좋아요 기준 상위 3개의 게시글을 랭킹과 함께 반환
     public List<BoardLikesRank> findTop3LikedBoardRanks() {
         LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
         List<Object[]> topBoardsWithLikes = boardRepository.findTop3LikedBoards(sevenDaysAgo);
@@ -297,7 +302,7 @@ public class BoardService {
                             .board(board)
                             .likeNum(likeCount)
                             .build();
-                    boardLikesRank.updateRank(uniqueLikeCounts.size());
+                    boardLikesRank.updateRank(uniqueLikeCounts.size()); //차등 등수 업데이트
                     boardLikesRanks.add(boardLikesRank);
                 });
 
@@ -308,9 +313,10 @@ public class BoardService {
 
     private boolean checkSameLikesCondition(List<BoardLikesRank> boardLikesRanks) {
         int boardSize = boardLikesRanks.size();
+        //게시글이 4개 이상이고 마지막 두 게시글의 순위가 서로 다르면 마지막 요소를 제거하고 false 반환
         if(boardSize>=4 &&
-                (boardLikesRanks.get(boardSize-1).getRankStatus().getRank() !=
-                        boardLikesRanks.get(boardSize-2).getRankStatus().getRank())) {
+                (boardLikesRanks.get(boardSize-1).getRankOrders().getPosition() !=
+                        boardLikesRanks.get(boardSize-2).getRankOrders().getPosition())) {
             boardLikesRanks.remove(boardLikesRanks.get(boardSize-1));
             return false;
         }

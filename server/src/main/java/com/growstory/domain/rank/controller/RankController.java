@@ -25,7 +25,7 @@ public class RankController {
     @GetMapping("/weekly-board-likes")
     public ResponseEntity<SingleResponseDto> getWeeklyBoardLikesRanks() {
 
-        List<BoardLikesRankDto.Response> responseDto = boardLikesRankService.findAllBoardLikesRanks();
+        List<BoardLikesRankDto.Response> responseDto = boardLikesRankService.findCurrentBoardLikesRanks();
 
         return ResponseEntity.ok(SingleResponseDto.builder()
                         .data(responseDto)

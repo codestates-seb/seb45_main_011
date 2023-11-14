@@ -22,6 +22,7 @@ jobs:
       G_CLIENT_SECRET: ${{secrets.G_CLIENT_SECRET}}
       JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
       KEY_STORE_PASSWORD: ${{secrets.KEY_STORE_PASSWORD}}
+      EVENT_KEY: ${{secrets.EVENT_KEY}}
       working-directory: ./server
 
     steps:
@@ -57,6 +58,7 @@ jobs:
           --build-arg G_CLIENT_SECRET="${{env.G_CLIENT_SECRET}}" \
           --build-arg JWT_SECRET_KEY="${{env.JWT_SECRET_KEY}}" \
           --build-arg KEY_STORE_PASSWORD="${{env.KEY_STORE_PASSWORD}}" \
+          --build-arg EVENT_KEY="${{env.EVENT_KEY}}" \
           -t growstory-cicd . 
           docker tag growstory-cicd leest/growstory-cicd:${GITHUB_SHA::7}
           docker push leest/growstory-cicd:${GITHUB_SHA::7}
@@ -78,6 +80,6 @@ jobs:
           envs: GITHUB_SHA
           script: |
             sudo docker rm -f server
-            sudo docker pull leest/growstory-cicd:${GITHUB_SHA::7}
-            sudo docker tag leest/growstory-cicd:${GITHUB_SHA::7} growstory-cicd
+            sudo docker pull dokyung94/growstory-cicd:${GITHUB_SHA::7}
+            sudo docker tag dokyung94/growstory-cicd:${GITHUB_SHA::7} growstory-cicd
             sudo docker run -d --name server -e TZ=Asia/Seoul -p 443:443 growstory-cicd

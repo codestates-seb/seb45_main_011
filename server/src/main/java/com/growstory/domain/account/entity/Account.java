@@ -2,6 +2,9 @@ package com.growstory.domain.account.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.growstory.domain.account.constants.AccountGrade;
+import com.growstory.domain.account.constants.Status;
+import com.growstory.domain.alarm.entity.Alarm;
 import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.comment.entity.Comment;
 import com.growstory.domain.leaf.entity.Leaf;
@@ -25,7 +28,7 @@ public class Account extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long accountId;
 
-    @Column(name = "EMAIL", unique = true, nullable = false, length = 50)
+    @Column(name = "EMAIL", unique = true, nullable = false, length = 100)
     private String email;
 
     @Column(name = "DISPLAY_NAME", nullable = false, length = 50)
@@ -41,7 +44,9 @@ public class Account extends BaseTimeEntity {
     @JsonManagedReference
     private List<Board> boards = new ArrayList<>();
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    // cascade = 부모를 db에서 delete하면 자식도 지워진다.
+    // orphan = 부모를 db에서 delete하면 자식도 지워진다.
+    @OneToMany(mappedBy = "account", orphanRemoval = true)
     private List<Leaf> leaves = new ArrayList<>();
 
     // 자신이 좋아요 누른 계정 리스트
@@ -67,32 +72,20 @@ public class Account extends BaseTimeEntity {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlantObj> plantObjs;
 
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Alarm> alarms = new ArrayList<>();
+
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private AccountGrade accountGrade = AccountGrade.GRADE_BRONZE;
 
-//    식물카드개수에 의한 등급 제도
-//    50개 미만 - 브론즈 가드너
-//    50개 이상 - 실버 가드너
-//    100개 이상 - 골드 가드너
-    public enum AccountGrade {
-        GRADE_BRONZE(1, "브론즈 가드너"),
-        GRADE_SILVER(2, "실버 가드너"),
-        GRADE_GOLD(3, "골드 가드너");
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.USER;
 
-        @Getter
-        private int stepNumber;
-
-        @Getter
-        private String stepDescription;
-
-        AccountGrade(int stepNumber, String stepDescription) {
-            this.stepNumber = stepNumber;
-            this.stepDescription = stepDescription;
-        }
-    }
+    // 출석 체크
+    private Boolean attendance = false;
 
     public void addLeaf(Leaf leaf) {
         leaves.add(leaf);
@@ -106,6 +99,10 @@ public class Account extends BaseTimeEntity {
         receivingAccountLikes.add(accountLike);
     }
 
+    public void addAlarm(Alarm alarm) {
+        alarms.add(alarm);
+    }
+
     public void updateGrade(AccountGrade accountGrade) {
         this.accountGrade = accountGrade;
     }
@@ -114,6 +111,10 @@ public class Account extends BaseTimeEntity {
         this.point = point;
         if (point.getAccount() != this)
             point.updateAccount(this);
+    }
+
+    public void updateAttendance(Boolean attendance) {
+        this.attendance = attendance;
     }
 
     public void addBoardLike(BoardLike boardLike) {
@@ -144,7 +145,7 @@ public class Account extends BaseTimeEntity {
     public Account(Long accountId, String email, String displayName, String password, String profileImageUrl,
                    List<Board> boards, List<Leaf> leaves, List<AccountLike> givingAccountLikes,
                    List<AccountLike> receivingAccountLikes, List<BoardLike> boardLikes, List<Comment> comments,
-                   Point point, List<PlantObj> plantObjs, List<String> roles, AccountGrade accountGrade) {
+                   Point point, List<PlantObj> plantObjs, List<String> roles, AccountGrade accountGrade, Status status) {
         this.accountId = accountId;
         this.email = email;
         this.displayName = displayName;
@@ -160,5 +161,6 @@ public class Account extends BaseTimeEntity {
         this.plantObjs = plantObjs;
         this.roles = roles;
         this.accountGrade = accountGrade;
+        this.status = status;
     }
 }

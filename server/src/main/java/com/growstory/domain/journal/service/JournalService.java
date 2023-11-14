@@ -1,6 +1,7 @@
 package com.growstory.domain.journal.service;
 
 import com.growstory.domain.account.service.AccountService;
+import com.growstory.domain.alarm.constants.AlarmType;
 import com.growstory.domain.images.entity.JournalImage;
 import com.growstory.domain.images.service.JournalImageService;
 import com.growstory.domain.journal.dto.JournalDto;
@@ -12,6 +13,7 @@ import com.growstory.domain.leaf.service.LeafService;
 import com.growstory.domain.point.service.PointService;
 import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
+import com.growstory.global.sse.service.SseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +35,7 @@ public class JournalService {
     private final JournalMapper journalMapper;
     private final AccountService accountService;
     private final PointService pointService;
+    private final SseService sseService;
 
     private static final String JOURNAL_IMAGE_PROCESS_TYPE = "journal_image";
 
@@ -46,8 +49,8 @@ public class JournalService {
                 .collect(Collectors.toList());
     }
 
-    public JournalDto.Response createJournal(Long accountId, Long leafId, JournalDto.Post postDto, MultipartFile image) {
-        accountService.isAuthIdMatching(accountId);
+    public JournalDto.Response createJournal(Long leafId, JournalDto.Post postDto, MultipartFile image) {
+        accountService.isAuthIdMatching(postDto.getLeafAuthorId());
         Leaf findLeaf = leafService.findLeafEntityBy(leafId);
         Journal journal = createJournalWithNoImg(findLeaf, postDto);
         //image가 null이거나 비어있을 경우 ResponseDto로 변환하여 반환
@@ -58,9 +61,11 @@ public class JournalService {
         JournalImage savedJournalImage = journalImageService.createJournalImgWithS3(image, JOURNAL_IMAGE_PROCESS_TYPE, journal);
         //image 정보 Journal에 업데이트
         journal.updateImg(savedJournalImage);
+        sseService.notify(postDto.getLeafAuthorId(), AlarmType.WRITE_DIARY);
 
         return journalMapper.toResponseFrom(journalRepository.save(journal));
     }
+
 
     private Journal createJournalWithNoImg(Leaf findLeaf, JournalDto.Post postDto) {
         pointService.updatePoint(findLeaf.getAccount().getPoint(), "journal");
@@ -72,9 +77,9 @@ public class JournalService {
                 .build());
     }
 
-    public void updateJournal(Long accountId, Long journalId, JournalDto.Patch patchDto, MultipartFile image) {
+    public void updateJournal(Long journalId, JournalDto.Patch patchDto, MultipartFile image) {
         Journal findJournal = findVerifiedJournalBy(journalId);
-        accountService.isAuthIdMatching(accountId);
+        accountService.isAuthIdMatching(patchDto.getLeafAuthorId());
 
         Optional.ofNullable(patchDto.getTitle())
                 .ifPresent(findJournal::updateTitle);
@@ -84,8 +89,6 @@ public class JournalService {
         updateLoadImage(image, findJournal, JOURNAL_IMAGE_PROCESS_TYPE);
     }
 
-    //TODO: S3Uploader로 빼는 리팩토링 작업? (상위 클래스 Image를 이용한 형변환)
-    // 기존 DB와 S3에 저장된 이미지 정보를 업로드 이미지 여부에 따라 수정
     private void updateLoadImage(MultipartFile image, Journal journal, String type) {
         JournalImage journalImage = journal.getJournalImage();
 

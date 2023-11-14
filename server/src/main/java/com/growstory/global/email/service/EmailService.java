@@ -29,7 +29,8 @@ public class EmailService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public EmailDto.SignUpResponse sendAuthCodeMail(EmailDto.Post emailPostDto) {
+    // 부하 테스트 때 비동기 처리
+    public EmailDto.SignUpResponse sendAuthCodeMail(EmailDto.Post requsetDto) {
         try {
             String authCode = getAuthCode();
 
@@ -39,7 +40,7 @@ public class EmailService {
                     MimeMessage mimeMessage = mailSender.createMimeMessage();
                     MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
 
-                    mimeMessageHelper.setTo(emailPostDto.getEmail()); // 수신 이메일
+                    mimeMessageHelper.setTo(requsetDto.getEmail()); // 수신 이메일
                     mimeMessageHelper.setSubject("[GrowStory] 회원가입 인증번호 안내"); // 이메일 제목
                     mimeMessageHelper.setText(finalText, true); // 이메일 본문
 
@@ -58,8 +59,8 @@ public class EmailService {
         }
     }
 
-    public EmailDto.PasswordResponse sendPasswordMail(EmailDto.Post emailPostDto) {
-        Optional<Account> optionalAccount = accountRepository.findByEmail(emailPostDto.getEmail());
+    public EmailDto.PasswordResponse sendPasswordMail(EmailDto.Post requestDto) {
+        Optional<Account> optionalAccount = accountRepository.findByEmail(requestDto.getEmail());
 
         if (optionalAccount.isEmpty()) {
             return EmailDto.PasswordResponse.builder()
@@ -76,7 +77,7 @@ public class EmailService {
                 MimeMessage mimeMessage = mailSender.createMimeMessage();
                 MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
 
-                mimeMessageHelper.setTo(emailPostDto.getEmail()); // 수신 이메일
+                mimeMessageHelper.setTo(requestDto.getEmail()); // 수신 이메일
                 mimeMessageHelper.setSubject("[GrowStory] 임시 비밀번호 안내"); // 이메일 제목
                 mimeMessageHelper.setText(setContext(password, "password"), true); // 이메일 본문
                 mailSender.send(mimeMessage);
@@ -97,9 +98,9 @@ public class EmailService {
 
 
     // 인증 번호 겸 임시 비밀번호
-    private String getAuthCode() {
+    public String getAuthCode() {
         Random random = new Random();
-        StringBuffer authCode = new StringBuffer();
+        StringBuilder authCode = new StringBuilder();
 
         for (int i = 0; i < 8; i++) {
             int index = random.nextInt(4);

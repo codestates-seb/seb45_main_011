@@ -1,5 +1,6 @@
 package com.growstory.global.email.controller;
 
+import com.growstory.domain.account.service.AccountService;
 import com.growstory.global.constants.HttpStatusCode;
 import com.growstory.global.email.dto.EmailDto;
 import com.growstory.global.email.service.EmailService;
@@ -22,10 +23,13 @@ import javax.validation.Valid;
 @RequestMapping("/v1/emails")
 public class EmailController {
     private final EmailService emailService;
+    private final AccountService accountService;
 
     @Operation(summary = "회원가입 시 메일 인증", description = "회원가입 시 입력받은 이메일로 메일 전송")
     @PostMapping("/signup")
     public ResponseEntity<SingleResponseDto<EmailDto.SignUpResponse>> postAuthCodeMail(@Valid @RequestBody EmailDto.Post emailPostDto) {
+        // 인증시 메일 확인 하기
+        accountService.verifyExistsEmail(emailPostDto.getEmail());
         EmailDto.SignUpResponse responseDto = emailService.sendAuthCodeMail(emailPostDto);
 
         return ResponseEntity.ok(SingleResponseDto.<EmailDto.SignUpResponse>builder()
