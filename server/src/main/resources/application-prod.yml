@@ -87,6 +87,7 @@ springdoc:
 mail:
   admin:
     address: ${ADMIN_EMAIL}
+  guest: ${GUEST_EMAIL}
 
 my:
   scheduled:

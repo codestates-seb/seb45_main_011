@@ -8,12 +8,17 @@ import com.growstory.domain.account.repository.AccountRepository;
 import com.growstory.domain.alarm.constants.AlarmType;
 import com.growstory.domain.alarm.service.AlarmService;
 import com.growstory.domain.board.entity.Board;
+import com.growstory.domain.guest.service.GuestService;
 import com.growstory.domain.images.entity.BoardImage;
+import com.growstory.domain.leaf.entity.Leaf;
+import com.growstory.domain.plant_object.dto.PlantObjDto;
+import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.point.entity.Point;
 import com.growstory.domain.point.service.PointService;
 import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.auth.utils.CustomAuthorityUtils;
 import com.growstory.global.aws.service.S3Uploader;
+import com.growstory.global.email.service.EmailService;
 import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
 import com.growstory.global.sse.service.SseService;
@@ -30,9 +35,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -49,21 +52,25 @@ public class AccountService {
     private final AuthUserUtils authUserUtils;
     private final SseService sseService;
     private final AlarmService alarmService;
+    private final EmailService emailService;
 
-    public AccountDto.Response createAccount(AccountDto.Post requsetDto) {
-        verifyExistsEmail(requsetDto.getEmail());
+    // Guest
+    private final GuestService guestService;
+
+    public AccountDto.Response createAccount(AccountDto.Post requestDto) {
+        verifyExistsEmail(requestDto.getEmail());
 
         Status status = Status.USER;
-        String encryptedPassword = passwordEncoder.encode(requsetDto.getPassword());
-        List<String> roles = authorityUtils.createRoles(requsetDto.getEmail());
-        Point point = pointService.createPoint(requsetDto.getEmail());
+        String encryptedPassword = passwordEncoder.encode(requestDto.getPassword());
+        List<String> roles = authorityUtils.createRoles(requestDto.getEmail());
+        Point point = pointService.createPoint(requestDto.getEmail());
 
         //TODO: if admin@gmail.com 일때 status.admin 추가
-        if (requsetDto.getEmail().equals("admin@gmail.com")) status = Status.ADMIN;
+        if (requestDto.getEmail().equals("admin@gmail.com")) status = Status.ADMIN;
 
         Account savedAccount = accountRepository.save(Account.builder()
-                .displayName(requsetDto.getDisplayName())
-                .email(requsetDto.getEmail())
+                .displayName(requestDto.getDisplayName())
+                .email(requestDto.getEmail())
                 .password(encryptedPassword)
                 .point(point)
                 .roles(roles)
@@ -76,6 +83,73 @@ public class AccountService {
 
         return AccountDto.Response.builder()
                 .accountId(savedAccount.getAccountId())
+                .build();
+    }
+
+    public AccountDto.Response createAccount() {
+        Status status = Status.GUEST_USER;
+        List<String> roles = authorityUtils.createRoles(" ");       // TODO: security 권한(디비에 저장되는지 실험해보기
+        Point point = pointService.createPoint("guest");
+        String encryptedPassword = passwordEncoder.encode("gs123!@#");
+
+        // Save Account
+        Account savedAccount = accountRepository.save(Account.builder()
+                // Guest Email:  guest+8자리 난수@gmail.com
+                .email("guest" + emailService.getAuthCode() + "@gmail.com")
+                .password(encryptedPassword)
+                // DisplayName: Guest + 8자리 난수
+                .displayName("Guest" + emailService.getAuthCode())
+                .leaves(new ArrayList<>())
+                .plantObjs(new ArrayList<>())
+                .point(point)
+                .roles(roles)
+                .status(status)
+                .accountGrade(AccountGrade.GRADE_BRONZE)
+                .build());
+
+        // Update Point
+        point.updateAccount(savedAccount);
+
+        // 식물 카드
+        Leaf leafA = guestService.createGuestLeaf(savedAccount, "귀염둥이 니드몬","사막에서 공수한 선인장입니다.", "https://growstory.s3.ap-northeast-2.amazonaws.com/image/guest/leaves/cactus-1842095_1280.jpg");
+        Leaf leafB = guestService.createGuestLeaf(savedAccount, "가시나","예쁜 선인장이에요!! ", "https://growstory.s3.ap-northeast-2.amazonaws.com/image/guest/leaves/cactus-5434469_1280.jpg");
+
+        // 일지 각각의 image S3에 업로드 후 imageUrl 반환
+        guestService.createGuestJournal(leafA, "니드몬 성장일기 1일차", "물 주기", null);
+        guestService.createGuestJournal(leafA, "니드몬 성장일기 2일차", "칭찬해 주기", null);
+        guestService.createGuestJournal(leafA, "니드몬 성장일기 3일차", "햇빛 쫴기", null);
+        guestService.createGuestJournal(leafA, "니드몬 성장일기 4일차", "병원 가는 날", null);
+        guestService.createGuestJournal(leafA, "니드몬 성장일기 5일차", "물 주기", null);
+        guestService.createGuestJournal(leafA, "니드몬 성장일기 6일차", "영양 거름 주기", null);
+        guestService.createGuestJournal(leafA, "니드몬 성장일기 7일차", "분갈이", null);
+        guestService.createGuestJournal(leafA, "니드몬 성장일기 8일차", "물 주기", null);
+        guestService.createGuestJournal(leafA, "니드몬 성장일기 9일차", "칭찬해 주기", null);
+        guestService.createGuestJournal(leafA, "니드몬 성장일기 10일차", "물 주기", null);
+
+        // Buy Garden Object
+        PlantObjDto.TradeResponse plantObjA = guestService.buyProduct(savedAccount, 1L);    // 벽돌 유적
+        guestService.buyProduct(savedAccount, 2L);    // 콜로세움
+        guestService.buyProduct(savedAccount, 3L);    // 잊혀진 연구소
+        guestService.buyProduct(savedAccount, 4L);    // 대리석 신전
+        PlantObjDto.TradeResponse plantObjB = guestService.buyProduct(savedAccount, 5L);    // 벚나무
+
+
+        // Batch Garden Object
+        // 벽돌 유적(2x2): (6, 5)
+        // 벚나무(1x1): (3, 3)
+        guestService.saveLocation(plantObjA.getPlantObj(), plantObjB.getPlantObj());
+
+
+
+        // Connect Garden Object and Plants Card
+        // 식물 카드 A와 벽돌 유적 오브젝트 연결
+        guestService.updateLeafConnection(1L, leafA.getLeafId());
+
+        return AccountDto.Response.builder()
+                .accountId(savedAccount.getAccountId())
+                .email(savedAccount.getEmail())
+                .displayName("Guest")
+                .status(status.getStepDescription())
                 .build();
     }
 
@@ -171,6 +245,14 @@ public class AccountService {
 
         Optional.ofNullable(findAccount.getProfileImageUrl()).ifPresent(profileImageUrl ->
                 s3Uploader.deleteImageFromS3(profileImageUrl, ACCOUNT_IMAGE_PROCESS_TYPE));
+
+        accountRepository.delete(findAccount);
+    }
+
+
+    // 게스트 용 v1/accounts/{account-id}
+    public void deleteAccount(Long id) {
+        Account findAccount = findVerifiedAccount(id);
 
         accountRepository.delete(findAccount);
     }

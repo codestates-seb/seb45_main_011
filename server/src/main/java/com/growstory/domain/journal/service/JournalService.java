@@ -66,6 +66,7 @@ public class JournalService {
         return journalMapper.toResponseFrom(journalRepository.save(journal));
     }
 
+
     private Journal createJournalWithNoImg(Leaf findLeaf, JournalDto.Post postDto) {
         pointService.updatePoint(findLeaf.getAccount().getPoint(), "journal");
         return journalRepository.save(Journal.builder()
