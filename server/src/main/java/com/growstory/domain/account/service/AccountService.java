@@ -18,6 +18,7 @@ import com.growstory.domain.point.service.PointService;
 import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.auth.utils.CustomAuthorityUtils;
 import com.growstory.global.aws.service.S3Uploader;
+import com.growstory.global.email.service.EmailService;
 import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
 import com.growstory.global.sse.service.SseService;
@@ -51,6 +52,7 @@ public class AccountService {
     private final AuthUserUtils authUserUtils;
     private final SseService sseService;
     private final AlarmService alarmService;
+    private final EmailService emailService;
 
     // Guest
     private final GuestService guestService;
@@ -86,24 +88,17 @@ public class AccountService {
 
     public AccountDto.Response createAccount() {
         Status status = Status.GUEST_USER;
-        List<String> roles = authorityUtils.createRoles(" ");       // TODO: security 권한(디비에 저장되는지 실험해보기)
+        List<String> roles = authorityUtils.createRoles(" ");       // TODO: security 권한(디비에 저장되는지 실험해보기
         Point point = pointService.createPoint("guest");
         String encryptedPassword = passwordEncoder.encode("gs123!@#");
 
-        /*
-        [정원]
-        - 보관함에 오브젝트 5개
-        - 정원에 오브젝트 배치 2개
-        - 정원에 배치한 오브젝트와 식물 카드 연동 1개
-        */
-
         // Save Account
         Account savedAccount = accountRepository.save(Account.builder()
-                // TODO: Email + UUID
-                .email("guest" + UUID.randomUUID() + "@gmail.com")
-                // TODO: gs123!@#
+                // Guest Email:  guest+8자리 난수@gmail.com
+                .email("guest" + emailService.getAuthCode() + "@gmail.com")
                 .password(encryptedPassword)
-                .displayName("Guest" + UUID.randomUUID())
+                // DisplayName: Guest + 8자리 난수
+                .displayName("Guest" + emailService.getAuthCode())
                 .leaves(new ArrayList<>())
                 .plantObjs(new ArrayList<>())
                 .point(point)
@@ -140,15 +135,14 @@ public class AccountService {
 
 
         // Batch Garden Object
-        // TODO: 입력 값 승태님한테 물어보기 ! -> (x, y) 좌표
         // 벽돌 유적(2x2): (6, 5)
         // 벚나무(1x1): (3, 3)
         guestService.saveLocation(plantObjA.getPlantObj(), plantObjB.getPlantObj());
 
 
 
-        // Connect Garden Object with Plants Card
-        // 식물 카드 A와 벽돌 유저 오브젝트 연결
+        // Connect Garden Object and Plants Card
+        // 식물 카드 A와 벽돌 유적 오브젝트 연결
         guestService.updateLeafConnection(1L, leafA.getLeafId());
 
         return AccountDto.Response.builder()

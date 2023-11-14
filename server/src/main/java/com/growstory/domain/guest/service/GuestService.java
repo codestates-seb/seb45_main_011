@@ -54,7 +54,6 @@ public class GuestService {
     private final LocationRepository locationRepository;
 
 
-    // 게스트 -> 게스트로 회원가입 & (목데이터 집어넣기) -> 로그인 된 상태
     public Leaf createGuestLeaf(Account account, String leafName, String content, String imageUrl) {
         Leaf leaf = Leaf.builder()
                 .leafName(leafName)
@@ -153,7 +152,6 @@ public class GuestService {
                 )
         );
 
-        // TODO: 오브젝트 구입 후 포인트가 삭감되는 업데이트 인지 물어보기, Mapper관련해서도 물어보기
         Point afterPoint = boughtPlantObj.getAccount().getPoint();
 
         // 이미 구입한 프로덕트,
