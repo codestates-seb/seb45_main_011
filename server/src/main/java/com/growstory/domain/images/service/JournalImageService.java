@@ -3,6 +3,7 @@ package com.growstory.domain.images.service;
 import com.growstory.domain.images.entity.JournalImage;
 import com.growstory.domain.images.repository.JournalImageRepository;
 import com.growstory.domain.journal.entity.Journal;
+import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.aws.service.S3Uploader;
 import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
@@ -21,7 +22,8 @@ public class JournalImageService {
 
     // 테이블 인스턴스 생성 및 S3 파일 업로드
     public JournalImage createJournalImgWithS3(MultipartFile image, String type, Journal journal) {
-        if(image.isEmpty() || type == null || journal == null) return null;
+        if(image.isEmpty() || type == null || journal == null)
+            return null;
         String imgUrl = s3Uploader.uploadImageToS3(image, type);
         JournalImage journalImage =
                 JournalImage.builder()

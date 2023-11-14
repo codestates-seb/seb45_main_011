@@ -29,6 +29,7 @@ public class AccountDto {
         private String password;
     }
 
+
     @Getter
     @NoArgsConstructor
     public static class DisplayNamePatch {
@@ -70,6 +71,7 @@ public class AccountDto {
         private Long accountId;
         private String email;
         private String displayName;
+        private String status;
         private String profileImageUrl;
         private String grade;
         private Point point;

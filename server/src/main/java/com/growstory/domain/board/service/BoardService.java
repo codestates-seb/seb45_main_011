@@ -1,6 +1,7 @@
 package com.growstory.domain.board.service;
 
 import com.growstory.domain.account.entity.Account;
+import com.growstory.domain.alarm.constants.AlarmType;
 import com.growstory.domain.board.dto.RequestBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardDto;
 import com.growstory.domain.board.dto.ResponseBoardPageDto;
@@ -22,21 +23,19 @@ import com.growstory.domain.rank.board_likes.entity.BoardLikesRank;
 import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
+import com.growstory.global.sse.service.SseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -52,6 +51,7 @@ public class BoardService {
     private final BoardHashTagRepository boardHashtagRepository;
     private final CommentService commentService;
     private final PointService pointService;
+    private final SseService sseService;
 
     @Value("${my.scheduled.cron}")
     private String cronExpression;
@@ -61,14 +61,8 @@ public class BoardService {
         Account findAccount = authUserUtils.getAuthUser();
 
         pointService.updatePoint(findAccount.getPoint(), "posting");
+        Board saveBoard = boardRepository.save(requestBoardDto.toEntity(findAccount));
 
-        Board board = Board.builder()
-                .title(requestBoardDto.getTitle())
-                .content(requestBoardDto.getContent())
-                .account(findAccount)
-                .build();
-
-        Board saveBoard = boardRepository.save(board);
         // 입력 받은 이미지가 있을 경우 saveBoardImage 메서드 호출
         if (image != null) {
             // Upload image in S3 && save image in Board_Image
@@ -81,23 +75,24 @@ public class BoardService {
                 HashTag hashTag = hashTagService.createHashTagIfNotExist(tag);
 
                 Board_HashTag boardHashtag = new Board_HashTag();
-                boardHashtag.addBoard(board);
+                boardHashtag.addBoard(saveBoard);
                 boardHashtag.addHashTag(hashTag);
 
                 boardHashtagRepository.save(boardHashtag);
             }
         }
+        sseService.notify(findAccount.getAccountId(), AlarmType.WRITE_POST);
+
         return saveBoard.getBoardId();
     }
 //
     public ResponseBoardDto getBoard(Long boardId) {
-        Account findAccount = authUserUtils.getAuthUser();
+//        Account findAccount = authUserUtils.getAuthUser();
         Board findBoard = findVerifiedBoard(boardId);
-//        BoardImage findBoardImage = boardImageService.verifyExistBoardImage(boardId);
         List<ResponseHashTagDto> findHashTag = hashTagService.getHashTagList(boardId);
-        List<ResponseCommentDto> findComment = commentService.getCommentList(boardId);
+        List<ResponseCommentDto> findComment = commentService.getCommentListByBoardId(boardId);
 
-        return getResponseBoardDto(findAccount, findBoard, findHashTag, findComment);
+        return getResponseBoardDto(findBoard, findHashTag, findComment);
     }
 
     public Page<ResponseBoardPageDto> findBoards(int page, int size) {
@@ -155,39 +150,20 @@ public class BoardService {
                 .stream()
                 .findFirst()
                 .orElse(null);
-        // image가 있을 경우 S3에 저장된 image Object 삭제 + Board_Image(DB) 저장
+
+
+
+        // TODO:
+        //  isImageUpdate = true => 기존 이미지를 삭제하고 싶을 때
+        //  isImageUpdate = false => 기존 이미지를 유지하고 싶을 때, 입력받은 이미지 없어야 됨.
+        if (requestBoardDto.getIsImageUpdated() && boardImage != null) {
+            boardImageService.deleteBoardImage(boardImage);
+            findBoard.getBoardImages().clear();
+        }
+
         if (image != null) {
-            if (boardImage != null) {
-                boardImageService.deleteBoardImage(boardImage);
-                findBoard.getBoardImages().clear();
-            }
             boardImageService.saveBoardImage(image, findBoard);
         }
-        // image가 없을 경우 S3에 저장된 image Object 삭제 + Board_Image(DB) 삭제
-        // isImageUpdate = true => 기존 이미지를 삭제하고 싶을 때
-        // isImageUpdate = false => 기존 이미지를 유지하고 싶을 때
-        else {
-            if (requestBoardDto.isImageUpdate() && boardImage != null) {
-                boardImageService.deleteBoardImage(boardImage);
-                findBoard.getBoardImages().clear();
-            }
-        }
-
-//        if (requestBoardDto.isImageUpdate() && boardImage != null) {
-//            boardImageService.deleteBoardImage(boardImage);
-//            findBoard.getBoardImages().clear();
-//        }
-//
-//        if (image != null) {
-//            boardImageService.saveBoardImage(image, findBoard);
-//        }
-
-
-
-
-        // 1. 이미지를 유지하고 싶은 경우
-        // 2. 이미지를 삭제하고 싶은 경우
-        // 3. 이미지를 변경하고 싶은 경우
 
         // title, content 더티 체킹
         findBoard.update(requestBoardDto);
@@ -242,22 +218,37 @@ public class BoardService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
     }
 
-    private static ResponseBoardDto getResponseBoardDto(Account findAccount, Board findBoard, List<ResponseHashTagDto> findHashTag, List<ResponseCommentDto> findComment) {
+    private ResponseBoardDto getResponseBoardDto(Board findBoard, List<ResponseHashTagDto> findHashTag, List<ResponseCommentDto> findComment) {
+        boolean isLiked = false;
+        if ("USER".equals(authUserUtils.verifyAuthUser())) {
+            Account findAccount = authUserUtils.getAuthUser();
+            isLiked = findBoard.getBoardLikes().stream()
+                    .anyMatch(boardLike -> boardLike.getAccount().getAccountId() == findAccount.getAccountId());
+        }
+
+        if ("GUEST".equals(authUserUtils.verifyAuthUser())) {
+            isLiked = false; //TODO: 프런트 측과 나중에 상의
+        }
+
         return ResponseBoardDto.builder()
                 .boardId(findBoard.getBoardId())
                 .title(findBoard.getTitle())
                 .content(findBoard.getContent())
                 .boardImageUrl(findBoard.getBoardImages().stream().findFirst().map(BoardImage::getStoredImagePath).orElse(null))
-                .isLiked(findBoard.getBoardLikes().stream().anyMatch(boardLike -> boardLike.getAccount().getAccountId() == findAccount.getAccountId()))
+                .isLiked(isLiked)
                 .likeNum(findBoard.getBoardLikes().size())
                 .createAt(findBoard.getCreatedAt())
                 .modifiedAt(findBoard.getModifiedAt())
+
                 .accountId(findBoard.getAccount().getAccountId())
                 .displayName(findBoard.getAccount().getDisplayName())
                 .profileImageUrl(findBoard.getAccount().getProfileImageUrl())
                 .grade(findBoard.getAccount().getAccountGrade().getStepDescription())
+
                 .hashTags(findHashTag)
+
                 .comments(findComment)
+
                 .build();
     }
 
@@ -283,7 +274,7 @@ public class BoardService {
         return response;
     }
 
-    // 좋아요 기준 상위 3개의 게시글을 랭킹과 함께 반환 (🆘 추후 리팩토링)
+    // 좋아요 기준 상위 3개의 게시글을 랭킹과 함께 반환
     public List<BoardLikesRank> findTop3LikedBoardRanks() {
         LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
         List<Object[]> topBoardsWithLikes = boardRepository.findTop3LikedBoards(sevenDaysAgo);
@@ -298,7 +289,9 @@ public class BoardService {
                 .takeWhile(objects -> {
                     Long likeCount = (Long) objects[1];
                     uniqueLikeCounts.add(likeCount);
-                    return (uniqueLikeCounts.size() <= 3); // 고유한 '좋아요' 수가 3개 이하일 때까지
+                    return uniqueLikeCounts.size() <= 3 // 고유한 '좋아요' 수가 3개 이하이면서
+                            // 또한, 게시글이 3개 이하이면서 마지막 두 게시글의 랭킹이 같을 때까지
+                            && checkSameLikesCondition(boardLikesRanks);
                 })
                 .forEach(objects -> {
                     Board board = (Board) objects[0];
@@ -309,10 +302,25 @@ public class BoardService {
                             .board(board)
                             .likeNum(likeCount)
                             .build();
-                    boardLikesRank.updateRank(uniqueLikeCounts.size());
+                    boardLikesRank.updateRank(uniqueLikeCounts.size()); //차등 등수 업데이트
                     boardLikesRanks.add(boardLikesRank);
                 });
+
+        // 게시글이 4개 이상일 때 마지막 두 게시글의 랭킹이 다르면 마지막 요소를 제거
+        checkSameLikesCondition(boardLikesRanks);
         return boardLikesRanks;
+    }
+
+    private boolean checkSameLikesCondition(List<BoardLikesRank> boardLikesRanks) {
+        int boardSize = boardLikesRanks.size();
+        //게시글이 4개 이상이고 마지막 두 게시글의 순위가 서로 다르면 마지막 요소를 제거하고 false 반환
+        if(boardSize>=4 &&
+                (boardLikesRanks.get(boardSize-1).getRankOrders().getPosition() !=
+                        boardLikesRanks.get(boardSize-2).getRankOrders().getPosition())) {
+            boardLikesRanks.remove(boardLikesRanks.get(boardSize-1));
+            return false;
+        }
+        return true;
     }
 
 

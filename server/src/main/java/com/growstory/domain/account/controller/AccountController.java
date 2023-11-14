@@ -7,7 +7,6 @@ import com.growstory.global.response.MultiResponseDto;
 import com.growstory.global.response.SingleResponseDto;
 import com.growstory.global.utils.UriCreator;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -36,10 +35,20 @@ public class AccountController {
     @Operation(summary = "회원가입", description = "사용자 정보를 입력받아 계정 생성")
     @PostMapping("/signup")
     public ResponseEntity<HttpStatus> postAccount(@Valid @RequestBody AccountDto.Post accountPostDto) {
-        AccountDto.Response accountResponseDto = accountService.createAccount(accountPostDto);
-        URI location = UriCreator.createUri(ACCOUNT_DEFAULT_URL, accountResponseDto.getAccountId());
+        AccountDto.Response responseDto = accountService.createAccount(accountPostDto);
+        URI location = UriCreator.createUri(ACCOUNT_DEFAULT_URL, responseDto.getAccountId());
+
 
         return ResponseEntity.created(location).build();
+    }
+
+    @Operation(summary = "회원가입", description = "게스트 계정 생성")
+    @PostMapping("/guest")
+    public ResponseEntity<?> postAccount() {
+        AccountDto.Response responseDto = accountService.createAccount();
+        URI location = UriCreator.createUri(ACCOUNT_DEFAULT_URL, responseDto.getAccountId());
+
+        return ResponseEntity.created(location).body(responseDto.getEmail());
     }
 
     @Operation(summary = "프로필 사진 수정", description = "입력받은 프로필 사진으로 정보 수정")
@@ -153,6 +162,14 @@ public class AccountController {
     @DeleteMapping
     public ResponseEntity<HttpStatus> deleteAccount() {
         accountService.deleteAccount();
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "게스트 회원 탈퇴", description = "게스트 사용자 계정 삭제")
+    @DeleteMapping("/{account-id}")
+    public ResponseEntity<HttpStatus> deleteAccount(@Positive @PathVariable("account-id") Long accountId){
+        accountService.deleteAccount(accountId);
 
         return ResponseEntity.noContent().build();
     }

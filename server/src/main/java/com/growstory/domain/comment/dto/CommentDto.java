@@ -3,6 +3,7 @@ package com.growstory.domain.comment.dto;
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.comment.entity.Comment;
+import com.growstory.global.badwords.dto.TextContainer;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,8 @@ public class CommentDto {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class Post {
+    public static class Post implements TextContainer {
+
         @NotBlank
         private String content;
 
@@ -30,16 +32,26 @@ public class CommentDto {
         public Post(String content) {
             this.content = content;
         }
+
+        @Override
+        public String combineText() {
+            return content;
+        }
     }
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class Patch {
+    public static class Patch implements TextContainer {
         @NotBlank
         private String content;
 
         public Patch(String content) {
             this.content = content;
+        }
+
+        @Override
+        public String combineText() {
+            return content;
         }
     }
 

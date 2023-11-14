@@ -1,6 +1,9 @@
-import { DefaultProps } from '@/types/common';
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
+
+import { twMerge } from 'tailwind-merge';
+
+import { DefaultProps } from '@/types/common';
 
 interface LogoProps extends DefaultProps {
   size: 'small' | 'medium' | 'large';
@@ -17,16 +20,20 @@ interface Logo {
   large: Size;
 }
 
-export default function Logo({ size }: LogoProps) {
+export default function Logo({ size, className }: LogoProps) {
   return (
     <>
-      <Link href="/" className="block">
+      <Link href="/" className={twMerge('block', className)}>
         <Image
           src="/assets/img/logo.svg"
           alt="로고"
           className={LOGO_STYLE[size]}
           width={LOGO_SIZE[size].width}
           height={LOGO_SIZE[size].height}
+          style={{
+            width: LOGO_SIZE[size].width,
+            height: LOGO_SIZE[size].height,
+          }}
           priority
         />
       </Link>
@@ -36,21 +43,21 @@ export default function Logo({ size }: LogoProps) {
 
 const LOGO_SIZE: Logo = {
   small: {
-    width: 76,
-    height: 44,
+    width: 58,
+    height: 36,
   },
   medium: {
     width: 138,
     height: 80,
   },
   large: {
-    width: 297,
-    height: 180,
+    width: 200,
+    height: 121,
   },
 };
 
 const LOGO_STYLE = {
-  small: 'w-full max-w-[75px]',
-  medium: 'w-full max-w-[137px]',
-  large: 'w-full max-w-[296px]',
+  small: 'min-w-[58px]',
+  medium: 'min-w-[137px]',
+  large: 'min-w-[200px]',
 };

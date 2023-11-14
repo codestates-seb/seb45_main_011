@@ -1,7 +1,9 @@
 package com.growstory.global.auth.handler;
 
+import com.growstory.domain.account.constants.Status;
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.account.repository.AccountRepository;
+import com.growstory.domain.account.service.AccountService;
 import com.growstory.domain.point.entity.Point;
 import com.growstory.domain.point.repository.PointRepository;
 import com.growstory.domain.point.service.PointService;
@@ -9,21 +11,15 @@ import com.growstory.global.auth.jwt.JwtTokenizer;
 import com.growstory.global.auth.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.yaml.snakeyaml.util.UriEncoder;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
 
@@ -35,6 +31,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
 
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
+    private final AccountService accountService;
     private final AccountRepository accountRepository;
     private final PointService pointService;
     private final PointRepository pointRepository;
@@ -60,11 +57,14 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
                     .profileImageUrl(profileImageUrl)
                     .point(point)
                     .roles(authorities)
-                    .accountGrade(Account.AccountGrade.GRADE_BRONZE)
+                    //status social로 추가
+                    .status(Status.SOCIAL_USER)
                     .build());
 
             point.updateAccount(savedAccount);
             pointRepository.save(point);
+        } else {
+            accountService.attendanceCheck(optionalAccount.get());
         }
 
         redirect(request, response, optionalAccount.orElse(savedAccount), authorities);
@@ -134,10 +134,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("https")
-                .host("grow-story.vercel.app")
-//                .port(3000)
-//                .host("growstory.s3-website.ap-northeast-2.amazonaws.com")
-//                .port(80) //S3는 80포트
+                .host("growstory.vercel.app")
                 .port(443)
                 .path("/signin")
                 .queryParam("access_token", accessToken)
@@ -145,28 +142,29 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
                 .queryParam("accountId", account.getAccountId())
                 .queryParam("displayName", UriEncoder.encode(account.getDisplayName()))
                 .queryParam("profileIamgeUrl", account.getProfileImageUrl())
+                .queryParam("status", account.getStatus().getStepDescription())
                 .build()
                 .toUri();
     }
 
-    private HttpServletResponse addCookies(HttpServletResponse response, Account account, String accessToken, String refreshToken) {
-        response.addHeader("Set-Cookie", createCookie("access_token", accessToken).toString());
-        response.addHeader("Set-Cookie", createCookie("refresh_token", refreshToken).toString());
-        response.addHeader("Set-Cookie", createCookie("account_id", account.getAccountId().toString()).toString());
-        response.addHeader("Set-Cookie", createCookie("displayName", UriEncoder.encode(account.getDisplayName())).toString());
-        response.addHeader("Set-Cookie", createCookie("profileImageUrl", account.getProfileImageUrl()).toString());
-
-        return response;
-    }
-
-    private ResponseCookie createCookie(String key, String value) {
-        ResponseCookie cookie = ResponseCookie.from(key, value)
-                .sameSite("")
-//                .domain("seb45-main-011.vercel.app")
-                .path("/")
-//                .secure(true)
-                .build();
-
-        return cookie;
-    }
+//    private HttpServletResponse addCookies(HttpServletResponse response, Account account, String accessToken, String refreshToken) {
+//        response.addHeader("Set-Cookie", createCookie("access_token", accessToken).toString());
+//        response.addHeader("Set-Cookie", createCookie("refresh_token", refreshToken).toString());
+//        response.addHeader("Set-Cookie", createCookie("account_id", account.getAccountId().toString()).toString());
+//        response.addHeader("Set-Cookie", createCookie("displayName", UriEncoder.encode(account.getDisplayName())).toString());
+//        response.addHeader("Set-Cookie", createCookie("profileImageUrl", account.getProfileImageUrl()).toString());
+//
+//        return response;
+//    }
+//
+//    private ResponseCookie createCookie(String key, String value) {
+//        ResponseCookie cookie = ResponseCookie.from(key, value)
+//                .sameSite("")
+////                .domain("seb45-main-011.vercel.app")
+//                .path("/")
+////                .secure(true)
+//                .build();
+//
+//        return cookie;
+//    }
 }

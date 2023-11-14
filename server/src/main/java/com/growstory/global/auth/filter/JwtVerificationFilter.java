@@ -2,9 +2,6 @@ package com.growstory.global.auth.filter;
 
 import com.growstory.global.auth.jwt.JwtTokenizer;
 import com.growstory.global.auth.utils.CustomAuthorityUtils;
-import com.growstory.global.exception.BusinessLogicException;
-import com.growstory.global.exception.ExceptionCode;
-import com.growstory.global.response.ErrorResponder;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.SignatureException;
@@ -12,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.json.BasicJsonParser;
 import org.springframework.boot.json.JsonParser;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -69,8 +64,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         // 이걸 저장할 때 설정
         Date accessTokenExpiration = new Date((Long) accessTokenClaims.get("exp") * 1000L);
         Date refreshTokenExpiration = new Date((Long) refreshTokenClaims.get("exp") * 1000L);
-        System.out.println("before:" + accessTokenExpiration);
-        System.out.println("before:" + refreshTokenExpiration);
+//        System.out.println("before:" + accessTokenExpiration);
+//        System.out.println("before:" + refreshTokenExpiration);
         Date now = new Date();
 
         // accessToken 만료시간이 지금보다 이전이면(accessToken 만료 O), refreshToken 만료시간이 지금보다 이후라면(refreshToken 만료 X)
@@ -88,7 +83,6 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             Map<String,Object> recreatedAccessTokenClaims = verifyJws(accessToken); // JWT 검증
             verifyJws(refreshToken);
             setAuthenticationToContext(recreatedAccessTokenClaims);
-
         //jwt 검증에 실패할 경우 발생하는 예외를 HttpServletRequest의 속성(Attribute)으로 추가
         } catch (SignatureException se) {
             request.setAttribute("exception", se);

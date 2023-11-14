@@ -19,7 +19,6 @@ public class HashTagService {
     private final HashTagRepository hashTagRepository;
     private final BoardHashTagRepository boardHashTagRepository;
 
-    // TODO: BoardService에 게시판 추가 기능에 있는 해시태그 추가 부분 메서드로 추출하기
     public HashTag createHashTagIfNotExist(String tag) {
         return hashTagRepository.findByTag(tag)
                 .orElseGet(() -> {
