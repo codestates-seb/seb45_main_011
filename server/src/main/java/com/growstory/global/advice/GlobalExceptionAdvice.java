@@ -32,7 +32,7 @@ public class GlobalExceptionAdvice {
     // BusinessLogicException 처리
     public ResponseEntity handleBusinessLogicException(BusinessLogicException e) {
         ErrorResponse response = ErrorResponse.of(e.getExceptionCode());
-        if(!e.getProfanityDto().getBannedWords().isEmpty()) {
+        if(e.getProfanityDto() != null) {
             response = ErrorResponse.of(e.getExceptionCode(), e.getProfanityDto());
         }
         final ErrorResponse errorResponse = response;
