@@ -1,25 +1,14 @@
 import { twMerge } from 'tailwind-merge';
 
 import { ControlButton } from '.';
-
-interface NotificationMessageProps {
-  type:
-    | 'writePost'
-    | 'writeDiary'
-    | 'reportComment'
-    | 'reportPost'
-    | 'dailyQuiz'
-    | 'signup'
-    | 'dailyLogin';
-  num: Number;
-  isShow: Boolean;
-}
+import { NotificationDataInfo } from '@/types/data';
 
 export default function NotificationMessage({
+  id,
   type,
   num,
   isShow,
-}: NotificationMessageProps) {
+}: NotificationDataInfo) {
   const NOTIFICATION_MESSAGE = {
     writePost: {
       text: ['게시글 작성으로', ` ${num} 포인트 `, '획득'],
@@ -76,7 +65,10 @@ export default function NotificationMessage({
         </span>
         {NOTIFICATION_MESSAGE[type].text[2]}
       </p>
-      <ControlButton usage="notificationDelete" />
+      <ControlButton
+        usage="notificationDelete"
+        handleClick={() => console.log(id)}
+      />
     </div>
   );
 }

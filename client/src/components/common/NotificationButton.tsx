@@ -2,14 +2,20 @@ import { useState } from 'react';
 
 import NotificationPanel from './NotificationPanel';
 
-import useEffectOnce from '@/hooks/useEffectOnce';
 import useUserStore from '@/stores/userStore';
+
+import useEffectOnce from '@/hooks/useEffectOnce';
+import useNotificationsQuery from '@/hooks/query/useNotificationsQuery';
 
 export default function NotificationButton() {
   const [isClicked, setIsClicked] = useState(false);
   const [hasNonChecked, setHasNonChecked] = useState(true);
 
   const userId = useUserStore((state) => state.userId);
+
+  const { notifications, isLoading, isError } = useNotificationsQuery(userId);
+
+  console.log(notifications);
 
   useEffectOnce(() =>
     window.addEventListener('click', handleButtonClick as any),
@@ -42,7 +48,7 @@ export default function NotificationButton() {
     return;
   };
 
-  if (!userId) return;
+  if (!userId || isLoading) return;
 
   return (
     <div id="notification" className="fixed right-[16px] bottom-[72px] z-20">
@@ -59,7 +65,7 @@ export default function NotificationButton() {
       {hasNonChecked && (
         <div className="w-[12px] h-[12px] border-2 border-brown-70 rounded-[50%] bg-red-50 absolute top-0 right-[6px]"></div>
       )}
-      {isClicked && <NotificationPanel />}
+      {isClicked && <NotificationPanel notifications={notifications} />}
     </div>
   );
 }

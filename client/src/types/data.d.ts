@@ -171,7 +171,14 @@ export interface BoardRankDataInfo {
 
 export interface NotificationDataInfo {
   id: number;
-  type: string;
+  type:
+    | 'writePost'
+    | 'writeDiary'
+    | 'reportComment'
+    | 'reportPost'
+    | 'dailyQuiz'
+    | 'signup'
+    | 'dailyLogin';
   num: number;
   isShow: boolean;
 }
