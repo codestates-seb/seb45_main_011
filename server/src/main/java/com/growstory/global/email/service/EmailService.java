@@ -98,7 +98,7 @@ public class EmailService {
 
 
     // 인증 번호 겸 임시 비밀번호
-    private String getAuthCode() {
+    public String getAuthCode() {
         Random random = new Random();
         StringBuilder authCode = new StringBuilder();
 

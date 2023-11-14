@@ -29,7 +29,7 @@ public class Account extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long accountId;
 
-    @Column(name = "EMAIL", unique = true, nullable = false, length = 50)
+    @Column(name = "EMAIL", unique = true, nullable = false, length = 100)
     private String email;
 
     @Column(name = "DISPLAY_NAME", nullable = false, length = 50)
