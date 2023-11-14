@@ -156,6 +156,7 @@ public class GuestService {
         // TODO: 오브젝트 구입 후 포인트가 삭감되는 업데이트 인지 물어보기, Mapper관련해서도 물어보기
         Point afterPoint = boughtPlantObj.getAccount().getPoint();
 
+        // 이미 구입한 프로덕트,
         return plantObjMapper.toTradeResponse(boughtPlantObj, afterPoint);
     }
 
@@ -173,24 +174,24 @@ public class GuestService {
 
 
     // POST : 오브젝트 배치
-    public void saveLocation(long plantObjIdA, long plantObjIdB) {
+    public void saveLocation(PlantObjDto.Response plantObjA, PlantObjDto.Response plantObjB) {
         List<PlantObjDto.PatchLocation> patchLocationList = new ArrayList<>();
         patchLocationList.add(PlantObjDto.PatchLocation.builder()
-                        .plantObjId(plantObjIdA)
+                        .plantObjId(plantObjA.getPlantObjId())
                         .locationDto(LocationDto.Patch.builder()
-                                .locationId(1L)
+                                .locationId(plantObjA.getLocation().getLocationId())
                                 .x(6)
                                 .y(5)
-                                .isInstalled(false)
+                                .isInstalled(true)
                                 .build())
                 .build());
         patchLocationList.add(PlantObjDto.PatchLocation.builder()
-                        .plantObjId(plantObjIdB)
+                        .plantObjId(plantObjB.getPlantObjId())
                         .locationDto(LocationDto.Patch.builder()
-                                .locationId(2L)
+                                .locationId(plantObjB.getLocation().getLocationId())
                                 .x(3)
                                 .y(3)
-                                .isInstalled(false)
+                                .isInstalled(true)
                                 .build())
                 .build());
 

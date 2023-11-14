@@ -12,6 +12,7 @@ import com.growstory.domain.guest.service.GuestService;
 import com.growstory.domain.images.entity.BoardImage;
 import com.growstory.domain.leaf.entity.Leaf;
 import com.growstory.domain.plant_object.dto.PlantObjDto;
+import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.point.entity.Point;
 import com.growstory.domain.point.service.PointService;
 import com.growstory.global.auth.utils.AuthUserUtils;
@@ -137,11 +138,12 @@ public class AccountService {
         guestService.buyProduct(savedAccount, 4L);    // 대리석 신전
         PlantObjDto.TradeResponse plantObjB = guestService.buyProduct(savedAccount, 5L);    // 벚나무
 
+
         // Batch Garden Object
         // TODO: 입력 값 승태님한테 물어보기 ! -> (x, y) 좌표
         // 벽돌 유적(2x2): (6, 5)
         // 벚나무(1x1): (3, 3)
-        guestService.saveLocation(plantObjA.getPlantObj().getPlantObjId(), plantObjB.getPlantObj().getPlantObjId());
+        guestService.saveLocation(plantObjA.getPlantObj(), plantObjB.getPlantObj());
 
 
 
