@@ -31,13 +31,10 @@ public class GlobalExceptionAdvice {
     @ExceptionHandler(BusinessLogicException.class)
     // BusinessLogicException 처리
     public ResponseEntity handleBusinessLogicException(BusinessLogicException e) {
-        ErrorResponse response = null;
-        if(!e.getProfanityDto().getBannedWords().isEmpty()) {
+        ErrorResponse response = ErrorResponse.of(e.getExceptionCode());
+        if(e.getProfanityDto() != null) {
             response = ErrorResponse.of(e.getExceptionCode(), e.getProfanityDto());
-        } else {
-            response = ErrorResponse.of(e.getExceptionCode());
         }
-
         final ErrorResponse errorResponse = response;
 
         return new ResponseEntity(errorResponse, HttpStatus.valueOf(e.getExceptionCode().getStatus()));
