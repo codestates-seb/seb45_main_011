@@ -23,6 +23,7 @@ import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
 import com.growstory.global.sse.service.SseService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -38,6 +39,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Transactional
 @Service
 @RequiredArgsConstructor
@@ -312,6 +314,9 @@ public class AccountService {
 
         // 사용자가 일치하지 않으면 405 예외 던지기
         if (!String.valueOf(claims.get("accountId")).equals(String.valueOf(accountId))) {
+            log.info("## login-id = {}", String.valueOf(claims.get("accountId")));
+            log.info("## leafAuthorId = {}", String.valueOf(accountId));
+            log.info("##" + !String.valueOf(claims.get("accountId")).equals(String.valueOf(accountId)));
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
         }
     }
