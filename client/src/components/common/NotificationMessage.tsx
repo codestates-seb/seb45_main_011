@@ -1,6 +1,11 @@
 import { twMerge } from 'tailwind-merge';
 
 import { ControlButton } from '.';
+
+import useUserStore from '@/stores/userStore';
+
+import useDeleteNotificationMutation from '@/hooks/mutation/useDeleteNotificationMutation';
+
 import { NotificationDataInfo } from '@/types/data';
 
 export default function NotificationMessage({
@@ -47,6 +52,17 @@ export default function NotificationMessage({
     },
   };
 
+  const userId = useUserStore((state) => state.userId);
+
+  const { mutate: deleteNotification } = useDeleteNotificationMutation(
+    '' + id,
+    userId,
+  );
+
+  const handleDelete = () => {
+    deleteNotification();
+  };
+
   return (
     <div
       className={twMerge(
@@ -65,10 +81,7 @@ export default function NotificationMessage({
         </span>
         {NOTIFICATION_MESSAGE[type].text[2]}
       </p>
-      <ControlButton
-        usage="notificationDelete"
-        handleClick={() => console.log(id)}
-      />
+      <ControlButton usage="notificationDelete" handleClick={handleDelete} />
     </div>
   );
 }

@@ -34,3 +34,11 @@ export async function showNotification(userId: string) {
 
   return res.data;
 }
+
+export async function deleteNotification(notificationId: string) {
+  await commonAxios.delete(`/alarms/${notificationId}`);
+}
+
+export async function deleteAllNotification(userId: string) {
+  await commonAxios.delete(`/alarms/all/${userId}`);
+}

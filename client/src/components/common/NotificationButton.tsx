@@ -1,23 +1,24 @@
-import { useState } from 'react';
-
 import NotificationPanel from './NotificationPanel';
 
 import useUserStore from '@/stores/userStore';
+import useNotificationStore from '@/stores/notificationStore';
 
 import useEffectOnce from '@/hooks/useEffectOnce';
 import useNotificationsQuery from '@/hooks/query/useNotificationsQuery';
+import useShowNotificationMutation from '@/hooks/mutation/useShowNotificationMutation';
 
 export default function NotificationButton() {
-  const [isClicked, setIsClicked] = useState(false);
-  const [hasNonChecked, setHasNonChecked] = useState(true);
-
   const userId = useUserStore((state) => state.userId);
+  const { isClicked, setIsClicked } = useNotificationStore();
 
-  const { notifications, isLoading, isError } = useNotificationsQuery(userId);
+  const { notifications, isLoading, isError, hasNonChecked } =
+    useNotificationsQuery(userId);
 
-  useEffectOnce(() =>
-    window.addEventListener('click', handleButtonClick as any),
-  );
+  const { mutate: showNotification } = useShowNotificationMutation(userId);
+
+  useEffectOnce(() => {
+    window.addEventListener('click', handleButtonClick as any);
+  });
 
   const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -32,8 +33,8 @@ export default function NotificationButton() {
         clickedElement.id === 'notification-button' ||
         clickedElement.id === 'notification-img'
       ) {
-        setHasNonChecked(false);
-        return setIsClicked((previous) => !previous);
+        showNotification();
+        return setIsClicked(!isClicked);
       }
 
     if (!isChildOfNotification) {
@@ -41,7 +42,6 @@ export default function NotificationButton() {
     }
 
     setIsClicked(true);
-    setHasNonChecked(false);
 
     return;
   };
