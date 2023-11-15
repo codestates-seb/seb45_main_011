@@ -49,7 +49,11 @@ public enum ExceptionCode {
 
     BAD_WORD_INCLUDED(406, "Bad word Included"),
 
-    ALARM_NOT_FOUND(404, "Alarm not found");
+    ALARM_NOT_FOUND(404, "Alarm not found"),
+
+    CHATROOM_NOT_FOUND(404, "ChatRoom does not Found"),
+    ACCOUNT_CHATROOM_NOT_FOUND(404, "AccountChatRoom does not Found"),
+    ALREADY_CHATROOM_ENTERED(409, "Already entered this ChatRoom");
 
     private final int status;
     private final String message;
