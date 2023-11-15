@@ -313,10 +313,10 @@ public class AccountService {
         }
 
         // 사용자가 일치하지 않으면 405 예외 던지기
+        log.info("## login-id = {}", String.valueOf(claims.get("accountId")));
+        log.info("## leafAuthorId = {}", String.valueOf(accountId));
+        log.info("##" + !String.valueOf(claims.get("accountId")).equals(String.valueOf(accountId)));
         if (!String.valueOf(claims.get("accountId")).equals(String.valueOf(accountId))) {
-            log.info("## login-id = {}", String.valueOf(claims.get("accountId")));
-            log.info("## leafAuthorId = {}", String.valueOf(accountId));
-            log.info("##" + !String.valueOf(claims.get("accountId")).equals(String.valueOf(accountId)));
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_ALLOW);
         }
     }
