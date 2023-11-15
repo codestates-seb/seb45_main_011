@@ -51,7 +51,7 @@ export async function addLeaf(inputs: InputValues) {
 }
 
 export async function deleteLeaf(leafId: string) {
-  return await commonAxios.delete(`/leaves/${leafId}`).then((res) => res.data);
+  await commonAxios.delete(`/leaves/${leafId}`);
 }
 
 export async function editLeaf({
