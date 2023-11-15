@@ -62,6 +62,14 @@ dependencies {
 
 	// spring-security-test 모듈 추가
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	// websocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+//	implementation 'org.webjars:sockjs-client'
+//	implementation 'org.webjars:stomp-websocket'
+	implementation 'org.springframework:spring-messaging'
+	implementation 'org.springframework.security:spring-security-messaging'
+
 }
 
 test {
