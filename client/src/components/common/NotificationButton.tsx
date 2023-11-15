@@ -33,11 +33,11 @@ export default function NotificationButton() {
         clickedElement.id === 'notification-button' ||
         clickedElement.id === 'notification-img'
       ) {
-        showNotification();
         return setIsClicked(!isClicked);
       }
 
     if (!isChildOfNotification) {
+      showNotification();
       return setIsClicked(false);
     }
 

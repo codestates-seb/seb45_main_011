@@ -22,7 +22,6 @@ export default function NotificationPanel({
     deleteAllNotification();
     setIsClicked(false);
   };
-
   return (
     <div className="pr-[6px] absolute left-[-177px] bottom-0 w-[160px] h-[250px] border-2  border-brown-50 rounded-lg bg-[url('/assets/img/bg_wood_light.png')] flex items-center flex-col gap-2">
       <h3 className="inline-block mx-auto mt-[10px] py-[6px] px-[10px] bg-[url('/assets/img/bg_wood_dark.png')] bg-contain bg-repeat border-2 border-brown-70 rounded-lg font-bold text-[14px] leading-[14px] text-brown-10">
