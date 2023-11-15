@@ -15,8 +15,6 @@ export default function NotificationButton() {
 
   const { notifications, isLoading, isError } = useNotificationsQuery(userId);
 
-  console.log(notifications);
-
   useEffectOnce(() =>
     window.addEventListener('click', handleButtonClick as any),
   );
