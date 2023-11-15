@@ -24,11 +24,11 @@ export default function ControlButton({
         type="button"
         title={CONTROL_BUTTON_TITLES[usage]}
         className={twMerge(
-          `w-[12px] h-[12px] border-2 border-brown-70 rounded-full bg-no-repeat bg-center shadow-inner/top bg-red-50
+          `w-[15px] h-[15px] border-2 border-brown-70 rounded-full bg-no-repeat bg-center shadow-inner/top bg-red-50
           absolute top-[3px] right-[3px] flex justify-center items-center`,
           className,
         )}>
-        <img src="/assets/icon/delete.svg" alt="" className="w-[4.5px]" />
+        <img src="/assets/icon/delete.svg" alt="" className="w-[7px] h-[7px]" />
       </button>
     );
   }
