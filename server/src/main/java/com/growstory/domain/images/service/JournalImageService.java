@@ -36,7 +36,7 @@ public class JournalImageService {
 
     // 테이블 인스턴스 삭제 및 S3 데이터 삭제
     public void deleteJournalImageWithS3(JournalImage journalImage, String type) {
-        if(journalImage == null) return;
+        if(journalImage == null || type == null) return;
 
         Journal journal = journalImage.getJournal();
         journal.removeJournalImage(journalImage);

@@ -25,7 +25,6 @@ public class S3Uploader {
 
     // MultipartFile을 전달받아 File로 전환한 후 S3에 업로드
     public String uploadImageToS3(MultipartFile image, String type) {
-        log.info(amazonS3Client.getRegionName());
         String originName = image.getOriginalFilename(); //원본 파일 이름
         String ext = originName.substring(originName.lastIndexOf(".")); // 확장자
         String changedName = changedImageName(originName); // 변경된 이름
