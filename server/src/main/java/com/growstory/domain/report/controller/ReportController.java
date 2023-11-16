@@ -40,7 +40,7 @@ public class ReportController {
     @Operation(summary = "전체 신고 조회", description = "전체 신고 조회")
     @GetMapping("/all")
     public ResponseEntity<MultiResponseDto<ReportDto.Response>> getReports(@Positive @RequestParam(defaultValue = "1") int page,
-                                                                                    @Positive @RequestParam(defaultValue = "9") int size) {
+                                                                                    @Positive @RequestParam(defaultValue = "10") int size) {
         Page<ReportDto.Response> responseDto = reportService.getReports(page - 1, size);
 
         return ResponseEntity.ok(MultiResponseDto.<ReportDto.Response>builder()

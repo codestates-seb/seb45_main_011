@@ -20,6 +20,9 @@ public class ReportDto {
         private Long reportedAccountId;
 
         @NotBlank
+        private String title;
+
+        @NotBlank
         private String content;
     }
 
