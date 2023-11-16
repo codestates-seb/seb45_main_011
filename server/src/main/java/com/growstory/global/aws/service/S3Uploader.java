@@ -33,8 +33,6 @@ public class S3Uploader {
         metadata.setContentType(ext);
 
         try {
-            log.info("##" + amazonS3Client.getRegion().toString());
-            log.info("##" + amazonS3Client.getRegionName());
             PutObjectResult putObjectRequest = amazonS3Client.putObject(new PutObjectRequest(
                     bucket + "/" + type, changedName, image.getInputStream(), metadata)
                     .withCannedAcl(CannedAccessControlList.PublicRead)

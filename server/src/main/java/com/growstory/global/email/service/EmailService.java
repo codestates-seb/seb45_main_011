@@ -51,6 +51,7 @@ public class EmailService {
             });
 
             return EmailDto.SignUpResponse.builder()
+                    .isDuplicated(false)
                     .authCode(authCode)
                     .build();
         } catch (Exception e) {

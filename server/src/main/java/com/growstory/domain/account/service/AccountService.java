@@ -58,7 +58,9 @@ public class AccountService {
     private final GuestService guestService;
 
     public AccountDto.Response createAccount(AccountDto.Post requestDto) {
-        verifyExistsEmail(requestDto.getEmail());
+        if (verifyExistsEmail(requestDto.getEmail())) {
+            throw new BusinessLogicException(ExceptionCode.ACCOUNT_ALREADY_EXISTS);
+        }
 
         Status status = Status.USER;
         String encryptedPassword = passwordEncoder.encode(requestDto.getPassword());
@@ -281,11 +283,10 @@ public class AccountService {
         return passwordEncoder.matches(requestDto.getPassword(), findAccount.getPassword());
     }
 
-    public void verifyExistsEmail(String email) {
+    public Boolean verifyExistsEmail(String email) { // 입력받은 이메일의 계정이 이미 존재한다면 true
         Optional<Account> findAccount = accountRepository.findByEmail(email);
 
-        if(findAccount.isPresent())
-            throw new BusinessLogicException(ExceptionCode.ACCOUNT_ALREADY_EXISTS);
+        return findAccount.isPresent();
     }
 
     @Transactional(readOnly = true)

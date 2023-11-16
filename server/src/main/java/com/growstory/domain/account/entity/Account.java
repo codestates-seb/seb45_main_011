@@ -12,10 +12,12 @@ import com.growstory.domain.likes.entity.AccountLike;
 import com.growstory.domain.likes.entity.BoardLike;
 import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.point.entity.Point;
-import com.growstory.domain.qnachat.chatmessage.entity.ChatMessage;
-import com.growstory.domain.qnachat.chatroom.entity.AccountChatRoom;
+import com.growstory.domain.report.entity.Report;
 import com.growstory.global.audit.BaseTimeEntity;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -42,13 +44,16 @@ public class Account extends BaseTimeEntity {
     @Column(name = "PROFILE_IMAGE_URL")
     private String profileImageUrl;
 
+    // 신고 받은 횟수
+    private int reportNums = 0;
+
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Board> boards = new ArrayList<>();
 
     // cascade = 부모를 db에서 delete하면 자식도 지워진다.
     // orphan = 부모를 db에서 delete하면 자식도 지워진다.
-    @OneToMany(mappedBy = "account", orphanRemoval = true)
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Leaf> leaves = new ArrayList<>();
 
     // 자신이 좋아요 누른 계정 리스트
@@ -77,11 +82,15 @@ public class Account extends BaseTimeEntity {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Alarm> alarms = new ArrayList<>();
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AccountChatRoom> accountChatRooms;
+//    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<AccountChatRoom> accountChatRooms;
 
+//    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<ChatMessage> chatMessages;
+
+    // 자신이 신고한 목록
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ChatMessage> chatMessages;
+    private List<Report> reports = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
@@ -108,7 +117,7 @@ public class Account extends BaseTimeEntity {
     }
 
     public void addAlarm(Alarm alarm) {
-        alarms.add(alarm);
+        alarms.add(0, alarm);
     }
 
     public void updateGrade(AccountGrade accountGrade) {
@@ -134,6 +143,14 @@ public class Account extends BaseTimeEntity {
         if(plantObj.getAccount()!= this) {
             plantObj.updateAccount(this);
         }
+    }
+
+    public void addReport(Report report) {
+        reports.add(report);
+    }
+
+    public void updateReportsNum() {
+        reportNums += 1;
     }
 
     public void removePlantObj(PlantObj plantObj) {
