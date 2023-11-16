@@ -12,8 +12,6 @@ import com.growstory.domain.likes.entity.AccountLike;
 import com.growstory.domain.likes.entity.BoardLike;
 import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.point.entity.Point;
-import com.growstory.domain.qnachat.chatmessage.entity.ChatMessage;
-import com.growstory.domain.qnachat.chatroom.entity.AccountChatRoom;
 import com.growstory.domain.report.entity.Report;
 import com.growstory.global.audit.BaseTimeEntity;
 import lombok.Builder;
@@ -84,11 +82,11 @@ public class Account extends BaseTimeEntity {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Alarm> alarms = new ArrayList<>();
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AccountChatRoom> accountChatRooms;
+//    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<AccountChatRoom> accountChatRooms;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ChatMessage> chatMessages;
+//    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<ChatMessage> chatMessages;
 
     // 자신이 신고한 목록
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
