@@ -170,7 +170,7 @@ public class Account extends BaseTimeEntity {
     public Account(Long accountId, String email, String displayName, String password, String profileImageUrl,
                    List<Board> boards, List<Leaf> leaves, List<AccountLike> givingAccountLikes,
                    List<AccountLike> receivingAccountLikes, List<BoardLike> boardLikes, List<Comment> comments,
-                   Point point, List<PlantObj> plantObjs, List<String> roles, AccountGrade accountGrade, Status status) {
+                   Point point, List<PlantObj> plantObjs, List<String> roles, AccountGrade accountGrade, Status status, int reportNums) {
         this.accountId = accountId;
         this.email = email;
         this.displayName = displayName;
@@ -187,5 +187,6 @@ public class Account extends BaseTimeEntity {
         this.roles = roles;
         this.accountGrade = accountGrade;
         this.status = status;
+        this.reportNums = reportNums;
     }
 }
