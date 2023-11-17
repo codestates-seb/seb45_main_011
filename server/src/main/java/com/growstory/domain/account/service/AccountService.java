@@ -107,6 +107,7 @@ public class AccountService {
                 .roles(roles)
                 .status(status)
                 .accountGrade(AccountGrade.GRADE_BRONZE)
+                .reportNums(0)
                 .build());
 
         // Update Point
