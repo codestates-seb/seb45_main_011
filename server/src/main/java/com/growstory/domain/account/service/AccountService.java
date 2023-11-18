@@ -78,6 +78,7 @@ public class AccountService {
                 .roles(roles)
                 .status(status)
                 .accountGrade(AccountGrade.GRADE_BRONZE)
+                .reportNums(0)
                 .build());
 
         point.updateAccount(savedAccount);
@@ -147,6 +148,7 @@ public class AccountService {
         // Connect Garden Object and Plants Card
         // 식물 카드 A와 벽돌 유적 오브젝트 연결
         guestService.updateLeafConnection(1L, leafA.getLeafId());
+
 
         return AccountDto.Response.builder()
                 .accountId(savedAccount.getAccountId())
