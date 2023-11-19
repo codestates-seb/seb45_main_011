@@ -78,6 +78,7 @@ public class AccountService {
                 .roles(roles)
                 .status(status)
                 .accountGrade(AccountGrade.GRADE_BRONZE)
+                .reportNums(0)
                 .build());
 
         point.updateAccount(savedAccount);
@@ -90,7 +91,7 @@ public class AccountService {
 
     public AccountDto.Response createAccount() {
         Status status = Status.GUEST_USER;
-        List<String> roles = authorityUtils.createRoles(" ");       // TODO: security 권한(디비에 저장되는지 실험해보기
+        List<String> roles = authorityUtils.createRoles(" ");
         Point point = pointService.createPoint("guest");
         String encryptedPassword = passwordEncoder.encode("gs123!@#");
 
@@ -112,6 +113,7 @@ public class AccountService {
 
         // Update Point
         point.updateAccount(savedAccount);
+        alarmService.createAlarm(savedAccount.getAccountId(), AlarmType.SIGN_UP);
 
         // 식물 카드
         Leaf leafA = guestService.createGuestLeaf(savedAccount, "귀염둥이 니드몬","사막에서 공수한 선인장입니다.", "https://growstory.s3.ap-northeast-2.amazonaws.com/image/guest/leaves/cactus-1842095_1280.jpg");
