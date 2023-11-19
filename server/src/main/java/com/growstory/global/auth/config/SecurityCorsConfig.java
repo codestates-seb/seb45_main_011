@@ -30,6 +30,7 @@ public class SecurityCorsConfig {
         config.addExposedHeader("DisplayName");
         config.addExposedHeader("AccountId");
         config.addExposedHeader("ProfileImageUrl");
+        config.addExposedHeader("Location");
 
         config.addAllowedHeader("*"); //모든 header 허용
 

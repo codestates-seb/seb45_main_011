@@ -16,6 +16,7 @@ jobs:
       AWS_SECRET_KEY: ${{secrets.AWS_SECRET_KEY}}
       AWS_BUCKET_NAME: ${{secrets.AWS_BUCKET_NAME}}
       ADMIN_EMAIL: ${{secrets.ADMIN_EMAIL}}
+      GUEST_EMAIL: ${{secrets.GUEST_EMAIL}}
       GROWSTORY_EMAIL_USERNAME: ${{secrets.GROWSTORY_EMAIL_USERNAME}}
       GROWSTORY_EMAIL_PASSWORD: ${{secrets.GROWSTORY_EMAIL_PASSWORD}}
       G_CLIENT_ID: ${{secrets.G_CLIENT_ID}}
@@ -52,6 +53,7 @@ jobs:
           --build-arg AWS_SECRET_KEY="${{env.AWS_SECRET_KEY}}" \
           --build-arg AWS_BUCKET_NAME="${{env.AWS_BUCKET_NAME}}" \
           --build-arg ADMIN_EMAIL="${{env.ADMIN_EMAIL}}" \
+          --build-arg GUEST_EMAIL="${{env.GUEST_EMAIL}}" \
           --build-arg GROWSTORY_EMAIL_USERNAME="${{env.GROWSTORY_EMAIL_USERNAME}}" \
           --build-arg GROWSTORY_EMAIL_PASSWORD="${{env.GROWSTORY_EMAIL_PASSWORD}}" \
           --build-arg G_CLIENT_ID="${{env.G_CLIENT_ID}}" \
@@ -60,8 +62,8 @@ jobs:
           --build-arg KEY_STORE_PASSWORD="${{env.KEY_STORE_PASSWORD}}" \
           --build-arg EVENT_KEY="${{env.EVENT_KEY}}" \
           -t growstory-cicd . 
-          docker tag growstory-cicd gdh012/growstory-cicd:${GITHUB_SHA::7}
-          docker push gdh012/growstory-cicd:${GITHUB_SHA::7}
+          docker tag growstory-cicd dokyung94/growstory-cicd:${GITHUB_SHA::7}
+          docker push dokyung94/growstory-cicd:${GITHUB_SHA::7}
         working-directory: ${{ env.working-directory }}
 
       - name: Configure AWS credentials
@@ -80,6 +82,6 @@ jobs:
           envs: GITHUB_SHA
           script: |
             sudo docker rm -f server
-            sudo docker pull gdh012/growstory-cicd:${GITHUB_SHA::7}
-            sudo docker tag gdh012/growstory-cicd:${GITHUB_SHA::7} growstory-cicd
+            sudo docker pull dokyung94/growstory-cicd:${GITHUB_SHA::7}
+            sudo docker tag dokyung94/growstory-cicd:${GITHUB_SHA::7} growstory-cicd
             sudo docker run -d --name server -e TZ=Asia/Seoul -p 443:443 growstory-cicd
