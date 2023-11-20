@@ -60,7 +60,6 @@ export default function convertToFormData({
       title: inputs.title,
       content: inputs.diaryContent,
       leafAuthorId: userId,
-      isImageUpdated,
     });
 
     const postDtoBlob = new Blob([postDtoData], { type: 'application/json' });
@@ -76,7 +75,6 @@ export default function convertToFormData({
       title: inputs.title,
       content: inputs.diaryContent,
       leafAuthorId: userId,
-      isImageUpdated,
     });
 
     const patchDtoBlob = new Blob([patchDtoData], { type: 'application/json' });

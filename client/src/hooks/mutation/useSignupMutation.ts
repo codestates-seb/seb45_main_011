@@ -8,14 +8,14 @@ import useSignStore from '@/stores/signStore';
 
 import { SignupFormValue } from '@/types/common';
 
-const useSignup = () => {
+const useSignupMutation = () => {
   const router = useRouter();
 
   const { reset } = useForm<SignupFormValue>();
 
   const { getSigninForm, getSignupForm, setIsCode } = useSignStore();
 
-  const { mutate: onSignup } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: ({ email, password, nickname }: SignupFormValue) =>
       postCreateUser(email, password, nickname as string),
 
@@ -30,7 +30,7 @@ const useSignup = () => {
     },
   });
 
-  return { onSignup };
+  return { mutate };
 };
 
-export default useSignup;
+export default useSignupMutation;

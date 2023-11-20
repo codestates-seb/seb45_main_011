@@ -1,32 +1,13 @@
-import axios from 'axios';
-
-const accessToken =
-  typeof window !== 'undefined'
-    ? JSON.parse(localStorage.getItem('user-key') as string).state.accessToken
-    : null;
-
-const refreshToken =
-  typeof window !== 'undefined'
-    ? JSON.parse(localStorage.getItem('user-key') as string).state.refreshToken
-    : null;
-
-export const historyAxios = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
-  headers: {
-    Authorization: accessToken,
-    Refresh: refreshToken,
-  },
-  withCredentials: true,
-});
+import { instance } from './axios';
 
 export const getUserInfo = async (id: string) => {
-  const { data } = await historyAxios.get(`/accounts/${id}`);
+  const { data } = await instance.get(`/accounts/${id}`);
 
   return data;
 };
 
 export const postUserPassword = async (password: string) => {
-  const { data, headers } = await historyAxios.post(
+  const { data, headers } = await instance.post(
     `/accounts/password/verification`,
     {
       password,
@@ -37,13 +18,13 @@ export const postUserPassword = async (password: string) => {
 };
 
 export const deleteUser = async () => {
-  const { status } = await historyAxios.delete(`/accounts`);
+  const { status } = await instance.delete(`/accounts`);
 
   return status;
 };
 
 export const getBoardWrittenByPage = async ({ pageParam = 1 }, id: string) => {
-  const response = await historyAxios
+  const response = await instance
     .get(`/accounts/boardWritten/${id}?page=${pageParam}`)
     .then((response) => response.data);
 
@@ -51,7 +32,7 @@ export const getBoardWrittenByPage = async ({ pageParam = 1 }, id: string) => {
 };
 
 export const getBoardLikedByPage = async ({ pageParam = 1 }, id: string) => {
-  const response = await historyAxios
+  const response = await instance
     .get(`/accounts/boardLiked/${id}?page=${pageParam}`)
     .then((response) => response.data);
 
@@ -62,7 +43,7 @@ export const getCommentWrittenByPage = async (
   { pageParam = 1 },
   id: string,
 ) => {
-  const response = await historyAxios
+  const response = await instance
     .get(`/accounts/commentWritten/${id}?page=${pageParam}`)
     .then((response) => response.data);
 

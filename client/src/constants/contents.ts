@@ -1,6 +1,7 @@
 export const CONTROL_BUTTON_TITLES = {
   edit: '수정하기',
   delete: '삭제하기',
+  notificationDelete: '알림 삭제',
 } as const;
 
 export const HEADER_LINK_CONTENT = {

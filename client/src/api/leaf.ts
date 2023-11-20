@@ -51,7 +51,7 @@ export async function addLeaf(inputs: InputValues) {
 }
 
 export async function deleteLeaf(leafId: string) {
-  return await commonAxios.delete(`/leaves/${leafId}`).then((res) => res.data);
+  await commonAxios.delete(`/leaves/${leafId}`);
 }
 
 export async function editLeaf({
@@ -107,7 +107,6 @@ export async function addDiary({
     leafId,
     userId,
   });
-
   return await commonAxios
     .post(`/leaves/${leafId}/journals`, formData, {
       headers: {
@@ -129,6 +128,7 @@ export async function editDiary({
   isImageUpdated?: boolean;
 }) {
   if (!diaryId) return null;
+
   const formData = convertToFormData({
     usage: 'editDiary',
     inputs,

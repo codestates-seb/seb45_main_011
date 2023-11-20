@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 
 import useModalStore from '@/stores/modalStore';
 
-import useSignin from '@/hooks/useSignIn';
+import useSigninMutation from '@/hooks/mutation/useSigninMutation';
 
 import { SignPasswordInput, SignInput } from '../sign';
 import { CommonButton } from '../common';
@@ -21,7 +21,7 @@ export default function SigninForm() {
 
   const { open, changeType } = useModalStore();
 
-  const { onSiginIn } = useSignin();
+  const { mutate: onSiginIn } = useSigninMutation();
 
   const email = watch('email');
   const password = watch('password');

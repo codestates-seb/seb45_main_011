@@ -4,17 +4,17 @@ import { deleteUser } from '@/api/history';
 
 import useModalStore from '@/stores/modalStore';
 
-const useDeleteUser = () => {
+const useDeleteUserMutation = () => {
   const { close, changeType } = useModalStore();
 
-  const { mutate: onDeleteUser } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: () => deleteUser(),
     onSuccess: () => {
       return changeType('SuccessedModal');
     },
   });
 
-  return { onDeleteUser, close };
+  return { mutate, close };
 };
 
-export default useDeleteUser;
+export default useDeleteUserMutation;
