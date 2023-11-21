@@ -24,7 +24,7 @@ public class UriCreator {
     }
 
     // 테스트용
-    public URI createUri_Test(String defaultUrl, long resourceId) {
+    public URI createUri_test(String defaultUrl, long resourceId) {
         return UriComponentsBuilder
                 .newInstance()
                 .path(defaultUrl+ "/{resource-id}")
