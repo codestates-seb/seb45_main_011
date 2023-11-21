@@ -18,19 +18,19 @@ public class ChatMessageStompController {
 
     @MessageMapping(value = "/chatRoom/enter")
     public void enterChatRoom(ChatMessageRequestDto chatMessageRequest) {
-        ChatMessageResponseDto chatMessageResponse = chatMessageService.createEnterMessage(chatMessageRequest);
-        simpMessagingTemplate.convertAndSend("/sub/chatRoom/" + chatMessageRequest.getChatRoomId());
+        ChatMessageResponseDto chatMessageResponse = chatMessageService.createEnterMessage(chatMessageRequest, null);
+        simpMessagingTemplate.convertAndSend("/sub/chatRoom/" + chatMessageRequest.getChatRoomId(), chatMessageResponse);
     }
 
     @MessageMapping(value = "/chatRoom/send")
     public void sendMessageToChatRoom(ChatMessageRequestDto chatMessageRequest) {
-        ChatMessageResponseDto chatMessageResponse = chatMessageService.createSendMessage(chatMessageRequest);
+        ChatMessageResponseDto chatMessageResponse = chatMessageService.createSendMessage(chatMessageRequest, null);
         simpMessagingTemplate.convertAndSend("/sub/chatRoom/" + chatMessageRequest.getChatRoomId(), chatMessageResponse);
     }
 
     @MessageMapping(value = "/chatRoom/exit")
     public void exitChatRoom(DeleteChatRoomRequestDto deleteChatRoomRequest) {
-        ChatMessageResponseDto chatMessageResponse = chatMessageService.deleteChatRoom(deleteChatRoomRequest);
+        ChatMessageResponseDto chatMessageResponse = chatMessageService.sendExitChatRoomMessage(deleteChatRoomRequest);
         simpMessagingTemplate.convertAndSend("/sub/chatRoom/"+deleteChatRoomRequest.getChatRoomId(), chatMessageResponse);
     }
 }

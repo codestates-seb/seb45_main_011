@@ -20,12 +20,13 @@ public class ChatMessageResponseDto {
     private LocalDateTime modifiedAt;
 
     public static ChatMessageResponseDto from(ChatMessage chatMessage) {
+        String chatImgUrl = chatMessage.getChatMessageImage() == null ? null : chatMessage.getChatMessageImage().getImageUrl();
         return ChatMessageResponseDto.builder()
                 .messageId(chatMessage.getMessageId())
                 .senderId(chatMessage.getAccount().getAccountId())
                 .senderName(chatMessage.getAccount().getDisplayName())
                 .message(chatMessage.getMessage())
-                .imageUrl(chatMessage.getChatMessageImage().getImageUrl())
+                .imageUrl(chatImgUrl)
                 .createdAt(chatMessage.getCreatedAt().withNano(0))
                 .modifiedAt(chatMessage.getModifiedAt().withNano(0))
                 .build();

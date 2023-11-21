@@ -33,6 +33,9 @@ public class ChatMessage extends BaseTimeEntity {
     @OneToOne(mappedBy = "chatMessage", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private ChatMessageImage chatMessageImage;
 
+    /**
+     * 생성자
+     */
 
     @Builder
     public ChatMessage(Account account, String message, ChatMessageImage chatMessageImage, ChatRoom chatRoom) {
@@ -40,5 +43,12 @@ public class ChatMessage extends BaseTimeEntity {
         this.message = message;
         this.chatMessageImage = chatMessageImage;
         this.chatRoom = chatRoom;
+    }
+
+    /**
+     *  연관관계 메서드
+     */
+    public void updateChatMessageImage(ChatMessageImage chatMessageImage) {
+        this.chatMessageImage = chatMessageImage;
     }
 }

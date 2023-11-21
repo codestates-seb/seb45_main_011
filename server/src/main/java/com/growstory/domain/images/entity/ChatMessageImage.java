@@ -20,7 +20,7 @@ public class ChatMessageImage {
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
-    @OneToOne
+    @OneToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "chat_message_id", nullable = false)
     private ChatMessage chatMessage;
 
