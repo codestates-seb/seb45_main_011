@@ -66,6 +66,11 @@ public class EmailService {
         if (optionalAccount.isEmpty()) {
             return EmailDto.PasswordResponse.builder()
                     .isMatched(false)
+                    .isSocial(false)
+                    .build();
+        } else if (optionalAccount.get().getStatus().getStepDescription().equals("SOCIAL_USER")) {
+            return EmailDto.PasswordResponse.builder()
+                    .isSocial(true)
                     .build();
         }
 
@@ -94,6 +99,7 @@ public class EmailService {
 
         return EmailDto.PasswordResponse.builder()
                 .isMatched(true)
+                .isSocial(false)
                 .build();
     }
 
