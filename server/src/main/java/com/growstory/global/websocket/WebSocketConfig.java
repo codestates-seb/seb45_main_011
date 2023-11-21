@@ -19,7 +19,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
                 // STOMP 접속 주소
-        registry.addEndpoint("/ws")
+        registry.addEndpoint("/wss")
                 // CORS 설정
                 .setAllowedOrigins("https://growstory.vercel.app", "http://localhost:3000", "http://localhost:8888")
                 // SockJS 라이브러리 사용
