@@ -28,6 +28,7 @@ import java.util.List;
 public class Account extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ACCOUNT_ID")
     private Long accountId;
 
     @Column(name = "EMAIL", unique = true, nullable = false, length = 100)
