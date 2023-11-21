@@ -34,7 +34,7 @@ public class PlantObj {
     @JoinColumn(name = "LOCATION_ID", nullable = false)
     private Location location;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "LEAF_ID")
     private Leaf leaf;
 
