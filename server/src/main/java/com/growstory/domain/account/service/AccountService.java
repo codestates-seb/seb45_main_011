@@ -58,7 +58,9 @@ public class AccountService {
     private final GuestService guestService;
 
     public AccountDto.Response createAccount(AccountDto.Post requestDto) {
-        verifyExistsEmail(requestDto.getEmail());
+        if (verifyExistsEmail(requestDto.getEmail())) {
+            throw new BusinessLogicException(ExceptionCode.ACCOUNT_ALREADY_EXISTS);
+        }
 
         Status status = Status.USER;
         String encryptedPassword = passwordEncoder.encode(requestDto.getPassword());
@@ -76,6 +78,7 @@ public class AccountService {
                 .roles(roles)
                 .status(status)
                 .accountGrade(AccountGrade.GRADE_BRONZE)
+                .reportNums(0)
                 .build());
 
         point.updateAccount(savedAccount);
@@ -88,7 +91,7 @@ public class AccountService {
 
     public AccountDto.Response createAccount() {
         Status status = Status.GUEST_USER;
-        List<String> roles = authorityUtils.createRoles(" ");       // TODO: security 권한(디비에 저장되는지 실험해보기
+        List<String> roles = authorityUtils.createRoles(" ");
         Point point = pointService.createPoint("guest");
         String encryptedPassword = passwordEncoder.encode("gs123!@#");
 
@@ -105,10 +108,12 @@ public class AccountService {
                 .roles(roles)
                 .status(status)
                 .accountGrade(AccountGrade.GRADE_BRONZE)
+                .reportNums(0)
                 .build());
 
         // Update Point
         point.updateAccount(savedAccount);
+        alarmService.createAlarm(savedAccount.getAccountId(), AlarmType.SIGN_UP);
 
         // 식물 카드
         Leaf leafA = guestService.createGuestLeaf(savedAccount, "귀염둥이 니드몬","사막에서 공수한 선인장입니다.", "https://growstory.s3.ap-northeast-2.amazonaws.com/image/guest/leaves/cactus-1842095_1280.jpg");
@@ -144,6 +149,7 @@ public class AccountService {
         // Connect Garden Object and Plants Card
         // 식물 카드 A와 벽돌 유적 오브젝트 연결
         guestService.updateLeafConnection(1L, leafA.getLeafId());
+
 
         return AccountDto.Response.builder()
                 .accountId(savedAccount.getAccountId())
@@ -281,11 +287,10 @@ public class AccountService {
         return passwordEncoder.matches(requestDto.getPassword(), findAccount.getPassword());
     }
 
-    public void verifyExistsEmail(String email) {
+    public Boolean verifyExistsEmail(String email) { // 입력받은 이메일의 계정이 이미 존재한다면 true
         Optional<Account> findAccount = accountRepository.findByEmail(email);
 
-        if(findAccount.isPresent())
-            throw new BusinessLogicException(ExceptionCode.ACCOUNT_ALREADY_EXISTS);
+        return findAccount.isPresent();
     }
 
     @Transactional(readOnly = true)

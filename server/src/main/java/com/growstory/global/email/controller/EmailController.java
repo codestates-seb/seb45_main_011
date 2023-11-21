@@ -28,9 +28,12 @@ public class EmailController {
     @Operation(summary = "회원가입 시 메일 인증", description = "회원가입 시 입력받은 이메일로 메일 전송")
     @PostMapping("/signup")
     public ResponseEntity<SingleResponseDto<EmailDto.SignUpResponse>> postAuthCodeMail(@Valid @RequestBody EmailDto.Post emailPostDto) {
-        // 인증시 메일 확인 하기
-        accountService.verifyExistsEmail(emailPostDto.getEmail());
-        EmailDto.SignUpResponse responseDto = emailService.sendAuthCodeMail(emailPostDto);
+        Boolean isDuplicated = accountService.verifyExistsEmail(emailPostDto.getEmail());
+        EmailDto.SignUpResponse responseDto = EmailDto.SignUpResponse.builder().isDuplicated(isDuplicated).build();
+
+        if (!isDuplicated) {
+            responseDto = emailService.sendAuthCodeMail(emailPostDto);
+        }
 
         return ResponseEntity.ok(SingleResponseDto.<EmailDto.SignUpResponse>builder()
                 .status(HttpStatusCode.OK.getStatusCode())

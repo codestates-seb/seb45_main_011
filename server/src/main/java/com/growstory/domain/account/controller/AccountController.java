@@ -167,7 +167,7 @@ public class AccountController {
     }
 
     @Operation(summary = "게스트 회원 탈퇴", description = "게스트 사용자 계정 삭제")
-    @DeleteMapping("/{account-id}")
+    @DeleteMapping("/guest/{account-id}")
     public ResponseEntity<HttpStatus> deleteAccount(@Positive @PathVariable("account-id") Long accountId){
         accountService.deleteAccount(accountId);
 
