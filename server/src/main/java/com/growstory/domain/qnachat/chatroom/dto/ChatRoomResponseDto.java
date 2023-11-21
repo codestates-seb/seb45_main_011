@@ -34,7 +34,7 @@ public class ChatRoomResponseDto {
         LocalDateTime tempLatestTime = LocalDateTime.of(2000, 1, 1, 1, 1, 1);
         String tempLatestMessage = null;
         for (ChatMessage chatMessage : chatMessages) {
-            if (chatMessage.getChatRoom().getCreatedAt().isAfter(tempLatestTime)) {
+            if (chatMessage.getCreatedAt().isAfter(tempLatestTime)) {
                 tempLatestTime = chatMessage.getCreatedAt().withNano(0);
                 tempLatestMessage = chatMessage.getMessage();
             }

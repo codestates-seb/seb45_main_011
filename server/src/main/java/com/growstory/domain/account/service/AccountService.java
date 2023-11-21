@@ -15,6 +15,8 @@ import com.growstory.domain.plant_object.dto.PlantObjDto;
 import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.point.entity.Point;
 import com.growstory.domain.point.service.PointService;
+import com.growstory.global.auth.filter.JwtAuthenticationFilter;
+import com.growstory.global.auth.jwt.JwtTokenizer;
 import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.auth.utils.CustomAuthorityUtils;
 import com.growstory.global.aws.service.S3Uploader;
@@ -58,6 +60,7 @@ public class AccountService {
 
     // Guest
     private final GuestService guestService;
+    private final JwtTokenizer jwtTokenizer;
 
     public AccountDto.Response createAccount(AccountDto.Post requestDto) {
         if (verifyExistsEmail(requestDto.getEmail())) {
@@ -91,11 +94,12 @@ public class AccountService {
                 .build();
     }
 
-    public AccountDto.Response createAccount() {
+    public List<String> createAccount() {
         Status status = Status.GUEST_USER;
         List<String> roles = authorityUtils.createRoles(" ");
         Point point = pointService.createPoint("guest");
         String encryptedPassword = passwordEncoder.encode("gs123!@#");
+
 
         // Save Account
         Account savedAccount = accountRepository.save(Account.builder()
@@ -115,23 +119,22 @@ public class AccountService {
 
         // Update Point
         point.updateAccount(savedAccount);
-        alarmService.createAlarm(savedAccount.getAccountId(), AlarmType.SIGN_UP);
 
         // 식물 카드
         Leaf leafA = guestService.createGuestLeaf(savedAccount, "귀염둥이 니드몬","사막에서 공수한 선인장입니다.", "https://growstory.s3.ap-northeast-2.amazonaws.com/image/guest/leaves/cactus-1842095_1280.jpg");
         Leaf leafB = guestService.createGuestLeaf(savedAccount, "가시나","예쁜 선인장이에요!! ", "https://growstory.s3.ap-northeast-2.amazonaws.com/image/guest/leaves/cactus-5434469_1280.jpg");
 
         // 일지 각각의 image S3에 업로드 후 imageUrl 반환
-        guestService.createGuestJournal(leafA, "니드몬 성장일기 1일차", "물 주기", null);
-        guestService.createGuestJournal(leafA, "니드몬 성장일기 2일차", "칭찬해 주기", null);
-        guestService.createGuestJournal(leafA, "니드몬 성장일기 3일차", "햇빛 쫴기", null);
-        guestService.createGuestJournal(leafA, "니드몬 성장일기 4일차", "병원 가는 날", null);
-        guestService.createGuestJournal(leafA, "니드몬 성장일기 5일차", "물 주기", null);
-        guestService.createGuestJournal(leafA, "니드몬 성장일기 6일차", "영양 거름 주기", null);
-        guestService.createGuestJournal(leafA, "니드몬 성장일기 7일차", "분갈이", null);
-        guestService.createGuestJournal(leafA, "니드몬 성장일기 8일차", "물 주기", null);
-        guestService.createGuestJournal(leafA, "니드몬 성장일기 9일차", "칭찬해 주기", null);
-        guestService.createGuestJournal(leafA, "니드몬 성장일기 10일차", "물 주기", null);
+        guestService.createGuestJournal(leafA, "니드몬 성장 일기 1일차", "물 주기", null);
+        guestService.createGuestJournal(leafA, "니드몬 성장 일기 2일차", "칭찬해 주기", null);
+        guestService.createGuestJournal(leafA, "니드몬 성장 일기 3일차", "햇빛 쫴기", null);
+        guestService.createGuestJournal(leafA, "니드몬 성장 일기 4일차", "반려 식물 병원 가는 날", null);
+        guestService.createGuestJournal(leafA, "니드몬 성장 일기 5일차", "물 주기", null);
+        guestService.createGuestJournal(leafA, "니드몬 성장 일기 6일차", "영양 거름 주기", null);
+        guestService.createGuestJournal(leafA, "니드몬 성장 일기 7일차", "분갈이", null);
+        guestService.createGuestJournal(leafA, "니드몬 성장 일기 8일차", "물 주기", null);
+        guestService.createGuestJournal(leafA, "니드몬 성장 일기 9일차", "칭찬해 주기", null);
+        guestService.createGuestJournal(leafA, "니드몬 성장 일기 10일차", "물 주기", null);
 
         // Buy Garden Object
         PlantObjDto.TradeResponse plantObjA = guestService.buyProduct(savedAccount, 1L);    // 벽돌 유적
@@ -152,14 +155,43 @@ public class AccountService {
         // 식물 카드 A와 벽돌 유적 오브젝트 연결
         guestService.updateLeafConnection(1L, leafA.getLeafId());
 
+        List<String> tokenList = new ArrayList<>();
+        // access token, Refresh Token 발급
+        String accessToken = delegateAccessToken(savedAccount);
+        String refreshToken = delegateRefreshToken(savedAccount);
+        tokenList.add(accessToken);
+        tokenList.add(refreshToken);
+        tokenList.add(String.valueOf(savedAccount.getAccountId()));
 
-        return AccountDto.Response.builder()
-                .accountId(savedAccount.getAccountId())
-                .email(savedAccount.getEmail())
-                .displayName("Guest")
-                .status(status.getStepDescription())
-                .build();
+        return tokenList;
     }
+
+    private String delegateAccessToken(Account account) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("accountId", account.getAccountId().toString());
+        claims.put("username", account.getEmail());
+        claims.put("profileImageUrl", account.getProfileImageUrl());
+        claims.put("roles", account.getRoles());
+        claims.put("displayName", account.getDisplayName());
+
+        String subject = account.getEmail();
+        Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
+        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
+        String acceesToken = jwtTokenizer.generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
+
+        return "Bearer " + acceesToken;
+    }
+
+    private String delegateRefreshToken(Account account) {
+        String subject = account.getEmail();
+        Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getRefreshTokenExpirationMinutes());
+        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
+
+        String refreshToken = jwtTokenizer.generateRefreshToken(subject, expiration, base64EncodedSecretKey);
+
+        return refreshToken;
+    }
+
 
     public void updateProfileImage(MultipartFile profileImage) {
         Account findAccount = authUserUtils.getAuthUser();
