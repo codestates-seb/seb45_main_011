@@ -53,6 +53,7 @@ public class JournalService {
         accountService.isAuthIdMatching(postDto.getLeafAuthorId());
         Leaf findLeaf = leafService.findLeafEntityBy(leafId);
         Journal journal = createJournalWithNoImg(findLeaf, postDto);
+        sseService.notify(postDto.getLeafAuthorId(), AlarmType.WRITE_DIARY);
         //image가 null이거나 비어있을 경우 ResponseDto로 변환하여 반환
         if(image==null|| image.isEmpty()) {
             return journalMapper.toResponseFrom(journal);
@@ -61,7 +62,7 @@ public class JournalService {
         JournalImage savedJournalImage = journalImageService.createJournalImgWithS3(image, JOURNAL_IMAGE_PROCESS_TYPE, journal);
         //image 정보 Journal에 업데이트
         journal.updateImg(savedJournalImage);
-        sseService.notify(postDto.getLeafAuthorId(), AlarmType.WRITE_DIARY);
+
 
         return journalMapper.toResponseFrom(journalRepository.save(journal));
     }

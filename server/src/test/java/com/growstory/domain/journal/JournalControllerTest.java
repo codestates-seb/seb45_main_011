@@ -105,7 +105,7 @@ public class JournalControllerTest {
                     .willReturn(mockJournalResponse);
 
             URI stubUri = URI.create("/v1/leaves/1/journals/1");
-            given(uriCreator.createUri_Test(Mockito.any(String.class), Mockito.anyLong())).willReturn(stubUri);
+            given(uriCreator.createUri_test(Mockito.any(String.class), Mockito.anyLong())).willReturn(stubUri);
         }
 
         private MockMultipartFile createMockMultipartFile(String name, String content, String contentType) {

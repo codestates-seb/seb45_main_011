@@ -20,6 +20,7 @@ public class EmailDto {
     @Getter
     @Builder
     public static class SignUpResponse {
+        private Boolean isDuplicated;
         private String authCode;
     }
 
@@ -27,5 +28,6 @@ public class EmailDto {
     @Builder(toBuilder = true)
     public static class PasswordResponse {
         private Boolean isMatched;
+        private Boolean isSocial;
     }
 }
