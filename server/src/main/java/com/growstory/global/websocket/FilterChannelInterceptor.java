@@ -2,6 +2,7 @@ package com.growstory.global.websocket;
 
 import com.growstory.global.auth.jwt.JwtTokenizer;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.messaging.Message;
@@ -15,6 +16,7 @@ import org.springframework.util.StringUtils;
 import java.util.Map;
 
 @Order(Ordered.HIGHEST_PRECEDENCE + 99)
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class FilterChannelInterceptor implements ChannelInterceptor {
@@ -23,7 +25,10 @@ public class FilterChannelInterceptor implements ChannelInterceptor {
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
+        log.info("##" + message);
+        log.info("##" + channel);
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(message);
+        log.info("##" + headerAccessor);
         if(StompCommand.CONNECT.equals(headerAccessor.getCommand()) || StompCommand.SEND.equals(headerAccessor.getCommand())
                 || StompCommand.SUBSCRIBE.equals(headerAccessor.getCommand())) {
             String accessToken = headerAccessor.getNativeHeader("Authorization").toString();
