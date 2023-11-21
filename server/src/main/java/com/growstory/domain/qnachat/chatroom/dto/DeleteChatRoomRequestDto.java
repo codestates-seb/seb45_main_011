@@ -2,15 +2,16 @@ package com.growstory.domain.qnachat.chatroom.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DeleteChatRoomRequestDto {
-    @NotNull
+    @NotNull @Min(1)
     private Long chatRoomId;
 
-    @NotNull
+    @NotNull @Min(1)
     private Long accountId;
 
     @Builder
