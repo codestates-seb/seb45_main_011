@@ -45,6 +45,7 @@ public class ChatRoomResponseDto {
                 .otherAccountId(otherAccountChatRoom.getAccount().getAccountId())
                 .otherAccountName(otherAccountChatRoom.getAccount().getDisplayName())
                 .status(accountChatRoom.getChatRoom().getStatus().getMessage())
+                .createdAt(accountChatRoom.getChatRoom().getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .latestMessage(tempLatestMessage)
                 .latestTime(tempLatestTime)
                 .build();

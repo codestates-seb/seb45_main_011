@@ -38,10 +38,18 @@ public class ChatRoom extends BaseTimeEntity {
         this.status = ChatRoomStatus.EXISTS;
     }
 
+    /**
+     * 연관관계 매핑
+     */
+
     public Long updateRoomName(ChatRoomRequestDto requestDto) {
         this.roomName = requestDto.getRoomName();
         return this.chatRoomId;
     }
+
+    /**
+     *  enum 타입 : 채팅방 상태
+     */
 
     @Getter
     public enum ChatRoomStatus {
@@ -54,5 +62,8 @@ public class ChatRoom extends BaseTimeEntity {
             this.status = status;
             this.message = message;
         }
+    }
+    public void updateStatus(ChatRoomStatus chatRoomStatus) {
+        this.status = chatRoomStatus;
     }
 }

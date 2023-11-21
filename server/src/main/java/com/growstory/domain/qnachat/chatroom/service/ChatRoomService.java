@@ -9,7 +9,7 @@ import java.util.List;
 public interface ChatRoomService {
     List<ChatRoomResponseDto> getAllChatRooms(Long accountId);
     ChatRoom findVerifiedChatRoom(Long chatRoomId);
-    Long createChatRoom(CreateQnaChatRequest chatRoomRequestDto);
+    Long createQnaChatRoom(CreateQnaChatRequest chatRoomRequestDto);
     EntryCheckResponseDto checkEntry(EntryCheckRequestDto entryCheckRequestDto);
     AccountChatRoom validateIsEntered(Long accountId, Long chatRoomId);
     void validateAlreadyEnter(Long accountId, Long chatRoomId);
