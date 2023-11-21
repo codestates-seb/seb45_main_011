@@ -32,9 +32,12 @@ public class FilterChannelInterceptor implements ChannelInterceptor {
         if(StompCommand.CONNECT.equals(headerAccessor.getCommand()) || StompCommand.SEND.equals(headerAccessor.getCommand())
                 || StompCommand.SUBSCRIBE.equals(headerAccessor.getCommand())) {
             String accessToken = headerAccessor.getNativeHeader("Authorization").toString();
+            log.info("## 액세스 토큰 : " + accessToken);
             String refreshToken = headerAccessor.getNativeHeader("Refresh").toString();
+            log.info("## 액세스 토큰 : " + refreshToken);
             if(StringUtils.hasText(accessToken) && accessToken.startsWith("Bearer")) {
                 accessToken = accessToken.replace("Bearer ", "");
+                log.info("## 액세스 토큰2 : " + accessToken);
             }
             try {
                 verifyJws(accessToken);
@@ -43,8 +46,10 @@ public class FilterChannelInterceptor implements ChannelInterceptor {
                 e.printStackTrace();
 //                jwtVerificationFilter.doFilter();
             }
+            log.info("## 반환하는 메시지 : {}", message);
             return message;
         }
+        log.info("## 반환하는 메시지 : {}", message);
         return message;
     }
 
