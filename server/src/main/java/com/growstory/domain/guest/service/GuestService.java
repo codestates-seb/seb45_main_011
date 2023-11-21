@@ -86,16 +86,16 @@ public class GuestService {
     }
 
 
-    public void createGuestJournal(Leaf leaf, String title, String contents, File image) {
+    public void createGuestJournal(Leaf leaf, String title, String contents, File imageUrl) {
         Journal journal = createGuestJournalWithNoImg(leaf, title, contents);
         //image가 null이거나 비어있을 경우 ResponseDto로 변환하여 반환
-        if(image==null) {
+        if(imageUrl==null) {
             journalMapper.toResponseFrom(journal);
             return;
         }
         //image가 null이 아닐 경우 이미지 업로드 및 DB 저장
-        JournalImage savedJournalImage = createJournalImage(image, journal);
-        //image 정보 Journal에 업데이트
+        JournalImage savedJournalImage = createJournalImage(imageUrl, journal);
+        //imageUrl 정보 Journal에 업데이트
         journal.updateImg(savedJournalImage);
 
         leaf.getJournals().add(journal);
@@ -116,12 +116,12 @@ public class GuestService {
 
 
     // 테이블 인스턴스 생성 및 S3 파일 업로드
-    private JournalImage createJournalImage(File image, Journal journal) {
-        if(image == null || journal == null)
+    private JournalImage createJournalImage(File imageUrl, Journal journal) {
+        if(imageUrl == null || journal == null)
             return null;
         JournalImage journalImage =
                 JournalImage.builder()
-                        .imageUrl("image.get")
+                        .imageUrl("imageUrl.get")
                         .originName("test1")
                         .journal(journal)
                         .build();

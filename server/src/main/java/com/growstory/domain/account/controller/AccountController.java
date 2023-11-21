@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -45,10 +46,14 @@ public class AccountController {
     @Operation(summary = "회원가입", description = "게스트 계정 생성")
     @PostMapping("/guest")
     public ResponseEntity<?> postAccount() {
-        AccountDto.Response responseDto = accountService.createAccount();
-        URI location = UriCreator.createUri(ACCOUNT_DEFAULT_URL, responseDto.getAccountId());
+        List<String> token = accountService.createAccount();
+        URI location = UriCreator.createUri(ACCOUNT_DEFAULT_URL, Long.parseLong(token.get(2)));
 
-        return ResponseEntity.created(location).body(responseDto.getEmail());
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", token.get(0));
+        headers.add("Refresh", token.get(1));
+
+        return ResponseEntity.created(location).headers(headers).build();
     }
 
     @Operation(summary = "프로필 사진 수정", description = "입력받은 프로필 사진으로 정보 수정")
