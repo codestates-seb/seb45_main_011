@@ -2,6 +2,7 @@ package com.growstory.global.websocket;
 
 import com.growstory.global.auth.jwt.JwtTokenizer;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.messaging.Message;
@@ -15,6 +16,7 @@ import org.springframework.util.StringUtils;
 import java.util.Map;
 
 @Order(Ordered.HIGHEST_PRECEDENCE + 99)
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class FilterChannelInterceptor implements ChannelInterceptor {
@@ -23,21 +25,35 @@ public class FilterChannelInterceptor implements ChannelInterceptor {
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
+        log.info("## 소켓 접속!!! ");
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(message);
+        log.info("## StompHeaderAccessor: " + headerAccessor);
+        //TODO: SEND 검증에서 제외
         if(StompCommand.CONNECT.equals(headerAccessor.getCommand()) || StompCommand.SEND.equals(headerAccessor.getCommand())
                 || StompCommand.SUBSCRIBE.equals(headerAccessor.getCommand())) {
-            String accessToken = headerAccessor.getNativeHeader("Authorization").toString();
-            String refreshToken = headerAccessor.getNativeHeader("Refresh").toString();
-            if(StringUtils.hasText(accessToken) && accessToken.startsWith("Bearer")) {
-                accessToken = accessToken.replace("Bearer ", "");
+            if(StompCommand.SEND.equals(headerAccessor.getCommand())) {
+                String payload = new String((byte[]) message.getPayload());
+                log.info("Message Payload : "+ payload);
             }
-            try {
-                verifyJws(accessToken);
-                verifyJws(refreshToken);
-            } catch (Exception e) {
-                e.printStackTrace();
-//                jwtVerificationFilter.doFilter();
-            }
+//            headerAccessor.getNativeHeader("Authorization").toString();
+//            String accessToken = headerAccessor.getNativeHeader("Authorization").toString();
+//            accessToken = accessToken.substring(1, accessToken.length()-1);
+//            log.info("## accessToken: " + accessToken);
+//            String refreshToken = headerAccessor.getNativeHeader("refresh").toString();
+//            refreshToken = refreshToken.substring(1, refreshToken.length()-1);
+//            log.info("## refreshToken: " + refreshToken);
+//            if(StringUtils.hasText(accessToken) && accessToken.startsWith("Bearer")) {
+//                accessToken = accessToken.replace("Bearer ", "");
+//                log.info("### accessToken: " + accessToken);
+//            }
+//            try {
+//                verifyJws(accessToken);
+//                log.info("## 예외 발생?: " + accessToken);
+//                verifyJws(refreshToken);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+////                jwtVerificationFilter.doFilter();
+//            }
             return message;
         }
         return message;
