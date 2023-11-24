@@ -45,7 +45,7 @@ public class ChatRoomController {
 
 
     @Operation(summary = "채팅방 나가기", description = "특정 유저의 채팅방을 삭제 상태로 변경 합니다.")
-    @PatchMapping("/out")
+    @DeleteMapping("/out")
     public ResponseEntity<ChatMessageResponseDto> deleteChatRoom(@RequestBody DeleteChatRoomRequestDto deleteChatRoomRequest) {
         return ResponseEntity.ok(chatMessageService.sendExitChatRoomMessage(deleteChatRoomRequest));
     }

@@ -25,31 +25,37 @@ public class FilterChannelInterceptor implements ChannelInterceptor {
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
-        log.info("##" + message);
-        log.info("##" + channel);
+        log.info("## 소켓 접속!!! ");
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(message);
-        log.info("##" + headerAccessor);
+        log.info("## StompHeaderAccessor: " + headerAccessor);
+        //TODO: SEND 검증에서 제외
         if(StompCommand.CONNECT.equals(headerAccessor.getCommand()) || StompCommand.SEND.equals(headerAccessor.getCommand())
                 || StompCommand.SUBSCRIBE.equals(headerAccessor.getCommand())) {
-            String accessToken = headerAccessor.getNativeHeader("Authorization").toString();
-            log.info("## 액세스 토큰 : " + accessToken);
-            String refreshToken = headerAccessor.getNativeHeader("Refresh").toString();
-            log.info("## 액세스 토큰 : " + refreshToken);
-            if(StringUtils.hasText(accessToken) && accessToken.startsWith("Bearer")) {
-                accessToken = accessToken.replace("Bearer ", "");
-                log.info("## 액세스 토큰2 : " + accessToken);
+            if(StompCommand.SEND.equals(headerAccessor.getCommand())) {
+                String payload = new String((byte[]) message.getPayload());
+                log.info("Message Payload : "+ payload);
             }
-            try {
-                verifyJws(accessToken);
-                verifyJws(refreshToken);
-            } catch (Exception e) {
-                e.printStackTrace();
-//                jwtVerificationFilter.doFilter();
-            }
-            log.info("## 반환하는 메시지 : {}", message);
+//            headerAccessor.getNativeHeader("Authorization").toString();
+//            String accessToken = headerAccessor.getNativeHeader("Authorization").toString();
+//            accessToken = accessToken.substring(1, accessToken.length()-1);
+//            log.info("## accessToken: " + accessToken);
+//            String refreshToken = headerAccessor.getNativeHeader("refresh").toString();
+//            refreshToken = refreshToken.substring(1, refreshToken.length()-1);
+//            log.info("## refreshToken: " + refreshToken);
+//            if(StringUtils.hasText(accessToken) && accessToken.startsWith("Bearer")) {
+//                accessToken = accessToken.replace("Bearer ", "");
+//                log.info("### accessToken: " + accessToken);
+//            }
+//            try {
+//                verifyJws(accessToken);
+//                log.info("## 예외 발생?: " + accessToken);
+//                verifyJws(refreshToken);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+////                jwtVerificationFilter.doFilter();
+//            }
             return message;
         }
-        log.info("## 반환하는 메시지 : {}", message);
         return message;
     }
 

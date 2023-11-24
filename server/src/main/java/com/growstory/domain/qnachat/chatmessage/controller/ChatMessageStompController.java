@@ -5,10 +5,12 @@ import com.growstory.domain.qnachat.chatmessage.dto.ChatMessageResponseDto;
 import com.growstory.domain.qnachat.chatmessage.service.ChatMessageService;
 import com.growstory.domain.qnachat.chatroom.dto.DeleteChatRoomRequestDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class ChatMessageStompController {
@@ -24,6 +26,7 @@ public class ChatMessageStompController {
 
     @MessageMapping(value = "/chatRoom/send")
     public void sendMessageToChatRoom(ChatMessageRequestDto chatMessageRequest) {
+        log.info("## sendMessageToChatRoom called");
         ChatMessageResponseDto chatMessageResponse = chatMessageService.createSendMessage(chatMessageRequest, null);
         simpMessagingTemplate.convertAndSend("/sub/chatRoom/" + chatMessageRequest.getChatRoomId(), chatMessageResponse);
     }
