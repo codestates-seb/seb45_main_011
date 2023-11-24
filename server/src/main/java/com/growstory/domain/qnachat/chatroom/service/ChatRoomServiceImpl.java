@@ -103,9 +103,15 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     @Override
     public void deleteChatRoom(AccountChatRoom deleteAccChatRoomRequest) {
         ChatRoom chatRoom = deleteAccChatRoomRequest.getChatRoom();
-        chatRoom.updateStatus(ChatRoom.ChatRoomStatus.DELETED);
-        deleteAccChatRoomRequest.updateChatRoom(chatRoom);
-        //TODO: soft delete (N:M 관계 업데이트)
+        chatRoomRepository.delete(chatRoom);
+    }
+
+    // ChatRoom 상태 completed 업데이트
+    @Override
+    public void completeChatRoom(AccountChatRoom completeAccChatRoomRequest) {
+        ChatRoom chatRoom = completeAccChatRoomRequest.getChatRoom();
+        chatRoom.updateStatus(ChatRoom.ChatRoomStatus.COMPLETED);
+        completeAccChatRoomRequest.updateChatRoom(chatRoom);
     }
 
     // accountId와 chatRoomId를 통해 AccountChatRoom 조회

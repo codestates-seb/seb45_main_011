@@ -14,5 +14,6 @@ public interface ChatRoomService {
     AccountChatRoom validateIsEntered(Long accountId, Long chatRoomId);
     void validateAlreadyEnter(Long accountId, Long chatRoomId);
     void deleteChatRoom(AccountChatRoom deleteAccChatRoomRequest);
+    void completeChatRoom(AccountChatRoom completeAccChatRoomRequest);
     AccountChatRoom getAccountChatRoomByAccountIdAndChatRoomId(Long accountId, Long chatRoomId);
 }
