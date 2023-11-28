@@ -2,6 +2,7 @@ package com.growstory.domain.qnachat.chatroom.service;
 
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.account.service.AccountService;
+import com.growstory.domain.images.service.ChatMessageImageService;
 import com.growstory.domain.qnachat.chatroom.dto.*;
 import com.growstory.domain.qnachat.chatroom.entity.AccountChatRoom;
 import com.growstory.domain.qnachat.chatroom.entity.ChatRoom;
@@ -21,8 +22,11 @@ import java.util.List;
 @Service
 public class ChatRoomServiceImpl implements ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
+    private final ChatMessageImageService chatMessageImageService;
     private final AccountChatRoomRepository accountChatRoomRepository;
     private final AccountService accountService;
+
+    private static final String CHAT_MESSAGE_IMAGE_PROCESS_TYPE = "chat_message_image";
 
     // GET, 계정 아이디로 전체 채팅방 조회
     @Override
@@ -36,12 +40,12 @@ public class ChatRoomServiceImpl implements ChatRoomService {
             if(accountChatRoom.getChatRoom().getAccountChatRooms().size()==2) {
                 accountChatRoom.getChatRoom().getAccountChatRooms().stream()
                         .filter(tempAccountChatRoom -> !accountChatRoom.equals(tempAccountChatRoom))
-                        .filter(tempAccountChatRoom -> tempAccountChatRoom.getChatRoom().getStatus().equals(ChatRoom.ChatRoomStatus.EXISTS))
+                        .filter(tempAccountChatRoom -> isValidateStatus(tempAccountChatRoom.getChatRoom()))
                         .forEach(tempAccountChatRoom ->chatRoomResponses.add(ChatRoomResponseDto.from(accountChatRoom, tempAccountChatRoom)));
             } else // 그룹 채팅의 경우
             {
                 accountChatRoom.getChatRoom().getAccountChatRooms().stream()
-                                .filter(tempAccountChatRoom -> tempAccountChatRoom.getChatRoom().getStatus().equals(ChatRoom.ChatRoomStatus.EXISTS))
+                                .filter(tempAccountChatRoom -> isValidateStatus(tempAccountChatRoom.getChatRoom()))
                                 .forEach(tempAccountChatRoom -> chatRoomResponses.add(ChatRoomResponseDto.from(accountChatRoom)));
             }
         }
@@ -99,10 +103,13 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         }
     }
 
-    // ChatRoom 상태 deleted로 업데이트
+    // ChatRoom 삭제
     @Override
     public void deleteChatRoom(AccountChatRoom deleteAccChatRoomRequest) {
         ChatRoom chatRoom = deleteAccChatRoomRequest.getChatRoom();
+        chatRoom.getChatMessages().stream()
+                .forEach(chatMessage -> chatMessageImageService.deleteChatMessageImageWithS3(chatMessage.getChatMessageImage(),CHAT_MESSAGE_IMAGE_PROCESS_TYPE));
+
         chatRoomRepository.delete(chatRoom);
     }
 
@@ -110,7 +117,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     @Override
     public void completeChatRoom(AccountChatRoom completeAccChatRoomRequest) {
         ChatRoom chatRoom = completeAccChatRoomRequest.getChatRoom();
-        chatRoom.updateStatus(ChatRoom.ChatRoomStatus.COMPLETED);
+        chatRoom.updateStatus(ChatRoom.ChatRoomStatus.ANSWER_COMPLETED);
         completeAccChatRoomRequest.updateChatRoom(chatRoom);
     }
 
@@ -137,5 +144,11 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     private void validateCountIsNotZero(List<AccountChatRoom> accountChatRoomList) {
         if (accountChatRoomList.size() == 0)
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_CHATROOM_NOT_FOUND);
+    }
+
+    // 채팅방 상태가 유효(존재 || 답변 완료)한지 체크
+    private boolean isValidateStatus(ChatRoom chatRoom) {
+        return chatRoom.getStatus().equals(ChatRoom.ChatRoomStatus.EXISTS) ||
+                chatRoom.getStatus().equals(ChatRoom.ChatRoomStatus.ANSWER_COMPLETED);
     }
 }
