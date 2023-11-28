@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class DeleteChatRoomRequestDto {
+public class EnumChatRoomRequestDto {
     @NotNull @Min(1)
     private Long chatRoomId;
 
@@ -15,7 +15,7 @@ public class DeleteChatRoomRequestDto {
     private Long accountId;
 
     @Builder
-    public DeleteChatRoomRequestDto(Long chatRoomId, Long accountId) {
+    public EnumChatRoomRequestDto(Long chatRoomId, Long accountId) {
         this.chatRoomId = chatRoomId;
         this.accountId = accountId;
     }
