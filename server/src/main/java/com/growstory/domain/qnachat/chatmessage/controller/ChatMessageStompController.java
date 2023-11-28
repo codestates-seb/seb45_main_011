@@ -3,7 +3,7 @@ package com.growstory.domain.qnachat.chatmessage.controller;
 import com.growstory.domain.qnachat.chatmessage.dto.ChatMessageRequestDto;
 import com.growstory.domain.qnachat.chatmessage.dto.ChatMessageResponseDto;
 import com.growstory.domain.qnachat.chatmessage.service.ChatMessageService;
-import com.growstory.domain.qnachat.chatroom.dto.DeleteChatRoomRequestDto;
+import com.growstory.domain.qnachat.chatroom.dto.EnumChatRoomRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -19,20 +19,19 @@ public class ChatMessageStompController {
     private final ChatMessageService chatMessageService;
 
     @MessageMapping(value = "/chatRoom/enter")
-    public void enterChatRoom(ChatMessageRequestDto chatMessageRequest) {
-        ChatMessageResponseDto chatMessageResponse = chatMessageService.createEnterMessage(chatMessageRequest, null);
-        simpMessagingTemplate.convertAndSend("/sub/chatRoom/" + chatMessageRequest.getChatRoomId(), chatMessageResponse);
+    public void enterChatRoom(EnumChatRoomRequestDto enterMessageRequest) {
+        ChatMessageResponseDto chatMessageResponse = chatMessageService.createEnterMessage(enterMessageRequest);
+        simpMessagingTemplate.convertAndSend("/sub/chatRoom/" + enterMessageRequest.getChatRoomId(), chatMessageResponse);
     }
 
     @MessageMapping(value = "/chatRoom/send")
     public void sendMessageToChatRoom(ChatMessageRequestDto chatMessageRequest) {
-        log.info("## sendMessageToChatRoom called");
         ChatMessageResponseDto chatMessageResponse = chatMessageService.createSendMessage(chatMessageRequest, null);
         simpMessagingTemplate.convertAndSend("/sub/chatRoom/" + chatMessageRequest.getChatRoomId(), chatMessageResponse);
     }
 
     @MessageMapping(value = "/chatRoom/exit")
-    public void exitChatRoom(DeleteChatRoomRequestDto deleteChatRoomRequest) {
+    public void exitChatRoom(EnumChatRoomRequestDto deleteChatRoomRequest) {
         ChatMessageResponseDto chatMessageResponse = chatMessageService.sendExitChatRoomMessage(deleteChatRoomRequest);
         simpMessagingTemplate.convertAndSend("/sub/chatRoom/"+deleteChatRoomRequest.getChatRoomId(), chatMessageResponse);
     }
