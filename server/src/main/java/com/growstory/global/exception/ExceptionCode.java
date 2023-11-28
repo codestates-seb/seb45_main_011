@@ -1,6 +1,7 @@
 package com.growstory.global.exception;
 
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ExceptionCode {
@@ -53,7 +54,8 @@ public enum ExceptionCode {
 
     CHATROOM_NOT_FOUND(404, "ChatRoom does not Found"),
     ACCOUNT_CHATROOM_NOT_FOUND(404, "AccountChatRoom does not Found"),
-    ALREADY_CHATROOM_ENTERED(409, "Already entered this ChatRoom");
+    ALREADY_CHATROOM_ENTERED(409, "Already entered this ChatRoom"),
+    WEBSOCKET_EXCEPTION(HttpStatus.UNAUTHORIZED.value(), "Exception occurred at Websocket Process");
 
     private final int status;
     private final String message;
