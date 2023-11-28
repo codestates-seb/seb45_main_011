@@ -55,7 +55,7 @@ public class ChatRoom extends BaseTimeEntity {
     public enum ChatRoomStatus {
         EXISTS(1, "EXISTS"),
         DELETED(2, "DELETED"),
-        COMPLETED(3, "COMPLETED");
+        ANSWER_COMPLETED(3, "ANSWER COMPLETED");
         private final int status;
         private final String message;
 
