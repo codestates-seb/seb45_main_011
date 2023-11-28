@@ -3,6 +3,7 @@ package com.growstory.domain.qnachat.chatmessage.controller;
 import com.growstory.domain.qnachat.chatmessage.dto.ChatMessageRequestDto;
 import com.growstory.domain.qnachat.chatmessage.dto.ChatMessageResponseDto;
 import com.growstory.domain.qnachat.chatmessage.service.ChatMessageService;
+import com.growstory.domain.qnachat.chatroom.dto.EnumChatRoomRequestDto;
 import com.growstory.global.response.MultiResponseDto;
 import com.growstory.global.response.PageResponse;
 import com.growstory.global.response.SingleResponseDto;
@@ -38,9 +39,8 @@ public class ChatMessageController {
 
     @Operation(summary = "입장 메시지 만들기 테스트", description = "메시지 만들기 테스트")
     @PostMapping("/enter-test")
-    public ResponseEntity<ChatMessageResponseDto> createEnterMessage(@Valid @RequestPart ChatMessageRequestDto chatMessageRequest,
-                                                                                        @RequestPart(required = false, value = "image") MultipartFile image) {
-        return ResponseEntity.ok(chatMessageService.createEnterMessage(chatMessageRequest, image));
+    public ResponseEntity<ChatMessageResponseDto> createEnterMessage(@Valid @RequestBody EnumChatRoomRequestDto chatMessageRequest) {
+        return ResponseEntity.ok(chatMessageService.createEnterMessage(chatMessageRequest));
     }
 
     @Operation(summary = "보내는 메시지 만들기 테스트", description = "메시지 만들기 테스트")
