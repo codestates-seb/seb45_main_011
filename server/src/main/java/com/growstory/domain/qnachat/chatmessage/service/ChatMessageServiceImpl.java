@@ -70,7 +70,7 @@ public class ChatMessageServiceImpl implements ChatMessageService{
     // 채팅방 입장 메시지 매핑 및 저장, 응답
     @Override
     public ChatMessageResponseDto createEnterMessage(EnumChatRoomRequestDto chatMessageRequest) {
-        Long accountId = chatMessageRequest.getAccountId();
+        Long accountId = chatMessageRequest.getSenderId();
         Long chatRoomId = chatMessageRequest.getChatRoomId();
         Account account = accountService.findVerifiedAccount(accountId);
         ChatRoom chatRoom = chatRoomService.findVerifiedChatRoom(chatRoomId);
@@ -99,7 +99,7 @@ public class ChatMessageServiceImpl implements ChatMessageService{
     // 채팅방 삭제 메시지 전송 & 채팅방 떠나기
     @Override
     public ChatMessageResponseDto sendExitChatRoomMessage(EnumChatRoomRequestDto deleteChatRoomRequest) {
-        Account account = accountService.findVerifiedAccount(deleteChatRoomRequest.getAccountId());
+        Account account = accountService.findVerifiedAccount(deleteChatRoomRequest.getSenderId());
         ChatRoom chatRoom = chatRoomService.findVerifiedChatRoom(deleteChatRoomRequest.getChatRoomId());
         AccountChatRoom accountChatRoom = chatRoomService.getAccountChatRoomByAccountIdAndChatRoomId(account.getAccountId(), chatRoom.getChatRoomId());
         // 채팅방 떠나기

@@ -12,11 +12,11 @@ public class EnumChatRoomRequestDto {
     private Long chatRoomId;
 
     @NotNull @Min(1)
-    private Long accountId;
+    private Long senderId;
 
     @Builder
-    public EnumChatRoomRequestDto(Long chatRoomId, Long accountId) {
+    public EnumChatRoomRequestDto(Long chatRoomId, Long senderId) {
         this.chatRoomId = chatRoomId;
-        this.accountId = accountId;
+        this.senderId = senderId;
     }
 }
