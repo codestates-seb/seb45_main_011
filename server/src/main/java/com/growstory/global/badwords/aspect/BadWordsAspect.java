@@ -28,7 +28,11 @@ public class BadWordsAspect {
                 "execution(public * com.growstory..board.controller.*.postBoard(..)) || " +
                 "execution(public * com.growstory..board.controller.*.patchBoard(..)) || " +
                 "execution(public * com.growstory..comment.controller.*.postComment(..)) || " +
-                "execution(public * com.growstory..comment.controller.*.patchComment(..)) ")
+                "execution(public * com.growstory..comment.controller.*.patchComment(..)) || " +
+                "execution(public * com.growstory..leaf.controller.*.postLeaf(..)) || " +
+                "execution(public * com.growstory..leaf.controller.*.patchLeaf(..)) || " +
+                "execution(public * com.growstory..account.controller.*.postAccount(..)) || " +
+                "execution(public * com.growstory..account.controller.*.patchDisplayName(..)) " )
     public void beforeWritten() {
     }
 

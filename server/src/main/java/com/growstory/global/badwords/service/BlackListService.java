@@ -79,6 +79,7 @@ public class BlackListService implements BlackList, WhiteList {
     //사용자가 입력한 욕설 리스트 반환
     public ProfanityDto getProfanityWords(String text) {
         String[] contents = text.split(" ");
+        bannedWords.clear();
 
         Set<String> inputProfanityWords = Arrays.stream(contents)
                 .filter(this::isForbidden)

@@ -11,4 +11,16 @@ import java.util.Set;
 public class ProfanityDto {
     Set<String> inputProfanityWords = new HashSet<>();
     Set<String> bannedWords = new HashSet<>();
+
+    @Override
+    public String toString() {
+        StringBuilder response = new StringBuilder();
+
+        String inputProfanityWords = this.getInputProfanityWords().toString();
+        String bannedWords = this.getBannedWords().toString();
+
+        return response.append(inputProfanityWords.substring(1, inputProfanityWords.length()-1))
+                .append("/")
+                .append(bannedWords.substring(1, bannedWords.length()-1)).toString();
+    }
 }
