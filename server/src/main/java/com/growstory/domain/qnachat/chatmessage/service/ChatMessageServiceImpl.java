@@ -10,7 +10,7 @@ import com.growstory.domain.qnachat.chatmessage.dto.ChatMessageResponseDto;
 import com.growstory.domain.qnachat.chatmessage.entity.ChatMessage;
 import com.growstory.domain.qnachat.chatmessage.repository.ChatMessageRepository;
 import com.growstory.domain.qnachat.chatroom.constants.ChatRoomConstants;
-import com.growstory.domain.qnachat.chatroom.dto.DeleteChatRoomRequestDto;
+import com.growstory.domain.qnachat.chatroom.dto.EnumChatRoomRequestDto;
 import com.growstory.domain.qnachat.chatroom.entity.AccountChatRoom;
 import com.growstory.domain.qnachat.chatroom.entity.ChatRoom;
 import com.growstory.domain.qnachat.chatroom.service.ChatRoomService;
@@ -69,7 +69,7 @@ public class ChatMessageServiceImpl implements ChatMessageService{
 
     // 채팅방 입장 메시지 매핑 및 저장, 응답
     @Override
-    public ChatMessageResponseDto createEnterMessage(ChatMessageRequestDto chatMessageRequest, MultipartFile image) {
+    public ChatMessageResponseDto createEnterMessage(EnumChatRoomRequestDto chatMessageRequest) {
         Long accountId = chatMessageRequest.getSenderId();
         Long chatRoomId = chatMessageRequest.getChatRoomId();
         Account account = accountService.findVerifiedAccount(accountId);
@@ -80,15 +80,10 @@ public class ChatMessageServiceImpl implements ChatMessageService{
 
         ChatMessage chatMessage =
                 ChatMessage.builder()
-                        .message(account.getDisplayName()+ ChatMessageConstants.EnumChatMessage.ENTERED.getValue())
+                        .message("안녕하세요, "+ account.getDisplayName()+ ChatMessageConstants.EnumChatMessage.ENTERED.getValue())
                         .account(account)
                         .chatRoom(chatRoom)
                         .build();
-
-        // image가 null이 아닐 경우 이미지 업로드 및 DB 저장
-        if(image!=null && !image.isEmpty()) {
-            mapChatMessageWithImage(image, chatMessage);
-        }
 
         chatMessageRepository.save(chatMessage);
 
@@ -103,8 +98,8 @@ public class ChatMessageServiceImpl implements ChatMessageService{
 
     // 채팅방 삭제 메시지 전송 & 채팅방 떠나기
     @Override
-    public ChatMessageResponseDto sendExitChatRoomMessage(DeleteChatRoomRequestDto deleteChatRoomRequest) {
-        Account account = accountService.findVerifiedAccount(deleteChatRoomRequest.getAccountId());
+    public ChatMessageResponseDto sendExitChatRoomMessage(EnumChatRoomRequestDto deleteChatRoomRequest) {
+        Account account = accountService.findVerifiedAccount(deleteChatRoomRequest.getSenderId());
         ChatRoom chatRoom = chatRoomService.findVerifiedChatRoom(deleteChatRoomRequest.getChatRoomId());
         AccountChatRoom accountChatRoom = chatRoomService.getAccountChatRoomByAccountIdAndChatRoomId(account.getAccountId(), chatRoom.getChatRoomId());
         // 채팅방 떠나기

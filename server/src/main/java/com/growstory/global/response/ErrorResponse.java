@@ -44,12 +44,15 @@ public class ErrorResponse {
 
     // 비속어 필터링 관련 예외 응답 처리
     public static ErrorResponse of(ExceptionCode exceptionCode, ProfanityDto profanityDto) {
-        StringBuilder response = new StringBuilder();
-        response.append(profanityDto.getInputProfanityWords())
-                .append(" 에 욕설이 포함되어 있습니다. \n ")
-                .append(" 다음은 금지 욕설입니다. ")
-                .append(profanityDto.getBannedWords());
-        return new ErrorResponse(exceptionCode.getStatus(), response.toString());
+//        StringBuilder response = new StringBuilder();
+//
+//        String inputProfanityWords = profanityDto.getInputProfanityWords().toString();
+//        String bannedWords = profanityDto.getBannedWords().toString();
+//
+//        response.append(inputProfanityWords.substring(1, inputProfanityWords.length()-1))
+//                .append("/")
+//                .append(bannedWords.substring(1, bannedWords.length()-1));
+        return new ErrorResponse(exceptionCode.getStatus(), profanityDto.toString());
     }
 
     public static ErrorResponse of(HttpStatus httpStatus) {

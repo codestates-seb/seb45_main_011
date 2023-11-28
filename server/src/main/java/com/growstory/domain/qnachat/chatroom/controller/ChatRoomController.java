@@ -31,10 +31,10 @@ public class ChatRoomController {
 
     @Operation(summary = "qna 채팅방 생성", description = "관리자와 문의자의 1:1 문의 채팅방을 생성합니다.")
     @PostMapping
-    public ResponseEntity<HttpStatus> createQnaChatRoom(@RequestBody CreateQnaChatRequest createQnaChatRequest) {
+    public ResponseEntity<CreateQnaChatResponse> createQnaChatRoom(@RequestBody CreateQnaChatRequest createQnaChatRequest) {
         Long chatRoomId = chatRoomService.createQnaChatRoom(createQnaChatRequest);
         URI location = UriCreator.createUri(DEFAULT_URL, chatRoomId);
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.created(location).body(CreateQnaChatResponse.builder().chatRoomId(chatRoomId).build());
     }
 
     @Operation(summary = "유저의 채팅방 입장 여부 조회", description = "특정 유저가 채팅방에 입장했는지 여부를 조회합니다.")
@@ -45,8 +45,8 @@ public class ChatRoomController {
 
 
     @Operation(summary = "채팅방 나가기", description = "특정 유저의 채팅방을 삭제 상태로 변경 합니다.")
-    @PatchMapping("/out")
-    public ResponseEntity<ChatMessageResponseDto> deleteChatRoom(@RequestBody DeleteChatRoomRequestDto deleteChatRoomRequest) {
+    @DeleteMapping("/out")
+    public ResponseEntity<ChatMessageResponseDto> deleteChatRoom(@RequestBody EnumChatRoomRequestDto deleteChatRoomRequest) {
         return ResponseEntity.ok(chatMessageService.sendExitChatRoomMessage(deleteChatRoomRequest));
     }
 }
