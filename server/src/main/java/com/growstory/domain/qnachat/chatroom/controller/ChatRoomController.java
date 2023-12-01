@@ -46,7 +46,14 @@ public class ChatRoomController {
 
     @Operation(summary = "채팅방 나가기", description = "특정 유저의 채팅방을 삭제 상태로 변경 합니다.")
     @DeleteMapping("/out")
-    public ResponseEntity<ChatMessageResponseDto> deleteChatRoom(@RequestBody EnumChatRoomRequestDto deleteChatRoomRequest) {
+    public ResponseEntity<ChatMessageResponseDto> deleteChatRoom(@RequestBody SimpChatRoomRequestDto deleteChatRoomRequest) {
         return ResponseEntity.ok(chatMessageService.sendExitChatRoomMessage(deleteChatRoomRequest));
+    }
+
+    @Operation(summary = "문의 답변 여부 갱신", description = "해당 채팅방의 답변 여부를 최신 상태로 갱신합니다.")
+    @PatchMapping("/qna-answer-renewal")
+    public ResponseEntity<HttpStatus> patchAnswer(@RequestBody SimpChatRoomRequestDto answerRenewalRequest) {
+        chatRoomService.updateAnswer(answerRenewalRequest);
+        return ResponseEntity.ok().build();
     }
 }

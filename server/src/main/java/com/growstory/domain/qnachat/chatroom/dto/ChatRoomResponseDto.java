@@ -25,6 +25,7 @@ public class ChatRoomResponseDto {
     private String otherAccountName;
     private String createdAt;
     private String status;
+    private Boolean isAnswered;
     private String latestMessage;
     private LocalDateTime latestTime;
 
@@ -46,6 +47,7 @@ public class ChatRoomResponseDto {
                 .otherAccountName(otherAccountChatRoom.getAccount().getDisplayName())
                 .status(accountChatRoom.getChatRoom().getStatus().getMessage())
                 .createdAt(accountChatRoom.getChatRoom().getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .isAnswered(accountChatRoom.getChatRoom().getIsAnswered())
                 .latestMessage(tempLatestMessage)
                 .latestTime(tempLatestTime)
                 .build();

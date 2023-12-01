@@ -127,6 +127,22 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         return validateAccountIdAndChatRoomId(accountId, chatRoomId);
     }
 
+    // 답변 여부 업데이트
+    @Override
+    public void updateAnswer(SimpChatRoomRequestDto answerRenewalRequest) {
+        Long lastSenderId = answerRenewalRequest.getSenderId();
+        Long chatRoomId = answerRenewalRequest.getChatRoomId();
+
+        Account findAccount = accountService.findVerifiedAccount(lastSenderId);
+        ChatRoom findChatRoom = findVerifiedChatRoom(chatRoomId);
+
+        boolean answered = false;
+        if(findAccount.getRoles().contains("ADMIN"))
+            answered = true;
+
+        findChatRoom.updateAnswered(answered);
+    }
+
     // chatRoomId로 채팅방 조회
     @Override
     public ChatRoom findVerifiedChatRoom(Long chatRoomId) {

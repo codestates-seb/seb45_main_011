@@ -7,16 +7,10 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class EnumChatRoomRequestDto {
+public class SimpChatRoomRequestDto {
     @NotNull @Min(1)
     private Long chatRoomId;
 
     @NotNull @Min(1)
     private Long senderId;
-
-    @Builder
-    public EnumChatRoomRequestDto(Long chatRoomId, Long senderId) {
-        this.chatRoomId = chatRoomId;
-        this.senderId = senderId;
-    }
 }

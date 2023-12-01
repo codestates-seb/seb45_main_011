@@ -16,4 +16,5 @@ public interface ChatRoomService {
     void deleteChatRoom(AccountChatRoom deleteAccChatRoomRequest);
     void completeChatRoom(AccountChatRoom completeAccChatRoomRequest);
     AccountChatRoom getAccountChatRoomByAccountIdAndChatRoomId(Long accountId, Long chatRoomId);
+    void updateAnswer(SimpChatRoomRequestDto answerRenewalRequest);
 }
