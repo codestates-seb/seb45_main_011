@@ -80,7 +80,7 @@ public class ChatMessageServiceImpl implements ChatMessageService{
 
         ChatMessage chatMessage =
                 ChatMessage.builder()
-                        .message("안녕하세요, "+ account.getDisplayName()+ ChatMessageConstants.EnumChatMessage.ENTERED.getValue())
+                        .message(setEntryMessage(account.getDisplayName()))
                         .account(account)
                         .chatRoom(chatRoom)
                         .build();
@@ -94,6 +94,14 @@ public class ChatMessageServiceImpl implements ChatMessageService{
         ChatMessageImage chatMessageImage
                 = chatMessageImageService.createChatMessageImgWithS3(image, CHAT_MESSAGE_IMAGE_PROCESS_TYPE, chatMessage);
         chatMessage.updateChatMessageImage(chatMessageImage);
+    }
+
+    private String setEntryMessage(String displayName) {
+        StringBuilder sb = new StringBuilder();
+        return sb.append("안녕하세요 ")
+                .append(displayName)
+                .append(ChatMessageConstants.EnumChatMessage.QNA_ENTERED.getValue())
+                .toString();
     }
 
     // 채팅방 삭제 메시지 전송 & 채팅방 떠나기

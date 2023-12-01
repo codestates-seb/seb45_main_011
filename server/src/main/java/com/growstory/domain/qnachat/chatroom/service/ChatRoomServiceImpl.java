@@ -73,7 +73,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         Account questioner = accountService.findVerifiedAccount(questionerId);
         Account reviewer = accountService.findVerifiedAccount(reviewerId);
 
-        ChatRoom chatRoom = ChatRoom.builder().roomName(questioner.getDisplayName() +"과(와)" + reviewer.getDisplayName() + "의 채팅방").build();
+        ChatRoom chatRoom = ChatRoom.builder().roomName(createQnaChatRequest.getQnaTitle()).build();
         ChatRoom createdChatRoom = chatRoomRepository.save(chatRoom);
 
         AccountChatRoom accountChatRoomByQuestioner = AccountChatRoom.builder().account(questioner).chatRoom(createdChatRoom).build();
