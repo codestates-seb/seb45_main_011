@@ -10,11 +10,15 @@ import com.growstory.domain.qnachat.chatroom.repository.AccountChatRoomRepositor
 import com.growstory.domain.qnachat.chatroom.repository.ChatRoomRepository;
 import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
+import com.growstory.global.response.PageResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -30,7 +34,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
     // GET, 계정 아이디로 전체 채팅방 조회
     @Override
-    public List<ChatRoomResponseDto> getAllChatRooms(Long accountId) {
+    public PageResponse<List<ChatRoomResponseDto>> getAllChatRooms(Long accountId, Pageable pageable) {
         Account findAccount = accountService.findVerifiedAccount(accountId);
         List<AccountChatRoom> accountChatRoomList = accountChatRoomRepository.findAllByAccount(findAccount);
         validateCountIsNotZero(accountChatRoomList);
@@ -49,7 +53,16 @@ public class ChatRoomServiceImpl implements ChatRoomService {
                                 .forEach(tempAccountChatRoom -> chatRoomResponses.add(ChatRoomResponseDto.from(accountChatRoom)));
             }
         }
-        return chatRoomResponses;
+
+        //최근 메시지 수신일을 기준으로 내림차순정렬
+        Collections.sort(chatRoomResponses, Comparator.comparing(ChatRoomResponseDto::getLatestTime).reversed());
+
+        // 페이지네이션 처리
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), chatRoomResponses.size());
+        Page<ChatRoomResponseDto> page = new PageImpl<>(chatRoomResponses.subList(start, end), pageable, chatRoomResponses.size());
+
+        return PageResponse.of(page, chatRoomResponses);
     }
 
     //채팅방 id와 계정 id를 이용해 입장 여부를 조회
@@ -73,7 +86,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         Account questioner = accountService.findVerifiedAccount(questionerId);
         Account reviewer = accountService.findVerifiedAccount(reviewerId);
 
-        ChatRoom chatRoom = ChatRoom.builder().roomName(questioner.getDisplayName() +"과(와)" + reviewer.getDisplayName() + "의 채팅방").build();
+        ChatRoom chatRoom = ChatRoom.builder().roomName(createQnaChatRequest.getQnaTitle()).build();
         ChatRoom createdChatRoom = chatRoomRepository.save(chatRoom);
 
         AccountChatRoom accountChatRoomByQuestioner = AccountChatRoom.builder().account(questioner).chatRoom(createdChatRoom).build();
@@ -125,6 +138,22 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     @Override
     public AccountChatRoom getAccountChatRoomByAccountIdAndChatRoomId(Long accountId, Long chatRoomId) {
         return validateAccountIdAndChatRoomId(accountId, chatRoomId);
+    }
+
+    // 답변 여부 업데이트
+    @Override
+    public void updateAnswer(SimpChatRoomRequestDto answerRenewalRequest) {
+        Long lastSenderId = answerRenewalRequest.getSenderId();
+        Long chatRoomId = answerRenewalRequest.getChatRoomId();
+
+        Account findAccount = accountService.findVerifiedAccount(lastSenderId);
+        ChatRoom findChatRoom = findVerifiedChatRoom(chatRoomId);
+
+        boolean answered = false;
+        if(findAccount.getRoles().contains("ADMIN"))
+            answered = true;
+
+        findChatRoom.updateAnswered(answered);
     }
 
     // chatRoomId로 채팅방 조회

@@ -32,10 +32,14 @@ public class ChatRoom extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private ChatRoomStatus status;
 
+    @Column(nullable = false)
+    private Boolean isAnswered;
+
     @Builder
     public ChatRoom(String roomName) {
         this.roomName = roomName;
         this.status = ChatRoomStatus.EXISTS;
+        this.isAnswered = false;
     }
 
     /**
@@ -45,6 +49,10 @@ public class ChatRoom extends BaseTimeEntity {
     public Long updateRoomName(ChatRoomRequestDto requestDto) {
         this.roomName = requestDto.getRoomName();
         return this.chatRoomId;
+    }
+
+    public void updateAnswered(boolean answered) {
+        this.isAnswered = answered;
     }
 
     /**

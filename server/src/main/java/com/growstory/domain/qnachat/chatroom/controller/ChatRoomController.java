@@ -4,9 +4,13 @@ import com.growstory.domain.qnachat.chatmessage.dto.ChatMessageResponseDto;
 import com.growstory.domain.qnachat.chatmessage.service.ChatMessageService;
 import com.growstory.domain.qnachat.chatroom.dto.*;
 import com.growstory.domain.qnachat.chatroom.service.ChatRoomService;
+import com.growstory.global.response.PageResponse;
 import com.growstory.global.utils.UriCreator;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +29,10 @@ public class ChatRoomController {
 
     @Operation(summary = "유저의 모든 채팅방 조회", description = "특정 유저의 모든 채팅방을 조회합니다.")
     @GetMapping("/{account-id}")
-    public ResponseEntity<List<ChatRoomResponseDto>> getAllChatRooms(@PathVariable("account-id") Long accountId) {
-        return ResponseEntity.ok(chatRoomService.getAllChatRooms(accountId));
+    public ResponseEntity<PageResponse<List<ChatRoomResponseDto>>> getAllChatRooms(
+            @PathVariable("account-id") Long accountId,
+            Pageable pageable) {
+        return ResponseEntity.ok(chatRoomService.getAllChatRooms(accountId, pageable));
     }
 
     @Operation(summary = "qna 채팅방 생성", description = "관리자와 문의자의 1:1 문의 채팅방을 생성합니다.")
@@ -46,7 +52,14 @@ public class ChatRoomController {
 
     @Operation(summary = "채팅방 나가기", description = "특정 유저의 채팅방을 삭제 상태로 변경 합니다.")
     @DeleteMapping("/out")
-    public ResponseEntity<ChatMessageResponseDto> deleteChatRoom(@RequestBody EnumChatRoomRequestDto deleteChatRoomRequest) {
+    public ResponseEntity<ChatMessageResponseDto> deleteChatRoom(@RequestBody SimpChatRoomRequestDto deleteChatRoomRequest) {
         return ResponseEntity.ok(chatMessageService.sendExitChatRoomMessage(deleteChatRoomRequest));
+    }
+
+    @Operation(summary = "문의 답변 여부 갱신", description = "해당 채팅방의 답변 여부를 최신 상태로 갱신합니다.")
+    @PatchMapping("/qna-answer-renewal")
+    public ResponseEntity<HttpStatus> patchAnswer(@RequestBody SimpChatRoomRequestDto answerRenewalRequest) {
+        chatRoomService.updateAnswer(answerRenewalRequest);
+        return ResponseEntity.ok().build();
     }
 }

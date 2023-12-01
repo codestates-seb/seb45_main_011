@@ -15,4 +15,6 @@ public class CreateQnaChatRequest {
     private Long questionerId;
     @NotNull @Min(1)
     private Long reviewerId;
+    @NotNull
+    private String qnaTitle;
 }

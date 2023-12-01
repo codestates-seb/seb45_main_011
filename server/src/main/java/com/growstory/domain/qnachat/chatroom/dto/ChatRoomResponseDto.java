@@ -25,8 +25,9 @@ public class ChatRoomResponseDto {
     private String otherAccountName;
     private String createdAt;
     private String status;
+    private Boolean isAnswered;
     private String latestMessage;
-    private LocalDateTime latestTime;
+    private String latestTime;
 
     public static ChatRoomResponseDto from(AccountChatRoom accountChatRoom, AccountChatRoom otherAccountChatRoom) {
 
@@ -45,9 +46,10 @@ public class ChatRoomResponseDto {
                 .otherAccountId(otherAccountChatRoom.getAccount().getAccountId())
                 .otherAccountName(otherAccountChatRoom.getAccount().getDisplayName())
                 .status(accountChatRoom.getChatRoom().getStatus().getMessage())
-                .createdAt(accountChatRoom.getChatRoom().getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .createdAt(accountChatRoom.getChatRoom().getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                .isAnswered(accountChatRoom.getChatRoom().getIsAnswered())
                 .latestMessage(tempLatestMessage)
-                .latestTime(tempLatestTime)
+                .latestTime(tempLatestTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .build();
     }
 
@@ -66,7 +68,7 @@ public class ChatRoomResponseDto {
         return ChatRoomResponseDto.builder()
                 .chatRoomId(accountChatRoom.getChatRoom().getChatRoomId())
                 .latestMessage(tempLatestMessage)
-                .latestTime(tempLatestTime)
+                .latestTime(tempLatestTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .build();
 
     }
