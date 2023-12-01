@@ -125,7 +125,9 @@ public class EmailService {
 
                 mimeMessageHelper.setTo(findAccount.getEmail()); // 수신 이메일
                 mimeMessageHelper.setSubject(findChatRoom.getRoomName() + "에 대한 답변이 작성되었습니다.");
-                mimeMessageHelper.setText(setContext(chatRoomLink, "채팅방 링크"), true);
+                mimeMessageHelper.setText(setContext(chatRoomLink, "qnaResponse"), true);
+
+                mailSender.send(mimeMessage);
 
             } catch (MessagingException e) {
                 throw new RuntimeException(e);
