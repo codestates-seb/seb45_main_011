@@ -31,7 +31,7 @@ public class ChatRoomController {
     @GetMapping("/{account-id}")
     public ResponseEntity<PageResponse<List<ChatRoomResponseDto>>> getAllChatRooms(
             @PathVariable("account-id") Long accountId,
-            Pageable pageable) {
+            @PageableDefault Pageable pageable) {
         return ResponseEntity.ok(chatRoomService.getAllChatRooms(accountId, pageable));
     }
 

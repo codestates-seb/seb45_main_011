@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -18,7 +19,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class ChatRoomResponseDto {
+public class ChatRoomResponseDto implements Comparable<ChatRoomResponseDto> {
     private Long chatRoomId;
     private String roomName;
     private Long otherAccountId;
@@ -49,7 +50,7 @@ public class ChatRoomResponseDto {
                 .createdAt(accountChatRoom.getChatRoom().getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .isAnswered(accountChatRoom.getChatRoom().getIsAnswered())
                 .latestMessage(tempLatestMessage)
-                .latestTime(tempLatestTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                .latestTime(tempLatestTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .build();
     }
 
@@ -71,5 +72,18 @@ public class ChatRoomResponseDto {
                 .latestTime(tempLatestTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .build();
 
+    }
+
+    public void trimLatestTime() {
+        this.latestTime = this.latestTime.split(" ")[0];
+//        return this;
+    }
+
+
+    @Override
+    public int compareTo(ChatRoomResponseDto other) {
+        // latestTime을 기준으로 내림차순 정렬
+        return Comparator.comparing(ChatRoomResponseDto::getLatestTime, Comparator.nullsLast(Comparator.reverseOrder()))
+                .compare(this, other);
     }
 }
