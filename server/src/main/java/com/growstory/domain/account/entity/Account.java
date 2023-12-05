@@ -7,6 +7,7 @@ import com.growstory.domain.account.constants.Status;
 import com.growstory.domain.alarm.entity.Alarm;
 import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.comment.entity.Comment;
+import com.growstory.domain.guestbook.entity.GuestBook;
 import com.growstory.domain.leaf.entity.Leaf;
 import com.growstory.domain.likes.entity.AccountLike;
 import com.growstory.domain.likes.entity.BoardLike;
@@ -95,6 +96,14 @@ public class Account extends BaseTimeEntity {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Report> reports = new ArrayList<>();
 
+    // 방명록을 받은 계정 리스트
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<GuestBook> receivedGuestBooks = new ArrayList<>();
+
+    // 방명록을 작성한 계정 리스트
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<GuestBook> writerGuestBooks = new ArrayList<>();
+
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
@@ -106,6 +115,7 @@ public class Account extends BaseTimeEntity {
 
     // 출석 체크
     private Boolean attendance = false;
+
 
     public void addLeaf(Leaf leaf) {
         leaves.add(leaf);
