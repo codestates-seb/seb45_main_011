@@ -53,4 +53,16 @@ public class EmailController {
                 .data(responseDto)
                 .build());
     }
+
+    @Operation(summary = "QnA 답변 여부 전송" , description = "QnA 관리자 답변 완료 여부 안내")
+    @PostMapping("/qna-answer")
+    public ResponseEntity<SingleResponseDto<EmailDto.QnaAnswerResponse>> postQnaAnswerMail(@Valid @RequestBody EmailDto.QnaAnswer emailQnaDto) {
+        EmailDto.QnaAnswerResponse responseDto = emailService.sendQnaAnswerMail(emailQnaDto);
+
+        return ResponseEntity.ok(SingleResponseDto.<EmailDto.QnaAnswerResponse>builder()
+                .status(HttpStatusCode.OK.getStatusCode())
+                .message(HttpStatusCode.OK.getMessage())
+                .data(responseDto)
+                .build());
+    }
 }

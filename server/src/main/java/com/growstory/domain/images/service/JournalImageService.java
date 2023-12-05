@@ -23,7 +23,7 @@ public class JournalImageService {
     // 테이블 인스턴스 생성 및 S3 파일 업로드
     public JournalImage createJournalImgWithS3(MultipartFile image, String type, Journal journal) {
         if(image.isEmpty() || type == null || journal == null)
-            return null;
+            throw new NullPointerException("저널 이미지 생성 중 NPE 발생");
         String imgUrl = s3Uploader.uploadImageToS3(image, type);
         JournalImage journalImage =
                 JournalImage.builder()
@@ -36,7 +36,7 @@ public class JournalImageService {
 
     // 테이블 인스턴스 삭제 및 S3 데이터 삭제
     public void deleteJournalImageWithS3(JournalImage journalImage, String type) {
-        if(journalImage == null || type == null) return;
+        if(journalImage == null || type == null) throw new NullPointerException("저널 이미지 삭제 중 NPE 발생");
 
         Journal journal = journalImage.getJournal();
         journal.removeJournalImage(journalImage);

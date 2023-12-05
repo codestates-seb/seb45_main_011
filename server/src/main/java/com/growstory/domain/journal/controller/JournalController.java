@@ -5,6 +5,7 @@ import com.growstory.domain.journal.service.JournalService;
 import com.growstory.global.response.SingleResponseDto;
 import com.growstory.global.utils.UriCreator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,6 +17,7 @@ import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/v1/leaves")
 @RequiredArgsConstructor
@@ -48,7 +50,7 @@ public class JournalController {
                                                   @RequestPart(required = false, value = "image") MultipartFile image) {
         JournalDto.Response journal = journalService.createJournal(leafId, postDto, image);
 
-        URI location = uriCreator.createUri_Test(DEFAULT_URL, journal.getJournalId());
+        URI location = uriCreator.createUri_test(DEFAULT_URL, journal.getJournalId());
 
         return ResponseEntity.created(location).build();
     }

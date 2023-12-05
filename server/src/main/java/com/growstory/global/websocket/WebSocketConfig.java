@@ -1,21 +1,27 @@
-package com.growstory.global.config;
+package com.growstory.global.websocket;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+
+    private final FilterChannelInterceptor filterChannelInterceptor;
+
     // 엔드 포인트 및 CORS 설정
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
                 // STOMP 접속 주소
-        registry.addEndpoint("/ws")
+        registry.addEndpoint("/v1/wss")
                 // CORS 설정
-                .setAllowedOrigins("*", "https://growstory.vercel.app", "http://localhost:3000")
+                .setAllowedOrigins("https://growstory.vercel.app", "http://localhost:3000", "http://localhost:8888")
                 // SockJS 라이브러리 사용
                 .withSockJS();
     }
@@ -29,5 +35,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.setApplicationDestinationPrefixes("/pub");
     }
 
-
+    @Override
+    public void configureClientInboundChannel(ChannelRegistration registration) {
+        registration.interceptors(filterChannelInterceptor);
+    }
 }
