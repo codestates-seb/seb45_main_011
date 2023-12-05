@@ -47,7 +47,7 @@ public class GuestBookController {
     public ResponseEntity<MultiResponseDto<GuestBookResponseDto>> readGuestBooks(@Positive @PathVariable("accountId") Long accountId,
                                                                                  @Positive @RequestParam(defaultValue = "1") int page,
                                                                                  @Positive @RequestParam(defaultValue = "12") int size) {
-        Page<GuestBookResponseDto> responseDtoPage = guestBookService.getGuestbookPage(accountId, page, size);
+        Page<GuestBookResponseDto> responseDtoPage = guestBookService.getGuestbookPage(accountId, page - 1, size);
 
         return ResponseEntity.ok(MultiResponseDto.<GuestBookResponseDto>builder()
                         .status(HttpStatusCode.OK.getStatusCode())

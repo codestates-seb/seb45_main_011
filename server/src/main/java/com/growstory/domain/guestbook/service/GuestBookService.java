@@ -1,5 +1,6 @@
 package com.growstory.domain.guestbook.service;
 
+import com.growstory.domain.account.dto.AccountDto;
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.account.repository.AccountRepository;
 import com.growstory.domain.guestbook.dto.GuestBookRequestDto;
@@ -11,12 +12,15 @@ import com.growstory.global.exception.BusinessLogicException;
 import com.growstory.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Transactional
 @RequiredArgsConstructor
@@ -42,13 +46,27 @@ public class GuestBookService {
     }
 
     public Page<GuestBookResponseDto> getGuestbookPage(Long accountId, int page, int size) {
-//        List<GuestBook> guestBooks = guestbookRepository.findGuestBooksByReceiverAccountId(accountId).orElseThrow(EntityNotFoundException::new);
+        Account findAccount = accountRepository.findById(accountId).orElseThrow(() ->
+                new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_FOUND));
+        List<GuestBookResponseDto> guestBookResponseDtoList = findAccount.getReceivedGuestBooks().stream()
+                .map(this::getGuestBookResponse)
+                .collect(Collectors.toList());
 
-        return guestbookRepository.findAll(PageRequest.of(page, size, Sort.by("createdAt").descending()))
-                .map(guestBook -> GuestBookResponseDto.builder()
-                        .guestbookId(guestBook.getGuestbookId())
-                        .content(guestBook.getContent())
-                        .build());
+        int startIdx = page * size;
+        int endIdx = Math.min(guestBookResponseDtoList.size(), (page + 1) * size);
+        return new PageImpl<>(guestBookResponseDtoList.subList(startIdx, endIdx), PageRequest.of(page, size), guestBookResponseDtoList.size());
+    }
+
+    public GuestBookResponseDto getGuestBookResponse(GuestBook guestBook) {
+        return GuestBookResponseDto.builder()
+                .guestbookId(guestBook.getGuestbookId())
+                .displayName(guestBook.getAuthor().getDisplayName())
+                .imageUrl(guestBook.getAuthor().getProfileImageUrl())
+                .accountGrade(guestBook.getAuthor().getAccountGrade().getStepDescription())
+                .createdAt(guestBook.getCreatedAt())
+                .modifiedAt(guestBook.getModifiedAt())
+                .content(guestBook.getContent())
+                .build();
     }
 
     public void updateGuestBook(Long guestBookId, GuestBookRequestDto.Patch requestDto) {
