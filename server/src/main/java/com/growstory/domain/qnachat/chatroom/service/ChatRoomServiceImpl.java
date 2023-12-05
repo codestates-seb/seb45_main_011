@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional
@@ -34,6 +35,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
     // GET, 계정 아이디로 전체 채팅방 조회
     @Override
+    @Transactional(readOnly = true)
     public PageResponse<List<ChatRoomResponseDto>> getAllChatRooms(Long accountId, Pageable pageable) {
         Account findAccount = accountService.findVerifiedAccount(accountId);
         List<AccountChatRoom> accountChatRoomList = accountChatRoomRepository.findAllByAccount(findAccount);
@@ -55,14 +57,17 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         }
 
         //최근 메시지 수신일을 기준으로 내림차순정렬
-        Collections.sort(chatRoomResponses, Comparator.comparing(ChatRoomResponseDto::getLatestTime).reversed());
+//        Collections.sort(chatRoomResponses, Comparator.comparing(ChatRoomResponseDto::getLatestTime).reversed());
+        Collections.sort(chatRoomResponses);
 
         // 페이지네이션 처리
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), chatRoomResponses.size());
         Page<ChatRoomResponseDto> page = new PageImpl<>(chatRoomResponses.subList(start, end), pageable, chatRoomResponses.size());
 
-        return PageResponse.of(page, chatRoomResponses);
+        page.getContent().forEach(content -> content.trimLatestTime());
+
+        return PageResponse.of(page, page.getContent());
     }
 
     //채팅방 id와 계정 id를 이용해 입장 여부를 조회

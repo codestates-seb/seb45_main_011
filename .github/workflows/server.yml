@@ -62,8 +62,8 @@ jobs:
           --build-arg KEY_STORE_PASSWORD="${{env.KEY_STORE_PASSWORD}}" \
           --build-arg EVENT_KEY="${{env.EVENT_KEY}}" \
           -t growstory-cicd . 
-          docker tag growstory-cicd dokyung94/growstory-cicd:${GITHUB_SHA::7}
-          docker push dokyung94/growstory-cicd:${GITHUB_SHA::7}
+          docker tag growstory-cicd leest/growstory-cicd:${GITHUB_SHA::7}
+          docker push leest/growstory-cicd:${GITHUB_SHA::7}
         working-directory: ${{ env.working-directory }}
 
       - name: Configure AWS credentials
