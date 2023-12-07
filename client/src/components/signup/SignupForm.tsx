@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 
 import useModalStore from '@/stores/modalStore';
 import useSignStore from '@/stores/signStore';
+import useUserStore from '@/stores/userStore';
 
 import useAuthEmailMutation from '@/hooks/mutation/useAuthEmailMutation';
 import useSignupMutation from '@/hooks/mutation/useSignupMutation';
@@ -24,6 +25,7 @@ export default function SignupForm() {
 
   const { changeType, open } = useModalStore();
   const { isCode, setIsCode } = useSignStore();
+  const { isGuestMode, setClear } = useUserStore();
 
   const { mutate: sendCodeWithEmail } = useAuthEmailMutation();
   const { mutate: onSignup } = useSignupMutation();
@@ -35,8 +37,19 @@ export default function SignupForm() {
   const onValidateEmail = () => {
     if (!email) return;
 
-    changeType('AuthEmailModal');
-    open();
+    sendCodeWithEmail(email);
+  };
+
+  const conditionSignup = () => {
+    if (isGuestMode) {
+      setClear();
+    }
+
+    onSignup({
+      email,
+      password,
+      nickname,
+    });
   };
 
   useEffectOnce(() => {
@@ -46,14 +59,7 @@ export default function SignupForm() {
 
   return (
     <section>
-      <form
-        onSubmit={handleSubmit(() =>
-          onSignup({
-            email,
-            password,
-            nickname,
-          }),
-        )}>
+      <form onSubmit={handleSubmit(() => conditionSignup())}>
         <div className="flex flex-col gap-1 w-[300px]">
           <SignInput type="email" register={register} errors={errors} />
 

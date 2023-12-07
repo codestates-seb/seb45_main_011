@@ -6,6 +6,7 @@ import useSignStore from '@/stores/signStore';
 
 import useClient from '@/hooks/useClient';
 import useGoogleLogin from '@/hooks/useGoogleLogin';
+import useCreateGuestMutation from '@/hooks/mutation/useCreateGuestMutation';
 
 import { CommonButton } from '../common';
 
@@ -18,6 +19,7 @@ export default function LoginButtion() {
 
   const isClient = useClient();
   const { isGoogleLogin, isEmailLogin, onGoogleLogin } = useGoogleLogin();
+  const { mutate: onGuestMode } = useCreateGuestMutation();
 
   const goToGoogleLogin = () => {
     router.push(`${googleOauth}`);
@@ -43,6 +45,14 @@ export default function LoginButtion() {
             onEmailSignin={() => getSigninForm(true)}
             disabled={isGoogleLogin}>
             이메일로 로그인
+          </CommonButton>
+
+          <CommonButton
+            type="submit"
+            size="fix"
+            onCreateGuest={() => onGuestMode()}
+            disabled={isGoogleLogin || isEmailLogin}>
+            게스트 모드
           </CommonButton>
         </div>
       )}

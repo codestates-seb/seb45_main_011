@@ -10,15 +10,13 @@ import useSignStore from '@/stores/signStore';
 
 import useClient from '@/hooks/useClient';
 
-import Logo from './Logo';
-import HeaderLink from './HeaderLink';
-import HeaderNav from './HeaderNav';
+import { Logo, HeaderLink, HeaderNav } from '.';
 
 export default function Header() {
   const [isProfileHover, setIsProfileHover] = useState(false);
   const [isMenuHover, setIsMenuHover] = useState(false);
 
-  const { userId, isEmailLogin, isGoogleLogin, profileImageUrl } =
+  const { userId, isEmailLogin, isGoogleLogin, isGuestMode, profileImageUrl } =
     useUserStore();
   const getSigninForm = useSignStore((state) => state.getSigninForm);
 
@@ -48,6 +46,7 @@ export default function Header() {
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Logo size="small" className="mt-[2px]" />
         </motion.div>
+
         <ul className="flex items-center gap-2 max-[480px]:gap-3">
           <li
             onMouseOver={() => setIsMenuHover(true)}
@@ -61,6 +60,7 @@ export default function Header() {
               className="hover:scale-105 transition-transform"
               style={{ width: 28, height: 24 }}
             />
+
             {isMenuHover && (
               <motion.div
                 initial={{ opacity: 0 }}
@@ -70,10 +70,11 @@ export default function Header() {
               </motion.div>
             )}
           </li>
+
           <li className="max-[480px]:hidden">
             <HeaderLink
               location={
-                isClient && (isEmailLogin || isGoogleLogin)
+                isClient && (isEmailLogin || isGoogleLogin || isGuestMode)
                   ? `/garden/${userId}`
                   : '/signin'
               }
@@ -81,6 +82,7 @@ export default function Header() {
               title="garden"
             />
           </li>
+
           <li className="max-[480px]:hidden">
             <HeaderLink
               location="/board"
@@ -88,10 +90,11 @@ export default function Header() {
               title="community"
             />
           </li>
+
           <li className="max-[480px]:hidden">
             <HeaderLink
               location={
-                isClient && (isEmailLogin || isGoogleLogin)
+                isClient && (isEmailLogin || isGoogleLogin || isGuestMode)
                   ? `/leafs/${userId}`
                   : '/signin'
               }
@@ -99,7 +102,8 @@ export default function Header() {
               title="leafCard"
             />
           </li>
-          {isClient && (isEmailLogin || isGoogleLogin) ? (
+
+          {isClient && (isEmailLogin || isGoogleLogin || isGuestMode) ? (
             <li
               onMouseOver={() => setIsProfileHover(true)}
               onMouseLeave={() => setIsProfileHover(false)}>
@@ -110,14 +114,16 @@ export default function Header() {
                 width={36}
                 height={36}
               />
-              {isProfileHover && (isEmailLogin || isGoogleLogin) && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="flex justify-end">
-                  <HeaderNav isProfileHover={isProfileHover} />
-                </motion.div>
-              )}
+
+              {isProfileHover &&
+                (isEmailLogin || isGoogleLogin || isGuestMode) && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="flex justify-end">
+                    <HeaderNav isProfileHover={isProfileHover} />
+                  </motion.div>
+                )}
             </li>
           ) : (
             <li onClick={() => getSigninForm(false)}>
