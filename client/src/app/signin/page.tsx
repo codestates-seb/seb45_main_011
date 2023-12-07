@@ -9,6 +9,7 @@ import {
   FindPasswordModal,
   SuccessedModal,
   FailureModal,
+  MembershipCheckModal,
 } from '@/components/signin';
 
 export default function Signin() {
@@ -18,6 +19,7 @@ export default function Signin() {
     if (type === 'FindPasswordModal') return <FindPasswordModal />;
     if (type === 'SuccessedModal') return <SuccessedModal />;
     if (type === 'FailureModal') return <FailureModal />;
+    if (type === 'MembershipCheckModal') return <MembershipCheckModal />;
   };
 
   return (
