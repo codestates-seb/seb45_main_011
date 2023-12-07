@@ -1,14 +1,13 @@
 import axios, { AxiosResponse } from 'axios';
 
-const accessToken =
-  typeof window !== 'undefined'
-    ? JSON.parse(localStorage.getItem('user-key') as string).state.accessToken
-    : null;
+import LocalStorage from './localStorage';
 
+const token = LocalStorage.getItem('user-key');
+
+const accessToken =
+  typeof window !== 'undefined' ? token.state.accessToken : null;
 const refreshToken =
-  typeof window !== 'undefined'
-    ? JSON.parse(localStorage.getItem('user-key') as string).state.refreshToken
-    : null;
+  typeof window !== 'undefined' ? token.state.refreshToken : null;
 
 export const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -19,7 +18,7 @@ export const instance = axios.create({
   withCredentials: true,
 });
 
-const storageData = JSON.parse(localStorage.getItem('user-key') as string);
+const storageData = LocalStorage.getItem('user-key');
 
 const parseJWT = (token: string | null) => {
   if (token) return JSON.parse(atob(token.split('.')[1]));
@@ -46,7 +45,7 @@ const onFulfiled = async (response: AxiosResponse) => {
 
     storageData.state.accessToken = newAccessToken;
 
-    localStorage.setItem('user-key', JSON.stringify(storageData));
+    LocalStorage.setItem('user-key', JSON.stringify(storageData));
 
     response.config.headers = Object.assign({}, response.config.headers, {
       authorization: `${newAccessToken}`,
