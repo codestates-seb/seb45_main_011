@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolationException;
+import java.util.Objects;
 
 @RestControllerAdvice
 public class GlobalExceptionAdvice {
@@ -32,7 +33,7 @@ public class GlobalExceptionAdvice {
     // BusinessLogicException 처리
     public ResponseEntity handleBusinessLogicException(BusinessLogicException e) {
         ErrorResponse response = ErrorResponse.of(e.getExceptionCode());
-        if(e.getProfanityDto() != null) {
+        if(!Objects.isNull(e.getProfanityDto())) {
             response = ErrorResponse.of(e.getExceptionCode(), e.getProfanityDto());
         }
         final ErrorResponse errorResponse = response;
