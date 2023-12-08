@@ -86,10 +86,10 @@ public class Account extends BaseTimeEntity {
     private List<Alarm> alarms = new ArrayList<>();
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AccountChatRoom> accountChatRooms;
+    private List<AccountChatRoom> accountChatRooms = new ArrayList<>();
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ChatMessage> chatMessages;
+    private List<ChatMessage> chatMessages = new ArrayList<>();
 
     // 자신이 신고한 목록
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
