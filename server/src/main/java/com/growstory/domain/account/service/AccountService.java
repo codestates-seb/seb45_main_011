@@ -207,9 +207,7 @@ public class AccountService {
     public void updateDisplayName(AccountDto.DisplayNamePatch requestDto) {
         Account findAccount = authUserUtils.getAuthUser();
 
-        accountRepository.save(findAccount.toBuilder()
-                .displayName(requestDto.getDisplayName())
-                .build());
+        findAccount.updateDisplayName(requestDto.getDisplayName());
     }
 
     public void updatePassword(AccountDto.PasswordPatch requestDto) {

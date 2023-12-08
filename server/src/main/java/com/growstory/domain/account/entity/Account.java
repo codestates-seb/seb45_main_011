@@ -107,6 +107,10 @@ public class Account extends BaseTimeEntity {
     // 출석 체크
     private Boolean attendance = false;
 
+    public void updateDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
     public void addLeaf(Leaf leaf) {
         leaves.add(leaf);
     }
@@ -192,4 +196,6 @@ public class Account extends BaseTimeEntity {
         this.status = status;
         this.reportNums = reportNums;
     }
+
+
 }
