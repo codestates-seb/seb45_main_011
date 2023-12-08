@@ -62,6 +62,7 @@ public class AccountService {
     private final GuestService guestService;
     private final JwtTokenizer jwtTokenizer;
 
+
     public AccountDto.Response createAccount(AccountDto.Post requestDto) {
         if (verifyExistsEmail(requestDto.getEmail())) {
             throw new BusinessLogicException(ExceptionCode.ACCOUNT_ALREADY_EXISTS);
