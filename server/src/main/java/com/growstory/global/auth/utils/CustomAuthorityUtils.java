@@ -12,13 +12,8 @@ import java.util.stream.Collectors;
 public class CustomAuthorityUtils {
     @Value("${mail.admin.address}")
     private String adminMailAddress;
-
-    @Value("${mail.guest}")
-    private String guest;
-
     private final List<String> ADMIN_ROLES_STRING = List.of("ADMIN", "USER");
     private final List<String> USER_ROLES_STRING = List.of("USER");
-    private final List<String> GUEST_ROLE_STRING = List.of("GUEST", "USER");
 
     // DB 저장된 Role 기반 권한 정보 생성
     public List<GrantedAuthority> createAuthorities(List<String> roles) {
@@ -33,8 +28,6 @@ public class CustomAuthorityUtils {
         if(email.equals(adminMailAddress)) {
             return ADMIN_ROLES_STRING;
         }
-        if (email.equals(guest)) return GUEST_ROLE_STRING;
-
         return USER_ROLES_STRING;
     }
 }

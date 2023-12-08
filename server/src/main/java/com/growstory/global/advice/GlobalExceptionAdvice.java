@@ -1,7 +1,6 @@
 package com.growstory.global.advice;
 
 import com.growstory.global.exception.BusinessLogicException;
-import com.growstory.global.exception.ExceptionCode;
 import com.growstory.global.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolationException;
-import java.util.Objects;
 
 @RestControllerAdvice
 public class GlobalExceptionAdvice {
@@ -32,11 +30,10 @@ public class GlobalExceptionAdvice {
     @ExceptionHandler(BusinessLogicException.class)
     // BusinessLogicException 처리
     public ResponseEntity handleBusinessLogicException(BusinessLogicException e) {
-        ErrorResponse response = ErrorResponse.of(e.getExceptionCode());
-        if(!Objects.isNull(e.getProfanityDto())) {
-            response = ErrorResponse.of(e.getExceptionCode(), e.getProfanityDto());
-        }
-        final ErrorResponse errorResponse = response;
+        final ErrorResponse errorResponse = ErrorResponse.of(e.getExceptionCode());
+
+//        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getResponse();
+//        ErrorResponder.sendErrorResponse(response, e.getExceptionCode().getStatus() ,e.getExceptionCode().getMessage());
 
         return new ResponseEntity(errorResponse, HttpStatus.valueOf(e.getExceptionCode().getStatus()));
     }

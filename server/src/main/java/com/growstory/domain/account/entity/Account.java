@@ -2,25 +2,15 @@ package com.growstory.domain.account.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.growstory.domain.account.constants.AccountGrade;
-import com.growstory.domain.account.constants.Status;
-import com.growstory.domain.alarm.entity.Alarm;
 import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.comment.entity.Comment;
-import com.growstory.domain.guestbook.entity.GuestBook;
 import com.growstory.domain.leaf.entity.Leaf;
 import com.growstory.domain.likes.entity.AccountLike;
 import com.growstory.domain.likes.entity.BoardLike;
 import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.point.entity.Point;
-import com.growstory.domain.qnachat.chatmessage.entity.ChatMessage;
-import com.growstory.domain.qnachat.chatroom.entity.AccountChatRoom;
-import com.growstory.domain.report.entity.Report;
 import com.growstory.global.audit.BaseTimeEntity;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -33,10 +23,9 @@ import java.util.List;
 public class Account extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ACCOUNT_ID")
     private Long accountId;
 
-    @Column(name = "EMAIL", unique = true, nullable = false, length = 100)
+    @Column(name = "EMAIL", unique = true, nullable = false, length = 50)
     private String email;
 
     @Column(name = "DISPLAY_NAME", nullable = false, length = 50)
@@ -48,15 +37,10 @@ public class Account extends BaseTimeEntity {
     @Column(name = "PROFILE_IMAGE_URL")
     private String profileImageUrl;
 
-    // 신고 받은 횟수
-    private int reportNums = 0;
-
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Board> boards = new ArrayList<>();
 
-    // cascade = 부모를 db에서 delete하면 자식도 지워진다.
-    // orphan = 부모를 db에서 delete하면 자식도 지워진다.
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Leaf> leaves = new ArrayList<>();
 
@@ -83,41 +67,31 @@ public class Account extends BaseTimeEntity {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlantObj> plantObjs;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Alarm> alarms = new ArrayList<>();
-
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AccountChatRoom> accountChatRooms = new ArrayList<>();
-
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ChatMessage> chatMessages = new ArrayList<>();
-
-    // 자신이 신고한 목록
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Report> reports = new ArrayList<>();
-
-    // 방명록을 받은 계정 리스트
-    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<GuestBook> receivedGuestBooks = new ArrayList<>();
-
-    // 방명록을 작성한 계정 리스트
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<GuestBook> writerGuestBooks = new ArrayList<>();
-
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private AccountGrade accountGrade = AccountGrade.GRADE_BRONZE;
 
-    @Enumerated(EnumType.STRING)
-    private Status status = Status.USER;
+//    식물카드개수에 의한 등급 제도
+//    50개 미만 - 브론즈 가드너
+//    50개 이상 - 실버 가드너
+//    100개 이상 - 골드 가드너
+    public enum AccountGrade {
+        GRADE_BRONZE(1, "브론즈 가드너"),
+        GRADE_SILVER(2, "실버 가드너"),
+        GRADE_GOLD(3, "골드 가드너");
 
-    // 출석 체크
-    private Boolean attendance = false;
+        @Getter
+        private int stepNumber;
 
-    public void updateDisplayName(String displayName) {
-        this.displayName = displayName;
+        @Getter
+        private String stepDescription;
+
+        AccountGrade(int stepNumber, String stepDescription) {
+            this.stepNumber = stepNumber;
+            this.stepDescription = stepDescription;
+        }
     }
 
     public void addLeaf(Leaf leaf) {
@@ -132,10 +106,6 @@ public class Account extends BaseTimeEntity {
         receivingAccountLikes.add(accountLike);
     }
 
-    public void addAlarm(Alarm alarm) {
-        alarms.add(0, alarm);
-    }
-
     public void updateGrade(AccountGrade accountGrade) {
         this.accountGrade = accountGrade;
     }
@@ -144,10 +114,6 @@ public class Account extends BaseTimeEntity {
         this.point = point;
         if (point.getAccount() != this)
             point.updateAccount(this);
-    }
-
-    public void updateAttendance(Boolean attendance) {
-        this.attendance = attendance;
     }
 
     public void addBoardLike(BoardLike boardLike) {
@@ -159,14 +125,6 @@ public class Account extends BaseTimeEntity {
         if(plantObj.getAccount()!= this) {
             plantObj.updateAccount(this);
         }
-    }
-
-    public void addReport(Report report) {
-        reports.add(report);
-    }
-
-    public void updateReportsNum() {
-        reportNums += 1;
     }
 
     public void removePlantObj(PlantObj plantObj) {
@@ -186,7 +144,7 @@ public class Account extends BaseTimeEntity {
     public Account(Long accountId, String email, String displayName, String password, String profileImageUrl,
                    List<Board> boards, List<Leaf> leaves, List<AccountLike> givingAccountLikes,
                    List<AccountLike> receivingAccountLikes, List<BoardLike> boardLikes, List<Comment> comments,
-                   Point point, List<PlantObj> plantObjs, List<String> roles, AccountGrade accountGrade, Status status, int reportNums) {
+                   Point point, List<PlantObj> plantObjs, List<String> roles, AccountGrade accountGrade) {
         this.accountId = accountId;
         this.email = email;
         this.displayName = displayName;
@@ -202,7 +160,5 @@ public class Account extends BaseTimeEntity {
         this.plantObjs = plantObjs;
         this.roles = roles;
         this.accountGrade = accountGrade;
-        this.status = status;
-        this.reportNums = reportNums;
     }
 }

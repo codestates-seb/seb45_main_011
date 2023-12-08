@@ -2,7 +2,6 @@ package com.growstory.domain.board.dto;
 
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.board.entity.Board;
-import com.growstory.global.badwords.dto.TextContainer;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +17,7 @@ public class RequestBoardDto {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class Post implements TextContainer {
+    public static class Post {
         @NotBlank
         private String title;
 
@@ -43,21 +42,11 @@ public class RequestBoardDto {
                     .account(account)
                     .build();
         }
-
-        @Override
-        public String combineText() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(title+ " ").append(content+ " ");
-            for(String hash : hashTags) {
-                sb.append(hash + " ");
-            }
-            return sb.toString();
-        }
     }
 
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @Getter
-    public static class Patch implements TextContainer {
+    public static class Patch {
 
 //        private Long boardId;
 
@@ -81,16 +70,6 @@ public class RequestBoardDto {
             this.content = content;
             this.hashTags = hashTags;
             this.isImageUpdated = isImageUpdated;
-        }
-
-        @Override
-        public String combineText() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(title+ " ").append(content+ " ");
-            for(String hash : hashTags) {
-                sb.append(hash + " ");
-            }
-            return sb.toString();
         }
     }
 }

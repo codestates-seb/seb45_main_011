@@ -1,6 +1,5 @@
 package com.growstory.global.email.controller;
 
-import com.growstory.domain.account.service.AccountService;
 import com.growstory.global.constants.HttpStatusCode;
 import com.growstory.global.email.dto.EmailDto;
 import com.growstory.global.email.service.EmailService;
@@ -23,17 +22,11 @@ import javax.validation.Valid;
 @RequestMapping("/v1/emails")
 public class EmailController {
     private final EmailService emailService;
-    private final AccountService accountService;
 
     @Operation(summary = "회원가입 시 메일 인증", description = "회원가입 시 입력받은 이메일로 메일 전송")
     @PostMapping("/signup")
     public ResponseEntity<SingleResponseDto<EmailDto.SignUpResponse>> postAuthCodeMail(@Valid @RequestBody EmailDto.Post emailPostDto) {
-        Boolean isDuplicated = accountService.verifyExistsEmail(emailPostDto.getEmail());
-        EmailDto.SignUpResponse responseDto = EmailDto.SignUpResponse.builder().isDuplicated(isDuplicated).build();
-
-        if (!isDuplicated) {
-            responseDto = emailService.sendAuthCodeMail(emailPostDto);
-        }
+        EmailDto.SignUpResponse responseDto = emailService.sendAuthCodeMail(emailPostDto);
 
         return ResponseEntity.ok(SingleResponseDto.<EmailDto.SignUpResponse>builder()
                 .status(HttpStatusCode.OK.getStatusCode())
@@ -48,18 +41,6 @@ public class EmailController {
         EmailDto.PasswordResponse responseDto = emailService.sendPasswordMail(emailPostDto);
 
         return ResponseEntity.ok(SingleResponseDto.<EmailDto.PasswordResponse>builder()
-                .status(HttpStatusCode.OK.getStatusCode())
-                .message(HttpStatusCode.OK.getMessage())
-                .data(responseDto)
-                .build());
-    }
-
-    @Operation(summary = "QnA 답변 여부 전송" , description = "QnA 관리자 답변 완료 여부 안내")
-    @PostMapping("/qna-answer")
-    public ResponseEntity<SingleResponseDto<EmailDto.QnaAnswerResponse>> postQnaAnswerMail(@Valid @RequestBody EmailDto.QnaAnswer emailQnaDto) {
-        EmailDto.QnaAnswerResponse responseDto = emailService.sendQnaAnswerMail(emailQnaDto);
-
-        return ResponseEntity.ok(SingleResponseDto.<EmailDto.QnaAnswerResponse>builder()
                 .status(HttpStatusCode.OK.getStatusCode())
                 .message(HttpStatusCode.OK.getMessage())
                 .data(responseDto)

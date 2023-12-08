@@ -16,14 +16,12 @@ jobs:
       AWS_SECRET_KEY: ${{secrets.AWS_SECRET_KEY}}
       AWS_BUCKET_NAME: ${{secrets.AWS_BUCKET_NAME}}
       ADMIN_EMAIL: ${{secrets.ADMIN_EMAIL}}
-      GUEST_EMAIL: ${{secrets.GUEST_EMAIL}}
       GROWSTORY_EMAIL_USERNAME: ${{secrets.GROWSTORY_EMAIL_USERNAME}}
       GROWSTORY_EMAIL_PASSWORD: ${{secrets.GROWSTORY_EMAIL_PASSWORD}}
       G_CLIENT_ID: ${{secrets.G_CLIENT_ID}}
       G_CLIENT_SECRET: ${{secrets.G_CLIENT_SECRET}}
       JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
       KEY_STORE_PASSWORD: ${{secrets.KEY_STORE_PASSWORD}}
-      EVENT_KEY: ${{secrets.EVENT_KEY}}
       working-directory: ./server
 
     steps:
@@ -53,14 +51,12 @@ jobs:
           --build-arg AWS_SECRET_KEY="${{env.AWS_SECRET_KEY}}" \
           --build-arg AWS_BUCKET_NAME="${{env.AWS_BUCKET_NAME}}" \
           --build-arg ADMIN_EMAIL="${{env.ADMIN_EMAIL}}" \
-          --build-arg GUEST_EMAIL="${{env.GUEST_EMAIL}}" \
           --build-arg GROWSTORY_EMAIL_USERNAME="${{env.GROWSTORY_EMAIL_USERNAME}}" \
           --build-arg GROWSTORY_EMAIL_PASSWORD="${{env.GROWSTORY_EMAIL_PASSWORD}}" \
           --build-arg G_CLIENT_ID="${{env.G_CLIENT_ID}}" \
           --build-arg G_CLIENT_SECRET="${{env.G_CLIENT_SECRET}}" \
           --build-arg JWT_SECRET_KEY="${{env.JWT_SECRET_KEY}}" \
           --build-arg KEY_STORE_PASSWORD="${{env.KEY_STORE_PASSWORD}}" \
-          --build-arg EVENT_KEY="${{env.EVENT_KEY}}" \
           -t growstory-cicd . 
           docker tag growstory-cicd leest/growstory-cicd:${GITHUB_SHA::7}
           docker push leest/growstory-cicd:${GITHUB_SHA::7}

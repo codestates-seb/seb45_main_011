@@ -74,7 +74,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .email(account.getEmail())
                 .displayName(URLEncoder.encode(account.getDisplayName(), "UTF-8"))
                 .profileImageUrl(account.getProfileImageUrl())
-                .status(account.getStatus().getStepDescription())
                 .build();
 
         // response body에 유저 정보 저장
