@@ -1,7 +1,6 @@
 package com.growstory.global.exception;
 
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ExceptionCode {
@@ -21,10 +20,6 @@ public enum ExceptionCode {
     COMMENT_NOT_FOUND(404, "Comment not found"),
     COMMENT_NOT_ALLOW(405, "That Comment doesn't have authority"),
     COMMENT_ALREADY_EXISTS(409, "Comment already exists"),
-
-    GUESTBOOK_NOT_FOUND(404, "Guestbook not found"),
-    GUESTBOOK_NOT_ALLOW(405, "That Guestbook doesn't have authority"),
-    GUESTBOOK_ALREADY_EXISTS(409, "Guestbook already exists"),
 
     PLANT_OBJECT_NOT_FOUND(404, "Plant Object not found"),
     PLANT_OBJECT_NOT_ALLOW(405, "That Plant Object doesn't have authority"),
@@ -50,16 +45,7 @@ public enum ExceptionCode {
 
     NOT_ENOUGH_POINTS(403, "Not Enough Points"),
 
-    RANK_NOT_FOUND(404, "Rank not found"),
-
-    BAD_WORD_INCLUDED(406, "Bad word Included"),
-
-    ALARM_NOT_FOUND(404, "Alarm not found"),
-
-    CHATROOM_NOT_FOUND(404, "ChatRoom does not Found"),
-    ACCOUNT_CHATROOM_NOT_FOUND(404, "AccountChatRoom does not Found"),
-    ALREADY_CHATROOM_ENTERED(409, "Already entered this ChatRoom"),
-    WEBSOCKET_EXCEPTION(HttpStatus.UNAUTHORIZED.value(), "Exception occurred at Websocket Process");
+    RANK_NOT_FOUND(404, "Rank not found");
 
     private final int status;
     private final String message;

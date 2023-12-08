@@ -1,6 +1,5 @@
 package com.growstory.domain.leaf.service;
 
-import com.growstory.domain.account.constants.AccountGrade;
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.account.service.AccountService;
 import com.growstory.domain.images.service.JournalImageService;
@@ -34,11 +33,11 @@ public class LeafService {
     private final AuthUserUtils authUserUtils;
     private final JournalImageService journalImageService;
 
-    public LeafDto.Response createLeaf(LeafDto.Post requestDto, MultipartFile leafImage) {
+    public LeafDto.Response createLeaf(LeafDto.Post leafPostDto, MultipartFile leafImage) {
         Account findAccount = authUserUtils.getAuthUser();
         Leaf leaf = Leaf.builder()
-                .leafName(requestDto.getLeafName())
-                .content(requestDto.getContent())
+                .leafName(leafPostDto.getLeafName())
+                .content(leafPostDto.getContent())
                 .account(findAccount)
                 .build();
 
@@ -55,21 +54,21 @@ public class LeafService {
                 .build();
     }
 
-    public void updateLeaf(LeafDto.Patch requestDto, MultipartFile leafImage) {
+    public void updateLeaf(LeafDto.Patch leafPatchDto, MultipartFile leafImage) {
         Account findAccount = authUserUtils.getAuthUser();
-        Leaf findLeaf = findVerifiedLeafByAccount(findAccount.getAccountId(), requestDto.getLeafId());
+        Leaf findLeaf = findVerifiedLeafByAccount(findAccount.getAccountId(), leafPatchDto.getLeafId());
         String leafImageUrl = findLeaf.getLeafImageUrl();
 
-        if (requestDto.getIsImageUpdated())
+        if (leafPatchDto.getIsImageUpdated())
             s3Uploader.deleteImageFromS3(leafImageUrl, LEAF_IMAGE_PROCESS_TYPE);
 
         if (Optional.ofNullable(leafImage).isPresent())
             leafImageUrl = s3Uploader.uploadImageToS3(leafImage, LEAF_IMAGE_PROCESS_TYPE);
 
         leafRepository.save(findLeaf.toBuilder()
-                .leafName(Optional.ofNullable(requestDto.getLeafName()).orElse(findLeaf.getLeafName()))
+                .leafName(Optional.ofNullable(leafPatchDto.getLeafName()).orElse(findLeaf.getLeafName()))
                 .leafImageUrl(leafImageUrl)
-                .content(Optional.ofNullable(requestDto.getContent()).orElse(findLeaf.getContent()))
+                .content(Optional.ofNullable(leafPatchDto.getContent()).orElse(findLeaf.getContent()))
                 .build());
     }
 
@@ -98,7 +97,6 @@ public class LeafService {
 
     public void deleteLeaf(Long leafId) {
         Account findAccount = authUserUtils.getAuthUser();
-
         Leaf findLeaf = findVerifiedLeafByAccount(findAccount.getAccountId(), leafId);
 
         s3Uploader.deleteImageFromS3(findLeaf.getLeafImageUrl(), LEAF_IMAGE_PROCESS_TYPE);
@@ -126,14 +124,14 @@ public class LeafService {
         else return findLeaf;
     }
 
-    public AccountGrade updateAccountGrade(Account findAccount) {
+    public Account.AccountGrade updateAccountGrade(Account findAccount) {
         int leavesNum = findAccount.getLeaves().size();
         if (leavesNum < 50) {
-            return AccountGrade.GRADE_BRONZE;
+            return Account.AccountGrade.GRADE_BRONZE;
         } else if (leavesNum < 100) {
-            return AccountGrade.GRADE_SILVER;
+            return Account.AccountGrade.GRADE_SILVER;
         } else {
-            return AccountGrade.GRADE_GOLD;
+            return Account.AccountGrade.GRADE_GOLD;
         }
     }
 

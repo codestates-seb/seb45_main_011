@@ -25,74 +25,52 @@ public abstract class Rank extends BaseTimeEntity {
     private Account account;
 
     @Enumerated(EnumType.STRING)
-    private RankOrders rankOrders;
-
-    @Enumerated(EnumType.STRING)
-    private RankStat rankStat;
+    private RankStatus rankStatus;
 
     public Rank(Account account) {
         this.account = account;
     }
 
-    protected void updateRank(RankOrders rankOrders) {
-        this.rankOrders = rankOrders;
+    protected void updateRank(RankStatus rankStatus) {
+        this.rankStatus = rankStatus;
     }
 
     @Getter
-    public enum RankOrders {
-        FIRST("rank_no_1", 1),
-        SECOND("rank_no_2", 2),
-        THIRD("rank_no_3", 3),
-        FOURTH("rank_no_4", 4),
-        FIFTH("rank_no_5", 5);
+    public enum RankStatus {
+        RANK_NO_1("rank_no_1", 1),
+        RANK_NO_2("rank_no_2", 2),
+        RANK_NO_3("rank_no_3", 3),
+        RANK_NO_4("rank_no_4", 4),
+        RANK_NO_5("rank_no_5", 5);
 
-        private final String name;
-        private final int position;
+        private String status;
+        private int rank;
 
-        RankOrders(String name, int position) {
-            this.name = name;
-            this.position = position;
+        RankStatus(String status, int rank) {
+            this.status = status;
+            this.rank = rank;
         }
     }
-
-    @Getter
-    public enum RankStat {
-        CURRENT("Current Record", 1),
-        PREVIOUS("Previous Record", 2);
-
-        private final String recordLabel;
-        private final int typeCode;
-
-        RankStat(String recordLabel, int typeCode) {
-            this.recordLabel = recordLabel;
-            this.typeCode = typeCode;
-        }
-    }
-
 
     public void updateRank(int rank) {
         switch (rank) {
             case 1 :
-                updateRank(RankOrders.FIRST);
+                updateRank(RankStatus.RANK_NO_1);
                 break;
             case 2 :
-                updateRank(RankOrders.SECOND);
+                updateRank(RankStatus.RANK_NO_2);
                 break;
             case 3 :
-                updateRank(RankOrders.THIRD);
+                updateRank(RankStatus.RANK_NO_3);
                 break;
             case 4 :
-                updateRank(RankOrders.FOURTH);
+                updateRank(RankStatus.RANK_NO_4);
                 break;
             case 5 :
-                updateRank(RankOrders.FIFTH);
+                updateRank(RankStatus.RANK_NO_5);
                 break;
             default:
                 throw new BusinessLogicException(ExceptionCode.RANK_NOT_FOUND);
         }
-    }
-
-    public void updateRankStat(RankStat rankStat) {
-        this.rankStat = rankStat;
     }
 }
