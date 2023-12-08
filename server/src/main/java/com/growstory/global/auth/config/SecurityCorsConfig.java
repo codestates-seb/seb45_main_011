@@ -23,7 +23,6 @@ public class SecurityCorsConfig {
         config.addAllowedOriginPattern("http://localhost:80"); // 로컬 아파치 환경에서 접근하는 CORS 허용
         config.addAllowedOriginPattern("http://localhost:3000"); // 로컬 프론트 환경에서 접근하는 CORS 허용
         config.addAllowedOriginPattern("https://growstory.vercel.app"); // 배포 환경
-        config.addAllowedOriginPattern("https://grows-tory.vercel.app"); // 배포 환경
 
 //        //응답 헤더에 Authorization 헤더를 노출하도록 설정
         config.addExposedHeader("Authorization");
@@ -31,6 +30,7 @@ public class SecurityCorsConfig {
         config.addExposedHeader("DisplayName");
         config.addExposedHeader("AccountId");
         config.addExposedHeader("ProfileImageUrl");
+        config.addExposedHeader("Location");
 
         config.addAllowedHeader("*"); //모든 header 허용
 

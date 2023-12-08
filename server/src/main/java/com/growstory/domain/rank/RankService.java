@@ -24,7 +24,7 @@ public class RankService {
     // 주간 랭킹별 포인트 보상액 산정
     private int calculateWeeklyPoints(Rank rank) {
         int score;
-        switch (rank.getRankStatus().getRank()) {
+        switch (rank.getRankOrders().getPosition()) {
             case 1:
                 score = 3000;
                 break;

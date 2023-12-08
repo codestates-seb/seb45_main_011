@@ -7,7 +7,6 @@ import com.growstory.domain.board.service.BoardService;
 import com.growstory.domain.rank.board_likes.dto.BoardLikesRankDto;
 import com.growstory.domain.rank.board_likes.service.BoardLikesRankService;
 import com.growstory.global.constants.HttpStatusCode;
-import com.growstory.global.response.MultiResponseDto;
 import com.growstory.global.response.MultiResponseDto2;
 import com.growstory.global.response.SingleResponseDto;
 import com.growstory.global.utils.UriCreator;
@@ -27,7 +26,7 @@ import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
 
-@Tag(name = "Boards API", description = "게시판 기능")
+@Tag(name = "Boards API", description = "게시판 API")
 @Validated
 @RequiredArgsConstructor
 @RequestMapping("/v1/boards")
@@ -69,7 +68,7 @@ public class BoardController {
     public ResponseEntity<MultiResponseDto2<ResponseBoardPageDto, BoardLikesRankDto.Response>> getBoards(@Positive @RequestParam(defaultValue = "1") int page,
                                                                             @Positive @RequestParam(defaultValue = "12") int size) {
         Page<ResponseBoardPageDto> responseBoardDtos = boardService.findBoards(page - 1, size);
-        List<BoardLikesRankDto.Response> responseBoardRankList = boardLikesRankService.findAllBoardLikesRanks();
+        List<BoardLikesRankDto.Response> responseBoardRankList = boardLikesRankService.findCurrentBoardLikesRanks();
 
 
         return ResponseEntity.ok(MultiResponseDto2.<ResponseBoardPageDto, BoardLikesRankDto.Response>builder()
@@ -86,7 +85,7 @@ public class BoardController {
                                                                    @Positive @RequestParam(defaultValue = "12") int size,
                                                                    @RequestParam("keyword") String keyword) {
         Page<ResponseBoardPageDto> responseBoardDtos = boardService.findBoardsByKeyword(page - 1, size, keyword);
-        List<BoardLikesRankDto.Response> responseBoardRankList = boardLikesRankService.findAllBoardLikesRanks();
+        List<BoardLikesRankDto.Response> responseBoardRankList = boardLikesRankService.findCurrentBoardLikesRanks();
 
         return ResponseEntity.ok(MultiResponseDto2.<ResponseBoardPageDto, BoardLikesRankDto.Response>builder()
                 .status(HttpStatusCode.OK.getStatusCode())

@@ -1,6 +1,7 @@
 package com.growstory.global.response;
 
 
+import com.growstory.global.badwords.dto.ProfanityDto;
 import com.growstory.global.exception.ExceptionCode;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,11 @@ public class ErrorResponse {
 
     public static ErrorResponse of(ExceptionCode exceptionCode) {
         return new ErrorResponse(exceptionCode.getStatus(), exceptionCode.getMessage());
+    }
+
+    // 비속어 필터링 관련 예외 응답 처리
+    public static ErrorResponse of(ExceptionCode exceptionCode, ProfanityDto profanityDto) {
+        return new ErrorResponse(exceptionCode.getStatus(), profanityDto.toString());
     }
 
     public static ErrorResponse of(HttpStatus httpStatus) {

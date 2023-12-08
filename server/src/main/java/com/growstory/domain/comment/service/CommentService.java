@@ -60,7 +60,7 @@ public class CommentService {
     }
 
 
-    public void editComment(Long commentId, CommentDto.Patch commentDto) {
+    public void updateComment(Long commentId, CommentDto.Patch commentDto) {
         findCommentsMatchCommentId(commentId);
 
         Comment comment = getVerifiedCommentByCommentId(commentId);

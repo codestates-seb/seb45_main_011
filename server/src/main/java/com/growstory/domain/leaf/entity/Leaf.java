@@ -33,7 +33,7 @@ public class Leaf extends BaseTimeEntity {
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
 
-    @OneToOne(mappedBy = "leaf")
+    @OneToOne(mappedBy = "leaf", cascade = CascadeType.ALL, orphanRemoval = true)
     private PlantObj plantObj;
 
     @OneToMany(mappedBy = "leaf", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -57,6 +57,8 @@ public class Leaf extends BaseTimeEntity {
 //        }
         this.plantObj = plantObj;
     }
+
+
 
     public void removePlantObj() {
         this.plantObj = null;

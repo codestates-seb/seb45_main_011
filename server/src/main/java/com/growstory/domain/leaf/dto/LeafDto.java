@@ -1,5 +1,6 @@
 package com.growstory.domain.leaf.dto;
 
+import com.growstory.global.badwords.dto.TextContainer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 public class LeafDto {
     @Getter
     @Schema(name = "LeafPostDto")
-    public static class Post {
+    public static class Post implements TextContainer {
         @NotBlank
         private String leafName;
 
@@ -23,11 +24,17 @@ public class LeafDto {
             this.leafName = leafName;
             this.content = content;
         }
+
+        @Override
+        public String combineText() {
+            StringBuilder sb = new StringBuilder();
+            return sb.append(this.leafName).append(" ").append(this.content).toString();
+        }
     }
 
     @Getter
     @Schema(name = "LeafPatchDto")
-    public static class Patch {
+    public static class Patch implements TextContainer {
         @Positive
         private Long leafId;
 
@@ -45,6 +52,12 @@ public class LeafDto {
             this.leafName = leafName;
             this.content = content;
             this.isImageUpdated = isImageUpdated;
+        }
+
+        @Override
+        public String combineText() {
+            StringBuilder sb = new StringBuilder();
+            return sb.append(this.leafName).append(" ").append(this.content).toString();
         }
     }
 

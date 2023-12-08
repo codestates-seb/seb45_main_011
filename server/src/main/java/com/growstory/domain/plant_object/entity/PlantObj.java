@@ -2,6 +2,7 @@ package com.growstory.domain.plant_object.entity;
 
 
 import com.growstory.domain.account.entity.Account;
+import com.growstory.domain.guestbook.entity.GuestBook;
 import com.growstory.domain.leaf.entity.Leaf;
 import com.growstory.domain.plant_object.location.entity.Location;
 import com.growstory.domain.product.entity.Product;
@@ -11,6 +12,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
