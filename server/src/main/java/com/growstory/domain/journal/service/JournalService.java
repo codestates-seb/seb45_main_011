@@ -50,7 +50,7 @@ public class JournalService {
     }
 
     public JournalDto.Response createJournal(Long leafId, JournalDto.Post postDto, MultipartFile image) {
-        accountService.isAuthIdMatching(postDto.getLeafAuthorId());
+        accountService.checkAuthIdMatching(postDto.getLeafAuthorId());
         Leaf findLeaf = leafService.findLeafEntityBy(leafId);
         Journal journal = createJournalWithNoImg(findLeaf, postDto);
         sseService.notify(postDto.getLeafAuthorId(), AlarmType.WRITE_DIARY);
@@ -80,7 +80,7 @@ public class JournalService {
 
     public void updateJournal(Long journalId, JournalDto.Patch patchDto, MultipartFile image) {
         Journal findJournal = findVerifiedJournalBy(journalId);
-        accountService.isAuthIdMatching(patchDto.getLeafAuthorId());
+        accountService.checkAuthIdMatching(patchDto.getLeafAuthorId());
 
         Optional.ofNullable(patchDto.getTitle())
                 .ifPresent(findJournal::updateTitle);
@@ -107,7 +107,7 @@ public class JournalService {
     }
 
     public void deleteJournal(Long accountId, Long journalId) {
-        accountService.isAuthIdMatching(accountId);
+        accountService.checkAuthIdMatching(accountId);
         Journal journal = findVerifiedJournalBy(journalId);
         //저널에 귀속되어 있는 이미지들도 S3에서 삭제해야 한다.
         JournalImage journalImage = journal.getJournalImage();

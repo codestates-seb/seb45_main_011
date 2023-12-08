@@ -12,10 +12,8 @@ import com.growstory.domain.guest.service.GuestService;
 import com.growstory.domain.images.entity.BoardImage;
 import com.growstory.domain.leaf.entity.Leaf;
 import com.growstory.domain.plant_object.dto.PlantObjDto;
-import com.growstory.domain.plant_object.entity.PlantObj;
 import com.growstory.domain.point.entity.Point;
 import com.growstory.domain.point.service.PointService;
-import com.growstory.global.auth.filter.JwtAuthenticationFilter;
 import com.growstory.global.auth.jwt.JwtTokenizer;
 import com.growstory.global.auth.utils.AuthUserUtils;
 import com.growstory.global.auth.utils.CustomAuthorityUtils;
@@ -332,7 +330,7 @@ public class AccountService {
     }
 
     //TODO: 리팩토링 -> AuthUserUtil
-    public void isAuthIdMatching(Long accountId) {
+    public void checkAuthIdMatching(Long accountId) {
         Authentication authentication = null;
         Map<String, Object> claims = null;
         try {
