@@ -1,7 +1,7 @@
 'use client';
 
 import useGardenStore from '@/stores/gardenStore';
-import useModalStore from '@/stores/gardenModalStore';
+import useModalStore from '@/stores/modalStore';
 
 import useRollback from '@/hooks/useRollback';
 

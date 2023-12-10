@@ -4,7 +4,12 @@ import { motion } from 'framer-motion';
 
 import useModalStore, { ModalType } from '@/stores/modalStore';
 
-import { AuthEmailModal, FailureModal, SignupIntro } from '@/components/signup';
+import {
+  AuthEmailModal,
+  MembershipCheckModal,
+  FailureModal,
+  SignupIntro,
+} from '@/components/signup';
 
 export default function Signup() {
   const { isOpen, type } = useModalStore();
@@ -12,6 +17,7 @@ export default function Signup() {
   const renderModal = (type: ModalType) => {
     if (type === 'AuthEmailModal') return <AuthEmailModal />;
     if (type === 'FailureModal') return <FailureModal />;
+    if (type === 'MembershipCheckModal') return <MembershipCheckModal />;
   };
 
   return (

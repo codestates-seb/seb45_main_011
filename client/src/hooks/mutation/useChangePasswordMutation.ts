@@ -20,7 +20,7 @@ const useChangePasswordMutation = (
   const { mutate } = useMutation({
     mutationFn: () => updateUserPassword(presentPassword, changedPassword),
 
-    onSuccess: (data) => {
+    onSuccess: () => {
       changeType('ChangePasswordModal');
       open();
     },
