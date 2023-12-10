@@ -68,7 +68,7 @@ export default function InquiryList() {
         <div className="w-full h-[82%] overflow-y-scroll scrollbar">
           {chatList?.map((page) => {
             return page.chatList.map((list: any) => (
-              <>
+              <div key={list.chatRoomId}>
                 {page.chatList.length === 0 ? (
                   <div className="h-full flex justify-center items-center">
                     <p>아직 대화가 없습니다.</p>
@@ -76,7 +76,7 @@ export default function InquiryList() {
                 ) : (
                   <InquiryRoom chatList={list} key={list.chatRoomId} />
                 )}
-              </>
+              </div>
             ));
           })}
           <div ref={ref}></div>
