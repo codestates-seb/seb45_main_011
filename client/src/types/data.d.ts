@@ -190,7 +190,22 @@ export interface ChatList {
   status: string;
   entry?: string;
 }
+
 export interface ReportListsData {
   content: string;
   key: string;
+}
+  
+export interface NotificationDataInfo {
+  id: number;
+  type:
+    | 'writePost'
+    | 'writeDiary'
+    | 'reportComment'
+    | 'reportPost'
+    | 'dailyQuiz'
+    | 'signup'
+    | 'dailyLogin';
+  num: number;
+  isShow: boolean;
 }

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 
 import useLeafsStore from '@/stores/leafsStore';
 import useUserStore from '@/stores/userStore';
+import useModalStore from '@/stores/modalStore';
 
 import useLeafsPageQueries from '@/hooks/query/useLeafsPageQueries';
 import useEffectOnce from '@/hooks/useEffectOnce';
@@ -18,10 +19,10 @@ import {
   ShareButton,
   ShareModal,
   Footer,
+  NotificationButton,
 } from '@/components/common';
 
 import { MOUNT_ANIMATION_VALUES } from '@/constants/values';
-import useModalStore from '@/stores/modalStore';
 
 interface LeafsProps {
   params: { id: string };
@@ -107,6 +108,7 @@ export default function Leafs({ params }: LeafsProps) {
             <ShareModal location="leafs" />
           ))}
       </motion.div>
+      <NotificationButton />
       <Footer />
     </>
   );

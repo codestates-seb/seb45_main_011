@@ -32,6 +32,7 @@ import ShareModal from './ShareModal';
 import TagInput from './TagInput';
 import TextArea from './TextArea';
 import TextInput from './TextInput';
+import NotificationButton from './NotificationButton';
 
 export {
   CommonButton,
@@ -68,4 +69,5 @@ export {
   TagInput,
   TextArea,
   TextInput,
+  NotificationButton,
 };
