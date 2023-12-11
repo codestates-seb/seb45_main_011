@@ -1,5 +1,6 @@
 'use client';
 
+import { createPortal } from 'react-dom';
 import { notFound } from 'next/navigation';
 
 import { motion } from 'framer-motion';
@@ -8,6 +9,7 @@ import useUserStore from '@/stores/userStore';
 import useModalStore, { ModalType } from '@/stores/modalStore';
 
 import useEffectOnce from '@/hooks/useEffectOnce';
+import useModal from '@/hooks/useModal';
 
 import { ProfileBox, ChangeProfileModal } from '@/components/profile';
 import {
@@ -23,6 +25,8 @@ import { ADMIN_USER_ID, MOUNT_ANIMATION_VALUES } from '@/constants/values';
 export default function Profile() {
   const { userId } = useUserStore();
   const { isOpen, type } = useModalStore();
+
+  const { portalElement } = useModal(isOpen);
 
   const renderModal = (type: ModalType) => {
     if (type === 'ChangePasswordModal')
@@ -50,7 +54,9 @@ export default function Profile() {
         className="flex flex-col justify-center items-center h-auto min-h-full pb-[343px] mx-4">
         <ProfileBox />
 
-        {isOpen && renderModal(type)}
+        {isOpen && portalElement
+          ? createPortal(renderModal(type), portalElement)
+          : null}
       </motion.div>
       <Footer />
     </>
