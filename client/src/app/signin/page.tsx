@@ -1,8 +1,12 @@
 'use client';
 
+import { createPortal } from 'react-dom';
+
 import { motion } from 'framer-motion';
 
 import useModalStore, { ModalType } from '@/stores/modalStore';
+
+import useModal from '@/hooks/useModal';
 
 import {
   SigninIntro,
@@ -14,6 +18,8 @@ import {
 
 export default function Signin() {
   const { isOpen, type } = useModalStore();
+
+  const { portalElement } = useModal(isOpen);
 
   const renderModal = (type: ModalType) => {
     if (type === 'FindPasswordModal') return <FindPasswordModal />;
@@ -30,7 +36,9 @@ export default function Signin() {
       className="flex flex-col justify-center items-center h-full mx-4 pb-[40px]">
       <SigninIntro />
 
-      {isOpen && renderModal(type)}
+      {isOpen && portalElement
+        ? createPortal(renderModal(type), portalElement)
+        : null}
     </motion.div>
   );
 }
