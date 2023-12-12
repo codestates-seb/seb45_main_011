@@ -27,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -59,6 +60,7 @@ public class AccountService {
     // Guest
     private final GuestService guestService;
     private final JwtTokenizer jwtTokenizer;
+
 
     public AccountDto.Response createAccount(AccountDto.Post requestDto) {
         if (verifyExistsEmail(requestDto.getEmail())) {
@@ -151,7 +153,8 @@ public class AccountService {
 
         // Connect Garden Object and Plants Card
         // 식물 카드 A와 벽돌 유적 오브젝트 연결
-        guestService.updateLeafConnection(1L, leafA.getLeafId());
+        // Todo: plantobj not found .
+        guestService.updateLeafConnection(plantObjA.getPlantObj().getPlantObjId(), leafA.getLeafId());
 
         List<String> tokenList = new ArrayList<>();
         // access token, Refresh Token 발급
@@ -273,7 +276,7 @@ public class AccountService {
 
         int startIdx = page * size;
         int endIdx = Math.min(commentWrittenBoardList.size(), (page + 1) * size);
-        return new PageImpl<>(commentWrittenBoardList.subList(startIdx, endIdx), PageRequest.of(page, size), commentWrittenBoardList.size());
+        return new PageImpl<>(commentWrittenBoardList.subList(startIdx, endIdx), PageRequest.of(page, size, Sort.by("createdAt").descending()), commentWrittenBoardList.size());
     }
 
     public void deleteAccount() {

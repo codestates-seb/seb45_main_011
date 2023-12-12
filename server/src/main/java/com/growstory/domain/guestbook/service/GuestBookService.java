@@ -60,6 +60,7 @@ public class GuestBookService {
     public GuestBookResponseDto getGuestBookResponse(GuestBook guestBook) {
         return GuestBookResponseDto.builder()
                 .guestbookId(guestBook.getGuestbookId())
+                .accountId(guestBook.getAuthor().getAccountId())
                 .displayName(guestBook.getAuthor().getDisplayName())
                 .imageUrl(guestBook.getAuthor().getProfileImageUrl())
                 .accountGrade(guestBook.getAuthor().getAccountGrade().getStepDescription())
