@@ -1,8 +1,11 @@
 'use client';
+import { createPortal } from 'react-dom';
 
 import { motion } from 'framer-motion';
 
 import useModalStore, { ModalType } from '@/stores/modalStore';
+
+import useModal from '@/hooks/useModal';
 
 import {
   AuthEmailModal,
@@ -13,6 +16,8 @@ import {
 
 export default function Signup() {
   const { isOpen, type } = useModalStore();
+
+  const { portalElement } = useModal(isOpen);
 
   const renderModal = (type: ModalType) => {
     if (type === 'AuthEmailModal') return <AuthEmailModal />;
@@ -28,7 +33,9 @@ export default function Signup() {
       className="flex flex-col justify-center items-center h-full mx-4 pb-[40px]">
       <SignupIntro />
 
-      {isOpen && renderModal(type)}
+      {isOpen && portalElement
+        ? createPortal(renderModal(type), portalElement)
+        : null}
     </motion.div>
   );
 }
