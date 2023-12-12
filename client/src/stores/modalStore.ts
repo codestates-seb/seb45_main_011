@@ -9,7 +9,8 @@ export type GardenType =
   | 'purchaseInfo'
   | 'purchase'
   | 'emptyInventory'
-  | 'share';
+  | 'share'
+  | 'guestbook';
 
 export type LeafsType = 'deleteLeaf' | 'share';
 
@@ -32,7 +33,15 @@ export type ProfileType =
   | 'ChangeNicknameModal'
   | 'ChangeImageModal';
 
-export type ModalType = PostType | GardenType | LeafsType | LeafType | SignType | HistoryType | ProfileType | null;
+export type ModalType =
+  | PostType
+  | GardenType
+  | LeafsType
+  | LeafType
+  | SignType
+  | HistoryType
+  | ProfileType
+  | null;
 
 export interface ModalState {
   isOpen: boolean;
