@@ -43,7 +43,7 @@ export default function Garden({ params }: GardenProps) {
     if (type === 'purchase') return <PurchaseModal />;
     if (type === 'emptyInventory') return <EmptyInventoryModal />;
     if (type === 'share') return <ShareModal location="garden" />;
-    if (type === 'guestbook') return <GuestbookModal isOwner={true} />;
+    if (type === 'guestbook') return <GuestbookModal />;
   };
 
   const isOwner = userId === params.id;
