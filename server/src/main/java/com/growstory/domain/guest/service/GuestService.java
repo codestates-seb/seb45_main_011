@@ -69,9 +69,7 @@ public class GuestService {
         account.updateGrade(updateAccountGrade(account));
 //        account.updateGrade(updateAccountGrade(account));
 
-        return Leaf.builder()
-                .leafId(saveLeaf.getLeafId())
-                .build();
+        return saveLeaf;
     }
 
     private AccountGrade updateAccountGrade(Account findAccount) {

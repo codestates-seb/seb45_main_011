@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 public class GuestBookResponseDto {
+
+    private Long accountId;
     private Long guestbookId;
     private String content;
 
