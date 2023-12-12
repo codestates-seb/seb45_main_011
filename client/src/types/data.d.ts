@@ -169,6 +169,16 @@ export interface BoardRankDataInfo {
   likeNum: number;
 }
 
+export interface GuestbookDataInfo {
+  guestbookId: number;
+  content: string;
+  displayName: string;
+  imageUrl: string | null;
+  accountGrade: string;
+  createdAt: string;
+  modifiedAt: string;
+}
+  
 export interface Chat {
   senderId: number;
   senderName: string;

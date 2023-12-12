@@ -4,6 +4,7 @@ import GardenInfo from './GardenInfo';
 import GardenMap from './GardenMap';
 import GardenSidebar from './GardenSidebar';
 import GardenSquares from './GardenSquares';
+import GuestbookModal from './GuestbookModal';
 import InstalledPlants from './InstalledPlants';
 import EmptyInventoryModal from './EmptyInventoryModal';
 import LeafExistModal from './LeafExistModal';
@@ -25,6 +26,7 @@ export {
   GardenMap,
   GardenSidebar,
   GardenSquares,
+  GuestbookModal,
   InstalledPlants,
   LeafExistModal,
   LeafTag,
