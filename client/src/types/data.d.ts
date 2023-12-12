@@ -168,3 +168,13 @@ export interface BoardRankDataInfo {
   displayName: string;
   likeNum: number;
 }
+
+export interface GuestbookDataInfo {
+  guestbookId: number;
+  content: string;
+  displayName: string;
+  imageUrl: string | null;
+  accountGrade: string;
+  createdAt: string;
+  modifiedAt: string;
+}
