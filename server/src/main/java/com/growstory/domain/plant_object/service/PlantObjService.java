@@ -73,7 +73,7 @@ public class PlantObjService {
     // POST : 유저 포인트로 오브젝트 구입
     public PlantObjDto.TradeResponse buyProduct(Long accountId, Long productId) {
         // 시큐리티 컨텍스트 인증정보 확인
-        accountService.isAuthIdMatching(accountId);
+        accountService.checkAuthIdMatching(accountId);
 
         // 인증 정보를 바탕으로 Account 엔티티 조회
         Account findAccount = authUserUtils.getAuthUser();
@@ -105,7 +105,7 @@ public class PlantObjService {
 
     // PATCH : 오브젝트 되팔기
     public PointDto.Response refundPlantObj(Long accountId, Long plantObjId) {
-        accountService.isAuthIdMatching(accountId);
+        accountService.checkAuthIdMatching(accountId);
 
         Account findAccount = authUserUtils.getAuthUser();
         PlantObj plantObj = findVerifiedPlantObj(plantObjId);
@@ -124,7 +124,7 @@ public class PlantObjService {
 
     // POST : 오브젝트 배치 (편집 완료)
     public void saveLocation(Long accountId, List<PlantObjDto.PatchLocation> patchLocationDtos) {
-        accountService.isAuthIdMatching(accountId);
+        accountService.checkAuthIdMatching(accountId);
 
         patchLocationDtos.stream()
                 .forEach(patchLocationDto -> {
@@ -144,7 +144,7 @@ public class PlantObjService {
 
     // PATCH : 오브젝트와 식물 카드 연결 / 해제 / 교체
     public PlantObjDto.Response updateLeafConnection(Long accountId, Long plantObjId, Long leafId) {
-        accountService.isAuthIdMatching(accountId);
+        accountService.checkAuthIdMatching(accountId);
         boolean isLeafNull = leafId == null;
         PlantObj findPlantObj = findVerifiedPlantObj(plantObjId);
 

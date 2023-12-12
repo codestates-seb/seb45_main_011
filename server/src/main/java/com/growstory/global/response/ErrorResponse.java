@@ -44,14 +44,6 @@ public class ErrorResponse {
 
     // 비속어 필터링 관련 예외 응답 처리
     public static ErrorResponse of(ExceptionCode exceptionCode, ProfanityDto profanityDto) {
-//        StringBuilder response = new StringBuilder();
-//
-//        String inputProfanityWords = profanityDto.getInputProfanityWords().toString();
-//        String bannedWords = profanityDto.getBannedWords().toString();
-//
-//        response.append(inputProfanityWords.substring(1, inputProfanityWords.length()-1))
-//                .append("/")
-//                .append(bannedWords.substring(1, bannedWords.length()-1));
         return new ErrorResponse(exceptionCode.getStatus(), profanityDto.toString());
     }
 
