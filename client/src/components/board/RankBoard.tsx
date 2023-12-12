@@ -46,6 +46,7 @@ const renderMedal = (rank: number) => {
 export default function RankBoard() {
   const { boardRank } = useBoardStore();
 
+  if (boardRank.length === 0) return null;
   return (
     <motion.div
       variants={MOUNT_ANIMATION_VALUES}

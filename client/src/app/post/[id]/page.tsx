@@ -31,6 +31,7 @@ import {
   LoadingNotice,
   ErrorMessage,
   Footer,
+  NotificationButton,
 } from '@/components/common';
 
 import { CommentDataInfo, PostDataInfo } from '@/types/data';
@@ -151,6 +152,7 @@ export default function Post({ params }: PostProps) {
             <CommentDeleteModal boardId={String(post?.boardId)} />
           ))}
       </motion.main>
+      <NotificationButton />
       <Footer />
     </>
   );

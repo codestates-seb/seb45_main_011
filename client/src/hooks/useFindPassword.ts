@@ -14,14 +14,6 @@ const useFindPassword = () => {
     queryFn: () => getUsersEmail(),
   });
 
-  const { mutate } = useMutation({
-    mutationFn: (email: string) => sendTemporaryPasswordByEmail(email),
-
-    onSuccess: () => {
-      changeType('SuccessedModal');
-    },
-  });
-
   const onEmailCheck = async (userEmail: string) => {
     if (!userEmail) return;
 
@@ -32,8 +24,19 @@ const useFindPassword = () => {
     if (!existEmail) return changeType('FailureModal');
 
     mutate(userEmail);
-    return changeType('SuccessedModal');
   };
+
+  const { mutate } = useMutation({
+    mutationFn: (email: string) => sendTemporaryPasswordByEmail(email),
+
+    onSuccess: (data) => {
+      if (data.data.data.isSocial) {
+        return changeType('MembershipCheckModal');
+      }
+
+      changeType('SuccessedModal');
+    },
+  });
 
   return { onEmailCheck, close };
 };

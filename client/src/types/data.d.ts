@@ -178,3 +178,44 @@ export interface GuestbookDataInfo {
   createdAt: string;
   modifiedAt: string;
 }
+  
+export interface Chat {
+  senderId: number;
+  senderName: string;
+  messageId: number;
+  message: string;
+  createdAt: string;
+  modifiedAt: string;
+  imageUrl: null;
+}
+
+export interface ChatList {
+  chatRoomId: number;
+  createdAt: string;
+  latestMessage: string;
+  latestTime: string;
+  otherAccountId: number;
+  otherAccountName: string;
+  roomName: string;
+  status: string;
+  entry?: string;
+}
+
+export interface ReportListsData {
+  content: string;
+  key: string;
+}
+  
+export interface NotificationDataInfo {
+  id: number;
+  type:
+    | 'writePost'
+    | 'writeDiary'
+    | 'reportComment'
+    | 'reportPost'
+    | 'dailyQuiz'
+    | 'signup'
+    | 'dailyLogin';
+  num: number;
+  isShow: boolean;
+}

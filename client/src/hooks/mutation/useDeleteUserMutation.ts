@@ -9,6 +9,7 @@ const useDeleteUserMutation = () => {
 
   const { mutate } = useMutation({
     mutationFn: () => deleteUser(),
+
     onSuccess: () => {
       return changeType('SuccessedModal');
     },

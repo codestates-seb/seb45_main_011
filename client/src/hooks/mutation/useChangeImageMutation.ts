@@ -22,7 +22,7 @@ const useChangeImageMutation = () => {
   const { mutate } = useMutation({
     mutationFn: (image: FileList) => updateUserProfileImage(image[0]),
 
-    onSuccess: (data) => {
+    onSuccess: () => {
       setProfileImageUrl(imageUrl);
       setIsDisabled(true);
 

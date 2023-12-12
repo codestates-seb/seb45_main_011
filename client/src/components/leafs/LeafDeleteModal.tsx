@@ -15,7 +15,6 @@ export default function LeafDeleteModal() {
 
   const handleLeafDelete = () => {
     if (!deleteTargetLeafsId) return;
-
     deleteLeaf(deleteTargetLeafsId);
     close();
   };

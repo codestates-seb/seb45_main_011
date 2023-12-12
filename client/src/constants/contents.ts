@@ -1,6 +1,7 @@
 export const CONTROL_BUTTON_TITLES = {
   edit: '수정하기',
   delete: '삭제하기',
+  notificationDelete: '알림 삭제',
 } as const;
 
 export const HEADER_LINK_CONTENT = {
@@ -251,3 +252,21 @@ export const COMMENT_DELETE_MODAL_TEXT = {
 export const POST_DELETE_MODAL_TEXT = {
   firstLine: ['게시글을', '삭제', '하시겠습니까?'],
 };
+
+export const CUSTOMER_SERVICE = {
+  notification: [
+    '채팅 내용은 상담 품질 향상을 위해 저장됩니다.',
+    '최대한 빠른 시간안에 답변해 드리겠습니다.',
+  ],
+};
+
+export const REPORT_TITLE = [
+  { content: '번호', key: 'chatRoomId' },
+  { content: '문의일', key: 'latestTime' },
+  { content: '문의 제목', key: 'roomName' },
+  { content: '닉네임', key: 'otherAccountName' },
+  { content: '답장 여부', key: 'isAnswered' },
+  { content: '채팅 입장', key: 'entry' },
+];
+
+export const REPORT_TITLE_STYLE = ['10%', '15%', '20%', '15%', '20%', '20%'];
