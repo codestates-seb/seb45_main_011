@@ -1,4 +1,4 @@
-import { instance } from './axios';
+import { chatInstance } from './axios';
 
 const reviewerId = 101;
 
@@ -6,7 +6,7 @@ export const postCreateChatRoom = async (
   questionerId: number,
   qnaTitle: string,
 ) => {
-  const response = await instance.post(`/chat-rooms`, {
+  const response = await chatInstance.post(`/chat-rooms`, {
     questionerId,
     reviewerId,
     qnaTitle,
@@ -16,7 +16,7 @@ export const postCreateChatRoom = async (
 };
 
 export const getChatListById = async ({ pageParam = 0 }, id: string) => {
-  const response = await instance
+  const response = await chatInstance
     .get(`/chat-rooms/${id}?page=${pageParam}`)
     .then((response) => response.data);
 
@@ -24,7 +24,7 @@ export const getChatListById = async ({ pageParam = 0 }, id: string) => {
 };
 
 export const getChatMessageById = async ({ pageParam = 0 }, id: string) => {
-  const response = await instance
+  const response = await chatInstance
     .get(`/chat-messages/${id}?page=${pageParam}`)
     .then((response) => response.data);
 
@@ -32,7 +32,7 @@ export const getChatMessageById = async ({ pageParam = 0 }, id: string) => {
 };
 
 export const patchChatAnsweredById = async (chatRoomId: string) => {
-  const response = await instance.patch(`/chat-rooms/qna-answer-renewal`, {
+  const response = await chatInstance.patch(`/chat-rooms/qna-answer-renewal`, {
     chatRoomId,
     senderId: reviewerId,
   });
@@ -45,7 +45,7 @@ export const sendAnsweredById = async (
   questionerId: string,
   mailSubject: string,
 ) => {
-  const response = await instance.post(`/emails/qna-answer`, {
+  const response = await chatInstance.post(`/emails/qna-answer`, {
     chatRoomId,
     questionerId,
     mailSubject,
