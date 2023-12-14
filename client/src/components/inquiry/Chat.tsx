@@ -61,24 +61,30 @@ export default function Chat({ role }: ChatProps) {
   useEffect(() => {
     client.current = Stomp.over(() => new SockJS(`${url}/wss`));
 
-    client.current.connect(
-      {
-        Authorization: accessToken,
-        refresh: refreshToken,
-      },
-      () => {
-        subscription = client?.current?.subscribe(
-          `/sub/chatRoom/${roomId}`,
-          (payload) => {
-            const receivedMessage: Chat = JSON.parse(payload.body);
+    try {
+      client.current.connect(
+        {
+          Authorization: accessToken,
+          refresh: refreshToken,
+        },
+        () => {
+          subscription = client?.current?.subscribe(
+            `/sub/chatRoom/${roomId}`,
+            (payload) => {
+              const receivedMessage: Chat = JSON.parse(payload.body);
 
-            setChat((previousChat) => [...previousChat, receivedMessage]);
-          },
-        );
+              setChat((previousChat) => [...previousChat, receivedMessage]);
+            },
+          );
 
-        setConnected(true);
-      },
-    );
+          setConnected(true);
+        },
+      );
+    } catch (error) {
+      alert(
+        '토큰이 만료되었습니다. 로그아웃 후 다시 로그인 해주시길 바랍니다.',
+      );
+    }
 
     return () => {
       client.current?.disconnect(() => {

@@ -6,6 +6,7 @@ import { postUserInfo } from '@/api/user';
 
 import useSignStore from '@/stores/signStore';
 import useUserStore from '@/stores/userStore';
+import useChatStore from '@/stores/chatStore';
 
 import { SigninFormValue } from '@/types/common';
 
@@ -17,6 +18,7 @@ const useSigninMutation = () => {
   const { reset } = useForm<SigninFormValue>();
 
   const { setEmailUser } = useUserStore();
+  const { setSelected } = useChatStore();
   const { getSigninForm, getSignupForm } = useSignStore();
 
   const { mutate } = useMutation({
@@ -48,6 +50,8 @@ const useSigninMutation = () => {
       getSignupForm(false);
 
       reset();
+
+      setSelected('home');
 
       router.push('/');
     },

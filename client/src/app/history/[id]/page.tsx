@@ -15,6 +15,7 @@ import {
   FailureModal,
   HistoryBox,
 } from '@/components/history';
+import { InquiryButton } from '@/components/inquiry';
 import { Footer } from '@/components/common';
 
 import { MOUNT_ANIMATION_VALUES } from '@/constants/values';
@@ -48,6 +49,8 @@ export default function History({ params }: HistoryProps) {
           ? createPortal(renderModal(type), portalElement)
           : null}
       </motion.div>
+
+      <InquiryButton />
       <Footer />
     </>
   );

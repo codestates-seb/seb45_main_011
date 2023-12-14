@@ -5,6 +5,7 @@ import Link from 'next/link';
 
 import useUserStore from '@/stores/userStore';
 import useSignStore from '@/stores/signStore';
+import useChatStore from '@/stores/chatStore';
 
 import useDeleteGuestMutation from '@/hooks/mutation/useDeleteGuestMutation';
 
@@ -22,6 +23,7 @@ export default function HeaderNav({
   const { isEmailLogin, isGoogleLogin, isGuestMode, userId, setClear } =
     useUserStore();
   const { getSigninForm, getSignupForm } = useSignStore();
+  const { setIsOpen } = useChatStore();
 
   const { mutate: onDeleteGuest } = useDeleteGuestMutation();
 
@@ -43,7 +45,9 @@ export default function HeaderNav({
       <div className="absolute">
         {isProfileHover && (
           <div className="relative top-2 left-0 w-[75px] h-fit rounded-lg border-2 border-brown-70 bg-brown-50 shadow-outer/down">
-            <div className="flex flex-col justify-center items-center text-[12px] text-brown-10 font-bold">
+            <div
+              className="flex flex-col justify-center items-center text-[12px] text-brown-10 font-bold"
+              onClick={() => setIsOpen(false)}>
               <div className="w-full flex justify-center items-center border-b border-brown-10 border-dashed py-[8px] border-opacity-80">
                 {isGuestMode ? (
                   <Link href="/signup">회원 가입</Link>

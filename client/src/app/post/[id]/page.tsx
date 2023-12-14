@@ -24,6 +24,7 @@ import {
   HashTags,
   CommentDeleteModal,
 } from '@/components/post';
+import { InquiryButton } from '@/components/inquiry';
 import {
   PageTitle,
   PostCountInfo,
@@ -153,6 +154,8 @@ export default function Post({ params }: PostProps) {
           ))}
       </motion.main>
       <NotificationButton />
+
+      <InquiryButton />
       <Footer />
     </>
   );
