@@ -1,4 +1,3 @@
-import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 
 import { postCreateGuest } from '@/api/guest';
@@ -6,8 +5,6 @@ import { postCreateGuest } from '@/api/guest';
 import useUserStore from '@/stores/userStore';
 
 const useCreateGuestMutation = () => {
-  const router = useRouter();
-
   const { setGuestMode } = useUserStore();
 
   const { mutate } = useMutation({
@@ -17,10 +14,20 @@ const useCreateGuestMutation = () => {
       const userId = data.headers.location.slice(-3);
       const accessToken = data.headers.authorization;
       const refreshToken = data.headers.refresh;
+      const displayName = `게스트 ${userId}`;
+      const profileImageUrl = '/assets/img/bg_default_profile.png';
 
-      setGuestMode(userId, accessToken, refreshToken);
+      setGuestMode({
+        userId,
+        accessToken,
+        refreshToken,
+        displayName,
+        profileImageUrl,
+      });
 
-      router.push('/');
+      window.location.reload();
+
+      window.location.href = '/';
     },
   });
 

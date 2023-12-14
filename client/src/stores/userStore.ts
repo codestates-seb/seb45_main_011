@@ -19,11 +19,7 @@ interface User extends UserInfo {
   setGoogleUser: (userInfo: UserInfo) => void;
   setEmailUser: (userInfo: UserInfo) => void;
 
-  setGuestMode: (
-    userId: string,
-    accessToken: string,
-    refreshToken: string,
-  ) => void;
+  setGuestMode: (userInfo: UserInfo) => void;
 
   setProfileImageUrl: (profileImageUrl: string) => void;
   setDisplayName: (displayName: string) => void;
@@ -83,8 +79,22 @@ const useUserStore = create(
         });
       },
 
-      setGuestMode: (userId, accessToken, refreshToken) => {
-        set({ userId, accessToken, refreshToken, isGuestMode: true });
+      setGuestMode: (userInfo: UserInfo) => {
+        const {
+          accessToken,
+          refreshToken,
+          userId,
+          displayName,
+          profileImageUrl,
+        } = userInfo;
+        set({
+          userId,
+          accessToken,
+          refreshToken,
+          isGuestMode: true,
+          displayName,
+          profileImageUrl,
+        });
       },
 
       setProfileImageUrl: (profileImageUrl) => {
