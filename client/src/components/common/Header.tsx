@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 
 import useUserStore from '@/stores/userStore';
 import useSignStore from '@/stores/signStore';
+import useChatStore from '@/stores/chatStore';
 
 import useClient from '@/hooks/useClient';
 
@@ -18,7 +19,8 @@ export default function Header() {
 
   const { userId, isEmailLogin, isGoogleLogin, isGuestMode, profileImageUrl } =
     useUserStore();
-  const getSigninForm = useSignStore((state) => state.getSigninForm);
+  const { getSigninForm } = useSignStore();
+  const { setIsOpen } = useChatStore();
 
   const isClient = useClient();
 
@@ -43,11 +45,16 @@ export default function Header() {
         shadow-outer/down 
         z-50
         ">
-        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setIsOpen(false)}>
           <Logo size="small" className="mt-[2px]" />
         </motion.div>
 
-        <ul className="flex items-center gap-2 max-[480px]:gap-3">
+        <ul
+          className="flex items-center gap-2 max-[480px]:gap-3"
+          onClick={() => setIsOpen(false)}>
           <li
             onMouseOver={() => setIsMenuHover(true)}
             onMouseLeave={() => setIsMenuHover(false)}

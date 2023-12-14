@@ -1,3 +1,5 @@
+'use client';
+
 import NotificationPanel from './NotificationPanel';
 
 import useUserStore from '@/stores/userStore';

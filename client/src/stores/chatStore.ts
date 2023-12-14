@@ -10,6 +10,7 @@ interface ChatState {
   title: string;
   roomId: string;
   questionerId: string;
+  isOpen: boolean;
 
   setChatList: (chatList: ChatList[]) => void;
 
@@ -18,6 +19,7 @@ interface ChatState {
   setTitle: (title: string) => void;
   setRoomId: (roomId: string) => void;
   setQuestionerId: (questionerId: string) => void;
+  setIsOpen: (isOpen: boolean) => void;
 }
 
 const useChatStore = create<ChatState>((set) => ({
@@ -28,6 +30,7 @@ const useChatStore = create<ChatState>((set) => ({
   title: '',
   roomId: '',
   questionerId: '',
+  isOpen: false,
 
   setChatList: (chatList) => {
     set(() => ({ chatList }));
@@ -51,6 +54,10 @@ const useChatStore = create<ChatState>((set) => ({
 
   setQuestionerId(questionerId) {
     set({ questionerId });
+  },
+
+  setIsOpen(isOpen) {
+    set({ isOpen, selected: 'home' });
   },
 }));
 
