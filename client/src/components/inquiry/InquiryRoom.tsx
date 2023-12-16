@@ -6,6 +6,8 @@ import useChatStore from '@/stores/chatStore';
 
 import { ChatList } from '@/types/data';
 
+import checkForToken from '@/utils/checkForToken';
+
 interface InquiryRoomProps {
   chatList: ChatList;
 }
@@ -13,7 +15,15 @@ interface InquiryRoomProps {
 export default function InquiryRoom({ chatList }: InquiryRoomProps) {
   const { setSelected, setRoomId } = useChatStore();
 
+  const { authVerify } = checkForToken();
+
   const onChatRoomById = (chatRoomId: number) => {
+    if (authVerify() === 'Access Token Expired') {
+      return alert(
+        '토큰이 만료되었습니다. 로그아웃 후 다시 로그인 해주시길 바랍니다.',
+      );
+    }
+
     setSelected('chat');
     setRoomId(`${chatRoomId}`);
   };

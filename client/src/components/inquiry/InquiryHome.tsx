@@ -1,15 +1,20 @@
 'use client';
 
 import { Dispatch, SetStateAction } from 'react';
+import { useRouter } from 'next/navigation';
 
 import useChatStore from '@/stores/chatStore';
+import useUserStore from '@/stores/userStore';
 
 import useCreateChatRoomMutation from '@/hooks/mutation/useCreateChatRoomMutation';
+import useDeleteGuestMutation from '@/hooks/mutation/useDeleteGuestMutation';
 
 import { TitleInput } from '.';
 import { CommonButton } from '../common';
 
 import { CUSTOMER_SERVICE } from '@/constants/contents';
+
+import checkForToken from '@/utils/checkForToken';
 
 interface HomeProps {
   isNewChat: boolean;
@@ -22,11 +27,30 @@ export default function InquiryHome({
   setIsNewChat,
   newChat,
 }: HomeProps) {
+  const router = useRouter();
+
   const { title, setTitle } = useChatStore();
+  const { setClear, isGuestMode } = useUserStore();
 
   const { mutate } = useCreateChatRoomMutation(title);
+  const { mutate: onDeleteGuest } = useDeleteGuestMutation();
+
+  const { authVerify } = checkForToken();
 
   const onCreateChat = () => {
+    if (authVerify() === 'Access Token Expired') {
+      if (isGuestMode) {
+        onDeleteGuest();
+      }
+
+      return (
+        alert('토큰이 만료되었습니다. 다시 로그인 해주시길 바랍니다.'),
+        setTitle(''),
+        setClear(),
+        router.push('/signin')
+      );
+    }
+
     mutate();
     setTitle('');
   };

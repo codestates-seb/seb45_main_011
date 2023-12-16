@@ -24,6 +24,7 @@ import {
   EmptyInventoryModal,
   GuestbookModal,
 } from '@/components/garden';
+import { InquiryButton } from '@/components/inquiry';
 
 interface GardenProps {
   params: { id: string };
@@ -84,7 +85,7 @@ export default function Garden({ params }: GardenProps) {
         )}
         {isOpen && renderModal(type)}
       </div>
-
+      <InquiryButton />
       <Footer />
     </>
   );

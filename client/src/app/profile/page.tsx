@@ -18,6 +18,7 @@ import {
   SuccessedModal,
   FailureModal,
 } from '@/components/history';
+import { InquiryButton } from '@/components/inquiry';
 import { Footer } from '@/components/common';
 
 import { ADMIN_USER_ID, MOUNT_ANIMATION_VALUES } from '@/constants/values';
@@ -58,6 +59,8 @@ export default function Profile() {
           ? createPortal(renderModal(type), portalElement)
           : null}
       </motion.div>
+
+      <InquiryButton />
       <Footer />
     </>
   );

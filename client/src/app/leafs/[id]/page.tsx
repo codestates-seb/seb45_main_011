@@ -10,6 +10,7 @@ import useLeafsPageQueries from '@/hooks/query/useLeafsPageQueries';
 import useEffectOnce from '@/hooks/useEffectOnce';
 
 import { AddLeafButton, LeafDeleteModal } from '@/components/leafs';
+import { InquiryButton } from '@/components/inquiry';
 import {
   Leaf,
   PageTitle,
@@ -109,6 +110,8 @@ export default function Leafs({ params }: LeafsProps) {
           ))}
       </motion.div>
       <NotificationButton />
+
+      <InquiryButton />
       <Footer />
     </>
   );

@@ -16,6 +16,7 @@ import {
   PostList,
   SearchList,
 } from '@/components/board';
+import { InquiryButton } from '@/components/inquiry';
 import { CommonButton, Footer, NotificationButton } from '@/components/common';
 
 export default function Board() {
@@ -54,6 +55,8 @@ export default function Board() {
         </motion.div>
       </div>
       <NotificationButton />
+
+      <InquiryButton />
       <Footer />
     </>
   );
