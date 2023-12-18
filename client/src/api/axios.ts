@@ -1,14 +1,17 @@
 import axios, { AxiosResponse } from 'axios';
 
-const accessToken =
-  typeof window !== 'undefined'
-    ? JSON.parse(localStorage.getItem('user-key') as string).state.accessToken
-    : null;
+import LocalStorage from './localStorage';
 
+import checkForToken from '@/utils/checkForToken';
+
+const token = LocalStorage.getItem('user-key');
+
+const { authVerify, storageData } = checkForToken();
+
+const accessToken =
+  typeof window !== 'undefined' ? token.state.accessToken : null;
 const refreshToken =
-  typeof window !== 'undefined'
-    ? JSON.parse(localStorage.getItem('user-key') as string).state.refreshToken
-    : null;
+  typeof window !== 'undefined' ? token.state.refreshToken : null;
 
 export const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -19,26 +22,14 @@ export const instance = axios.create({
   withCredentials: true,
 });
 
-const storageData = JSON.parse(localStorage.getItem('user-key') as string);
-
-const parseJWT = (token: string | null) => {
-  if (token) return JSON.parse(atob(token.split('.')[1]));
-};
-
-const authVerify = () => {
-  const decodedAccess = parseJWT(accessToken);
-  const decodedRefresh = parseJWT(refreshToken);
-
-  if (decodedAccess?.exp * 1000 < Date.now()) {
-    return 'Access Token Expired';
-  }
-
-  if (decodedRefresh?.exp * 1000 < Date.now()) {
-    return 'Refresh Token Expired';
-  }
-
-  return true;
-};
+export const chatInstance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  headers: {
+    Authorization: accessToken,
+    Refresh: refreshToken,
+  },
+  withCredentials: true,
+});
 
 const onFulfiled = async (response: AxiosResponse) => {
   if (authVerify() === 'Access Token Expired') {
@@ -46,7 +37,7 @@ const onFulfiled = async (response: AxiosResponse) => {
 
     storageData.state.accessToken = newAccessToken;
 
-    localStorage.setItem('user-key', JSON.stringify(storageData));
+    LocalStorage.setItem('user-key', JSON.stringify(storageData));
 
     response.config.headers = Object.assign({}, response.config.headers, {
       authorization: `${newAccessToken}`,

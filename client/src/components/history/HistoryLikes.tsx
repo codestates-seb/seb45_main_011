@@ -68,6 +68,7 @@ export default function HistoryLikes({ paramsId }: HistoryBoradProps) {
           )}
         </div>
       ))}
+
       {isLoading && (
         <div className="w-[715px] py-6 max-[730px]:w-[512px] max-[630px]:w-[312px] flex justify-center items-center">
           <LoadingMessage />

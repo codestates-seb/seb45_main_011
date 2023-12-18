@@ -1,7 +1,7 @@
 import cloneDeep from 'lodash/cloneDeep';
 
 import useGardenStore from '@/stores/gardenStore';
-import useModalStore from '@/stores/gardenModalStore';
+import useModalStore from '@/stores/modalStore';
 
 const usePlantCard = () => {
   const {

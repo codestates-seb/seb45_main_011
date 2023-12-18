@@ -5,11 +5,14 @@ import useUserStore from '@/stores/userStore';
 
 import useSyncGarden from '@/hooks/useSyncGarden';
 
-import LoadingNotice from '@/components/common/LoadingNotice';
-import ErrorNotice from '@/components/common/ErrorNotice';
-import ShareModal from '@/components/common/ShareModal';
-import ShareButton from '@/components/common/ShareButton';
-import Footer from '@/components/common/Footer';
+import {
+  CommonButton,
+  ErrorNotice,
+  Footer,
+  LoadingNotice,
+  ShareButton,
+  ShareModal,
+} from '@/components/common';
 import {
   GardenMap,
   GardenSidebar,
@@ -19,15 +22,18 @@ import {
   PurchaseInfoModal,
   PurchaseModal,
   EmptyInventoryModal,
+  GuestbookModal,
 } from '@/components/garden';
 import { NotificationButton } from '@/components/common';
+
+import { InquiryButton } from '@/components/inquiry';
 
 interface GardenProps {
   params: { id: string };
 }
 
 export default function Garden({ params }: GardenProps) {
-  const { isOpen, type } = useModalStore();
+  const { isOpen, type, changeType, open } = useModalStore();
   const { userId } = useUserStore();
 
   const { isLoading, isError } = useSyncGarden(params.id);
@@ -40,9 +46,15 @@ export default function Garden({ params }: GardenProps) {
     if (type === 'purchase') return <PurchaseModal />;
     if (type === 'emptyInventory') return <EmptyInventoryModal />;
     if (type === 'share') return <ShareModal location="garden" />;
+    if (type === 'guestbook') return <GuestbookModal />;
   };
 
   const isOwner = userId === params.id;
+
+  const handleGuestbook = () => {
+    changeType('guestbook');
+    open();
+  };
 
   return (
     <>
@@ -65,12 +77,21 @@ export default function Garden({ params }: GardenProps) {
             </>
           )}
         </div>
-        <div className="pt-6  text-center">
-          <ShareButton location="garden" position="bottom" />
-        </div>
+        {!isLoading && !isError && (
+          <div className="flex justify-center gap-2 pt-6 text-center">
+            <ShareButton location="garden" position="bottom" />
+            <CommonButton type="button" size="md" onClick={handleGuestbook}>
+              방명록
+            </CommonButton>
+          </div>
+        )}
         {isOpen && renderModal(type)}
       </div>
+
       <NotificationButton />
+
+      <InquiryButton />
+
       <Footer />
     </>
   );

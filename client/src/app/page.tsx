@@ -12,6 +12,7 @@ import Footer from '@/components/common/Footer';
 import ServiceInfo from '@/components/main/ServiceInfo';
 import MainSignupBanner from '@/components/main/MainSignupBanner';
 import ScrollDownButton from '@/components/main/ScrollDownButton';
+import { InquiryButton } from '@/components/inquiry';
 
 import { getScrollTop } from '@/utils/getScrollTop';
 import { NotificationButton } from '@/components/common';
@@ -82,8 +83,12 @@ export default function Home() {
                   </div>
                 </motion.section>
               )}
+
+              <InquiryButton />
             </div>
+
             <NotificationButton />
+
             <Footer />
           </>
         )}
