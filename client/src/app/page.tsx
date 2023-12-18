@@ -14,6 +14,7 @@ import MainSignupBanner from '@/components/main/MainSignupBanner';
 import ScrollDownButton from '@/components/main/ScrollDownButton';
 
 import { getScrollTop } from '@/utils/getScrollTop';
+import { NotificationButton } from '@/components/common';
 
 export default function Home() {
   const isClient = useClient();
@@ -82,6 +83,7 @@ export default function Home() {
                 </motion.section>
               )}
             </div>
+            <NotificationButton />
             <Footer />
           </>
         )}

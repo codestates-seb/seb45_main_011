@@ -20,6 +20,7 @@ import {
   PurchaseModal,
   EmptyInventoryModal,
 } from '@/components/garden';
+import { NotificationButton } from '@/components/common';
 
 interface GardenProps {
   params: { id: string };
@@ -69,6 +70,7 @@ export default function Garden({ params }: GardenProps) {
         </div>
         {isOpen && renderModal(type)}
       </div>
+      <NotificationButton />
       <Footer />
     </>
   );

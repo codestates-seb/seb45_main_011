@@ -66,7 +66,6 @@ export default function Post({ params }: PostProps) {
     window.scrollTo(0, 0);
     return router.refresh();
   });
-
   useEffect(() => {
     if (post?.comments) setComments(post?.comments);
   }, [post?.comments]);
