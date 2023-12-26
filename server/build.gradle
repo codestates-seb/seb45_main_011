@@ -69,7 +69,6 @@ dependencies {
 //	implementation 'org.webjars:stomp-websocket'
 	implementation 'org.springframework:spring-messaging'
 	implementation 'org.springframework.security:spring-security-messaging'
-
 }
 
 test {

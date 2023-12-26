@@ -16,6 +16,9 @@ public class Report extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reportId;
 
+    @Column(nullable = false)
+    private String title;
+
     @Lob
     @Column(nullable = false)
     private String content;
@@ -27,8 +30,9 @@ public class Report extends BaseTimeEntity {
     private Long reportedAccountId;
 
     @Builder
-    public Report(Long reportId, String content, Account account, Long reportedAccountId) {
+    public Report(Long reportId, String title, String content, Account account, Long reportedAccountId) {
         this.reportId = reportId;
+        this.title = title;
         this.content = content;
         this.account = account;
         this.reportedAccountId = reportedAccountId;

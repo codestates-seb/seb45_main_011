@@ -1,9 +1,12 @@
 package com.growstory.global.auth.handler;
 
+import com.growstory.domain.account.constants.AccountGrade;
 import com.growstory.domain.account.constants.Status;
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.account.repository.AccountRepository;
 import com.growstory.domain.account.service.AccountService;
+import com.growstory.domain.bannedAccount.entity.BannedAccount;
+import com.growstory.domain.bannedAccount.repository.BannedAccountRepository;
 import com.growstory.domain.point.entity.Point;
 import com.growstory.domain.point.repository.PointRepository;
 import com.growstory.domain.point.service.PointService;
@@ -21,7 +24,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -33,6 +39,7 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
     private final CustomAuthorityUtils authorityUtils;
     private final AccountService accountService;
     private final AccountRepository accountRepository;
+    private final BannedAccountRepository bannedAccountRepository;
     private final PointService pointService;
     private final PointRepository pointRepository;
 
@@ -59,15 +66,33 @@ public class OAuth2AccountSuccessHandler extends SimpleUrlAuthenticationSuccessH
                     .roles(authorities)
                     //status social로 추가
                     .status(Status.SOCIAL_USER)
+                    .accountGrade(AccountGrade.GRADE_BRONZE)
                     .build());
 
             point.updateAccount(savedAccount);
             pointRepository.save(point);
         } else {
-            accountService.attendanceCheck(optionalAccount.get());
+            Account findAccount = optionalAccount.get();
+            chkSuspendedDays(findAccount);
+            accountService.attendanceCheck(findAccount);
         }
 
         redirect(request, response, optionalAccount.orElse(savedAccount), authorities);
+    }
+
+    private void chkSuspendedDays(Account account) {
+        BannedAccount findBannedAccount = bannedAccountRepository.findAll().stream()
+                .filter(bannedAccount -> Objects.equals(bannedAccount.getAccountId(), account.getAccountId()))
+                .collect(Collectors.toList())
+                .get(0);
+
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+
+        // 정지가 끝났다면
+        if (now.isAfter(findBannedAccount.getSuspendedDate())) {
+            account.updateStatus(Status.SOCIAL_USER);
+            bannedAccountRepository.delete(findBannedAccount);
+        }
     }
 
     private void redirect(HttpServletRequest request, HttpServletResponse response,

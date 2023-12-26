@@ -1,11 +1,11 @@
 package com.growstory.domain.report.dto;
 
-import com.growstory.domain.point.entity.Point;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
 public class ReportDto {
@@ -13,10 +13,7 @@ public class ReportDto {
     @Builder
     @Schema(name = "ReportPostDto")
     public static class Post {
-        @NotBlank
-        private Long accountId;
-
-        @NotBlank
+        @Positive
         private Long reportedAccountId;
 
         @NotBlank
@@ -33,6 +30,7 @@ public class ReportDto {
         private Long reportId;
         private String displayName;
         private String reportedDisplayName;
+        private String title;
         private String content;
         private LocalDateTime createdAt;
     }
