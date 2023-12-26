@@ -16,12 +16,12 @@ const checkForToken = () => {
     const decodedAccess = parseJWT(accessToken);
     const decodedRefresh = parseJWT(refreshToken);
 
-    if (decodedAccess?.exp * 1000 < Date.now()) {
-      return 'Access Token Expired';
-    }
-
     if (decodedRefresh?.exp * 1000 < Date.now()) {
       return 'Refresh Token Expired';
+    }
+
+    if (decodedAccess?.exp * 1000 < Date.now()) {
+      return 'Access Token Expired';
     }
 
     return true;

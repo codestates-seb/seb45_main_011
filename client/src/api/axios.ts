@@ -32,7 +32,19 @@ export const chatInstance = axios.create({
 });
 
 const onFulfiled = async (response: AxiosResponse) => {
-  if (authVerify() === 'Access Token Expired') {
+  if (authVerify() === 'Refresh Token Expired') {
+    return (
+      alert('토큰이 만료되었습니다. 다시 로그인해 주시길 바랍니다.'),
+      localStorage.clear(),
+      (window.location.href = '/signin'),
+      Promise.reject('Refresh Token Expired')
+    );
+  }
+
+  if (
+    authVerify() === 'Access Token Expired' &&
+    authVerify() !== 'Refresh Token Expired'
+  ) {
     const { authorization: newAccessToken } = response?.headers;
 
     storageData.state.accessToken = newAccessToken;
