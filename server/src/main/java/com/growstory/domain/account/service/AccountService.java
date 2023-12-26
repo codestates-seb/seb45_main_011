@@ -41,8 +41,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Transactional
-@Service
 @RequiredArgsConstructor
+@Service
 public class AccountService {
     private static final String ACCOUNT_IMAGE_PROCESS_TYPE = "profiles";
 
@@ -358,6 +358,7 @@ public class AccountService {
                 .accountId(findAccount.getAccountId())
                 .email(findAccount.getEmail())
                 .displayName(findAccount.getDisplayName())
+                .status(findAccount.getStatus().getStepDescription())
                 .profileImageUrl(findAccount.getProfileImageUrl())
                 .grade(findAccount.getAccountGrade().getStepDescription())
                 .point(findAccount.getPoint())

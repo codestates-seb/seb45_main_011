@@ -2,6 +2,7 @@ package com.growstory.global.auth.config;
 
 import com.growstory.domain.account.repository.AccountRepository;
 import com.growstory.domain.account.service.AccountService;
+import com.growstory.domain.bannedAccount.repository.BannedAccountRepository;
 import com.growstory.domain.point.repository.PointRepository;
 import com.growstory.domain.point.service.PointService;
 import com.growstory.global.auth.filter.JwtAuthenticationFilter;
@@ -28,6 +29,7 @@ public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final AccountService accountService;
     private final AccountRepository accountRepository;
+    private final BannedAccountRepository bannedAccountRepository;
     private final CustomAuthorityUtils authorityUtils;
     private final SecurityCorsConfig corsConfig;
     private final PointService pointService;
@@ -57,7 +59,7 @@ public class SecurityConfiguration {
                         .anyRequest().permitAll())
                 .oauth2Login(oauth2 -> {
                     oauth2.failureHandler(new OAuth2AccountFailureHandler());
-                    oauth2.successHandler(new OAuth2AccountSuccessHandler(jwtTokenizer, authorityUtils, accountService, accountRepository, pointService, pointRepository));
+                    oauth2.successHandler(new OAuth2AccountSuccessHandler(jwtTokenizer, authorityUtils, accountService, accountRepository, bannedAccountRepository, pointService, pointRepository));
                 })
                 .build();
     }
@@ -80,7 +82,7 @@ public class SecurityConfiguration {
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer); // JwtAuthenticationFilter 객체 생성하며 DI하기
             // AbstractAuthenticationProcessingFilter에서 상속받은 filterProcessurl을 설정 (설정하지 않으면 default 값인 /Login)
             jwtAuthenticationFilter.setFilterProcessesUrl("/v1/accounts/authentication");
-            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new AccountAuthenticationSuccessHandler(accountRepository, accountService));
+            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new AccountAuthenticationSuccessHandler(accountRepository, accountService, bannedAccountRepository));
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new AccountAuthenticationFailureHandler());
 
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
