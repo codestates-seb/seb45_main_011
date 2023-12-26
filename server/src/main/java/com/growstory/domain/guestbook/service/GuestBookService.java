@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -50,6 +51,12 @@ public class GuestBookService {
                 new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_FOUND));
         List<GuestBookResponseDto> guestBookResponseDtoList = findAccount.getReceivedGuestBooks().stream()
                 .map(this::getGuestBookResponse)
+                .sorted(new Comparator<GuestBookResponseDto>() {
+                    @Override
+                    public int compare(GuestBookResponseDto o1, GuestBookResponseDto o2) {
+                        return -(o1.getCreatedAt().compareTo(o2.getCreatedAt()));
+                    }
+                })
                 .collect(Collectors.toList());
 
         int startIdx = page * size;
