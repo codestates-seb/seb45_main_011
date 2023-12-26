@@ -14,6 +14,7 @@ export default function FailureModal() {
           <p className="font-bold text-brown-70 text-center break-keep leading-8">
             비밀번호가
           </p>
+
           <p className="font-bold">
             <b className="text-red-50">일치하지 않습니다.</b>
           </p>

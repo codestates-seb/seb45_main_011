@@ -31,6 +31,7 @@ export default function FindPasswordModal() {
             <p className="font-bold text-brown-70 text-[24px] text-center break-keep leading-8">
               가입하셨던 이메일로
             </p>
+
             <p className="font-bold text-brown-70 text-[28px] text-center break-keep leading-8">
               <span className="text-brown-90">임시 비밀번호</span>를
               발송해드립니다.

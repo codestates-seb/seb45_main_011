@@ -31,10 +31,12 @@ export default function ResignModal() {
             <p className="font-bold text-brown-70 text-center break-keep">
               탈퇴하시려면
             </p>
+
             <div className="flex flex-col items-center font-bold text-brown-70 ">
               <p className="font-bold text-brown-80 text-center break-keep leading-8">
                 가입 시 등록하셨던
               </p>
+
               <div className="font-bold text-brown-80 text-center break-keep leading-8">
                 비밀번호
                 <span className="text-brown-70">를 입력해주세요.</span>

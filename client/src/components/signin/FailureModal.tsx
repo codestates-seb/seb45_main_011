@@ -17,6 +17,7 @@ export default function FailureModal() {
             <b className="text-red-50">등록되지 않은</b>
             &nbsp;이메일입니다.
           </p>
+
           <p className="font-bold text-brown-90 text-[28px] max-[480px]:text-2xl">
             다시 입력해주세요.
           </p>

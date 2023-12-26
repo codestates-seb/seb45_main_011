@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 
@@ -15,6 +16,8 @@ import { ChatInput, ChatBox } from '.';
 
 import { Chat } from '@/types/data';
 
+import checkForToken from '@/utils/checkForToken';
+
 interface ChatProps {
   role: 'user' | 'admin';
 }
@@ -26,14 +29,19 @@ export default function Chat({ role }: ChatProps) {
   const [connected, setConnected] = useState(false);
   const [chat, setChat] = useState<Chat[]>([]);
 
+  const router = useRouter();
+
   const { roomId, message, setMessage } = useChatStore();
-  const { accessToken, refreshToken, userId, displayName } = useUserStore();
+  const { accessToken, refreshToken, userId, displayName, setClear } =
+    useUserStore();
 
   const {
     data: messageList,
     fetchNextPage,
     hasNextPage,
   } = useChatMessageQuery(roomId);
+
+  const { authVerify } = checkForToken();
 
   const url = process.env.NEXT_PUBLIC_API_URL;
 
@@ -48,6 +56,21 @@ export default function Chat({ role }: ChatProps) {
   const sendMessage = () => {
     if (message === '') return;
 
+    if (
+      authVerify() === 'Access Token Expired' ||
+      authVerify() === 'Refresh Token Expired'
+    ) {
+      return (
+        alert(
+          '토큰이 만료되었습니다. 로그아웃 후 다시 로그인 해주시길 바랍니다.',
+        ),
+        setConnected(false),
+        setClear(),
+        setMessage(''),
+        router.push('/signin')
+      );
+    }
+
     client?.current?.send(`/pub/chatRoom/send`, {}, JSON.stringify(newMessge));
     setMessage('');
   };
@@ -61,30 +84,24 @@ export default function Chat({ role }: ChatProps) {
   useEffect(() => {
     client.current = Stomp.over(() => new SockJS(`${url}/wss`));
 
-    try {
-      client.current.connect(
-        {
-          Authorization: accessToken,
-          refresh: refreshToken,
-        },
-        () => {
-          subscription = client?.current?.subscribe(
-            `/sub/chatRoom/${roomId}`,
-            (payload) => {
-              const receivedMessage: Chat = JSON.parse(payload.body);
+    client.current.connect(
+      {
+        Authorization: accessToken,
+        refresh: refreshToken,
+      },
+      () => {
+        subscription = client?.current?.subscribe(
+          `/sub/chatRoom/${roomId}`,
+          (payload) => {
+            const receivedMessage: Chat = JSON.parse(payload.body);
 
-              setChat((previousChat) => [...previousChat, receivedMessage]);
-            },
-          );
+            setChat((previousChat) => [...previousChat, receivedMessage]);
+          },
+        );
 
-          setConnected(true);
-        },
-      );
-    } catch (error) {
-      alert(
-        '토큰이 만료되었습니다. 로그아웃 후 다시 로그인 해주시길 바랍니다.',
-      );
-    }
+        setConnected(true);
+      },
+    );
 
     return () => {
       client.current?.disconnect(() => {
