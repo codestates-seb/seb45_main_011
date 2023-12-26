@@ -34,6 +34,7 @@ export default function PasswordForm() {
           className="text-[20px] text-brown-80 font-bold pt-2 pr-2 whitespace-nowrap max-[580px]:p-0 max-[580px]:pb-3">
           기존 비밀번호 :
         </label>
+
         <PasswordInput
           name="password"
           register={register}
@@ -42,12 +43,14 @@ export default function PasswordForm() {
           className="w-[244px] mr-14 max-[420px]:w-[200px]"
         />
       </div>
+
       <div className="w-fit flex max-[580px]:flex-col">
         <label
           htmlFor="newPassword"
           className="text-[20px] text-brown-80 font-bold pt-2 pr-2 whitespace-nowrap max-[580px]:p-0 max-[580px]:pb-3">
           새 비밀번호 :
         </label>
+
         <PasswordInput
           name="newPassword"
           register={register}
@@ -55,12 +58,14 @@ export default function PasswordForm() {
           className="w-[244px] mr-[38px] max-[580px]:mr-14 max-[420px]:w-[200px]"
         />
       </div>
+
       <div className="w-fit flex max-[580px]:flex-col">
         <label
           htmlFor="newPasswordCheck"
           className="text-[20px] text-brown-80 font-bold pt-2 pr-2 whitespace-nowrap max-[580px]:p-0 max-[580px]:pb-3">
           비밀번호 확인 :
         </label>
+
         <div className="flex">
           <PasswordInput
             name="newPasswordCheck"
@@ -69,6 +74,7 @@ export default function PasswordForm() {
             watch={watch}
             className="w-[244px] max-[420px]:w-[200px]"
           />
+
           <div className="mt-[2px]">
             <CommonButton
               type="submit"

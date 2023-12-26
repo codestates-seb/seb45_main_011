@@ -64,6 +64,7 @@ export default function InquiryHome({
 
         <div className="text-center text-[14px] break-words my-2 leading-[18px] px-3">
           <p>이용에 관한 문의가 있으시다면</p>
+
           <p>
             <b>문의하기</b> 버튼을 눌러주세요.
           </p>
