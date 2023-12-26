@@ -9,7 +9,8 @@ export type GardenType =
   | 'purchaseInfo'
   | 'purchase'
   | 'emptyInventory'
-  | 'share';
+  | 'share'
+  | 'guestbook';
 
 export type LeafsType = 'deleteLeaf' | 'share';
 

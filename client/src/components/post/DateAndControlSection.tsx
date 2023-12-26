@@ -44,6 +44,6 @@ const SECTION_STYLE = {
   },
   comment: {
     container: 'max-[500px]:pr-0',
-    dayText: 'max-[500px]:text-[0.4rem] ',
+    dayText: 'max-[500px]:text-[0.6rem] ',
   },
 };
