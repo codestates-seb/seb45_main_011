@@ -72,32 +72,3 @@ export type SearchValues = {
 export type CommentInputValue = {
   comment: string;
 };
-
-export interface HistoryBoradProps {
-  paramsId: string;
-}
-
-export enum PageType {
-  Main,
-  Signup,
-  Signin,
-  Garden,
-  Board,
-  Leaf,
-  Leafs,
-  History,
-}
-
-export type ContextType = {
-  garden?: string;
-  leaf?: string;
-  leafId?: string;
-  leafs?: string;
-  history?: string;
-  slug?: string;
-};
-
-export type Post = {
-  slug: string;
-  title: string;
-};

@@ -23,7 +23,7 @@ export default function SignupForm() {
     watch,
   } = useForm<SignFormValue>();
 
-  const { changeType, open } = useModalStore();
+  const { changeType } = useModalStore();
   const { isCode, setIsCode } = useSignStore();
   const { isGuestMode, setClear } = useUserStore();
 
