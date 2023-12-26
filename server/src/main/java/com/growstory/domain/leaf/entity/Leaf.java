@@ -25,10 +25,8 @@ public class Leaf extends BaseTimeEntity {
     private String leafName;
 
     @Lob
-    @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
     private String leafImageUrl;
 
     @ManyToOne
@@ -36,22 +34,31 @@ public class Leaf extends BaseTimeEntity {
     private Account account;
 
     @OneToOne(mappedBy = "leaf")
-    private Board board;
-
-    @OneToOne(mappedBy = "leaf")
     private PlantObj plantObj;
 
-    @OneToMany(mappedBy = "leaf")
+    @OneToMany(mappedBy = "leaf", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Journal> journals;
 
-    public void updateAccount(Account account) {
-        this.account = account;
+    public void updatePlantObj(PlantObj plantObj) {
+//        if(plantObj == null) {
+//            this.plantObj = null;
+//            return;
+//        }
+//        if(this.plantObj == plantObj) return;
+//
+//        // else , if(this.plantObj != plantObj)
+//        if(this.getPlantObj()!=null){
+//            this.getPlantObj().updateLeaf(null);
+//        }
+//
+//        this.plantObj = plantObj;
+//        if(this.plantObj.getLeaf()!=this) {
+//            this.plantObj.updateLeaf(this);
+//        }
+        this.plantObj = plantObj;
     }
 
-    public void updatePlantObj(PlantObj plantObj) {
-        this.plantObj = plantObj;
-        if(plantObj.getLeaf()!=this) {
-            plantObj.updateLeaf(this);
-        }
+    public void removePlantObj() {
+        this.plantObj = null;
     }
 }

@@ -1,24 +1,24 @@
 package com.growstory.domain.board.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.growstory.domain.account.entity.Account;
+import com.growstory.domain.board.dto.RequestBoardDto;
 import com.growstory.domain.comment.entity.Comment;
 import com.growstory.domain.images.entity.BoardImage;
 import com.growstory.domain.leaf.entity.Leaf;
 import com.growstory.domain.likes.entity.BoardLike;
+import com.growstory.domain.rank.board_likes.entity.BoardLikesRank;
 import com.growstory.global.audit.BaseTimeEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Board extends BaseTimeEntity {
     @Id
@@ -32,31 +32,51 @@ public class Board extends BaseTimeEntity {
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
-    private Boolean isConnection;
-
-
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
 
-    @OneToOne
-    @JoinColumn(name = "LEAF_ID")
-    private Leaf leaf;
-
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Comment> boardComments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BoardImage> boardImages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BoardLike> boardLikes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "board")
-    private List<Board_HashTag> boardHashTags;
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Board_HashTag> boardHashTags = new ArrayList<>();
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BoardLikesRank> boardLikesRanks = new ArrayList<>();
+
+
+    @Builder
+    public Board(Long boardId, String title, String content, Account account, List<Comment> boardComments, List<BoardImage> boardImages, List<BoardLike> boardLikes, List<Board_HashTag> boardHashTags) {
+        this.boardId = boardId;
+        this.title = title;
+        this.content = content;
+        this.account = account;
+        this.boardComments = boardComments;
+        this.boardImages = boardImages;
+        this.boardLikes = boardLikes;
+        this.boardHashTags = boardHashTags;
+    }
+
+    // Mockito Test를 위한 setter
+    public void setBoardId(Long boardId) {
+        this.boardId = boardId;
+    }
 
     public void addBoardLike(BoardLike boardLike) {
         boardLikes.add(boardLike);
+    }
+
+    public void update(RequestBoardDto.Patch requestPatchDto) {
+        this.title = requestPatchDto.getTitle();
+        this.content = requestPatchDto.getContent();
     }
 }
