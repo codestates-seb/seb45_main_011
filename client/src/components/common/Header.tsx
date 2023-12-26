@@ -7,19 +7,20 @@ import { motion } from 'framer-motion';
 
 import useUserStore from '@/stores/userStore';
 import useSignStore from '@/stores/signStore';
+import useChatStore from '@/stores/chatStore';
 
 import useClient from '@/hooks/useClient';
 
-import Logo from './Logo';
-import HeaderLink from './HeaderLink';
-import HeaderNav from './HeaderNav';
+import { Logo, HeaderLink, HeaderNav } from '.';
 
 export default function Header() {
   const [isProfileHover, setIsProfileHover] = useState(false);
   const [isMenuHover, setIsMenuHover] = useState(false);
 
-  const { userId, isLogin, isGoogleLogin, profileImageUrl } = useUserStore();
-  const getSigninForm = useSignStore((state) => state.getSigninForm);
+  const { userId, isEmailLogin, isGoogleLogin, isGuestMode, profileImageUrl } =
+    useUserStore();
+  const { getSigninForm } = useSignStore();
+  const { setIsOpen } = useChatStore();
 
   const isClient = useClient();
 
@@ -44,10 +45,16 @@ export default function Header() {
         shadow-outer/down 
         z-50
         ">
-        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setIsOpen(false)}>
           <Logo size="small" className="mt-[2px]" />
         </motion.div>
-        <ul className="flex items-center gap-2 max-[480px]:gap-3">
+
+        <ul
+          className="flex items-center gap-2 max-[480px]:gap-3"
+          onClick={() => setIsOpen(false)}>
           <li
             onMouseOver={() => setIsMenuHover(true)}
             onMouseLeave={() => setIsMenuHover(false)}
@@ -60,6 +67,7 @@ export default function Header() {
               className="hover:scale-105 transition-transform"
               style={{ width: 28, height: 24 }}
             />
+
             {isMenuHover && (
               <motion.div
                 initial={{ opacity: 0 }}
@@ -69,10 +77,11 @@ export default function Header() {
               </motion.div>
             )}
           </li>
+
           <li className="max-[480px]:hidden">
             <HeaderLink
               location={
-                isClient && (isLogin || isGoogleLogin)
+                isClient && (isEmailLogin || isGoogleLogin || isGuestMode)
                   ? `/garden/${userId}`
                   : '/signin'
               }
@@ -80,6 +89,7 @@ export default function Header() {
               title="garden"
             />
           </li>
+
           <li className="max-[480px]:hidden">
             <HeaderLink
               location="/board"
@@ -87,10 +97,11 @@ export default function Header() {
               title="community"
             />
           </li>
+
           <li className="max-[480px]:hidden">
             <HeaderLink
               location={
-                isClient && (isLogin || isGoogleLogin)
+                isClient && (isEmailLogin || isGoogleLogin || isGuestMode)
                   ? `/leafs/${userId}`
                   : '/signin'
               }
@@ -98,7 +109,8 @@ export default function Header() {
               title="leafCard"
             />
           </li>
-          {isClient && (isLogin || isGoogleLogin) ? (
+
+          {isClient && (isEmailLogin || isGoogleLogin || isGuestMode) ? (
             <li
               onMouseOver={() => setIsProfileHover(true)}
               onMouseLeave={() => setIsProfileHover(false)}>
@@ -109,14 +121,16 @@ export default function Header() {
                 width={36}
                 height={36}
               />
-              {isProfileHover && (isLogin || isGoogleLogin) && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="flex justify-end">
-                  <HeaderNav isProfileHover={isProfileHover} />
-                </motion.div>
-              )}
+
+              {isProfileHover &&
+                (isEmailLogin || isGoogleLogin || isGuestMode) && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="flex justify-end">
+                    <HeaderNav isProfileHover={isProfileHover} />
+                  </motion.div>
+                )}
             </li>
           ) : (
             <li onClick={() => getSigninForm(false)}>

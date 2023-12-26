@@ -6,7 +6,7 @@ import useGardenStore from '@/stores/gardenStore';
 
 import useGardenMap from '@/hooks/useGardenMap';
 
-import CommonButton from '@/components/common/CommonButton';
+import { CommonButton } from '@/components/common';
 import {
   EditModeInfo,
   MapController,

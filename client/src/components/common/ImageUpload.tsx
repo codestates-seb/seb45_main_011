@@ -1,3 +1,5 @@
+'use client';
+
 import React, { Dispatch, useRef, useState } from 'react';
 
 import {
@@ -7,11 +9,11 @@ import {
   UseFormSetValue,
 } from 'react-hook-form';
 
-import NoImage from './NoImage';
-import CommonButton from './CommonButton';
-import Preview from './Preview';
+import { NoImage, CommonButton, Preview } from '@/components/common';
 
 import { InputValues } from '@/types/common';
+
+import { IMAGE_UPLOAD_TEXT } from '@/constants/contents';
 
 import isValidFileSize from '@/utils/isValidFileSize';
 
@@ -39,7 +41,6 @@ function ImageUpload({
     imageUrl,
   );
 
-  // 이미지 미리보기 설정하는 함수
   const setPreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) {
       setIsImageUpdated && setIsImageUpdated(true);
@@ -53,7 +54,7 @@ function ImageUpload({
         return;
       }
 
-      alert('2mb 이하 이미지를 선택해주세요.');
+      alert(IMAGE_UPLOAD_TEXT.fileSizeWarn);
     }
     return;
   };
@@ -75,7 +76,7 @@ function ImageUpload({
           'image',
           required
             ? {
-                required: '이미지를 필수로 등록해야 합니다.',
+                required: IMAGE_UPLOAD_TEXT.noImageUploadError,
               }
             : {},
         )}
@@ -92,7 +93,7 @@ function ImageUpload({
           size="sm"
           className="mt-3 mb-3 leading-4"
           onClick={handleImageUpload}>
-          이미지 등록
+          {IMAGE_UPLOAD_TEXT.imageUpload}
         </CommonButton>
       </label>
       {Object.keys(errors).length ? (
@@ -101,7 +102,7 @@ function ImageUpload({
         </p>
       ) : (
         <p className="text-xs leading-3 font-normal text-gray-70 mb-5">
-          2mb 이하의 이미지만 등록이 가능합니다.
+          {IMAGE_UPLOAD_TEXT.noImageUploadError}
         </p>
       )}
     </div>

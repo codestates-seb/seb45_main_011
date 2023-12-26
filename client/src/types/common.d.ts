@@ -38,11 +38,22 @@ export type InputValues = {
 
 export type SignFormValue = {
   email: string;
-  nickname: string;
   password: string;
   passwordCheck: string;
+  nickname: string;
   code: string;
   onLogin: () => void;
+};
+
+export type SignupFormValue = {
+  email: string;
+  password: string;
+  nickname: string;
+};
+
+export type SigninFormValue = {
+  email: string;
+  password: string;
 };
 
 export type UserData = {
@@ -60,33 +71,4 @@ export type SearchValues = {
 
 export type CommentInputValue = {
   comment: string;
-};
-
-export interface HistoryBoradProps {
-  paramsId: string;
-}
-
-export enum PageType {
-  Main,
-  Signup,
-  Signin,
-  Garden,
-  Board,
-  Leaf,
-  Leafs,
-  History,
-}
-
-export type ContextType = {
-  garden?: string;
-  leaf?: string;
-  leafId?: string;
-  leafs?: string;
-  history?: string;
-  slug?: string;
-};
-
-export type Post = {
-  slug: string;
-  title: string;
 };

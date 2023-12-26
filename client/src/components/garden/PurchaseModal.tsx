@@ -1,15 +1,13 @@
 'use client';
 
 import useGardenStore from '@/stores/gardenStore';
-import useGardenModalStore from '@/stores/gardenModalStore';
+import useModalStore from '@/stores/modalStore';
 
-import ModalPortal from '@/components/common/ModalPortal';
-import Modal from '@/components/common/Modal';
-import CommonButton from '@/components/common/CommonButton';
+import { ModalPortal, Modal, CommonButton } from '@/components/common';
 
 export default function PurchaseModal() {
   const { purchaseTarget, unobserve } = useGardenStore();
-  const { close } = useGardenModalStore();
+  const { close } = useModalStore();
 
   const handleClose = () => {
     unobserve();

@@ -2,7 +2,7 @@
 
 import useGardenStore from '@/stores/gardenStore';
 
-import CommonButton from '@/components/common/CommonButton';
+import { CommonButton } from '@/components/common';
 import Plant from './Plant';
 
 import { PlantInfo } from '@/types/common';

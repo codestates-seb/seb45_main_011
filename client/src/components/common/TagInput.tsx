@@ -4,9 +4,9 @@ import { useState } from 'react';
 
 import { UseFormRegister, UseFormResetField } from 'react-hook-form';
 
-import { DefaultProps, InputValues } from '@/types/common';
-
 import HashTag from './HashTag';
+
+import { DefaultProps, InputValues } from '@/types/common';
 
 interface TextAreaProps extends DefaultProps {
   id?: string;

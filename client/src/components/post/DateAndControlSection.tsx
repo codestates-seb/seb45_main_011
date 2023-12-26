@@ -1,5 +1,6 @@
-import getDateFormat from '@/utils/getDateFormat';
 import ControlMenu from './ControlMenu';
+
+import getDateFormat from '@/utils/getDateFormat';
 
 interface DateAndControlProps {
   date?: Date;
@@ -43,6 +44,6 @@ const SECTION_STYLE = {
   },
   comment: {
     container: 'max-[500px]:pr-0',
-    dayText: 'max-[500px]:text-[0.4rem] ',
+    dayText: 'max-[500px]:text-[0.6rem] ',
   },
 };

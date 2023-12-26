@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 import useGardenStore from '@/stores/gardenStore';
 
-import ShareButton from '../common/ShareButton';
+import { ShareButton } from '@/components/common';
 import { EditModeButton } from '@/components/garden';
 
 interface GardenInfoProps {

@@ -11,13 +11,14 @@ import useGardenStore from '@/stores/gardenStore';
 import usePlantCard from '@/hooks/usePlantCard';
 import useMouseDrag from '@/hooks/useMouseDrag';
 
-import CommonButton from '@/components/common/CommonButton';
+import { CommonButton } from '@/components/common';
 import PlantCard from './PlantCard';
 
 import { MOUNT_ANIMATION_VALUES } from '@/constants/values';
 
 export default function GardenSidebar() {
   const sidebarRef = useRef<HTMLUListElement>(null);
+
   const { isEditMode, sidebarState, shop, inventory, changeSidebarState } =
     useGardenStore();
 

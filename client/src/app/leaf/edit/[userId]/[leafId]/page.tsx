@@ -2,23 +2,17 @@
 
 import { useRouter } from 'next/navigation';
 
-import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-
-import { getLeafByLeafId } from '@/api/leaf';
 
 import useUserStore from '@/stores/userStore';
 
 import useEffectOnce from '@/hooks/useEffectOnce';
+import useLeafQuery from '@/hooks/query/useLeafQuery';
 
-import PageTitle from '@/components/common/PageTitle';
-import Screws from '@/components/common/Screws';
-import LeafForm from '@/components/common/LeafForm';
-import Footer from '@/components/common/Footer';
-
-import { LeafDataInfo } from '@/types/data';
+import { PageTitle, Screws, LeafForm, Footer } from '@/components/common';
 
 import { MOUNT_ANIMATION_VALUES } from '@/constants/values';
+import { LEAF_EDIT_PAGE_TEXT } from '@/constants/contents';
 
 interface EditLeafProps {
   params: { userId: string; leafId: string };
@@ -32,20 +26,14 @@ export default function EditLeaf({ params }: EditLeafProps) {
 
   const userId = useUserStore((state) => state.userId);
 
+  const { leaf, isLoading, isError } = useLeafQuery(
+    userId === pathUserId,
+    leafId,
+  );
+
   useEffectOnce(() => {
     if (pathUserId !== userId) router.back();
   });
-
-  const {
-    data: leaf,
-    isLoading,
-    isError,
-  } = userId === pathUserId
-    ? useQuery<LeafDataInfo>({
-        queryKey: ['leaf', leafId],
-        queryFn: () => getLeafByLeafId(leafId),
-      })
-    : { data: null, isLoading: false, isError: false };
 
   if (isLoading) return <div>loading</div>;
   if (isError) return <div>error</div>;
@@ -61,7 +49,10 @@ export default function EditLeaf({ params }: EditLeafProps) {
           <Screws />
           <div className="p-5 h-full">
             <div className="w-full h-full flex flex-col items-center overflow-y-scroll scrollbar">
-              <PageTitle text="식물 카드 수정" className="mt-3 mb-6" />
+              <PageTitle
+                text={LEAF_EDIT_PAGE_TEXT.title}
+                className="mt-3 mb-6"
+              />
               <LeafForm
                 leaf={leaf}
                 leafId={leafId}

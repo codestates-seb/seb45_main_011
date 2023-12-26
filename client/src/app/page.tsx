@@ -12,13 +12,14 @@ import Footer from '@/components/common/Footer';
 import ServiceInfo from '@/components/main/ServiceInfo';
 import MainSignupBanner from '@/components/main/MainSignupBanner';
 import ScrollDownButton from '@/components/main/ScrollDownButton';
+import { InquiryButton } from '@/components/inquiry';
 
 import { getScrollTop } from '@/utils/getScrollTop';
 
 export default function Home() {
   const isClient = useClient();
 
-  const { isLogin, isGoogleLogin } = useUserStore();
+  const { isEmailLogin, isGoogleLogin } = useUserStore();
 
   const handleClick = () => {
     const top = getScrollTop(window.innerWidth);
@@ -69,7 +70,7 @@ export default function Home() {
                   <ServiceInfo key={index} order={index} />
                 ))}
               </div>
-              {!(isLogin || isGoogleLogin) && (
+              {!(isEmailLogin || isGoogleLogin) && (
                 <motion.section
                   initial={{ y: 100, opacity: 0 }}
                   whileInView={{ y: 0, opacity: 1 }}
@@ -81,7 +82,10 @@ export default function Home() {
                   </div>
                 </motion.section>
               )}
+
+              <InquiryButton />
             </div>
+
             <Footer />
           </>
         )}

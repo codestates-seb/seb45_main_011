@@ -2,12 +2,10 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 import useBoardStore from '@/stores/boardStore';
 
-import useGetSearchBoardQuery from '@/hooks/useGetBoardSearchQuery';
+import { PostCard, EmptySearch } from '@/components/board';
+import { LoadingNotice, ErrorMessage } from '@/components/common';
 
-import PostCard from './PostCard';
-import EmptySearch from './EmptySearch';
-import LoadingNotice from '../common/LoadingNotice';
-import ErrorMessage from '../common/ErrorMessage';
+import useBoardSearchQuery from '@/hooks/query/useBoardSearchQuery';
 
 export default function SearchList() {
   const { searchKey } = useBoardStore();
@@ -18,7 +16,7 @@ export default function SearchList() {
     hasNextPage,
     isLoading,
     isError,
-  } = useGetSearchBoardQuery(searchKey);
+  } = useBoardSearchQuery(searchKey);
 
   const boards = allBoards?.map((boards) => boards.boards).flat();
 

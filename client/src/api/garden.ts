@@ -69,3 +69,25 @@ export const connectLeaf = async (
 
   return data;
 };
+
+export const findGuestbookById = async (userId: string) => {
+  const { data } = await gardenAxios
+    .get(`/guestbooks/${userId}`)
+    .then((res) => res.data);
+
+  return data;
+};
+
+export const addGuestbook = async (userId: string, content: string) => {
+  return await gardenAxios.post(`/guestbooks/${userId}`, { content });
+};
+
+export const editGuestbook = async (guestbookId: string, content: string) => {
+  return await gardenAxios.patch(`/guestbooks/${guestbookId}`, {
+    content,
+  });
+};
+
+export const deleteGuestbook = async (guestbookId: string) => {
+  return await gardenAxios.delete(`/guestbooks/${guestbookId}`);
+};

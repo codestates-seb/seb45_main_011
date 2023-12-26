@@ -1,27 +1,46 @@
 'use client';
 
+import { createPortal } from 'react-dom';
 import { notFound } from 'next/navigation';
 
 import { motion } from 'framer-motion';
 
-import useSignModalStore from '@/stores/signModalStore';
 import useUserStore from '@/stores/userStore';
+import useModalStore, { ModalType } from '@/stores/modalStore';
 
-import ProfileBox from '@/components/profile/ProfileBox';
-import ChangePasswordModal from '@/components/profile/ChangePasswordModal';
-import ChangeNicknameModal from '@/components/profile/ChangeNicknameModal';
-import ConfirmModal from '@/components/history/ConfirmModal';
-import ResignModal from '@/components/history/ResignModal';
-import FailureModal from '@/components/history/FailureModal';
-import SuccessedModal from '@/components/history/SuccessedModal';
-import Footer from '@/components/common/Footer';
+import useEffectOnce from '@/hooks/useEffectOnce';
+import useModal from '@/hooks/useModal';
+
+import { ProfileBox, ChangeProfileModal } from '@/components/profile';
+import {
+  ResignModal,
+  ConfirmModal,
+  SuccessedModal,
+  FailureModal,
+} from '@/components/history';
+import { InquiryButton } from '@/components/inquiry';
+import { Footer } from '@/components/common';
 
 import { ADMIN_USER_ID, MOUNT_ANIMATION_VALUES } from '@/constants/values';
-import useEffectOnce from '@/hooks/useEffectOnce';
 
 export default function Profile() {
-  const currentState = useSignModalStore((state) => state.currentState);
   const { userId } = useUserStore();
+  const { isOpen, type } = useModalStore();
+
+  const { portalElement } = useModal(isOpen);
+
+  const renderModal = (type: ModalType) => {
+    if (type === 'ChangePasswordModal')
+      return <ChangeProfileModal type="password" />;
+    if (type === 'ChangeNicknameModal')
+      return <ChangeProfileModal type="nickname" />;
+    if (type === 'ChangeImageModal') return <ChangeProfileModal type="image" />;
+
+    if (type === 'ResignModal') return <ResignModal />;
+    if (type === 'ConfirmModal') return <ConfirmModal />;
+    if (type === 'SuccessedModal') return <SuccessedModal />;
+    if (type === 'FailureModal') return <FailureModal />;
+  };
 
   useEffectOnce(() => {
     userId === ADMIN_USER_ID && notFound();
@@ -36,13 +55,12 @@ export default function Profile() {
         className="flex flex-col justify-center items-center h-auto min-h-full pb-[343px] mx-4">
         <ProfileBox />
 
-        {currentState === 'ChangePasswordModal' && <ChangePasswordModal />}
-        {currentState === 'ChangeNicknameModal' && <ChangeNicknameModal />}
-        {currentState === 'ConfirmModal' && <ConfirmModal />}
-        {currentState === 'ResignModal' && <ResignModal />}
-        {currentState === 'FailureModal' && <FailureModal />}
-        {currentState === 'SuccessedModal' && <SuccessedModal />}
+        {isOpen && portalElement
+          ? createPortal(renderModal(type), portalElement)
+          : null}
       </motion.div>
+
+      <InquiryButton />
       <Footer />
     </>
   );

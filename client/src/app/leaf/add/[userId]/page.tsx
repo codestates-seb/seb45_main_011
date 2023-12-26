@@ -8,12 +8,10 @@ import useUserStore from '@/stores/userStore';
 
 import useEffectOnce from '@/hooks/useEffectOnce';
 
-import PageTitle from '@/components/common/PageTitle';
-import Screws from '@/components/common/Screws';
-import LeafForm from '@/components/common/LeafForm';
-import Footer from '@/components/common/Footer';
+import { PageTitle, Screws, LeafForm, Footer } from '@/components/common';
 
 import { MOUNT_ANIMATION_VALUES } from '@/constants/values';
+import { LEAF_ADD_PAGE_TEXT } from '@/constants/contents';
 
 interface AddLeafProps {
   params: { userId: string };
@@ -41,7 +39,10 @@ export default function AddLeaf({ params }: AddLeafProps) {
           <Screws />
           <div className="p-5 h-full">
             <div className="w-full h-full flex flex-col overflow-y-scroll scrollbar">
-              <PageTitle text="식물 카드 등록" className="mt-3 mb-6" />
+              <PageTitle
+                text={LEAF_ADD_PAGE_TEXT.title}
+                className="mt-3 mb-6"
+              />
               <LeafForm userId={pathUserId} mode="add" />
             </div>
           </div>

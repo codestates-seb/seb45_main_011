@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { motion } from 'framer-motion';
 
-import PostCountInfo from '../common/PostCountInfo';
+import { PostCountInfo } from '@/components/common';
 
 interface PostCardProps {
   title: string;
