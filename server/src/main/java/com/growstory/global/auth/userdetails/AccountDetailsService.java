@@ -28,7 +28,7 @@ public class AccountDetailsService implements UserDetailsService {
         return new AccountDetails(findAccount);
     }
 
-    private final class AccountDetails extends Account implements UserDetails {
+    public final class AccountDetails extends Account implements UserDetails {
         AccountDetails(Account account) {
             super(account.getAccountId(), account.getEmail(), account.getDisplayName(), account.getPassword(), account.getProfileImageUrl(), account.getRoles());
         }
