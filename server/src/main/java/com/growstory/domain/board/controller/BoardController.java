@@ -26,7 +26,7 @@ import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
 
-@Tag(name = "Boards API", description = "게시판 기능")
+@Tag(name = "Boards API", description = "게시판 API")
 @Validated
 @RequiredArgsConstructor
 @RequestMapping("/v1/boards")

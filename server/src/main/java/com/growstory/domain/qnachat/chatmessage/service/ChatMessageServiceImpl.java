@@ -10,10 +10,12 @@ import com.growstory.domain.qnachat.chatmessage.dto.ChatMessageResponseDto;
 import com.growstory.domain.qnachat.chatmessage.entity.ChatMessage;
 import com.growstory.domain.qnachat.chatmessage.repository.ChatMessageRepository;
 import com.growstory.domain.qnachat.chatroom.constants.ChatRoomConstants;
-import com.growstory.domain.qnachat.chatroom.dto.DeleteChatRoomRequestDto;
+import com.growstory.domain.qnachat.chatroom.dto.SimpChatRoomRequestDto;
 import com.growstory.domain.qnachat.chatroom.entity.AccountChatRoom;
 import com.growstory.domain.qnachat.chatroom.entity.ChatRoom;
 import com.growstory.domain.qnachat.chatroom.service.ChatRoomService;
+import com.growstory.global.exception.BusinessLogicException;
+import com.growstory.global.exception.ExceptionCode;
 import com.growstory.global.response.PageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -69,26 +71,28 @@ public class ChatMessageServiceImpl implements ChatMessageService{
 
     // 채팅방 입장 메시지 매핑 및 저장, 응답
     @Override
-    public ChatMessageResponseDto createEnterMessage(ChatMessageRequestDto chatMessageRequest, MultipartFile image) {
-        Long accountId = chatMessageRequest.getSenderId();
+    public ChatMessageResponseDto createEnterMessage(SimpChatRoomRequestDto chatMessageRequest) {
+        Long questionerId = chatMessageRequest.getSenderId();
         Long chatRoomId = chatMessageRequest.getChatRoomId();
-        Account account = accountService.findVerifiedAccount(accountId);
+        Account questioner = accountService.findVerifiedAccount(questionerId);
         ChatRoom chatRoom = chatRoomService.findVerifiedChatRoom(chatRoomId);
-        AccountChatRoom accountChatRoom = chatRoomService.validateIsEntered(accountId, chatRoomId);
-        chatRoomService.validateAlreadyEnter(accountId, chatRoomId);
+        AccountChatRoom accountChatRoom = chatRoomService.validateIsEntered(questionerId, chatRoomId);
+        chatRoomService.validateAlreadyEnter(questionerId, chatRoomId);
         accountChatRoom.updateEntryCheck(true);
+
+        // 대화 상대방 (관리자) 매핑
+        AccountChatRoom reviewerChatRoom = chatRoom.getAccountChatRooms().stream()
+                .filter(accChatRoom -> accChatRoom.getAccount().getAccountId() != questionerId)
+                .filter(accChatRoom -> accChatRoom.getAccount().getRoles().contains("ADMIN"))
+                .findFirst()
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.ACCOUNT_UNAUTHORIZED));
 
         ChatMessage chatMessage =
                 ChatMessage.builder()
-                        .message(account.getDisplayName()+ ChatMessageConstants.EnumChatMessage.ENTERED.getValue())
-                        .account(account)
+                        .message(setEntryMessage(questioner.getDisplayName()))
+                        .account(reviewerChatRoom.getAccount())
                         .chatRoom(chatRoom)
                         .build();
-
-        // image가 null이 아닐 경우 이미지 업로드 및 DB 저장
-        if(image!=null && !image.isEmpty()) {
-            mapChatMessageWithImage(image, chatMessage);
-        }
 
         chatMessageRepository.save(chatMessage);
 
@@ -101,10 +105,18 @@ public class ChatMessageServiceImpl implements ChatMessageService{
         chatMessage.updateChatMessageImage(chatMessageImage);
     }
 
+    private String setEntryMessage(String displayName) {
+        StringBuilder sb = new StringBuilder();
+        return sb.append("안녕하세요 ")
+                .append(displayName)
+                .append(ChatMessageConstants.EnumChatMessage.QNA_ENTERED.getValue())
+                .toString();
+    }
+
     // 채팅방 삭제 메시지 전송 & 채팅방 떠나기
     @Override
-    public ChatMessageResponseDto sendExitChatRoomMessage(DeleteChatRoomRequestDto deleteChatRoomRequest) {
-        Account account = accountService.findVerifiedAccount(deleteChatRoomRequest.getAccountId());
+    public ChatMessageResponseDto sendExitChatRoomMessage(SimpChatRoomRequestDto deleteChatRoomRequest) {
+        Account account = accountService.findVerifiedAccount(deleteChatRoomRequest.getSenderId());
         ChatRoom chatRoom = chatRoomService.findVerifiedChatRoom(deleteChatRoomRequest.getChatRoomId());
         AccountChatRoom accountChatRoom = chatRoomService.getAccountChatRoomByAccountIdAndChatRoomId(account.getAccountId(), chatRoom.getChatRoomId());
         // 채팅방 떠나기

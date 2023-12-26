@@ -10,7 +10,7 @@ public class ChatMessageConstants {
     @AllArgsConstructor
     @NoArgsConstructor
     public enum EnumChatMessage {
-        ENTERED(" 님이 입장하셨습니다.");
+        QNA_ENTERED("님, 문의하신 내용을 자세하게 적어주시면 담당자가 훨씬 빠르게 내용을 파악하고 답변드릴 수 있습니다.");
 
         private String value;
     }

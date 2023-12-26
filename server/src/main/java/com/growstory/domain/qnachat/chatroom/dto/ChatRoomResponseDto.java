@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -18,15 +19,16 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class ChatRoomResponseDto {
+public class ChatRoomResponseDto implements Comparable<ChatRoomResponseDto> {
     private Long chatRoomId;
     private String roomName;
     private Long otherAccountId;
     private String otherAccountName;
     private String createdAt;
     private String status;
+    private Boolean isAnswered;
     private String latestMessage;
-    private LocalDateTime latestTime;
+    private String latestTime;
 
     public static ChatRoomResponseDto from(AccountChatRoom accountChatRoom, AccountChatRoom otherAccountChatRoom) {
 
@@ -45,9 +47,10 @@ public class ChatRoomResponseDto {
                 .otherAccountId(otherAccountChatRoom.getAccount().getAccountId())
                 .otherAccountName(otherAccountChatRoom.getAccount().getDisplayName())
                 .status(accountChatRoom.getChatRoom().getStatus().getMessage())
-                .createdAt(accountChatRoom.getChatRoom().getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .createdAt(accountChatRoom.getChatRoom().getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                .isAnswered(accountChatRoom.getChatRoom().getIsAnswered())
                 .latestMessage(tempLatestMessage)
-                .latestTime(tempLatestTime)
+                .latestTime(tempLatestTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .build();
     }
 
@@ -66,8 +69,21 @@ public class ChatRoomResponseDto {
         return ChatRoomResponseDto.builder()
                 .chatRoomId(accountChatRoom.getChatRoom().getChatRoomId())
                 .latestMessage(tempLatestMessage)
-                .latestTime(tempLatestTime)
+                .latestTime(tempLatestTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .build();
 
+    }
+
+    public void trimLatestTime() {
+        this.latestTime = this.latestTime.split(" ")[0];
+//        return this;
+    }
+
+
+    @Override
+    public int compareTo(ChatRoomResponseDto other) {
+        // latestTime을 기준으로 내림차순 정렬
+        return Comparator.comparing(ChatRoomResponseDto::getLatestTime, Comparator.nullsLast(Comparator.reverseOrder()))
+                .compare(this, other);
     }
 }

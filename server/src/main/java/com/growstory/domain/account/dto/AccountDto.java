@@ -1,6 +1,7 @@
 package com.growstory.domain.account.dto;
 
 import com.growstory.domain.point.entity.Point;
+import com.growstory.global.badwords.dto.TextContainer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +17,7 @@ public class AccountDto {
     @Getter
     @Builder
     @Schema(name = "AccountPostDto")
-    public static class Post {
+    public static class Post implements TextContainer {
         @NotBlank
         private String displayName;
 
@@ -27,18 +28,28 @@ public class AccountDto {
         @NotBlank
         @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d).{6,}$" , message = "영문, 숫자 포함 6글자 이상의 패스워드만 허용합니다.")
         private String password;
+
+        @Override
+        public String combineText() {
+            return displayName;
+        }
     }
 
 
     @Getter
     @NoArgsConstructor
-    public static class DisplayNamePatch {
+    public static class DisplayNamePatch implements TextContainer {
         @NotBlank
         private String displayName;
 
         @Builder
         public DisplayNamePatch(String displayName) {
             this.displayName = displayName;
+        }
+
+        @Override
+        public String combineText() {
+            return this.displayName;
         }
     }
 

@@ -23,19 +23,23 @@ public class ChatRoom extends BaseTimeEntity {
     @Column(nullable = false)
     private String roomName;
 
-    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AccountChatRoom> accountChatRooms = new ArrayList<>();
 
-    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatMessage> chatMessages = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private ChatRoomStatus status;
 
+    @Column(nullable = false)
+    private Boolean isAnswered;
+
     @Builder
     public ChatRoom(String roomName) {
         this.roomName = roomName;
         this.status = ChatRoomStatus.EXISTS;
+        this.isAnswered = false;
     }
 
     /**
@@ -47,6 +51,10 @@ public class ChatRoom extends BaseTimeEntity {
         return this.chatRoomId;
     }
 
+    public void updateAnswered(boolean answered) {
+        this.isAnswered = answered;
+    }
+
     /**
      *  enum 타입 : 채팅방 상태
      */
@@ -54,7 +62,8 @@ public class ChatRoom extends BaseTimeEntity {
     @Getter
     public enum ChatRoomStatus {
         EXISTS(1, "EXISTS"),
-        DELETED(2, "DELETED");
+        DELETED(2, "DELETED"),
+        ANSWER_COMPLETED(3, "ANSWER COMPLETED");
         private final int status;
         private final String message;
 

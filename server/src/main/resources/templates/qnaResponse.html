@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Grow Story 문의 답변 안내</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+<table
+        align="center"
+        border="0"
+        cellpadding="0"
+        cellspacing="0"
+        width="600"
+        bgcolor="#efefef"
+        style="
+        border-collapse: collapse;
+        font-family: 'Apple SD Gothic Neo', 'sans-serif';
+        /* border-top: 4px solid #7dcd14; */
+        border-bottom: 4px solid #7dcd14;
+      "
+        class="wrapper">
+    <td
+            align="center"
+            style="
+          padding: 40px 0 30px 0;
+          background-image: url(https://growstory.s3.ap-northeast-2.amazonaws.com/image/Email/bg_default.png);
+          background-size: contain;
+          display: block;
+        ">
+        <img
+                src="https://growstory.s3.ap-northeast-2.amazonaws.com/image/Email/GrowStory_Logo.png"
+                alt="Grow Story Logo"
+                width="224"
+                height="136"
+                style="display: block" />
+    </td>
+    <tr>
+        <td bgcolor="#ffffff" style="padding: 40px 30px 20px 30px">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                    <td style="padding: 10px 0 0 0">안녕하세요.</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px 0 0 0">
+                        자신이 키우는 식물에 대해 얘기하고 가상의 정원을 가꿔보는
+                        플랫폼<br />
+                        <b style="color: #02b875">Grow Story</b>입니다.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 0; line-height: 0" height="10">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px 0 0 0">
+                        문의하신 <b>내용에 대한 답변</b>이 작성되었습니다.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px 0 10px 0">
+                        아래의 링크에서 상세 답변 내용을 확인해주세요.
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" style="padding: 30px 30px 30px 30px">
+            <span th:style="${'font-size:130%; text-align:center; font-weight: 700'}"  th:text="${qnaResponse}"> </span>
+        </td>
+    </tr>
+    <tr>
+        <td
+                bgcolor="#ffffff"
+                style="color: #a7a7a7; font-size: 12px; padding: 30px 30px 30px 30px">
+            Copyright&commat;Team Grow Story
+        </td>
+    </tr>
+</table>
+</body>
+</html>
