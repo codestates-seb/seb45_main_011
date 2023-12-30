@@ -60,7 +60,9 @@ public class BoardLikesRankService {
         boardLikesRanks
                 .forEach(rankService::compensateWeeklyPoints);
 
+        boardLikesRanks.stream().forEach(boardLikesRank -> log.info(boardLikesRank.toString()));
         // 이번 주 랭킹 저장
+
         repository.saveAll(boardLikesRanks);
 
         // 이전 주의 랭킹 삭제 및 이번 주 랭킹 저장

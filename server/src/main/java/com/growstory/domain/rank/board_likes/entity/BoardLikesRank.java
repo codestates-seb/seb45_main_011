@@ -46,4 +46,14 @@ public class BoardLikesRank extends Rank {
     public void updateRank(int rank) {
         super.updateRank(rank);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        return sb.append("boardId " + this.board.getBoardId())
+                .append("accountId " + super.getAccount().getAccountId())
+                .append("accountDisplayName "+ super.getAccount().getDisplayName() )
+                .append("likeNum " + this.likeNum)
+                .toString();
+    }
 }
