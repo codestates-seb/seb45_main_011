@@ -85,6 +85,9 @@ public class PointService {
         if(presentPoint == null)
             throw new BusinessLogicException(ExceptionCode.POINT_TYPE_NOT_FOUND);
 
+        Account pointOwner = presentPoint.getAccount();
+        log.info("# 포인트 획득자 : "+ pointOwner.getAccountId() +", " + pointOwner.getDisplayName());
+
         return pointRepository.save(presentPoint.toBuilder()
                 .score(presentPoint.getScore() + updateScore)
                 .build());
