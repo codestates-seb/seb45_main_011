@@ -1,5 +1,6 @@
 package com.growstory.global.badwordsfilter.service;
 
+import com.growstory.global.badwordsfilter.dto.ProfanityResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,7 +28,7 @@ class BadWordsServiceTest {
         badWordsService = BadWordsService.of(badWordArray, allowWordArray);
     }
 
-    @DisplayName("사용자가 작성한 텍스트 중 욕설이 포함된 경우 true를 반환한다. ")
+    @DisplayName("사용자가 작성한 텍스트 중 욕설이 하나 이상 포함된 경우 true를 반환한다.")
     @Test
     void isForbidden() {
         //given
@@ -39,7 +40,7 @@ class BadWordsServiceTest {
         //then
         assertThat(isForbidden).isTrue();
     }
-    @DisplayName("사용자가 작성한 텍스트 중 욕설과 허용 단어가 겹치면 false를 반환한다. ")
+    @DisplayName("사용자가 작성한 텍스트 중 욕설과 허용 단어가 겹치면 false를 반환한다.")
     @Test
     void isNotForbidden() {
         //given
@@ -50,5 +51,19 @@ class BadWordsServiceTest {
 
         //then
         assertThat(isForbidden).isFalse();
+    }
+
+    @DisplayName("사용자가 작성한 텍스트 중 욕설이 포함되어 있다면 '사용자 입력 욕설/금지된 욕설'을 출력한다.")
+    @Test
+    void getProfanityWords() {
+        //given
+        String text = "욕설1이라고 작성했다면 다음과 같이 출력되어야 한다.";
+        String expect = "욕설1이라고/욕설1";
+
+        //when
+        ProfanityResponse profanityWords = badWordsService.getProfanityWords(text);
+
+        //then
+        assertThat(profanityWords.toString()).isEqualTo(expect);
     }
 }
