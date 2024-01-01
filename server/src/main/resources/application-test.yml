@@ -23,11 +23,6 @@ spring:
     driver-class-name: org.h2.Driver # H2 데이터베이스 드라이버 클래스
     username: sa # H2 데이터베이스 사용자명
     password: # H2 데이터베이스 암호 (비어있음)
-#  datasource:
-#    url: ${RDS_ENDPOINT}
-#    username: ${MYSQL_USER}
-#    password: ${MYSQL_PASSWORD}
-#    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     show-sql: true
