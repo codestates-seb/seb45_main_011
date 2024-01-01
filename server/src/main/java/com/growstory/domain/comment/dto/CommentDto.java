@@ -3,7 +3,7 @@ package com.growstory.domain.comment.dto;
 import com.growstory.domain.account.entity.Account;
 import com.growstory.domain.board.entity.Board;
 import com.growstory.domain.comment.entity.Comment;
-import com.growstory.global.badwords.dto.TextContainer;
+import com.growstory.global.badwordsfilter.dto.TextContainer;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

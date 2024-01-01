@@ -1,14 +1,12 @@
 package com.growstory.global.exception;
 
-import com.growstory.global.badwords.dto.ProfanityDto;
+import com.growstory.global.badwordsfilter.dto.ProfanityResponse;
 import lombok.Getter;
-
-import java.util.List;
 
 @Getter
 public class BusinessLogicException extends RuntimeException {
     private ExceptionCode exceptionCode;
-    private ProfanityDto profanityDto;
+    private ProfanityResponse profanityResponse;
 
     public BusinessLogicException(ExceptionCode exceptionCode) {
         super(exceptionCode.getMessage());
@@ -16,9 +14,9 @@ public class BusinessLogicException extends RuntimeException {
     }
 
     //비속어 필터링 관련 BLE
-    public BusinessLogicException(ExceptionCode exceptionCode, ProfanityDto profanityDto) {
+    public BusinessLogicException(ExceptionCode exceptionCode, ProfanityResponse profanityResponse) {
         super(exceptionCode.getMessage());
         this.exceptionCode = exceptionCode;
-        this.profanityDto = profanityDto;
+        this.profanityResponse = profanityResponse;
     }
 }

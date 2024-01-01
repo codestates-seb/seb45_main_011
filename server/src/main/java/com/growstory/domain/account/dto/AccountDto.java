@@ -1,7 +1,7 @@
 package com.growstory.domain.account.dto;
 
 import com.growstory.domain.point.entity.Point;
-import com.growstory.global.badwords.dto.TextContainer;
+import com.growstory.global.badwordsfilter.dto.TextContainer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
