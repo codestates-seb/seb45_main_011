@@ -85,30 +85,35 @@ public class PointService {
         if(presentPoint == null)
             throw new BusinessLogicException(ExceptionCode.POINT_TYPE_NOT_FOUND);
 
+        Account pointOwner = presentPoint.getAccount();
+        log.info("# 포인트 획득자 : "+ pointOwner.getAccountId() +", " + pointOwner.getDisplayName());
+
         return pointRepository.save(presentPoint.toBuilder()
                 .score(presentPoint.getScore() + updateScore)
                 .build());
     }
 
-    // 계정 전원 포인트 지급
+    // 다중 이벤트 포인트 지급
     public void updateAllEventPoint(int updateScore, String eventKey) {
-        if(!EVENT_KEY.equals(eventKey)) {
-            log.info("eventError");
-            return;
-        }
+        if (check(eventKey)) return;
 
         List<Point> findPoints = pointRepository.findAll();
         findPoints
                 .forEach(point -> updatePoint(point, updateScore));
     }
 
-    // 특정 계정 포인트 지급
+    // 특정 계정에 대한 이벤트 포인트 지급
     public void updateEventPoint(Long accountId, Integer updateScore, String eventKey) {
-        if(!EVENT_KEY.equals(eventKey)) {
-            log.info("eventError");
-            return;
-        }
+        if (check(eventKey)) return;
         Account findAccount = accountRepository.findById(accountId).get();
         updatePoint(findAccount.getPoint(), updateScore);
+    }
+
+    private boolean check(String eventKey) {
+        if(!EVENT_KEY.equals(eventKey)) {
+            log.info("eventError");
+            return true;
+        }
+        return false;
     }
 }

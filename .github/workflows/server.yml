@@ -62,8 +62,8 @@ jobs:
           --build-arg KEY_STORE_PASSWORD="${{env.KEY_STORE_PASSWORD}}" \
           --build-arg EVENT_KEY="${{env.EVENT_KEY}}" \
           -t growstory-cicd . 
-          docker tag growstory-cicd dokyung94/growstory-cicd:${GITHUB_SHA::7}
-          docker push dokyung94/growstory-cicd:${GITHUB_SHA::7}
+          docker tag growstory-cicd leest/growstory-cicd:${GITHUB_SHA::7}
+          docker push leest/growstory-cicd:${GITHUB_SHA::7}
         working-directory: ${{ env.working-directory }}
 
       - name: Configure AWS credentials
@@ -82,6 +82,6 @@ jobs:
           envs: GITHUB_SHA
           script: |
             sudo docker rm -f server
-            sudo docker pull dokyung94/growstory-cicd:${GITHUB_SHA::7}
-            sudo docker tag dokyung94/growstory-cicd:${GITHUB_SHA::7} growstory-cicd
+            sudo docker pull leest/growstory-cicd:${GITHUB_SHA::7}
+            sudo docker tag leest/growstory-cicd:${GITHUB_SHA::7} growstory-cicd
             sudo docker run -d --name server -e TZ=Asia/Seoul -p 443:443 growstory-cicd

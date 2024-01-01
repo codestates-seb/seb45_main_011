@@ -1,6 +1,6 @@
 package com.growstory.domain.leaf.dto;
 
-import com.growstory.global.badwords.dto.TextContainer;
+import com.growstory.global.badwordsfilter.dto.TextContainer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
