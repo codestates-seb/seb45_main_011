@@ -79,7 +79,7 @@ export default function NewChat({ role }: NewChatProps) {
   useEffect(() => {
     if (roomId) {
       client.current = Stomp.over(() => new SockJS(`${url}/wss`));
-
+      client.current.debug = () => {};
       client.current.connect(
         {
           Authorization: accessToken,

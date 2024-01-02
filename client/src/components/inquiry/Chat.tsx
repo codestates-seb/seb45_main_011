@@ -83,7 +83,7 @@ export default function Chat({ role }: ChatProps) {
 
   useEffect(() => {
     client.current = Stomp.over(() => new SockJS(`${url}/wss`));
-
+    client.current.debug = () => {};
     client.current.connect(
       {
         Authorization: accessToken,
