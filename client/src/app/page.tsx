@@ -86,9 +86,7 @@ export default function Home() {
 
               <InquiryButton />
             </div>
-
             <NotificationButton />
-
             <Footer />
           </>
         )}
