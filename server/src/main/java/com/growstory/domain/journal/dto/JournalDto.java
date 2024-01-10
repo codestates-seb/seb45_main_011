@@ -1,6 +1,6 @@
 package com.growstory.domain.journal.dto;
 
-import com.growstory.global.badwords.dto.TextContainer;
+import com.growstory.global.badwordsfilter.dto.TextContainer;
 import lombok.*;
 import org.springframework.lang.Nullable;
 

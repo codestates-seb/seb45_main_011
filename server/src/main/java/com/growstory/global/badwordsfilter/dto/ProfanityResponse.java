@@ -1,4 +1,4 @@
-package com.growstory.global.badwords.dto;
+package com.growstory.global.badwordsfilter.dto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Getter
 @Builder
-public class ProfanityDto {
+public class ProfanityResponse {
     Set<String> inputProfanityWords = new HashSet<>();
     Set<String> bannedWords = new HashSet<>();
 

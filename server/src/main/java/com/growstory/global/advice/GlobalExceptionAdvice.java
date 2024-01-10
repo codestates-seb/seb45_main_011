@@ -1,7 +1,6 @@
 package com.growstory.global.advice;
 
 import com.growstory.global.exception.BusinessLogicException;
-import com.growstory.global.exception.ExceptionCode;
 import com.growstory.global.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,8 +32,8 @@ public class GlobalExceptionAdvice {
     // BusinessLogicException 처리
     public ResponseEntity handleBusinessLogicException(BusinessLogicException e) {
         ErrorResponse response = ErrorResponse.of(e.getExceptionCode());
-        if(!Objects.isNull(e.getProfanityDto())) {
-            response = ErrorResponse.of(e.getExceptionCode(), e.getProfanityDto());
+        if(!Objects.isNull(e.getProfanityResponse())) {
+            response = ErrorResponse.of(e.getExceptionCode(), e.getProfanityResponse());
         }
         final ErrorResponse errorResponse = response;
 

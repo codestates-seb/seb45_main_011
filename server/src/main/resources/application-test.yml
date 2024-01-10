@@ -1,0 +1,80 @@
+cloud:
+  aws:
+    credentials:
+      accessKey: ${AWS_ACCESS_KEY}
+      secretKey: ${AWS_SECRET_KEY}
+    s3:
+      bucket: ${AWS_BUCKET_NAME}
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
+spring:
+  config:
+    activate:
+      on-profile: test
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  datasource:
+    url: jdbc:h2:mem:test
+    driver-class-name: org.h2.Driver # H2 데이터베이스 드라이버 클래스
+    username: sa # H2 데이터베이스 사용자명
+    password: # H2 데이터베이스 암호 (비어있음)
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${G_CLIENT_ID}
+            client-secret: ${G_CLIENT_SECRET}
+            redirect-uri: https://grow-story.site/login/oauth2/code/google
+            scope:
+              - email
+              - profile
+  mail:
+    host: smtp.gmail.com
+    port: 587 # SMTP에서 보안성을 추가한 SMTPS의 서버 포트 = 587
+    username: ${GROWSTORY_EMAIL_USERNAME}
+    password: ${GROWSTORY_EMAIL_PASSWORD}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      # SMTP(Simple Mail Transfer Protocol)
+      # starttls는 목적지 서버에서 TLS(Transport Layer Security)를 지원하지 않더라도 587포트를 사용가능하게 한다
+
+jwt:
+  key:
+    secret: ${JWT_SECRET_KEY}
+  access-token-expiration-minutes: 30
+  refresh-token-expiration-minutes: 420
+
+# mail
+mail:
+  admin:
+    address: ${ADMIN_EMAIL}
+  guest: ${GUEST_EMAIL}
+
+my:
+  scheduled:
+    cron: 0 0 0 ? * MON
+
+event:
+  key: ${EVENT_KEY}
+
+server:
+  port: 443
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-password: ${KEY_STORE_PASSWORD}
+    key-store-type: PKCS12

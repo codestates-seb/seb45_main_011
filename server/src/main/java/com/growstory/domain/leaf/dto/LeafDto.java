@@ -1,13 +1,11 @@
 package com.growstory.domain.leaf.dto;
 
-import com.growstory.global.badwords.dto.TextContainer;
+import com.growstory.global.badwordsfilter.dto.TextContainer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 

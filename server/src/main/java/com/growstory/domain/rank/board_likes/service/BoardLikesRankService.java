@@ -7,6 +7,8 @@ import com.growstory.domain.rank.board_likes.entity.BoardLikesRank;
 import com.growstory.domain.rank.board_likes.history.repository.BoardLikesRankHistoryRepository;
 import com.growstory.domain.rank.board_likes.repository.BoardLikesRankRepository;
 import com.growstory.domain.rank.entity.Rank;
+import com.growstory.global.exception.BusinessLogicException;
+import com.growstory.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,8 +43,6 @@ public class BoardLikesRankService {
                 .collect(Collectors.toList());
     }
 
-    //TODO: 이력 테이블 삭제
-
     // 주 1회 랭킹 업데이트 및 이력 관리, 포인트 보상
     @Scheduled(cron = "${my.scheduled.cron}")
     public void updateFindTop3LikedBoards() {
@@ -55,32 +55,18 @@ public class BoardLikesRankService {
 
         // 좋아요 개수 상위 3등 까지의 게시글 조회
         List<BoardLikesRank> boardLikesRanks = boardService.findTop3LikedBoardRanks();
+        if(boardLikesRanks.isEmpty()) {
+            log.info("지난 주 좋아요를 받은 게시글이 없어 금주의 랭킹은 갱신되지 않습니다.");
+            throw new BusinessLogicException(ExceptionCode.RANK_NOT_FOUND);
+        }
 
         // 해당 게시글의 유저에게 보상 포인트 제공
         boardLikesRanks
                 .forEach(rankService::compensateWeeklyPoints);
 
         // 이번 주 랭킹 저장
+
         repository.saveAll(boardLikesRanks);
 
-        // 이전 주의 랭킹 삭제 및 이번 주 랭킹 저장
-//        repository.deleteAll();
-//        List<BoardLikesRank> newBoardLikesRanks = boardService.findTop3LikedBoardRanks();
-//        repository.saveAll(newBoardLikesRanks);
     }
-
-    // 이전 게시글 좋아요 랭킹을 이력 테이블로서 저장
-//    private void saveHistories(List<BoardLikesRank> boardLikesRanks) {
-//        List<BoardLikesRankHistory> histories
-//                = boardLikesRanks.stream()
-//                .map(rank -> {
-//                    return BoardLikesRankHistory.builder()
-//                            .accountId(rank.getAccount().getAccountId())
-//                            .boardId(rank.getBoard().getBoardId())
-//                            .likesNum(rank.getLikeNum())
-//                            .build();
-//                }).collect(Collectors.toList());
-//        historyRepository.saveAll(histories);
-//    }
-
 }
