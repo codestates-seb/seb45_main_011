@@ -177,6 +177,7 @@ HELP.md
 
 # application-local.yml
 server/src/main/resources/application-dev.yml
+server/src/main/resources/application-test.yml
 .github/workflows/server.yml
 
 # .iml
