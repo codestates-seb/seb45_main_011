@@ -29,10 +29,10 @@ export default function Comment({ comment, guestbookId }: CommentProps) {
   const { editMode, targetId, setEditMode } = usePostStore();
   const { userId } = useUserStore();
 
-  const { mutate: editComment } = useEditCommentMutation({
-    guestbookId,
-    targetId,
-  });
+  // const { mutate: editComment } = useEditCommentMutation({
+  //   guestbookId,
+  //   targetId,
+  // });
 
   const {
     register,
@@ -44,12 +44,16 @@ export default function Comment({ comment, guestbookId }: CommentProps) {
     },
   });
 
-  const isEdit = editMode && String(comment.commentId) === targetId;
+  const isEdit = editMode && String(comment.guestbookId) === targetId;
 
-  const isOwner = userId === String(comment.accountId);
+  // const isOwner = userId === String(comment.accountId);
+
+  // const submitCommentForm = (data: CommentInputValue) => {
+  //   editComment(data);
+  //   setEditMode(false);
+  // };
 
   const submitCommentForm = (data: CommentInputValue) => {
-    editComment(data);
     setEditMode(false);
   };
 
@@ -65,7 +69,6 @@ export default function Comment({ comment, guestbookId }: CommentProps) {
         />
         <DateAndControlSection
           date={new Date(comment?.createdAt)}
-          isOwner={isOwner}
           usage="comment"
           ownerId={String(comment.guestbookId)}
           targetId={String(comment.guestbookId)}

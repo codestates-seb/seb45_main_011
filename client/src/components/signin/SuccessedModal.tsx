@@ -12,6 +12,7 @@ export default function SuccessedModal() {
           <p className="font-bold text-brown-70 text-center break-keep leading-7">
             임시 비밀번호가 발송되었습니다.
           </p>
+
           <p className="font-bold text-brown-70 text-center break-keep leading-7">
             로그인 후&nbsp;
             <span className="text-brown-90">비밀번호를 변경해주세요.</span>

@@ -28,8 +28,10 @@ export default function SuccessedModal() {
           <span className="font-bold text-brown-60">Grow&nbsp;</span>
           <span className="font-bold text-brown-70">Story</span>를
         </div>
+
         <div className="flex flex-col items-center font-bold text-brown-80 break-keep">
           <span>이용해 주셔서 감사합니다.</span>
+
           <span className="mt-6">다음에 또 놀러 오세요!</span>
         </div>
 

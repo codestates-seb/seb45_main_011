@@ -26,7 +26,6 @@ import PostCountInfo from './PostCountInfo';
 import Preview from './Preview';
 import ReactQueryProvider from './ReactQueryProvider';
 import Screws from './Screws';
-import SeoHead from './SeoHead';
 import ShareButton from './ShareButton';
 import ShareModal from './ShareModal';
 import TagInput from './TagInput';
@@ -63,7 +62,6 @@ export {
   Preview,
   ReactQueryProvider,
   Screws,
-  SeoHead,
   ShareButton,
   ShareModal,
   TagInput,

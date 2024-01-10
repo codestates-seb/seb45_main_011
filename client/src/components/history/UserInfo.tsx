@@ -38,6 +38,7 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
 
       <section className="flex flex-col justify-center items-center mb-6 gap-2">
         <h3 className="text-2xl font-bold text-brown-80">{displayName}</h3>
+
         <h4 className="font-bold text-brown-70">{grade}</h4>
       </section>
 
@@ -50,6 +51,7 @@ export default function UserInfo({ paramsId }: HistoryUserProps) {
               width={24}
               height={24}
             />
+
             <p className="text-xl font-bold text-brown-10">
               {point?.toLocaleString()}
             </p>

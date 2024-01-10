@@ -12,6 +12,7 @@ import {
   LoadingNotice,
   ShareButton,
   ShareModal,
+  NotificationButton,
 } from '@/components/common';
 import {
   GardenMap,
@@ -89,7 +90,6 @@ export default function Garden({ params }: GardenProps) {
       </div>
 
       <NotificationButton />
-
       <InquiryButton />
 
       <Footer />
