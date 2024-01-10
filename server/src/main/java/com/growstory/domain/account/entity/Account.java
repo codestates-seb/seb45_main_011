@@ -133,7 +133,7 @@ public class Account extends BaseTimeEntity {
     }
 
     public void addAlarm(Alarm alarm) {
-        alarms.add(0, alarm);
+        alarms.add(alarm);
     }
 
     public void updateGrade(AccountGrade accountGrade) {
@@ -165,8 +165,12 @@ public class Account extends BaseTimeEntity {
         reports.add(report);
     }
 
-    public void updateReportsNum() {
+    public void addReportsNum() {
         reportNums += 1;
+    }
+
+    public void updateStatus(Status status) {
+        this.status = status;
     }
 
     public void removePlantObj(PlantObj plantObj) {

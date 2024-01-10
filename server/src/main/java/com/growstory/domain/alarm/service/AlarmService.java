@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,11 +37,13 @@ public class AlarmService {
         findAccount.addAlarm(savedAlarm);
     }
 
+    // 최신순 조회
     public List<AlarmDto.Response> findAlarms(Long accountId) {
         Account findAccount = accountRepository.findById(accountId).orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.ACCOUNT_NOT_FOUND));
 
         return findAccount.getAlarms().stream()
+                .sorted(Comparator.comparing(Alarm::getAlarmId).reversed())
                 .map(this::getAlarmResponseDto)
                 .collect(Collectors.toList());
     }

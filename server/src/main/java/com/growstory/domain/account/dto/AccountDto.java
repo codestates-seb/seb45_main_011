@@ -18,14 +18,14 @@ public class AccountDto {
     @Builder
     @Schema(name = "AccountPostDto")
     public static class Post implements TextContainer {
-        @NotBlank
+        @NotBlank(message = "닉네임은 필수입니다.")
         private String displayName;
 
-        @NotBlank
-        @Email
+        @NotBlank(message = "이메일은 필수입니다.")
+        @Email(message = "이메일 형식으로 입력되어야 합니다.")
         private String email;
 
-        @NotBlank
+        @NotBlank(message = "비밀번호는 필수입니다.")
         @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d).{6,}$" , message = "영문, 숫자 포함 6글자 이상의 패스워드만 허용합니다.")
         private String password;
 
@@ -39,7 +39,7 @@ public class AccountDto {
     @Getter
     @NoArgsConstructor
     public static class DisplayNamePatch implements TextContainer {
-        @NotBlank
+        @NotBlank(message = "닉네임은 필수입니다.")
         private String displayName;
 
         @Builder
@@ -56,11 +56,11 @@ public class AccountDto {
     @Getter
     @Builder
     public static class PasswordPatch {
-        @NotBlank
+        @NotBlank(message = "현재 비밀번호는 필수입니다.")
         @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d).{6,}$" , message = "영문, 숫자 포함 6글자 이상의 패스워드만 허용합니다.")
         private String presentPassword;
 
-        @NotBlank
+        @NotBlank(message = "변경할 비밀번호는 필수입니다.")
         @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d).{6,}$" , message = "영문, 숫자 포함 6글자 이상의 패스워드만 허용합니다.")
         private String changedPassword;
     }
@@ -70,7 +70,7 @@ public class AccountDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class PasswordVerify {
-        @NotBlank
+        @NotBlank(message = "비밀번호는 필수입니다.")
         @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d).{6,}$" , message = "영문, 숫자 포함 6글자 이상의 패스워드만 허용합니다.")
         private String password;
     }

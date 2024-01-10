@@ -42,7 +42,7 @@ public class LeafController {
     @Operation(summary = "식물카드 수정", description = "입력받은 식물 정보로 식물카드 수정")
     @PatchMapping
     public ResponseEntity<HttpStatus> patchLeaf(@Valid @RequestPart LeafDto.Patch leafPatchDto,
-                                                        @RequestPart(required = false) MultipartFile leafImage) {
+                                                @RequestPart(required = false) MultipartFile leafImage) {
         leafService.updateLeaf(leafPatchDto, leafImage);
 
         return ResponseEntity.noContent().build();

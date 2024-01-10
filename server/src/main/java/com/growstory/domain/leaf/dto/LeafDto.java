@@ -13,10 +13,10 @@ public class LeafDto {
     @Getter
     @Schema(name = "LeafPostDto")
     public static class Post implements TextContainer {
-        @NotBlank
+        @NotBlank(message = "식물 카드 이름은 필수입니다.")
         private String leafName;
 
-        @NotBlank
+        @NotBlank(message = "식물 카드 내용은 필수입니다.")
         private String content;
 
         @Builder
@@ -35,13 +35,13 @@ public class LeafDto {
     @Getter
     @Schema(name = "LeafPatchDto")
     public static class Patch implements TextContainer {
-        @Positive
+        @Positive(message = "식물 카드 아이디는 양수입니다.")
         private Long leafId;
 
-        @NotBlank
+        @NotBlank(message = "식물 카드 이름은 필수입니다.")
         private String leafName;
 
-        @NotBlank
+        @NotBlank(message = "식물 카드 내용은 필수입니다.")
         private String content;
 
         private Boolean isImageUpdated;
