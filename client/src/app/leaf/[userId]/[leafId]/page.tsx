@@ -23,6 +23,7 @@ import {
   ShareModal,
   Footer,
   Screws,
+  NotificationButton,
 } from '@/components/common';
 
 import { DiaryDataInfo } from '@/types/data';
@@ -118,6 +119,7 @@ export default function Leaf({ params }: LeafProps) {
             />
           ))}
       </motion.div>
+      <NotificationButton />
       <Footer />
     </>
   );
