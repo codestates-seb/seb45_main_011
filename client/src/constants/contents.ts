@@ -156,7 +156,7 @@ export const DIARY_FORM_TEXT = {
 };
 
 export const IMAGE_UPLOAD_TEXT = {
-  fileSizeWarn: '2mb 이하 이미지를 선택해주세요.',
+  fileSizeWarn: '4mb 이하 이미지를 선택해주세요.',
   noImageUploadError: '이미지를 필수로 등록해야 합니다.',
   imageUpload: '이미지 등록',
 };
