@@ -16,8 +16,10 @@ export default function SignButton() {
           </p>
           꾸며 보세요!
         </div>
+
         <div className="flex flex-col items-center text-[24px] text-white-10 font-bold">
           <p className="mb-2">지금 가입하면</p>
+
           <p>
             <span className="text-[28px] text-green-10">500포인트</span>
             증정!

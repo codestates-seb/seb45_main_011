@@ -2,13 +2,17 @@
 
 import { motion } from 'framer-motion';
 
-import useClient from '@/hooks/useClient';
 import useUserStore from '@/stores/userStore';
 
-import Header from '@/components/common/Header';
-import LoadingNotice from '@/components/common/LoadingNotice';
-import Intro from '@/components/common/Intro';
-import Footer from '@/components/common/Footer';
+import useClient from '@/hooks/useClient';
+
+import {
+  Header,
+  LoadingNotice,
+  Intro,
+  Footer,
+  NotificationButton,
+} from '@/components/common';
 import ServiceInfo from '@/components/main/ServiceInfo';
 import MainSignupBanner from '@/components/main/MainSignupBanner';
 import ScrollDownButton from '@/components/main/ScrollDownButton';
@@ -83,10 +87,9 @@ export default function Home() {
                   </div>
                 </motion.section>
               )}
-
+              <NotificationButton />
               <InquiryButton />
             </div>
-            <NotificationButton />
             <Footer />
           </>
         )}

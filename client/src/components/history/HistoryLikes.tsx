@@ -9,9 +9,11 @@ import { HistoryPostCard } from '.';
 import { EmptyDiary } from '../leaf';
 import { ErrorMessage, LoadingMessage } from '../common';
 
-import { HistoryBoradProps } from '@/types/common';
+export interface HistoryBoardProps {
+  paramsId: string;
+}
 
-export default function HistoryLikes({ paramsId }: HistoryBoradProps) {
+export default function HistoryLikes({ paramsId }: HistoryBoardProps) {
   const router = useRouter();
 
   const {

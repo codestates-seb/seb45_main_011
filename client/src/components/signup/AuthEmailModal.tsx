@@ -43,9 +43,11 @@ export default function AuthEmailModal() {
             <p className="font-bold text-brown-70 text-[24px]">
               이메일로 전송된
             </p>
+
             <p className="font-bold text-brown-70  text-[28px] text-center break-keep leading-8">
               <span className="text-brown-90">인증 번호</span>를 입력해주세요.
             </p>
+
             <p className="mt-2 font-bold text-red-50 text-sm text-center break-keep leading-5">
               메일이 도착하지 않았다면
               <br />

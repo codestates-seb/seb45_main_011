@@ -38,11 +38,13 @@ export default function HistoryPostCard({
       <div className="w-full flex justify-start gap-3 mt-1">
         <div className="flex justify-center items-center gap-[6px] ml-3 mb-1">
           <img src="/assets/img/like.svg" />
+
           <div>{likes}</div>
         </div>
 
         <div className="flex justify-center items-center gap-[6px] mb-1">
           <img src="/assets/img/comment.svg" />
+
           <div>{comment}</div>
         </div>
       </div>
