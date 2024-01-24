@@ -14,6 +14,7 @@ import {
   ShareModal,
   NotificationButton,
 } from '@/components/common';
+
 import {
   GardenMap,
   GardenSidebar,
@@ -25,8 +26,6 @@ import {
   EmptyInventoryModal,
   GuestbookModal,
 } from '@/components/garden';
-import { NotificationButton } from '@/components/common';
-
 import { InquiryButton } from '@/components/inquiry';
 
 interface GardenProps {
