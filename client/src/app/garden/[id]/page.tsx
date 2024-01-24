@@ -87,10 +87,8 @@ export default function Garden({ params }: GardenProps) {
         )}
         {isOpen && renderModal(type)}
       </div>
-
       <NotificationButton />
       <InquiryButton />
-
       <Footer />
     </>
   );
