@@ -178,8 +178,8 @@ export interface GuestbookDataInfo {
   createdAt: string;
   modifiedAt: string;
 }
-  
-export interface Chat {
+
+export interface ChatInfo {
   senderId: number;
   senderName: string;
   messageId: number;
@@ -205,7 +205,7 @@ export interface ReportListsData {
   content: string;
   key: string;
 }
-  
+
 export interface NotificationDataInfo {
   id: number;
   type:
