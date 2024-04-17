@@ -12,6 +12,8 @@ import { SigninFormValue } from '@/types/common';
 
 import { ALERT_TEXT } from '@/constants/contents';
 
+import setCookiesByUserId from '@/utils/setCookiesByUserId';
+
 const useSigninMutation = () => {
   const router = useRouter();
 
@@ -45,6 +47,8 @@ const useSigninMutation = () => {
         displayName,
         profileImageUrl,
       });
+
+      setCookiesByUserId(userId);
 
       getSigninForm(false);
       getSignupForm(false);
