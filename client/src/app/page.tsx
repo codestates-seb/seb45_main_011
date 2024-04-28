@@ -19,7 +19,6 @@ import ScrollDownButton from '@/components/main/ScrollDownButton';
 import { InquiryButton } from '@/components/inquiry';
 
 import { getScrollTop } from '@/utils/getScrollTop';
-import { NotificationButton } from '@/components/common';
 
 export default function Home() {
   const isClient = useClient();
