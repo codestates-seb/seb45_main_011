@@ -56,19 +56,19 @@ export default function InquiryHome({
   };
 
   return (
-    <div className="pt-5 h-[83%]">
-      <section>
-        <p className="text-lg text-center px-3">
+    <section className="pt-5 h-[83%]">
+      <div>
+        <h1 className="text-lg text-center px-3">
           <b>무엇을 도와드릴까요?</b>
-        </p>
+        </h1>
 
-        <div className="text-center text-[14px] break-words my-2 leading-[18px] px-3">
+        <h2 className="text-center text-[14px] break-words my-2 leading-[18px] px-3">
           <p>이용에 관한 문의가 있으시다면</p>
 
           <p>
-            <b>문의하기</b> 버튼을 눌러주세요.
+            <b>문의하기</b>&nbsp;버튼을 눌러주세요.
           </p>
-        </div>
+        </h2>
 
         <div className="mt-3">
           {CUSTOMER_SERVICE.notification.map((notice) => (
@@ -96,7 +96,7 @@ export default function InquiryHome({
             </CommonButton>
           )}
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 }

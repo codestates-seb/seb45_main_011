@@ -4,7 +4,7 @@ import useModalStore, { ModalType } from '@/stores/modalStore';
 
 import useUpdateChatAnsweredMutation from '@/hooks/mutation/useUpdateChatAnsweredMutation';
 
-import { ChatModal, InquiryListForm } from '.';
+import { ChatModal, InquiryTable } from '.';
 
 export default function CheckInquiry() {
   const { isOpen, type, close } = useModalStore();
@@ -24,7 +24,7 @@ export default function CheckInquiry() {
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
       <div className="w-full h-full flex justify-center items-center">
-        <InquiryListForm />
+        <InquiryTable />
       </div>
 
       {isOpen && renderModal(type)}

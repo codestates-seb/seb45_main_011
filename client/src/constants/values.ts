@@ -32,6 +32,6 @@ export const MOUNT_ANIMATION_VALUES = {
   animate: { y: 0, opacity: 1, transition: { duration: 0.5 } },
 };
 
-export const ADMIN_USER_ID = '101';
+export const ADMIN_USER_ID = process.env.NEXT_PUBLIC_ADMIN_ID;
 
 export const SHARE_URL = 'https://growstory.vercel.app';

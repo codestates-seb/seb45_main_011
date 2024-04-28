@@ -8,8 +8,9 @@ import useChatStore from '@/stores/chatStore';
 import useChatListQuery from '@/hooks/query/useChatListQuery';
 
 import { InquiryForm, InquiryRoom } from '.';
-
 import { ErrorMessage, LoadingMessage } from '../common';
+
+import { ChatList } from '@/types/data';
 
 export default function InquiryList() {
   const ref = useRef(null);
@@ -25,10 +26,6 @@ export default function InquiryList() {
     isError,
   } = useChatListQuery(userId);
 
-  const renderService = () => {
-    if (selected === 'chat') return <InquiryForm />;
-  };
-
   const options = {
     root: null,
     rootMargin: '0px',
@@ -37,7 +34,12 @@ export default function InquiryList() {
 
   let observer: IntersectionObserver;
 
-  const intersector = ([entry]: any) => entry.isIntersecting && fetchNextPage();
+  const intersector: IntersectionObserverCallback = (
+    entries: IntersectionObserverEntry[],
+  ) => {
+    const [entry] = entries;
+    entry.isIntersecting && fetchNextPage();
+  };
 
   useEffect(() => {
     if (ref && ref.current) {
@@ -52,7 +54,7 @@ export default function InquiryList() {
 
   return (
     <>
-      {renderService()}
+      {selected === 'chat' && <InquiryForm />}
 
       <div className="flex flex-col items-center w-full h-[83%]">
         <div className="w-[86px] h-[30px] rounded-lg border-2 border-brown-70 mb-2 py-2 px-2 flex justify-center items-center bg-contain bg-center bg-repeat bg-[url('/assets/img/bg_wood_dark.png')]">
@@ -67,7 +69,7 @@ export default function InquiryList() {
 
         <div className="w-full h-[82%] overflow-y-scroll scrollbar">
           {chatList?.map((page) => {
-            return page.chatList.map((list: any) => (
+            return page.chatList.map((list: ChatList) => (
               <div key={list.chatRoomId}>
                 {page.chatList.length === 0 ? (
                   <div className="h-full flex justify-center items-center">

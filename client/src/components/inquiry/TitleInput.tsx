@@ -35,7 +35,7 @@ export default function TitleInput({
         onClick={() => {
           sendTitle(), newChat();
         }}
-        disabled={title === ''}
+        disabled={!title}
         className={`w-[43px] h-[28px] text-[12px] flex justify-center items-center text-brown-10 font-bold  border-brown-70 rounded-xl border-2 bg-contain bg-center bg-repeat bg-[url('/assets/img/bg_wood_dark.png')] shadow-outer/down`}>
         입력
       </button>

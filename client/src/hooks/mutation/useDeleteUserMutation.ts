@@ -4,6 +4,8 @@ import { deleteUser } from '@/api/history';
 
 import useModalStore from '@/stores/modalStore';
 
+import removeCookiesForUserId from '@/utils/removeCookiesForUserId';
+
 const useDeleteUserMutation = () => {
   const { close, changeType } = useModalStore();
 
@@ -11,6 +13,8 @@ const useDeleteUserMutation = () => {
     mutationFn: () => deleteUser(),
 
     onSuccess: () => {
+      removeCookiesForUserId();
+
       return changeType('SuccessedModal');
     },
   });

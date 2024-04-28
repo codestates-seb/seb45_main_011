@@ -12,7 +12,9 @@ import { ErrorMessage, LoadingMessage } from '../common';
 
 import { REPORT_TITLE, REPORT_TITLE_STYLE } from '@/constants/contents';
 
-export default function InquiryListForm() {
+import { ChatList } from '@/types/data';
+
+export default function InquiryTable() {
   const { open, changeType } = useModalStore();
   const { setRoomId, setTitle } = useChatStore();
   const { userId } = useUserStore();
@@ -34,9 +36,9 @@ export default function InquiryListForm() {
     if (current.key === 'entry')
       return (
         setRoomId(`${chatRoomId}`),
+        setTitle(title),
         changeType('ChatModal'),
-        open(),
-        setTitle(title)
+        open()
       );
   };
 
@@ -70,7 +72,7 @@ export default function InquiryListForm() {
 
           <tbody className="bg-white-10">
             {isSuccess &&
-              chatList.map((list: any) => (
+              chatList.map((list: ChatList) => (
                 <tr
                   key={list.chatRoomId}
                   className="border-b-[1px] border-brown-90">
@@ -86,7 +88,7 @@ export default function InquiryListForm() {
                       }>
                       {current.key === 'entry'
                         ? '입장하기'
-                        : `${list[current.key]}`}
+                        : `${list[current.key as keyof ChatList]}`}
                     </td>
                   ))}
                 </tr>
