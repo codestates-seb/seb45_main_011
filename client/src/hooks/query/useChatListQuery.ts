@@ -2,10 +2,14 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { getChatListById } from '@/api/chat';
 
+import useChatStore from '@/stores/chatStore';
+
 const useChatListQuery = (id: string) => {
+  const { roomId } = useChatStore();
+
   const { data, fetchNextPage, hasNextPage, isLoading, isError } =
     useInfiniteQuery(
-      ['chatList'],
+      ['chatList', roomId],
       ({ pageParam = 0 }) => getChatListById({ pageParam }, id),
 
       {

@@ -28,9 +28,9 @@ export default function InquiryButton() {
   return (
     userId &&
     isClient && (
-      <div className="fixed z-20 right-[16px] bottom-[20px]">
+      <div className="fixed z-20 right-4 bottom-5">
         <button
-          className="w-[48px] h-[48px] border-[3px] border-brown-70 rounded-[50%] bg-[url('/assets/img/bg_wood_dark.png')] bg-contain bg-repeat flex justify-center items-center shadow-outer/down"
+          className="w-12 h-12 border-[3px] border-brown-70 rounded-[50%] bg-[url('/assets/img/bg_wood_dark.png')] bg-contain bg-repeat flex justify-center items-center shadow-outer/down"
           onClick={() => setIsOpen(!isOpen)}>
           <Image
             src="/assets/icon/qna.svg"

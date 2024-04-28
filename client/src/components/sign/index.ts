@@ -1,6 +1,6 @@
-import SignInput from './SignInput';
+import SignTextInput from './SignTextInput';
 import SignLink from './SignLink';
 import SignModalInput from './SignModalInput';
 import SignPasswordInput from './SignPasswordInput';
 
-export { SignInput, SignLink, SignModalInput, SignPasswordInput };
+export { SignTextInput, SignLink, SignModalInput, SignPasswordInput };

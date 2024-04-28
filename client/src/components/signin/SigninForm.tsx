@@ -6,7 +6,7 @@ import useModalStore from '@/stores/modalStore';
 
 import useSigninMutation from '@/hooks/mutation/useSigninMutation';
 
-import { SignPasswordInput, SignInput } from '../sign';
+import { SignPasswordInput, SignTextInput } from '../sign';
 import { CommonButton } from '../common';
 
 import { SignFormValue } from '@/types/common';
@@ -31,7 +31,7 @@ export default function SigninForm() {
       <form onSubmit={handleSubmit(() => onSiginIn({ email, password }))}>
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-1">
-            <SignInput type="email" register={register} errors={errors} />
+            <SignTextInput type="email" register={register} errors={errors} />
 
             <SignPasswordInput
               tag="password"

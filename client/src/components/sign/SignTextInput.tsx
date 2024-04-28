@@ -8,7 +8,7 @@ import { SIGN_REQUIRE } from '@/constants/contents';
 
 import getRegisterByType from '@/utils/getRegisterByType';
 
-interface SignInputProps {
+interface SignTextInputProps {
   type: 'email' | 'nickname';
 
   register: UseFormRegister<SignFormValue>;
@@ -17,12 +17,12 @@ interface SignInputProps {
   disabled?: boolean;
 }
 
-export default function SignInput({
+export default function SignTextInput({
   type,
   register,
   errors,
   disabled,
-}: SignInputProps) {
+}: SignTextInputProps) {
   const registerFormat = getRegisterByType(type);
 
   const errorMsg = errors[type]?.message;
