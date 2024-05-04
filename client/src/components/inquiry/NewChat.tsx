@@ -1,30 +1,54 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { CompatClient, Stomp, StompSubscription } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
 
 import useUserStore from '@/stores/userStore';
 import useChatStore from '@/stores/chatStore';
 
-import useNewChatAndExistChatConnect from '@/hooks/useNewChatAndExistChatConnect';
+import useScrollToBottom from '@/hooks/useScrollToBottom';
 
 import { ChatInput, ChatBox } from '.';
 
 import checkForToken from '@/utils/checkForToken';
+
+import { ChatInfo } from '@/types/data';
 
 interface NewChatProps {
   role: 'user' | 'admin';
 }
 
 export default function NewChat({ role }: NewChatProps) {
+  const client = useRef<CompatClient>();
+
+  const [connected, setConnected] = useState(false);
+  const [chat, setChat] = useState<ChatInfo[]>([]);
+
   const router = useRouter();
 
-  const { message, roomId, isNewChatConnect, setMessage } = useChatStore();
-  const { displayName, userId, setClear } = useUserStore();
+  const { message, setMessage, roomId } = useChatStore();
+  const { accessToken, refreshToken, displayName, userId, setClear } =
+    useUserStore();
 
-  const { setConnected, client, scrollRef, chat, connected } =
-    useNewChatAndExistChatConnect(isNewChatConnect);
+  const scrollRef = useScrollToBottom(chat);
 
   const { authVerify } = checkForToken();
+
+  const url = process.env.NEXT_PUBLIC_API_URL;
+
+  let subscription: StompSubscription | undefined;
+
+  const entryMessage = () => {
+    const adminId = 101;
+
+    client?.current?.send(
+      `/pub/chatRoom/enter`,
+      {},
+      JSON.stringify({ senderId: +userId, chatRoomId: +roomId, adminId }),
+    );
+  };
 
   const newMessge = {
     senderId: +userId,
@@ -40,7 +64,9 @@ export default function NewChat({ role }: NewChatProps) {
       authVerify() === 'Refresh Token Expired'
     ) {
       return (
-        alert('토큰이 만료되었습니다. 다시 로그인 해주시길 바랍니다.'),
+        alert(
+          '토큰이 만료되었습니다. 로그아웃 후 다시 로그인 해주시길 바랍니다.',
+        ),
         setConnected(false),
         setClear(),
         setMessage(''),
@@ -49,9 +75,41 @@ export default function NewChat({ role }: NewChatProps) {
     }
 
     client?.current?.send(`/pub/chatRoom/send`, {}, JSON.stringify(newMessge));
-
     setMessage('');
   };
+
+  useEffect(() => {
+    if (roomId) {
+      client.current = Stomp.over(() => new SockJS(`${url}/wss`));
+      client.current.debug = () => {};
+      client.current.connect(
+        {
+          Authorization: accessToken,
+          refresh: refreshToken,
+        },
+        () => {
+          subscription = client?.current?.subscribe(
+            `/sub/chatRoom/${roomId}`,
+            (payload) => {
+              const receivedMessage: ChatInfo = JSON.parse(payload.body);
+
+              setChat((previousChat) => [...previousChat, receivedMessage]);
+            },
+          );
+
+          entryMessage();
+          setConnected(true);
+        },
+      );
+    }
+
+    return () => {
+      client.current?.disconnect(() => {
+        subscription?.unsubscribe();
+        setConnected(false);
+      });
+    };
+  }, [roomId]);
 
   return (
     <section className="w-full">

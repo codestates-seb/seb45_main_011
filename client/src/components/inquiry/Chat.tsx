@@ -1,31 +1,42 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
+
+import { CompatClient, Stomp, StompSubscription } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
 
 import useUserStore from '@/stores/userStore';
 import useChatStore from '@/stores/chatStore';
 
+import useScrollToBottom from '@/hooks/useScrollToBottom';
+
 import useChatMessageQuery from '@/hooks/query/useChatMessageQuery';
-import useNewChatAndExistChatConnect from '@/hooks/useNewChatAndExistChatConnect';
 
 import { ChatInput, ChatBox } from '.';
 
 import checkForToken from '@/utils/checkForToken';
+
+import { ChatInfo } from '@/types/data';
 
 interface ChatProps {
   role: 'user' | 'admin';
 }
 
 export default function Chat({ role }: ChatProps) {
+  const client = useRef<CompatClient>();
+
+  const [connected, setConnected] = useState(false);
+  const [chat, setChat] = useState<ChatInfo[]>([]);
+
   const router = useRouter();
 
-  const { roomId, message, isNewChatConnect, setMessage } = useChatStore();
-  const { userId, displayName, setClear } = useUserStore();
+  const { roomId, message, setMessage } = useChatStore();
+  const { accessToken, refreshToken, userId, displayName, setClear } =
+    useUserStore();
 
-  const { setConnected, setChat, client, scrollRef, chat, connected } =
-    useNewChatAndExistChatConnect(isNewChatConnect);
+  const scrollRef = useScrollToBottom(chat);
 
   const {
     data: messageList,
@@ -34,6 +45,10 @@ export default function Chat({ role }: ChatProps) {
   } = useChatMessageQuery(roomId);
 
   const { authVerify } = checkForToken();
+
+  const url = process.env.NEXT_PUBLIC_API_URL;
+
+  let subscription: StompSubscription | undefined;
 
   const newMessge = {
     senderId: +userId,
@@ -49,7 +64,9 @@ export default function Chat({ role }: ChatProps) {
       authVerify() === 'Refresh Token Expired'
     ) {
       return (
-        alert('토큰이 만료되었습니다. 다시 로그인 해주시길 바랍니다.'),
+        alert(
+          '토큰이 만료되었습니다. 로그아웃 후 다시 로그인 해주시길 바랍니다.',
+        ),
         setConnected(false),
         setClear(),
         setMessage(''),
@@ -58,7 +75,6 @@ export default function Chat({ role }: ChatProps) {
     }
 
     client?.current?.send(`/pub/chatRoom/send`, {}, JSON.stringify(newMessge));
-
     setMessage('');
   };
 
@@ -67,6 +83,36 @@ export default function Chat({ role }: ChatProps) {
       messageList.map((list) => setChat([...list.previousMessage]));
     }
   }, [messageList]);
+
+  useEffect(() => {
+    client.current = Stomp.over(() => new SockJS(`${url}/wss`));
+    client.current.debug = () => {};
+    client.current.connect(
+      {
+        Authorization: accessToken,
+        refresh: refreshToken,
+      },
+      () => {
+        subscription = client?.current?.subscribe(
+          `/sub/chatRoom/${roomId}`,
+          (payload) => {
+            const receivedMessage: ChatInfo = JSON.parse(payload.body);
+
+            setChat((previousChat) => [...previousChat, receivedMessage]);
+          },
+        );
+
+        setConnected(true);
+      },
+    );
+
+    return () => {
+      client.current?.disconnect(() => {
+        subscription?.unsubscribe();
+        setConnected(false);
+      });
+    };
+  }, []);
 
   return (
     <section className="w-full">
