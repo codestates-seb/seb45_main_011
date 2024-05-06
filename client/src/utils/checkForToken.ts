@@ -1,12 +1,10 @@
-import LocalStorage from '@/api/localStorage';
+import LocalStorage from './localStorage';
 
 const checkForToken = () => {
   const storageData = LocalStorage.getItem('user-key');
 
-  const accessToken =
-    typeof window !== 'undefined' ? storageData.state.accessToken : null;
-  const refreshToken =
-    typeof window !== 'undefined' ? storageData.state.refreshToken : null;
+  const accessToken = storageData?.state.accessToken;
+  const refreshToken = storageData?.state.refreshToken;
 
   const parseJWT = (token: string | null) => {
     if (token) return JSON.parse(atob(token.split('.')[1]));
