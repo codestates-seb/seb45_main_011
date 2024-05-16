@@ -3,17 +3,18 @@ import { KeyboardEvent } from 'react';
 interface ChatInputProps {
   connected: boolean;
   message: string;
+  role: 'user' | 'admin';
+
   setMessage: (message: string) => void;
   sendMessage: () => void;
-  role: 'user' | 'admin';
 }
 
 export default function ChatInput({
   connected,
   message,
+  role,
   setMessage,
   sendMessage,
-  role,
 }: ChatInputProps) {
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && message !== '') {
@@ -26,7 +27,7 @@ export default function ChatInput({
       <input
         type="text"
         value={message}
-        placeholder={connected ? '메세지를 입력하세요.' : '연결중입니다...'}
+        placeholder={connected ? '메시지를 입력하세요.' : '연결 중입니다...'}
         disabled={!connected}
         onChange={(event) => setMessage(event.target.value)}
         onKeyDown={(event) => handleKeyDown(event)}
@@ -37,7 +38,7 @@ export default function ChatInput({
         type="submit"
         onClick={sendMessage}
         disabled={!connected}
-        className={`${CHAT_INPUT_STYLE[role].submit} text-[12px] flex justify-center items-center text-brown-40 font-bold  border-brown-50 rounded-xl border-2 bg-contain bg-center bg-repeat bg-[url('/assets/img/bg_wood_light.png')] shadow-outer/down`}>
+        className={`${CHAT_INPUT_STYLE[role].submit} flex justify-center items-center text-xs text-brown-40 font-bold  border-brown-50 rounded-xl border-2 bg-contain bg-center bg-repeat bg-[url('/assets/img/bg_wood_light.png')] shadow-outer/down`}>
         전송
       </button>
     </div>

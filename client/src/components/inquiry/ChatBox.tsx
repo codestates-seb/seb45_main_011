@@ -4,10 +4,10 @@ import { useEffect } from 'react';
 
 import useChatStore from '@/stores/chatStore';
 
-import { Chat } from '@/types/data';
+import { ChatInfo } from '@/types/data';
 
 interface ChatBoxProps {
-  chat: Chat[];
+  chat: ChatInfo[];
   user: string;
   role: 'user' | 'admin';
 }
@@ -17,10 +17,11 @@ export default function ChatBox({ chat, user, role }: ChatBoxProps) {
 
   useEffect(() => {
     if (chat && role === 'admin') {
-      const getQuestionerId = (chat: Chat[]) => {
-        return chat.map((data) => {
-          if (data.senderId !== 101) setQuestionerId(`${data.senderId}`);
-        });
+      const getQuestionerId = (chat: ChatInfo[]) => {
+        return chat.map(
+          (data) =>
+            data.senderId !== 101 && setQuestionerId(`${data.senderId}`),
+        );
       };
 
       getQuestionerId(chat);
@@ -74,8 +75,8 @@ const CHAT_BOX_STYLE = {
   },
 
   admin: {
-    container: 'lg:w-[392px] md:w-auto md:w-full',
-    width: 'lg:w-[365px] md:w-auto md:w-full',
+    container: 'w-auto',
+    width: 'w-auto',
     name: 'text-[14px]',
     box: 'text-[12px]',
   },

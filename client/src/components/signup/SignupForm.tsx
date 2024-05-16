@@ -10,7 +10,7 @@ import useAuthEmailMutation from '@/hooks/mutation/useAuthEmailMutation';
 import useSignupMutation from '@/hooks/mutation/useSignupMutation';
 import useEffectOnce from '@/hooks/useEffectOnce';
 
-import { SignInput, SignPasswordInput } from '../sign';
+import { SignTextInput, SignPasswordInput } from '../sign';
 import { CommonButton } from '../common';
 
 import { SignFormValue } from '@/types/common';
@@ -27,7 +27,7 @@ export default function SignupForm() {
   const { isCode, setIsCode } = useSignStore();
   const { isGuestMode, setClear } = useUserStore();
 
-  const { mutate: sendCodeWithEmail } = useAuthEmailMutation();
+  const { mutate } = useAuthEmailMutation();
   const { mutate: onSignup } = useSignupMutation();
 
   const email = watch('email');
@@ -37,7 +37,7 @@ export default function SignupForm() {
   const onValidateEmail = () => {
     if (!email) return;
 
-    sendCodeWithEmail(email);
+    mutate(email);
   };
 
   const conditionSignup = () => {
@@ -61,23 +61,20 @@ export default function SignupForm() {
     <section>
       <form onSubmit={handleSubmit(() => conditionSignup())}>
         <div className="flex flex-col gap-1 w-[300px]">
-          <SignInput type="email" register={register} errors={errors} />
+          <SignTextInput type="email" register={register} errors={errors} />
 
           <div className="flex justify-center">
             <CommonButton
               type="button"
               size="sm"
-              onOpen={() => {
-                onValidateEmail();
-                sendCodeWithEmail(email);
-              }}
+              onOpen={() => onValidateEmail()}
               className="mb-3"
               disabled={isCode}>
               {isCode ? '인증 완료!' : '이메일 인증하기'}
             </CommonButton>
           </div>
 
-          <SignInput
+          <SignTextInput
             type="nickname"
             register={register}
             errors={errors}

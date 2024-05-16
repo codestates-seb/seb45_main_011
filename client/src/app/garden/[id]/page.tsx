@@ -26,6 +26,7 @@ import {
   EmptyInventoryModal,
   GuestbookModal,
 } from '@/components/garden';
+
 import { InquiryButton } from '@/components/inquiry';
 
 interface GardenProps {
